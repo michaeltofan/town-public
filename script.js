@@ -2,6 +2,7 @@
   const viewEntry = document.getElementById("view-entry");
   const viewCountry = document.getElementById("view-country");
   const viewCity = document.getElementById("view-city");
+  const viewLocation = document.getElementById("view-location");
   const viewBoundary = document.getElementById("view-boundary");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
@@ -15,6 +16,18 @@
   const cityLead = document.getElementById("city-lead");
   const cityLegend = document.getElementById("city-legend");
   const cityContext = document.getElementById("city-context");
+  const locationBack = document.getElementById("location-back");
+  const locationIdle = document.getElementById("location-idle");
+  const locationSuccess = document.getElementById("location-success");
+  const locationTitle = document.getElementById("location-title");
+  const locationCity = document.getElementById("location-city");
+  const locationLead = document.getElementById("location-lead");
+  const locationPrivacy = document.getElementById("location-privacy");
+  const locationVerify = document.getElementById("location-verify");
+  const locationStatusLabel = document.getElementById("location-status-label");
+  const locationSuccessTitle = document.getElementById("location-success-title");
+  const locationSuccessLead = document.getElementById("location-success-lead");
+  const locationContinue = document.getElementById("location-continue");
   const boundaryBack = document.getElementById("boundary-back");
   const boundaryMeta = document.getElementById("boundary-meta");
   const countryInputs = Array.from(
@@ -25,6 +38,7 @@
     !viewEntry ||
     !viewCountry ||
     !viewCity ||
+    !viewLocation ||
     !viewBoundary ||
     !learnMoreButton ||
     !enterButton ||
@@ -38,6 +52,18 @@
     !cityLead ||
     !cityLegend ||
     !cityContext ||
+    !locationBack ||
+    !locationIdle ||
+    !locationSuccess ||
+    !locationTitle ||
+    !locationCity ||
+    !locationLead ||
+    !locationPrivacy ||
+    !locationVerify ||
+    !locationStatusLabel ||
+    !locationSuccessTitle ||
+    !locationSuccessLead ||
+    !locationContinue ||
     !boundaryBack ||
     !boundaryMeta
   ) {
@@ -49,7 +75,7 @@
     Germany: { id: "Munich", image: "assets/cities/munich.png" },
   };
 
-  const COPY = {
+  const CITY_COPY = {
     en: {
       title: "Choose your city",
       lead: "TOWN connects you to one verified local community.",
@@ -88,21 +114,55 @@
     },
   };
 
+  const LOCATION_COPY = {
+    it: {
+      back: "Indietro",
+      title: "Conferma la tua comunità locale",
+      lead: "TOWN è locale. La partecipazione appartiene a chi è connesso a questa comunità.",
+      privacy:
+        "Questo prototipo non esegue una verifica GPS reale. In questa fase non vengono raccolti né memorizzati dati di posizione reali.",
+      verify: "Simula la verifica",
+      statusLabel: "Solo prototipo",
+      successTitle: "Posizione verificata per {city}",
+      successLead:
+        "La tua comunità locale è confermata in questo prototipo. Non è stato usato alcun GPS reale.",
+      continue: "Continua",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      back: "Zurück",
+      title: "Bestätige deine lokale Gemeinschaft",
+      lead: "TOWN ist lokal. Teilnahme gehört zu den Menschen, die mit dieser Gemeinschaft verbunden sind.",
+      privacy:
+        "Dieser Prototyp führt keine echte GPS-Prüfung durch. In diesem Schritt werden keine echten Standortdaten erfasst oder gespeichert.",
+      verify: "Prüfung simulieren",
+      statusLabel: "Nur Prototyp",
+      successTitle: "Standort für {city} bestätigt",
+      successLead:
+        "Deine lokale Gemeinschaft ist in diesem Prototyp bestätigt. Es wurde kein echtes GPS verwendet.",
+      continue: "Weiter",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
   let lastFocus = null;
   let selectedCountry = null;
   let selectedCity = null;
+  let locationVerified = false;
 
   const titles = {
     entry: "TOWN — Entry",
     country: "TOWN — Choose your country",
     city: "TOWN — Choose your city",
-    boundary: "TOWN — Screen 04 boundary",
+    location: "TOWN — Confirm local community",
+    boundary: "TOWN — Screen 05 boundary",
   };
 
   function parseRoute() {
     const raw = (window.location.hash || "").replace(/^#\/?/, "");
     if (raw.startsWith("country")) return "country";
     if (raw.startsWith("city")) return "city";
+    if (raw.startsWith("location")) return "location";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -113,9 +173,16 @@
     return "en";
   }
 
+  function cityDisplayName(lang) {
+    const names =
+      (LOCATION_COPY[lang] && LOCATION_COPY[lang].cityNames) ||
+      CITY_COPY.en.cityNames;
+    return names[selectedCity] || selectedCity || "";
+  }
+
   function applyCityCopy() {
     const lang = communityLanguage();
-    const copy = COPY[lang];
+    const copy = CITY_COPY[lang];
     cityTitle.textContent = copy.title;
     cityLead.textContent = copy.lead;
     cityLegend.textContent = copy.cityLegend;
@@ -138,17 +205,48 @@
     }
   }
 
-  function renderCityOptions() {
+  function applyLocationCopy() {
+    const lang = communityLanguage();
+    const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
+    const cityName = cityDisplayName(lang);
+
+    locationBack.textContent = copy.back;
+    locationTitle.textContent = copy.title;
+    locationCity.textContent = cityName;
+    locationLead.textContent = copy.lead;
+    locationPrivacy.textContent = copy.privacy;
+    locationVerify.textContent = copy.verify;
+    locationStatusLabel.textContent = copy.statusLabel;
+    locationSuccessTitle.textContent = copy.successTitle.replace(
+      "{city}",
+      cityName
+    );
+    locationSuccessLead.textContent = copy.successLead;
+    locationContinue.textContent = copy.continue;
+    document.documentElement.lang = lang === "en" ? "en" : lang;
+  }
+
+  function syncLocationState() {
+    locationIdle.hidden = locationVerified;
+    locationSuccess.hidden = !locationVerified;
+  }
+
+  function renderCityOptions(options) {
+    const preserve = options && options.preserveSelection;
+    const previousCity = preserve ? selectedCity : null;
+
     cityOptions.innerHTML = "";
-    selectedCity = null;
-    continueCity.disabled = true;
+    if (!preserve) {
+      selectedCity = null;
+      continueCity.disabled = true;
+    }
 
     if (!selectedCountry || !CITY_BY_COUNTRY[selectedCountry]) {
       return;
     }
 
     const city = CITY_BY_COUNTRY[selectedCountry];
-    const copy = COPY[communityLanguage()];
+    const copy = CITY_COPY[communityLanguage()];
     const optionId = "city-" + city.id.toLowerCase();
 
     const label = document.createElement("label");
@@ -176,27 +274,44 @@
       continueCity.disabled = !selectedCity;
       applyCityCopy();
     });
+
+    if (preserve && previousCity === city.id) {
+      input.checked = true;
+      selectedCity = previousCity;
+      continueCity.disabled = false;
+    }
   }
 
   function showView(name) {
     viewEntry.hidden = name !== "entry";
     viewCountry.hidden = name !== "country";
     viewCity.hidden = name !== "city";
+    viewLocation.hidden = name !== "location";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
     document.body.classList.toggle("page-city", name === "city");
+    document.body.classList.toggle("page-location", name === "location");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name === "city") {
       applyCityCopy();
     }
 
+    if (name === "location") {
+      applyLocationCopy();
+      syncLocationState();
+    }
+
     if (name === "boundary") {
       if (selectedCountry && selectedCity) {
         boundaryMeta.hidden = false;
         boundaryMeta.textContent =
-          "Selected: " + selectedCountry + " · " + selectedCity;
+          "Selected: " +
+          selectedCountry +
+          " · " +
+          selectedCity +
+          (locationVerified ? " · verified (mock)" : "");
       } else {
         boundaryMeta.hidden = true;
         boundaryMeta.textContent = "";
@@ -208,8 +323,14 @@
     if (route === "city" && !selectedCountry) {
       route = "country";
     }
-    if (route === "boundary" && (!selectedCountry || !selectedCity)) {
+    if (
+      (route === "location" || route === "boundary") &&
+      (!selectedCountry || !selectedCity)
+    ) {
       route = selectedCountry ? "city" : "country";
+    }
+    if (route === "boundary" && !locationVerified) {
+      route = "location";
     }
 
     if (route === "entry") {
@@ -234,6 +355,7 @@
     if (nextCountry !== selectedCountry) {
       selectedCountry = nextCountry;
       selectedCity = null;
+      locationVerified = false;
       renderCityOptions();
     } else {
       selectedCountry = nextCountry;
@@ -241,17 +363,41 @@
     continueCountry.disabled = !selectedCountry;
   }
 
+  function ensureCityOptions(preserveSelection) {
+    if (!selectedCountry) return;
+    if (cityOptions.childElementCount === 0) {
+      renderCityOptions({ preserveSelection: !!preserveSelection });
+    } else if (preserveSelection && selectedCity) {
+      const input = cityOptions.querySelector(
+        'input[value="' + selectedCity + '"]'
+      );
+      if (input) {
+        input.checked = true;
+        continueCity.disabled = false;
+      }
+    }
+  }
+
   function render() {
     const route = parseRoute();
-    if ((route === "city" || route === "boundary") && !selectedCountry) {
-      // Restore country from checked radio if possible (e.g. back navigation)
+    if (
+      (route === "city" || route === "location" || route === "boundary") &&
+      !selectedCountry
+    ) {
       syncCountryContinue();
     }
-    if (route === "city" && selectedCountry && cityOptions.childElementCount === 0) {
-      renderCityOptions();
+    if (route === "city") {
+      ensureCityOptions(true);
     }
     if (route === "city" && !selectedCountry) {
       go("country");
+      return;
+    }
+    if (
+      (route === "location" || route === "boundary") &&
+      (!selectedCountry || !selectedCity)
+    ) {
+      go(selectedCountry ? "city" : "country");
       return;
     }
     showView(route);
@@ -323,6 +469,7 @@
 
   continueCountry.addEventListener("click", () => {
     if (!selectedCountry) return;
+    locationVerified = false;
     renderCityOptions();
     applyCityCopy();
     go("city");
@@ -334,11 +481,29 @@
 
   continueCity.addEventListener("click", () => {
     if (!selectedCountry || !selectedCity) return;
+    locationVerified = false;
+    go("location");
+  });
+
+  locationBack.addEventListener("click", () => {
+    ensureCityOptions(true);
+    go("city");
+  });
+
+  locationVerify.addEventListener("click", () => {
+    // Mock-only verification. No device location access or network calls.
+    locationVerified = true;
+    applyLocationCopy();
+    syncLocationState();
+  });
+
+  locationContinue.addEventListener("click", () => {
+    if (!locationVerified) return;
     go("boundary");
   });
 
   boundaryBack.addEventListener("click", () => {
-    go("city");
+    go("location");
   });
 
   window.addEventListener("hashchange", render);

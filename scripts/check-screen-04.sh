@@ -30,39 +30,36 @@ echo "== Prior screens preserved =="
 require_file "index.html"
 require_contains "index.html" "Return to your real local community."
 require_contains "index.html" "Choose your country"
-require_contains "index.html" "Enter My Town"
-
-echo "== Screen 03 structural checks =="
-require_file "script.js"
-require_file "assets/cities/milano.png"
-require_file "assets/cities/munich.png"
-require_contains "index.html" "view-city"
 require_contains "index.html" "Choose your city"
-require_contains "index.html" "one verified local community"
-require_contains "index.html" "continue-city"
+require_contains "index.html" "view-city"
+
+echo "== Screen 04 structural checks =="
+require_file "script.js"
 require_contains "index.html" "view-location"
-require_contains "script.js" "Milano"
-require_contains "script.js" "Munich"
-require_contains "script.js" "Seleziona la tua città"
-require_contains "script.js" "Wähle deine Stadt"
-require_contains "script.js" "Continua"
-require_contains "script.js" "Weiter"
-require_contains "script.js" 'go("city")'
-require_contains "script.js" 'go("boundary")'
+require_contains "index.html" "location-verify"
+require_contains "index.html" "location-success"
+require_contains "index.html" "Screen 05 boundary"
+require_contains "script.js" "Simula la verifica"
+require_contains "script.js" "Prüfung simulieren"
+require_contains "script.js" "Conferma la tua comunità locale"
+require_contains "script.js" "Bestätige deine lokale Gemeinschaft"
+require_contains "script.js" "locationVerified"
+require_contains "script.js" 'go("location")'
+require_contains "script.js" "Mock-only verification"
 
 echo "== Guardrails =="
-if grep -qiE 'Stripe|followers|trending|dashboard' index.html script.js; then
-  echo "FAIL: forbidden implementation pattern present"
+if grep -Eiq 'navigator\.geolocation|getCurrentPosition|watchPosition' index.html script.js; then
+  echo "FAIL: geolocation API usage present"
   fail=1
 else
-  echo "OK: no forbidden later-screen / social patterns"
+  echo "OK: no geolocation API usage"
 fi
 
-if grep -qiE 'language selector|language menu|choose language' index.html script.js; then
-  echo "FAIL: language selector present"
+if grep -Eiq 'language selector|language menu|Stripe|followers|trending|dashboard|feed is implemented' index.html script.js; then
+  echo "FAIL: forbidden pattern present"
   fail=1
 else
-  echo "OK: no language selector"
+  echo "OK: no forbidden patterns"
 fi
 
 echo "== HTML smoke =="
@@ -81,18 +78,25 @@ for fragment in (
     "view-entry",
     "view-country",
     "view-city",
-    "view-boundary",
     "view-location",
-    "continue-city",
+    "view-boundary",
+    "Screen 05 boundary",
+    "location-verify",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
 
 js = Path("script.js").read_text(encoding="utf-8")
-for fragment in ("Italy", "Germany", "Milano", "Munich", "Indietro", "Zurück"):
+for fragment in (
+    "Posizione verificata per",
+    "Standort für",
+    "Solo prototipo",
+    "Nur Prototyp",
+    "locationVerified = true",
+):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 03 markup and language copy present")
+print("OK: Screen 04 markup and copy present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

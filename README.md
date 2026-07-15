@@ -8,18 +8,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 02 — Country Selection (approved on `main`)
 
-### Screen 03 — City Selection (review)
+### Screen 03 — City Selection (approved on `main`)
+
+### Screen 04 — Location Verification Mock (review)
 
 Flow:
 
 1. Screen 01 → **Enter My Town**
-2. Screen 02 → Italy or Germany → **Continue**
-3. Screen 03 → Milano (Italy) or Munich (Germany)
-4. Community language applies after city selection (Italian / German)
-5. **Back** returns to Screen 02 with country preserved
-6. **Continue** stops at the Screen 04 boundary placeholder
+2. Screen 02 → Italy / Germany
+3. Screen 03 → Milano / Munich
+4. Screen 04 → mock verification in Italian or German
+5. Success state → Continue stops at the Screen 05 boundary placeholder
 
-No location verification, account flow, membership, authentication, payments, or API are included.
+This slice does not use real GPS, geolocation APIs, accounts, membership, payments, or a feed.
 
 ### Local preview
 
@@ -33,4 +34,4 @@ Open `http://localhost:4173/`.
 
 Interactive review (starts on Screen 01):
 
-https://holding-permission-shopping-boss.trycloudflare.com/
+https://finger-mon-beaver-employ.trycloudflare.com/
