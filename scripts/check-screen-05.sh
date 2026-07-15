@@ -81,7 +81,7 @@ for fragment in (
     "feed-see-too",
     "feed-open-signal",
     "membership-invite",
-    "signal-sheet",
+    "signal-detail",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")

@@ -48,10 +48,28 @@
   const feedOpenSignal = document.getElementById("feed-open-signal");
   const feedPrev = document.getElementById("feed-prev");
   const feedNext = document.getElementById("feed-next");
-  const signalSheet = document.getElementById("signal-sheet");
-  const signalSheetTitle = document.getElementById("signal-sheet-title");
-  const signalSheetMessage = document.getElementById("signal-sheet-message");
-  const signalSheetClose = document.getElementById("signal-sheet-close");
+  const signalDetail = document.getElementById("signal-detail");
+  const detailImage = document.getElementById("detail-image");
+  const detailClose = document.getElementById("detail-close");
+  const detailUserStatus = document.getElementById("detail-user-status");
+  const detailCommunity = document.getElementById("detail-community");
+  const detailCategory = document.getElementById("detail-category");
+  const detailHeadline = document.getElementById("detail-headline");
+  const detailMeta = document.getElementById("detail-meta");
+  const detailCivicStatus = document.getElementById("detail-civic-status");
+  const detailDescription = document.getElementById("detail-description");
+  const detailWhyLabel = document.getElementById("detail-why-label");
+  const detailWhy = document.getElementById("detail-why");
+  const detailWhoLabel = document.getElementById("detail-who-label");
+  const detailWho = document.getElementById("detail-who");
+  const detailUpdateLabel = document.getElementById("detail-update-label");
+  const detailUpdate = document.getElementById("detail-update");
+  const detailStatusLabel = document.getElementById("detail-status-label");
+  const detailStatusNote = document.getElementById("detail-status-note");
+  const detailSeeToo = document.getElementById("detail-see-too");
+  const detailSeeTooDone = document.getElementById("detail-see-too-done");
+  const detailDoneTitle = document.getElementById("detail-done-title");
+  const detailDoneNote = document.getElementById("detail-done-note");
   const feedSeeTooDone = document.getElementById("feed-see-too-done");
   const feedDoneTitle = document.getElementById("feed-done-title");
   const feedDoneNote = document.getElementById("feed-done-note");
@@ -251,10 +269,28 @@
     !feedOpenSignal ||
     !feedPrev ||
     !feedNext ||
-    !signalSheet ||
-    !signalSheetTitle ||
-    !signalSheetMessage ||
-    !signalSheetClose ||
+    !signalDetail ||
+    !detailImage ||
+    !detailClose ||
+    !detailUserStatus ||
+    !detailCommunity ||
+    !detailCategory ||
+    !detailHeadline ||
+    !detailMeta ||
+    !detailCivicStatus ||
+    !detailDescription ||
+    !detailWhyLabel ||
+    !detailWhy ||
+    !detailWhoLabel ||
+    !detailWho ||
+    !detailUpdateLabel ||
+    !detailUpdate ||
+    !detailStatusLabel ||
+    !detailStatusNote ||
+    !detailSeeToo ||
+    !detailSeeTooDone ||
+    !detailDoneTitle ||
+    !detailDoneNote ||
     !feedSeeTooDone ||
     !feedDoneTitle ||
     !feedDoneNote ||
@@ -405,30 +441,55 @@
         category: "SPAZIO PUBBLICO",
         authorName: "Marta Rinaldi",
         observedTime: "Osservato ieri",
+        observedDate: "14 luglio 2026",
         area: "Città Studi",
         headline: "Marciapiede danneggiato davanti alla scuola di via Padova",
         summary:
           "Le radici hanno sollevato il marciapiede. Bambini e anziani sono costretti sulla carreggiata.",
         image: "assets/feed/signal_citta_studi_pavement.jpg",
         focus: "50% 42%",
+        civicStatus: "Stato civico: osservato — in attesa di attenzione locale",
+        description:
+          "Davanti alla scuola di via Padova il marciapiede è sollevato e spezzato. Il passaggio pedonale resta irregolare per diversi metri e costringe chi cammina a avvicinarsi alla carreggiata, soprattutto nelle ore di entrata e uscita.",
+        whyMatters:
+          "Qui passa ogni giorno chi accompagna i bambini a scuola e chi si muove a piedi nel quartiere. Un marciapiede danneggiato non è un dettaglio estetico: riduce la sicurezza di un tratto quotidiano e molto frequentato.",
+        whoAffected:
+          "Famiglie con bambini, anziani, persone con mobilità ridotta e chi attraversa Città Studi a piedi nelle ore di punta.",
+        latestUpdate:
+          "Il segnale resta locale e aperto. Nessuna conferma rilevante di intervento è ancora disponibile in questo prototipo.",
+        statusNote:
+          "«Osservato» significa che il problema è stato riconosciuto dalla comunità locale. Non implica una pratica ufficiale né un intervento già avviato.",
       },
       {
         id: "milano-signal-2",
         category: "ILLUMINAZIONE",
         authorName: "Chiara Valli",
         observedTime: "Segnalato due giorni fa",
+        observedDate: "13 luglio 2026",
         area: "Porta Romana",
         headline: "Il percorso vicino alla scuola resta al buio la sera",
         summary:
           "Diversi lampioni non funzionano sul tratto pedonale. I residenti hanno già segnalato il Comune.",
         image: "assets/feed/signal_porta_romana_lighting.jpg",
         focus: "58% 40%",
+        civicStatus: "Stato civico: segnalato — monitoraggio locale",
+        description:
+          "Sul tratto pedonale vicino alla scuola, più lampioni restano spenti dopo il tramonto. Il percorso tra le abitazioni e l’ingresso scolastico diventa difficile da leggere, soprattutto per chi torna a piedi la sera.",
+        whyMatters:
+          "Una strada poco illuminata riduce il senso di sicurezza di un percorso scolastico e quotidiano. In un quartiere abitato, la luce pubblica è parte essenziale della vita locale.",
+        whoAffected:
+          "Studenti, genitori, residenti della sera e chi usa questo tratto pedonale per raggiungere fermate e abitazioni vicine.",
+        latestUpdate:
+          "I residenti riferiscono di aver già segnalato il Comune. In questo prototipo il segnale resta in monitoraggio locale.",
+        statusNote:
+          "«Segnalato» indica che il problema è stato portato all’attenzione locale. Non conferma riparazione, presa in carico formale o tempi di intervento.",
       },
       {
         id: "milano-signal-3",
         category: "LAVORI PUBBLICI",
         authorName: "Luca Ferri",
         observedTime: "Osservato questa settimana",
+        observedDate: "Questa settimana · luglio 2026",
         area: "Lorenteggio",
         headline:
           "Il cantiere restringe il passaggio pedonale senza indicazioni chiare",
@@ -436,6 +497,17 @@
           "Il percorso temporaneo è stretto e poco segnalato. Servono tempi chiari e un passaggio più sicuro.",
         image: "assets/feed/signal_lorenteggio_works.jpg",
         focus: "50% 45%",
+        civicStatus: "Stato civico: aperto — richiede chiarezza locale",
+        description:
+          "Il cantiere ha ristretto il passaggio pedonale a un corridoio stretto, con indicazioni poco leggibili. Pedoni e ciclisti si trovano a condividere uno spazio ridotto, senza un percorso alternativo chiaro.",
+        whyMatters:
+          "I lavori pubblici fanno parte della vita di quartiere, ma senza indicazioni e tempi comprensibili il passaggio quotidiano diventa confuso e meno sicuro.",
+        whoAffected:
+          "Pedoni, ciclisti, residenti di Lorenteggio e chi attraversa l’area per lavoro o scuola.",
+        latestUpdate:
+          "Il segnale resta aperto. In questo prototipo non risultano ancora indicazioni aggiornate su durata o percorso alternativo.",
+        statusNote:
+          "«Aperto» significa che la situazione resta da chiarire per la comunità. Non implica una decisione amministrativa già conclusa.",
       },
     ],
     Munich: [
@@ -444,36 +516,72 @@
         category: "ÖFFENTLICHER RAUM",
         authorName: "Anna Weber",
         observedTime: "Gestern beobachtet",
+        observedDate: "14. Juli 2026",
         area: "Schwabing",
         headline: "Der Gehweg ist hier kaum noch sicher passierbar.",
         summary:
           "Unebene Platten verengen den Gehweg. Menschen mit Kinderwagen oder Rollstuhl müssen auf die Straße ausweichen.",
         image: "assets/feed/signal_citta_studi_pavement.jpg",
         focus: "50% 42%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "In Schwabing ist der Gehweg durch angehobene und unebene Platten stark eingeschränkt. Der sichere Fußweg wird schmal, sodass Menschen näher an den Fahrbahnrand ausweichen müssen.",
+        whyMatters:
+          "Ein beschädigter Gehweg betrifft den Alltag im Viertel. Er macht einen häufig genutzten Weg unsicherer — besonders für Familien, ältere Menschen und alle, die zu Fuß unterwegs sind.",
+        whoAffected:
+          "Familien mit Kinderwagen, ältere Menschen, Personen mit eingeschränkter Mobilität und Fußgängerinnen und Fußgänger im täglichen Weg durch Schwabing.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. In diesem Prototyp liegt noch keine bestätigte Maßnahme vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
       },
       {
         id: "munich-signal-2",
         category: "STRASSENBELEUCHTUNG",
         authorName: "Jonas Keller",
         observedTime: "Vor zwei Tagen gemeldet",
+        observedDate: "13. Juli 2026",
         area: "Haidhausen",
         headline: "Mehrere Straßenlaternen bleiben am Abend dunkel.",
         summary:
           "Der Fußweg zwischen Wohnhäusern und Haltestelle ist kaum beleuchtet. Anwohner haben die Störung bereits gemeldet.",
         image: "assets/feed/signal_porta_romana_lighting.jpg",
         focus: "58% 40%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Mehrere Laternen am Fußweg zwischen Wohnhäusern und Haltestelle bleiben nach Einbruch der Dunkelheit aus. Der Weg ist schwerer zu lesen und fühlt sich weniger sicher an.",
+        whyMatters:
+          "Gute Beleuchtung gehört zur alltäglichen Sicherheit im Quartier. Ein dunkler Schul- und Wohnweg betrifft nicht nur Komfort, sondern das Vertrauen in den öffentlichen Raum.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, Schülerinnen und Schüler, Abendgänger sowie alle, die diesen Fußweg zur Haltestelle nutzen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. In diesem Prototyp bleibt das Signal in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
       },
       {
         id: "munich-signal-3",
         category: "ÖFFENTLICHE BAUARBEITEN",
         authorName: "Lukas Brandt",
         observedTime: "Diese Woche beobachtet",
+        observedDate: "Diese Woche · Juli 2026",
         area: "Sendling",
         headline: "Der provisorische Weg ist zu eng und schlecht ausgeschildert.",
         summary:
           "Fußgänger und Radfahrer teilen sich einen schmalen Durchgang. Es fehlen klare Hinweise und ein sicherer Übergang.",
         image: "assets/feed/signal_lorenteggio_works.jpg",
         focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "Die Bauarbeiten haben den Durchgang auf einen engen provisorischen Weg verengt. Fußgänger und Radfahrer teilen sich denselben schmalen Raum, ohne klare Führung oder erkennbare Alternative.",
+        whyMatters:
+          "Öffentliche Bauarbeiten gehören zum Stadtleben. Ohne verständliche Hinweise und sichere Übergänge wird der Alltag im Viertel jedoch unnötig unsicher und unklar.",
+        whoAffected:
+          "Fußgänger, Radfahrer, Anwohner in Sendling und alle, die das Gebiet regelmäßig durchqueren.",
+        latestUpdate:
+          "Das Signal bleibt offen. In diesem Prototyp gibt es noch keine aktualisierte Angabe zu Dauer oder Ausweichweg.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
       },
     ],
   };
@@ -557,10 +665,12 @@
       doneTitle: "Lo vedi anche tu",
       doneNote: "Conferma registrata nel prototipo",
       openSignal: "Apri segnale",
-      openSignalTitle: "Dettaglio del segnale",
-      openSignalMessage:
-        "I dettagli di questo segnale saranno aggiunti nella prossima fase di TOWN.",
       openSignalClose: "Chiudi",
+      whyLabel: "Perché conta qui",
+      whoLabel: "Chi è coinvolto",
+      updateLabel: "Ultimo aggiornamento",
+      statusLabel: "Cosa significa questo stato",
+      communityArea: "{city} · {area}",
       previous: "Precedente",
       next: "Successiva",
       cityNames: { Milano: "Milano", Munich: "München" },
@@ -573,10 +683,12 @@
       doneTitle: "Du siehst das auch",
       doneNote: "Bestätigung im Prototyp registriert",
       openSignal: "Signal öffnen",
-      openSignalTitle: "Signaldetails",
-      openSignalMessage:
-        "Weitere Informationen zu diesem Signal werden in der nächsten TOWN-Phase hinzugefügt.",
       openSignalClose: "Schließen",
+      whyLabel: "Warum das hier zählt",
+      whoLabel: "Wen es betrifft",
+      updateLabel: "Letzte Aktualisierung",
+      statusLabel: "Was dieser Status bedeutet",
+      communityArea: "{city} · {area}",
       previous: "Zurück",
       next: "Weiter",
       cityNames: { Milano: "Milano", Munich: "München" },
@@ -1109,27 +1221,41 @@
 
     if (membershipSimulated) {
       feedVisitor.textContent = copy.member.replace("{city}", cityName);
+      detailUserStatus.textContent = copy.member.replace("{city}", cityName);
     } else {
       feedVisitor.textContent = copy.visitor;
+      detailUserStatus.textContent = copy.visitor;
     }
 
     feedDoneTitle.textContent = copy.doneTitle;
     feedDoneNote.textContent = copy.doneNote;
+    detailDoneTitle.textContent = copy.doneTitle;
+    detailDoneNote.textContent = copy.doneNote;
+    detailSeeToo.textContent = copy.seeThisToo;
 
     if (onOrigin) {
       feedSeeToo.hidden = true;
       feedSeeToo.disabled = true;
       feedSeeTooDone.hidden = false;
+      detailSeeToo.hidden = true;
+      detailSeeToo.disabled = true;
+      detailSeeTooDone.hidden = false;
     } else if (membershipSimulated) {
       // Membership journey complete: do not reopen visitor invitation on other scenes.
       feedSeeToo.hidden = true;
       feedSeeToo.disabled = true;
       feedSeeTooDone.hidden = true;
+      detailSeeToo.hidden = true;
+      detailSeeToo.disabled = true;
+      detailSeeTooDone.hidden = true;
     } else {
       feedSeeToo.hidden = false;
       feedSeeToo.disabled = false;
       feedSeeTooDone.hidden = true;
       feedSeeToo.textContent = copy.seeThisToo;
+      detailSeeToo.hidden = false;
+      detailSeeToo.disabled = false;
+      detailSeeTooDone.hidden = true;
     }
   }
 
@@ -1141,12 +1267,40 @@
     feedOpenSignal.textContent = copy.openSignal;
     feedPrev.textContent = copy.previous;
     feedNext.textContent = copy.next;
-    signalSheetTitle.textContent = copy.openSignalTitle;
-    signalSheetMessage.textContent = copy.openSignalMessage;
-    signalSheetClose.textContent = copy.openSignalClose;
+    detailClose.textContent = copy.openSignalClose;
+    detailWhyLabel.textContent = copy.whyLabel;
+    detailWhoLabel.textContent = copy.whoLabel;
+    detailUpdateLabel.textContent = copy.updateLabel;
+    detailStatusLabel.textContent = copy.statusLabel;
     feedCommunity.textContent = cityDisplayName(lang);
     syncFeedMemberState();
     document.documentElement.lang = lang === "en" ? "en" : lang;
+  }
+
+  function populateSignalDetail() {
+    const lang = communityLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (!scene) return;
+
+    const cityName = cityDisplayName(lang);
+    detailImage.src = scene.image;
+    detailImage.style.objectPosition = scene.focus;
+    detailCommunity.textContent = copy.communityArea
+      .replace("{city}", cityName)
+      .replace("{area}", scene.area);
+    detailCategory.textContent = scene.category;
+    detailHeadline.textContent = scene.headline;
+    detailMeta.textContent =
+      scene.observedDate + " · " + scene.authorName + " · " + scene.area;
+    detailCivicStatus.textContent = scene.civicStatus;
+    detailDescription.textContent = scene.description;
+    detailWhy.textContent = scene.whyMatters;
+    detailWho.textContent = scene.whoAffected;
+    detailUpdate.textContent = scene.latestUpdate;
+    detailStatusNote.textContent = scene.statusNote;
+    syncFeedMemberState();
   }
 
   function renderFeedScene() {
@@ -1567,6 +1721,10 @@
     feedSeeToo.hidden = false;
     feedSeeToo.disabled = false;
     feedSeeTooDone.hidden = true;
+    detailSeeToo.hidden = false;
+    detailSeeToo.disabled = false;
+    detailSeeTooDone.hidden = true;
+    closeSignalDetail();
     emailInput.value = "";
     emailError.hidden = true;
     emailError.textContent = "";
@@ -1624,6 +1782,7 @@
 
     if (name !== "feed") {
       closeInvite();
+      closeSignalDetail();
     }
     if (name !== "passkey") {
       closePasskeyNotice();
@@ -1778,17 +1937,27 @@
     }
   }
 
-  function closeSignalSheet() {
-    if (signalSheet.hidden) return;
-    signalSheet.hidden = true;
+  function closeSignalDetail() {
+    if (signalDetail.hidden) return;
+    signalDetail.hidden = true;
     document.body.style.overflow = "";
   }
 
-  function openSignalSheet() {
+  function openSignalDetail() {
     applyFeedCopyChrome();
-    signalSheet.hidden = false;
+    populateSignalDetail();
+    signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
-    signalSheetClose.focus();
+    detailClose.focus();
+  }
+
+  // Backward-compatible aliases used by existing feed flow helpers.
+  function closeSignalSheet() {
+    closeSignalDetail();
+  }
+
+  function openSignalSheet() {
+    openSignalDetail();
   }
 
   function render() {
@@ -1882,15 +2051,22 @@
     if (event.target.closest("[data-close-sheet]")) closeSheet();
   });
 
-  signalSheet.addEventListener("click", (event) => {
-    if (event.target.closest("[data-close-signal]")) closeSignalSheet();
+  detailClose.addEventListener("click", () => {
+    closeSignalDetail();
+  });
+
+  detailSeeToo.addEventListener("click", () => {
+    if (membershipSimulated || detailSeeToo.disabled) return;
+    originatingFeedIndex = feedIndex;
+    closeSignalDetail();
+    openInvite();
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      if (!signalSheet.hidden) {
+      if (!signalDetail.hidden) {
         event.preventDefault();
-        closeSignalSheet();
+        closeSignalDetail();
         return;
       }
       if (!membershipInvite.hidden) {
@@ -2006,7 +2182,7 @@
   });
 
   feedOpenSignal.addEventListener("click", () => {
-    openSignalSheet();
+    openSignalDetail();
   });
 
   accountContinue.addEventListener("click", () => {

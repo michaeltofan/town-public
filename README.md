@@ -28,22 +28,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 12 — Membership Payment Boundary Mock (approved on `main`)
 
-### Screen 13 — Membership Active Confirmation + Return to Originating Signal (review)
+### Screen 13 — Membership Active Confirmation + Return to Originating Signal (approved on `main`)
 
-Flow after Screen 12 mock success **Continue**:
+### Signal Detail V1 (review)
 
-1. Membership active confirmation — prototype only
-2. Selected local community + discreet member status
-3. Account setup complete / participation active in the prototype
-4. Explicit note: no real payment, no real entitlement
-5. **Back** → Screen 12 mock success state
-6. **Return to the signal** → exact originating feed scene
-7. Visitor status replaced by discreet member status
-8. I SEE THIS TOO shown as completed (prototype-only confirmation)
-9. Open signal remains available
-10. User remains on the local feed — no Screen 14
+Replaces the placeholder Open signal modal with a cinematic editorial detail for the currently visible signal.
 
-No real payment. No real entitlement. No real civic confirmation stored.
+1. Opens from the exact feed signal
+2. Preserves community language (IT / DE)
+3. Full-bleed image continuation + expanded civic context
+4. Visitor: LO VEDO ANCH’IO / ICH SEHE DAS AUCH still starts membership invitation
+5. Member: discreet status + completed confirmation when applicable
+6. Close returns to the same feed signal
+7. No comments, backend, or later screens
 
 ### Local preview
 
@@ -55,11 +52,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–13):
+Interactive browser preview:
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → feed → any scene → LO VEDO ANCH’IO → … → Screen 12 simulate → Screen 13 (IT) → Back → Return to the signal → originating Milano scene completed
-2. Germany → Munich → feed → any scene → ICH SEHE DAS AUCH → … → Screen 12 simulate → Screen 13 (DE) → Back → Return to the signal → originating Munich scene completed
+1. Italy → Milano → open each of the three signals → Close → LO VEDO ANCH’IO from detail still works
+2. Germany → Munich → open each of the three signals → Close → member completed state remains after Screen 13 return
