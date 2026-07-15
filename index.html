@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TOWN — a calm, premium local civic space. Enter your real community."
+    />
+    <title>TOWN — Entry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#entry-content">Skip to content</a>
+
+    <main class="entry" aria-label="TOWN Entry">
+      <section class="entry__content" id="entry-content">
+        <div class="entry__copy">
+          <p class="entry__brand" aria-label="TOWN">TOWN</p>
+
+          <h1 class="entry__headline">
+            Return to your real local community.
+          </h1>
+
+          <p class="entry__support">
+            Real stories. No noise. A calm civic space for the place you live.
+          </p>
+
+          <div class="entry__actions">
+            <button type="button" class="btn btn--primary" id="enter-town">
+              Enter My Town
+            </button>
+            <button type="button" class="btn btn--secondary" id="learn-more">
+              Learn more
+            </button>
+          </div>
+
+          <p class="entry__note" id="access-note">
+            Access ultimately requires an account, confirmed location, and
+            active membership.
+          </p>
+        </div>
+      </section>
+
+      <aside class="entry__visual" aria-hidden="false">
+        <figure class="entry__figure">
+          <img
+            class="entry__image"
+            src="assets/welcome-street.png"
+            alt="Calm European street illustration — quiet local civic atmosphere"
+            width="1024"
+            height="560"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </figure>
+      </aside>
+    </main>
+
+    <div
+      class="sheet"
+      id="learn-more-sheet"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="learn-more-title"
+    >
+      <div class="sheet__backdrop" data-close-sheet></div>
+      <div class="sheet__panel" role="document">
+        <h2 class="sheet__title" id="learn-more-title">What is TOWN?</h2>
+        <div class="sheet__body">
+          <p>
+            TOWN is local civic infrastructure for real people, useful
+            information, and community.
+          </p>
+          <p>
+            It helps people access and share relevant information about the city
+            they live in.
+          </p>
+          <p>
+            TOWN is not social media. It has no global feed, no follower race,
+            and no advertising-driven engagement.
+          </p>
+        </div>
+        <button type="button" class="btn btn--primary sheet__close" data-close-sheet>
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
