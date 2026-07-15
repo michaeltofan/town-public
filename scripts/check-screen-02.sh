@@ -40,22 +40,13 @@ require_contains "index.html" "Choose your country"
 require_contains "index.html" "real local community"
 require_contains "index.html" "Italy"
 require_contains "index.html" "Germany"
-require_contains "index.html" "Continue"
 require_contains "index.html" "country-back"
 require_contains "index.html" "continue-country"
-require_contains "index.html" "Screen 03 boundary"
 require_contains "script.js" 'go("country")'
 require_contains "script.js" "location.hash"
-require_contains "script.js" "continueButton.disabled"
+require_contains "script.js" "continueCountry.disabled"
 
 echo "== Guardrails =="
-if grep -qiE 'select city|city selection is implemented' index.html script.js; then
-  echo "FAIL: city selection appears implemented"
-  fail=1
-else
-  echo "OK: city selection not implemented"
-fi
-
 for pattern in Stripe pricing followers trending dashboard; do
   if grep -Fqi "$pattern" index.html script.js; then
     echo "FAIL: forbidden pattern: $pattern"
@@ -83,13 +74,11 @@ for fragment in (
     "Italy",
     "Germany",
     "continue-country",
-    "Screen 03 boundary",
     "view-country",
-    "view-boundary",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
-print("OK: index.html parsed with Screen 01 + 02 + boundary")
+print("OK: index.html parsed with Screen 01 + 02")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

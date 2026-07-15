@@ -771,7 +771,20 @@ button {
 
 #view-entry[hidden],
 #view-country[hidden],
+#view-city[hidden],
 #view-boundary[hidden] {
   display: none !important;
+}
+
+.city__context {
+  margin: -0.75rem 0 1.5rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.city__thumb {
+  object-fit: cover;
+  border-radius: 3px;
 }
 
