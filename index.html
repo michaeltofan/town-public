@@ -439,18 +439,45 @@
       </main>
     </div>
 
-    <!-- Screen 07 boundary placeholder only -->
+    <!-- Screen 07: Account Setup Introduction -->
+    <div id="view-account" hidden>
+      <main class="account" aria-label="Account setup introduction">
+        <div class="account__frame">
+          <p class="account__brand" aria-label="TOWN">TOWN</p>
+          <p class="account__label" id="account-label"></p>
+          <h1 class="account__title" id="account-title"></h1>
+          <p class="account__community" id="account-community"></p>
+          <p class="account__lead" id="account-body"></p>
+          <h2 class="account__subtitle" id="account-why-title"></h2>
+          <ul class="account__list" id="account-why-list"></ul>
+          <h2 class="account__subtitle" id="account-privacy-title"></h2>
+          <p class="account__lead" id="account-privacy"></p>
+          <p class="account__note" id="account-privacy-second"></p>
+          <p class="account__note" id="account-prototype"></p>
+          <div class="account__actions">
+            <button type="button" class="btn btn--primary" id="account-continue">
+              Continue
+            </button>
+            <button type="button" class="btn btn--secondary" id="account-back">
+              Back
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 08 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 07 boundary">
+      <main class="boundary" aria-label="Screen 08 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 07 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 08 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Account setup introduction is not implemented yet.
+            Email entry is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after membership Continue. Screen 07
-            has not been built.
+            This is a deliberate stop point after account setup Continue. Screen
+            08 has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -458,7 +485,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to membership details
+            Back to account setup
           </button>
         </div>
       </main>

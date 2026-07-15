@@ -5,6 +5,7 @@
   const viewLocation = document.getElementById("view-location");
   const viewFeed = document.getElementById("view-feed");
   const viewBoundary = document.getElementById("view-boundary");
+  const viewAccount = document.getElementById("view-account");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -51,6 +52,18 @@
   const boundaryLabel = document.getElementById("boundary-label");
   const boundaryTitle = document.getElementById("boundary-title");
   const boundaryLead = document.getElementById("boundary-lead");
+  const accountLabel = document.getElementById("account-label");
+  const accountTitle = document.getElementById("account-title");
+  const accountCommunity = document.getElementById("account-community");
+  const accountBody = document.getElementById("account-body");
+  const accountWhyTitle = document.getElementById("account-why-title");
+  const accountWhyList = document.getElementById("account-why-list");
+  const accountPrivacyTitle = document.getElementById("account-privacy-title");
+  const accountPrivacy = document.getElementById("account-privacy");
+  const accountPrivacySecond = document.getElementById("account-privacy-second");
+  const accountPrototype = document.getElementById("account-prototype");
+  const accountContinue = document.getElementById("account-continue");
+  const accountBack = document.getElementById("account-back");
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -91,6 +104,7 @@
     !viewLocation ||
     !viewFeed ||
     !viewBoundary ||
+    !viewAccount ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -137,6 +151,18 @@
     !boundaryLabel ||
     !boundaryTitle ||
     !boundaryLead ||
+    !accountLabel ||
+    !accountTitle ||
+    !accountCommunity ||
+    !accountBody ||
+    !accountWhyTitle ||
+    !accountWhyList ||
+    !accountPrivacyTitle ||
+    !accountPrivacy ||
+    !accountPrivacySecond ||
+    !accountPrototype ||
+    !accountContinue ||
+    !accountBack ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -383,16 +409,6 @@
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
       endedReturn: "Torna all’ingresso TOWN",
-      boundaryLabel: "Confine Screen 07",
-      boundaryTitle:
-        "L’introduzione alla creazione dell’account non è ancora implementata.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo Continua sulla membership. Lo Screen 07 non è stato costruito.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}",
-      boundaryVerified: " · verificato (mock)",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna ai dettagli della membership",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -427,16 +443,75 @@
       endedBody:
         "Du kannst zurückkehren, wenn du bereit bist, ein Teil davon zu sein.",
       endedReturn: "Zurück zum TOWN-Eingang",
-      boundaryLabel: "Screen-07-Grenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const ACCOUNT_COPY = {
+    it: {
+      label: "ACCOUNT PERSONALE",
+      title: "Crea il tuo account TOWN.",
+      community: "Comunità: {city}",
+      body:
+        "Prima di chiedere qualsiasi informazione personale, ti spieghiamo perché serve un account.",
+      whyTitle: "Il tuo account TOWN servirà a:",
+      why: [
+        "identificare una sola persona reale;",
+        "conservare la comunità locale verificata;",
+        "consentire l’accesso su web e mobile;",
+        "proteggere la partecipazione da bot e account fantasma.",
+      ],
+      privacyTitle: "Privacy",
+      privacy:
+        "Verranno richieste solo le informazioni essenziali per l’account.",
+      privacySecond:
+        "Nel flusso approvato non è richiesta una password.",
+      prototype:
+        "In questo prototipo il sistema reale di account non è attivo.",
+      continue: "Continua",
+      back: "Indietro",
+      boundaryLabel: "Confine Screen 08",
       boundaryTitle:
-        "Die Einführung zur Kontoeinrichtung ist noch nicht implementiert.",
+        "L’inserimento dell’email non è ancora implementato.",
       boundaryLead:
-        "Dies ist ein bewusster Halt nach Weiter auf der Mitgliedschaftsseite. Screen 07 wurde nicht gebaut.",
-      boundaryMeta:
-        "Ausgewählt: {country} · {city}{verified}",
+        "Questo è un punto di stop deliberato dopo Continua sulla creazione account. Lo Screen 08 non è stato costruito.",
+      boundaryMeta: "Selezionato: {country} · {city}{verified}",
+      boundaryVerified: " · verificato (mock)",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna all’introduzione account",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "PERSÖNLICHES KONTO",
+      title: "Erstelle dein TOWN-Konto.",
+      community: "Gemeinschaft: {city}",
+      body:
+        "Bevor wir persönliche Angaben erfragen, erklären wir, warum ein Konto nötig ist.",
+      whyTitle: "Dein TOWN-Konto dient dazu:",
+      why: [
+        "eine einzige reale Person zu kennzeichnen;",
+        "die verifizierte lokale Gemeinschaft zu bewahren;",
+        "den Zugang über Web und Mobile zu unterstützen;",
+        "die Teilnahme vor Bots und Geisterkonten zu schützen.",
+      ],
+      privacyTitle: "Privatsphäre",
+      privacy:
+        "Es werden nur die für das Konto wesentlichen Angaben erfragt.",
+      privacySecond:
+        "Im genehmigten Ablauf ist kein Passwort erforderlich.",
+      prototype:
+        "In diesem Prototyp ist das reale Kontosystem nicht aktiv.",
+      continue: "Weiter",
+      back: "Zurück",
+      boundaryLabel: "Screen-08-Grenze",
+      boundaryTitle:
+        "Die E-Mail-Eingabe ist noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach Weiter auf der Kontoeinleitung. Screen 08 wurde nicht gebaut.",
+      boundaryMeta: "Ausgewählt: {country} · {city}{verified}",
       boundaryVerified: " · verifiziert (Mock)",
       boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zu den Mitgliedschaftsdetails",
+      boundaryBack: "Zurück zur Kontoeinleitung",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
@@ -455,7 +530,8 @@
     feed: "TOWN — Local feed",
     membership: "TOWN — Membership",
     ended: "TOWN — Experience end",
-    boundary: "TOWN — Screen 07 boundary",
+    account: "TOWN — Account setup",
+    boundary: "TOWN — Screen 08 boundary",
   };
 
   function parseRoute() {
@@ -466,6 +542,7 @@
     if (raw.startsWith("feed")) return "feed";
     if (raw.startsWith("membership")) return "membership";
     if (raw.startsWith("ended")) return "ended";
+    if (raw.startsWith("account")) return "account";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -663,7 +740,6 @@
     membershipRights.textContent = copy.rights;
     membershipContinue.textContent = copy.continue;
     membershipNotNow.textContent = copy.notNow;
-    boundaryBack.textContent = copy.boundaryBack;
     document.documentElement.lang = membershipLang();
   }
 
@@ -675,8 +751,31 @@
     document.documentElement.lang = membershipLang();
   }
 
+  function applyAccountCopy() {
+    const copy = ACCOUNT_COPY[membershipLang()];
+    const cityName = copy.cityNames[selectedCity] || selectedCity || "";
+    accountLabel.textContent = copy.label;
+    accountTitle.textContent = copy.title;
+    accountCommunity.textContent = copy.community.replace("{city}", cityName);
+    accountBody.textContent = copy.body;
+    accountWhyTitle.textContent = copy.whyTitle;
+    accountWhyList.innerHTML = "";
+    copy.why.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      accountWhyList.appendChild(li);
+    });
+    accountPrivacyTitle.textContent = copy.privacyTitle;
+    accountPrivacy.textContent = copy.privacy;
+    accountPrivacySecond.textContent = copy.privacySecond;
+    accountPrototype.textContent = copy.prototype;
+    accountContinue.textContent = copy.continue;
+    accountBack.textContent = copy.back;
+    document.documentElement.lang = membershipLang();
+  }
+
   function applyBoundaryCopy() {
-    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const copy = ACCOUNT_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     const countryName =
       (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
@@ -742,6 +841,7 @@
     viewFeed.hidden = name !== "feed";
     viewMembership.hidden = name !== "membership";
     viewEnded.hidden = name !== "ended";
+    viewAccount.hidden = name !== "account";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
@@ -750,6 +850,7 @@
     document.body.classList.toggle("page-feed", name === "feed");
     document.body.classList.toggle("page-membership", name === "membership");
     document.body.classList.toggle("page-ended", name === "ended");
+    document.body.classList.toggle("page-account", name === "account");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name !== "feed") {
@@ -771,6 +872,9 @@
     if (name === "ended") {
       applyEndedCopy();
     }
+    if (name === "account") {
+      applyAccountCopy();
+    }
     if (name === "boundary") {
       applyBoundaryCopy();
     }
@@ -783,6 +887,7 @@
         route === "feed" ||
         route === "membership" ||
         route === "ended" ||
+        route === "account" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -792,6 +897,7 @@
       (route === "feed" ||
         route === "membership" ||
         route === "ended" ||
+        route === "account" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -865,6 +971,7 @@
         route === "feed" ||
         route === "membership" ||
         route === "ended" ||
+        route === "account" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -880,6 +987,7 @@
         route === "feed" ||
         route === "membership" ||
         route === "ended" ||
+        route === "account" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -890,6 +998,7 @@
       (route === "feed" ||
         route === "membership" ||
         route === "ended" ||
+        route === "account" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1039,8 +1148,7 @@
   });
 
   membershipContinue.addEventListener("click", () => {
-    // Screen 07 boundary only — account setup is not built.
-    go("boundary");
+    go("account");
   });
 
   membershipNotNow.addEventListener("click", () => {
@@ -1056,8 +1164,17 @@
     openSignalSheet();
   });
 
-  boundaryBack.addEventListener("click", () => {
+  accountContinue.addEventListener("click", () => {
+    // Screen 08 boundary only — email entry is not built.
+    go("boundary");
+  });
+
+  accountBack.addEventListener("click", () => {
     go("membership");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("account");
   });
 
   window.addEventListener("hashchange", render);

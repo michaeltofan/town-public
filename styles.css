@@ -1287,3 +1287,109 @@ body.page-ended {
   margin-bottom: 1.75rem;
 }
 
+/* ——— Screen 07: Account Setup Introduction ——— */
+
+.page-account {
+  overflow: auto;
+}
+
+.account {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 6vh, 4rem) 1.5rem;
+}
+
+.account__frame {
+  width: 100%;
+  max-width: 32rem;
+}
+
+.account__brand {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--charcoal);
+}
+
+.account__label {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.account__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--charcoal);
+}
+
+.account__community {
+  margin: 0 0 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--body);
+}
+
+.account__lead {
+  margin: 0 0 0.85rem;
+  max-width: 40ch;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+.account__subtitle {
+  margin: 1.45rem 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--charcoal);
+}
+
+.account__list {
+  margin: 0 0 0.5rem;
+  padding-left: 1.15rem;
+  max-width: 40ch;
+  color: var(--body);
+}
+
+.account__list li {
+  margin-bottom: 0.4rem;
+  line-height: 1.45;
+}
+
+.account__note {
+  margin: 0 0 0.55rem;
+  max-width: 40ch;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.account__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 1.75rem;
+}
+
+.account__actions .btn {
+  width: var(--btn-width);
+  max-width: 100%;
+}
+
+#view-account[hidden] {
+  display: none !important;
+}
+
