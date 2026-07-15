@@ -22,17 +22,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 09 — Verification Code Mock (approved on `main`)
 
-### Screen 10 — Passkey Introduction Mock (review)
+### Screen 10 — Passkey Introduction Mock (approved on `main`)
 
-Flow after Screen 09 verify with `123456`:
+### Screen 11 — Account Ready Mock (review)
 
-1. Passkey introduction (why secure access, device methods, benefits)
-2. Primary action → prototype notice (no WebAuthn)
-3. **Simulate setup** → success state
-4. **Back** → Screen 09 (state preserved)
-5. **Continue** → Screen 11 boundary only
+Flow after Screen 10 passkey simulation **Continue**:
 
-No real passkey is created. No authentication credential is stored.
+1. Account Ready confirmation (prototype)
+2. Clear distinction: Account ready ≠ Membership active
+3. Membership context: €12/year; no real payment
+4. **Back** → Screen 10 success state
+5. **Continue** → Screen 12 boundary only
+
+No membership activation. No payment fields. No real session.
 
 ### Local preview
 
@@ -44,11 +46,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–10):
+Interactive browser preview (Screens 01–11):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → … → Screen 09 (`123456`) → Screen 10 (IT) → notice → simulate → success → Screen 11 boundary
-2. Germany → Munich → … → Screen 09 (`123456`) → Screen 10 (DE) → notice → simulate → success → Screen 11 boundary
+1. Italy → Milano → … → Screen 10 simulate → Screen 11 (IT) → Back / Screen 12 boundary
+2. Germany → Munich → … → Screen 10 simulate → Screen 11 (DE) → Back / Screen 12 boundary

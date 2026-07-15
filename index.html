@@ -603,18 +603,46 @@
       </div>
     </div>
 
-    <!-- Screen 11 boundary placeholder only -->
+    <!-- Screen 11: Account Ready Mock -->
+    <div id="view-ready" hidden>
+      <main class="ready" aria-label="Account ready">
+        <div class="ready__frame">
+          <p class="ready__brand" aria-label="TOWN">TOWN</p>
+          <p class="ready__label" id="ready-label"></p>
+          <h1 class="ready__title" id="ready-title"></h1>
+          <p class="ready__community" id="ready-community"></p>
+          <p class="ready__email" id="ready-email"></p>
+          <p class="ready__status" id="ready-email-status"></p>
+          <p class="ready__status" id="ready-access-status"></p>
+          <p class="ready__lead" id="ready-body"></p>
+          <p class="ready__lead" id="ready-body-second"></p>
+          <p class="ready__inactive" id="ready-inactive"></p>
+          <p class="ready__membership" id="ready-membership"></p>
+          <p class="ready__note" id="ready-payment-note"></p>
+          <div class="ready__actions">
+            <button type="button" class="btn btn--primary" id="ready-continue">
+              Continue
+            </button>
+            <button type="button" class="btn btn--secondary" id="ready-back">
+              Back
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 12 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 11 boundary">
+      <main class="boundary" aria-label="Screen 12 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 11 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 12 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Account Ready is not implemented yet.
+            Membership payment boundary is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after passkey Continue. Screen 11
-            has not been built.
+            This is a deliberate stop point after Account Ready Continue. Screen
+            12 has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -622,7 +650,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to passkey introduction
+            Back to Account Ready
           </button>
         </div>
       </main>
