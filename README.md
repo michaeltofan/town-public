@@ -20,16 +20,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 08 — Email Entry Mock (approved on `main`)
 
-### Screen 09 — Verification Code Mock (review)
+### Screen 09 — Verification Code Mock (approved on `main`)
 
-Flow after Screen 08 **Continue**:
+### Screen 10 — Passkey Introduction Mock (review)
 
-1. Verification code mock (prototype code `123456`)
-2. Verify disabled until `123456` is entered
-3. **Change email** → Screen 08 (state preserved)
-4. **Verify** → Screen 10 boundary only
+Flow after Screen 09 verify with `123456`:
 
-No real code is sent. No real email verification. No real account is created.
+1. Passkey introduction (why secure access, device methods, benefits)
+2. Primary action → prototype notice (no WebAuthn)
+3. **Simulate setup** → success state
+4. **Back** → Screen 09 (state preserved)
+5. **Continue** → Screen 11 boundary only
+
+No real passkey is created. No authentication credential is stored.
 
 ### Local preview
 
@@ -41,11 +44,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–09):
+Interactive browser preview (Screens 01–10):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → … → Screen 08 → Screen 09 (IT) → validation → Change email / Screen 10 boundary
-2. Germany → Munich → … → Screen 08 → Screen 09 (DE) → validation → Change email / Screen 10 boundary
+1. Italy → Milano → … → Screen 09 (`123456`) → Screen 10 (IT) → notice → simulate → success → Screen 11 boundary
+2. Germany → Munich → … → Screen 09 (`123456`) → Screen 10 (DE) → notice → simulate → success → Screen 11 boundary

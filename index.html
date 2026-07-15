@@ -544,18 +544,77 @@
       </main>
     </div>
 
-    <!-- Screen 10 boundary placeholder only -->
+    <!-- Screen 10: Passkey Introduction Mock -->
+    <div id="view-passkey" hidden>
+      <main class="passkey" aria-label="Passkey introduction">
+        <div class="passkey__frame" id="passkey-intro">
+          <p class="passkey__brand" aria-label="TOWN">TOWN</p>
+          <p class="passkey__label" id="passkey-label"></p>
+          <h1 class="passkey__title" id="passkey-title"></h1>
+          <p class="passkey__lead" id="passkey-body"></p>
+          <p class="passkey__lead" id="passkey-body-second"></p>
+          <h2 class="passkey__subtitle" id="passkey-methods-title"></h2>
+          <ul class="passkey__list" id="passkey-methods-list"></ul>
+          <h2 class="passkey__subtitle" id="passkey-benefits-title"></h2>
+          <ul class="passkey__list" id="passkey-benefits-list"></ul>
+          <p class="passkey__note" id="passkey-prototype"></p>
+          <div class="passkey__actions">
+            <button type="button" class="btn btn--primary" id="passkey-create">
+              Create secure access
+            </button>
+            <button type="button" class="btn btn--secondary" id="passkey-back">
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div class="passkey__frame" id="passkey-success" hidden>
+          <p class="passkey__brand" aria-label="TOWN">TOWN</p>
+          <p class="passkey__label" id="passkey-success-label"></p>
+          <h1 class="passkey__title" id="passkey-success-title"></h1>
+          <p class="passkey__lead" id="passkey-success-body"></p>
+          <p class="passkey__status" id="passkey-success-email"></p>
+          <p class="passkey__status" id="passkey-success-access"></p>
+          <p class="passkey__note" id="passkey-success-note"></p>
+          <div class="passkey__actions">
+            <button type="button" class="btn btn--primary" id="passkey-continue">
+              Continue
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <div
+        class="passkey-notice"
+        id="passkey-notice"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="passkey-notice-title"
+      >
+        <div class="passkey-notice__dim" id="passkey-notice-dim"></div>
+        <div class="passkey-notice__panel">
+          <h2 class="passkey-notice__title" id="passkey-notice-title"></h2>
+          <p class="passkey-notice__body" id="passkey-notice-body"></p>
+          <button type="button" class="btn btn--primary" id="passkey-simulate">
+            Simulate setup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 11 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 10 boundary">
+      <main class="boundary" aria-label="Screen 11 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 10 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 11 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Passkey introduction is not implemented yet.
+            Account Ready is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after verification Continue. Screen
-            10 has not been built.
+            This is a deliberate stop point after passkey Continue. Screen 11
+            has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -563,7 +622,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to verification code
+            Back to passkey introduction
           </button>
         </div>
       </main>

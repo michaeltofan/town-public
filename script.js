@@ -8,6 +8,7 @@
   const viewAccount = document.getElementById("view-account");
   const viewEmail = document.getElementById("view-email");
   const viewCode = document.getElementById("view-code");
+  const viewPasskey = document.getElementById("view-passkey");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -87,6 +88,30 @@
   const codeError = document.getElementById("code-error");
   const codeVerify = document.getElementById("code-verify");
   const codeChangeEmail = document.getElementById("code-change-email");
+  const passkeyIntro = document.getElementById("passkey-intro");
+  const passkeySuccess = document.getElementById("passkey-success");
+  const passkeyLabel = document.getElementById("passkey-label");
+  const passkeyTitle = document.getElementById("passkey-title");
+  const passkeyBody = document.getElementById("passkey-body");
+  const passkeyBodySecond = document.getElementById("passkey-body-second");
+  const passkeyMethodsTitle = document.getElementById("passkey-methods-title");
+  const passkeyMethodsList = document.getElementById("passkey-methods-list");
+  const passkeyBenefitsTitle = document.getElementById("passkey-benefits-title");
+  const passkeyBenefitsList = document.getElementById("passkey-benefits-list");
+  const passkeyPrototype = document.getElementById("passkey-prototype");
+  const passkeyCreate = document.getElementById("passkey-create");
+  const passkeyBack = document.getElementById("passkey-back");
+  const passkeySuccessLabel = document.getElementById("passkey-success-label");
+  const passkeySuccessTitle = document.getElementById("passkey-success-title");
+  const passkeySuccessBody = document.getElementById("passkey-success-body");
+  const passkeySuccessEmail = document.getElementById("passkey-success-email");
+  const passkeySuccessAccess = document.getElementById("passkey-success-access");
+  const passkeySuccessNote = document.getElementById("passkey-success-note");
+  const passkeyContinue = document.getElementById("passkey-continue");
+  const passkeyNotice = document.getElementById("passkey-notice");
+  const passkeyNoticeTitle = document.getElementById("passkey-notice-title");
+  const passkeyNoticeBody = document.getElementById("passkey-notice-body");
+  const passkeySimulate = document.getElementById("passkey-simulate");
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -130,6 +155,7 @@
     !viewAccount ||
     !viewEmail ||
     !viewCode ||
+    !viewPasskey ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -209,6 +235,30 @@
     !codeError ||
     !codeVerify ||
     !codeChangeEmail ||
+    !passkeyIntro ||
+    !passkeySuccess ||
+    !passkeyLabel ||
+    !passkeyTitle ||
+    !passkeyBody ||
+    !passkeyBodySecond ||
+    !passkeyMethodsTitle ||
+    !passkeyMethodsList ||
+    !passkeyBenefitsTitle ||
+    !passkeyBenefitsList ||
+    !passkeyPrototype ||
+    !passkeyCreate ||
+    !passkeyBack ||
+    !passkeySuccessLabel ||
+    !passkeySuccessTitle ||
+    !passkeySuccessBody ||
+    !passkeySuccessEmail ||
+    !passkeySuccessAccess ||
+    !passkeySuccessNote ||
+    !passkeyContinue ||
+    !passkeyNotice ||
+    !passkeyNoticeTitle ||
+    !passkeyNoticeBody ||
+    !passkeySimulate ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -589,17 +639,6 @@
       invalid: "Il codice non è corretto.",
       verify: "Verifica",
       changeEmail: "Cambia email",
-      boundaryLabel: "Confine Screen 10",
-      boundaryTitle:
-        "L’introduzione alla passkey non è ancora implementata.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo la verifica email. Lo Screen 10 non è stato costruito.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}{email}",
-      boundaryVerified: " · verificato (mock)",
-      boundaryEmail: " · email: {value}",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna al codice di verifica",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -611,17 +650,103 @@
       invalid: "Der Code ist nicht korrekt.",
       verify: "Bestätigen",
       changeEmail: "E-Mail-Adresse ändern",
-      boundaryLabel: "Screen-10-Grenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const PASSKEY_COPY = {
+    it: {
+      label: "ACCESSO SICURO",
+      title: "Proteggi il tuo account TOWN.",
+      body:
+        "TOWN utilizza una passkey: non devi creare o ricordare una password.",
+      bodySecond:
+        "Nel flusso approvato, l’accesso sicuro usa i metodi del tuo dispositivo.",
+      methodsTitle: "Metodi disponibili sul dispositivo",
+      methods: ["Face ID", "Touch ID", "Impronta digitale", "PIN del dispositivo"],
+      benefitsTitle: "Perché una passkey",
+      benefits: [
+        "Nessuna password da ricordare",
+        "Maggiore resistenza al phishing",
+        "Nessuna password condivisa con TOWN",
+        "Puoi aggiungere altri dispositivi in seguito",
+      ],
+      prototype:
+        "In questo prototipo la creazione reale della passkey non è attiva e non viene creato alcun credential di autenticazione.",
+      create: "Crea accesso sicuro",
+      back: "Indietro",
+      noticeTitle: "Simulazione del prototipo",
+      noticeBody:
+        "La creazione reale della passkey non è ancora attiva in questo prototipo.",
+      simulate: "Simula configurazione",
+      successLabel: "ACCESSO CONFIGURATO",
+      successTitle: "Accesso sicuro configurato nel prototipo.",
+      successBody:
+        "La tua email resta verificata. Non è stata creata una passkey reale.",
+      successEmail: "Email verificata",
+      successAccess: "Accesso sicuro configurato (prototipo)",
+      successNote:
+        "Questo è solo uno stato di simulazione. Non esiste un account autenticato reale.",
+      continue: "Continua",
+      boundaryLabel: "Confine Screen 11",
       boundaryTitle:
-        "Die Passkey-Einführung ist noch nicht implementiert.",
+        "Account Ready non è ancora implementato.",
       boundaryLead:
-        "Dies ist ein bewusster Halt nach der E-Mail-Bestätigung. Screen 10 wurde nicht gebaut.",
+        "Questo è un punto di stop deliberato dopo Continua sulla passkey. Lo Screen 11 non è stato costruito.",
       boundaryMeta:
-        "Ausgewählt: {country} · {city}{verified}{email}",
+        "Selezionato: {country} · {city}{verified}{email}{passkey}",
+      boundaryVerified: " · verificato (mock)",
+      boundaryEmail: " · email: {value}",
+      boundaryPasskey: " · accesso sicuro: simulato",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna all’introduzione passkey",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "SICHERER ZUGANG",
+      title: "Schütze dein TOWN-Konto.",
+      body:
+        "TOWN verwendet einen Passkey. Du musst kein Passwort erstellen oder merken.",
+      bodySecond:
+        "Im genehmigten Ablauf nutzt der sichere Zugang die Methoden deines Geräts.",
+      methodsTitle: "Verfügbare Gerätemethoden",
+      methods: ["Face ID", "Touch ID", "Fingerabdruck", "Geräte-PIN"],
+      benefitsTitle: "Warum ein Passkey",
+      benefits: [
+        "Kein Passwort zum Merken",
+        "Besserer Schutz vor Phishing",
+        "Kein Passwort wird mit TOWN geteilt",
+        "Weitere Geräte können später hinzugefügt werden",
+      ],
+      prototype:
+        "In diesem Prototyp ist die echte Passkey-Erstellung nicht aktiv und es wird kein Authentifizierungsnachweis erstellt.",
+      create: "Sicheren Zugang erstellen",
+      back: "Zurück",
+      noticeTitle: "Prototyp-Simulation",
+      noticeBody:
+        "Die echte Passkey-Erstellung ist in diesem Prototyp noch nicht verfügbar.",
+      simulate: "Einrichtung simulieren",
+      successLabel: "ZUGANG EINGERICHTET",
+      successTitle: "Sicherer Zugang im Prototyp eingerichtet.",
+      successBody:
+        "Deine E-Mail bleibt bestätigt. Es wurde kein echter Passkey erstellt.",
+      successEmail: "E-Mail bestätigt",
+      successAccess: "Sicherer Zugang eingerichtet (Prototyp)",
+      successNote:
+        "Dies ist nur ein Simulationszustand. Es gibt kein echt authentifiziertes Konto.",
+      continue: "Weiter",
+      boundaryLabel: "Screen-11-Grenze",
+      boundaryTitle:
+        "Account Ready ist noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach Weiter auf der Passkey-Seite. Screen 11 wurde nicht gebaut.",
+      boundaryMeta:
+        "Ausgewählt: {country} · {city}{verified}{email}{passkey}",
       boundaryVerified: " · verifiziert (Mock)",
       boundaryEmail: " · E-Mail: {value}",
+      boundaryPasskey: " · sicherer Zugang: simuliert",
       boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zum Bestätigungscode",
+      boundaryBack: "Zurück zur Passkey-Einführung",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
@@ -635,6 +760,8 @@
   let locationVerified = false;
   let feedIndex = 0;
   let enteredEmail = "";
+  let emailVerified = false;
+  let passkeySimulated = false;
 
   const titles = {
     entry: "TOWN — Entry",
@@ -647,7 +774,8 @@
     account: "TOWN — Account setup",
     email: "TOWN — Email entry",
     code: "TOWN — Verification code",
-    boundary: "TOWN — Screen 10 boundary",
+    passkey: "TOWN — Secure access",
+    boundary: "TOWN — Screen 11 boundary",
   };
 
   function parseRoute() {
@@ -661,6 +789,7 @@
     if (raw.startsWith("account")) return "account";
     if (raw.startsWith("email")) return "email";
     if (raw.startsWith("code")) return "code";
+    if (raw.startsWith("passkey")) return "passkey";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -975,8 +1104,71 @@
     codeError.textContent = "";
   }
 
+  function fillList(node, items) {
+    node.innerHTML = "";
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      node.appendChild(li);
+    });
+  }
+
+  function closePasskeyNotice() {
+    if (passkeyNotice.hidden) return;
+    passkeyNotice.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function openPasskeyNotice() {
+    const copy = PASSKEY_COPY[membershipLang()];
+    passkeyNoticeTitle.textContent = copy.noticeTitle;
+    passkeyNoticeBody.textContent = copy.noticeBody;
+    passkeySimulate.textContent = copy.simulate;
+    passkeyNotice.hidden = false;
+    document.body.style.overflow = "hidden";
+    passkeySimulate.focus();
+  }
+
+  function showPasskeyIntro() {
+    passkeyIntro.hidden = false;
+    passkeySuccess.hidden = true;
+  }
+
+  function showPasskeySuccess() {
+    passkeyIntro.hidden = true;
+    passkeySuccess.hidden = false;
+  }
+
+  function applyPasskeyCopy() {
+    const copy = PASSKEY_COPY[membershipLang()];
+    passkeyLabel.textContent = copy.label;
+    passkeyTitle.textContent = copy.title;
+    passkeyBody.textContent = copy.body;
+    passkeyBodySecond.textContent = copy.bodySecond;
+    passkeyMethodsTitle.textContent = copy.methodsTitle;
+    fillList(passkeyMethodsList, copy.methods);
+    passkeyBenefitsTitle.textContent = copy.benefitsTitle;
+    fillList(passkeyBenefitsList, copy.benefits);
+    passkeyPrototype.textContent = copy.prototype;
+    passkeyCreate.textContent = copy.create;
+    passkeyBack.textContent = copy.back;
+    passkeySuccessLabel.textContent = copy.successLabel;
+    passkeySuccessTitle.textContent = copy.successTitle;
+    passkeySuccessBody.textContent = copy.successBody;
+    passkeySuccessEmail.textContent = copy.successEmail;
+    passkeySuccessAccess.textContent = copy.successAccess;
+    passkeySuccessNote.textContent = copy.successNote;
+    passkeyContinue.textContent = copy.continue;
+    if (passkeySimulated) {
+      showPasskeySuccess();
+    } else {
+      showPasskeyIntro();
+    }
+    document.documentElement.lang = membershipLang();
+  }
+
   function applyBoundaryCopy() {
-    const copy = CODE_COPY[membershipLang()];
+    const copy = PASSKEY_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     const countryName =
       (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
@@ -990,6 +1182,7 @@
       const emailPart = enteredEmail
         ? copy.boundaryEmail.replace("{value}", enteredEmail)
         : "";
+      const passkeyPart = passkeySimulated ? copy.boundaryPasskey : "";
       boundaryMeta.hidden = false;
       boundaryMeta.textContent = copy.boundaryMeta
         .replace("{country}", countryName)
@@ -998,7 +1191,8 @@
           "{verified}",
           locationVerified ? copy.boundaryVerified : ""
         )
-        .replace("{email}", emailPart);
+        .replace("{email}", emailPart)
+        .replace("{passkey}", passkeyPart);
     } else {
       boundaryMeta.hidden = true;
       boundaryMeta.textContent = "";
@@ -1026,6 +1220,8 @@
     locationVerified = false;
     feedIndex = 0;
     enteredEmail = "";
+    emailVerified = false;
+    passkeySimulated = false;
     emailInput.value = "";
     emailError.hidden = true;
     emailError.textContent = "";
@@ -1034,6 +1230,8 @@
     codeError.hidden = true;
     codeError.textContent = "";
     codeVerify.disabled = true;
+    closePasskeyNotice();
+    showPasskeyIntro();
     countryInputs.forEach((input) => {
       input.checked = false;
     });
@@ -1058,6 +1256,7 @@
     viewAccount.hidden = name !== "account";
     viewEmail.hidden = name !== "email";
     viewCode.hidden = name !== "code";
+    viewPasskey.hidden = name !== "passkey";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
@@ -1069,10 +1268,14 @@
     document.body.classList.toggle("page-account", name === "account");
     document.body.classList.toggle("page-email", name === "email");
     document.body.classList.toggle("page-code", name === "code");
+    document.body.classList.toggle("page-passkey", name === "passkey");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name !== "feed") {
       closeInvite();
+    }
+    if (name !== "passkey") {
+      closePasskeyNotice();
     }
 
     if (name === "city") applyCityCopy();
@@ -1099,6 +1302,9 @@
     if (name === "code") {
       applyCodeCopy();
     }
+    if (name === "passkey") {
+      applyPasskeyCopy();
+    }
     if (name === "boundary") {
       applyBoundaryCopy();
     }
@@ -1114,6 +1320,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "passkey" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1126,13 +1333,17 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "passkey" ||
         route === "boundary") &&
       !locationVerified
     ) {
       route = "location";
     }
-    if ((route === "code" || route === "boundary") && !enteredEmail) {
+    if ((route === "code" || route === "passkey" || route === "boundary") && !enteredEmail) {
       route = "email";
+    }
+    if ((route === "passkey" || route === "boundary") && !emailVerified) {
+      route = "code";
     }
 
     if (route === "entry") {
@@ -1205,6 +1416,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "passkey" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -1223,6 +1435,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "passkey" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1236,6 +1449,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "passkey" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1441,16 +1655,41 @@
       syncCodeVerify();
       return;
     }
-    // Screen 10 boundary only — passkey introduction is not built.
-    go("boundary");
+    emailVerified = true;
+    passkeySimulated = false;
+    go("passkey");
   });
 
   codeChangeEmail.addEventListener("click", () => {
+    emailVerified = false;
+    passkeySimulated = false;
     go("email");
   });
 
-  boundaryBack.addEventListener("click", () => {
+  passkeyCreate.addEventListener("click", () => {
+    // Prototype notice only — no browser credential APIs.
+    openPasskeyNotice();
+  });
+
+  passkeySimulate.addEventListener("click", () => {
+    passkeySimulated = true;
+    closePasskeyNotice();
+    applyPasskeyCopy();
+    passkeyContinue.focus();
+  });
+
+  passkeyBack.addEventListener("click", () => {
+    closePasskeyNotice();
     go("code");
+  });
+
+  passkeyContinue.addEventListener("click", () => {
+    // Screen 11 boundary only — Account Ready is not built.
+    go("boundary");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("passkey");
   });
 
   window.addEventListener("hashchange", render);
