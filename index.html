@@ -343,30 +343,77 @@
         </div>
       </main>
 
+      <!-- Signal Detail V1: cinematic editorial continuation of the open signal -->
       <div
-        class="sheet feed-sheet"
-        id="signal-sheet"
+        class="signal-detail"
+        id="signal-detail"
         hidden
         role="dialog"
         aria-modal="true"
-        aria-labelledby="signal-sheet-title"
+        aria-labelledby="detail-headline"
       >
-        <div class="sheet__backdrop" data-close-signal></div>
-        <div class="sheet__panel feed-sheet__panel" role="document">
-          <h2 class="sheet__title" id="signal-sheet-title">Signal detail</h2>
-          <div class="sheet__body">
-            <p id="signal-sheet-message">
-              Signal details will be added in the next TOWN phase.
-            </p>
+        <div class="signal-detail__media" aria-hidden="true">
+          <img
+            class="signal-detail__image"
+            id="detail-image"
+            src="assets/feed/signal_citta_studi_pavement.jpg"
+            alt=""
+            decoding="async"
+          />
+          <div class="signal-detail__veil"></div>
+        </div>
+
+        <div class="signal-detail__chrome">
+          <header class="signal-detail__top">
+            <div class="signal-detail__top-left">
+              <button type="button" class="signal-detail__close" id="detail-close">
+                Close
+              </button>
+              <p class="signal-detail__brand" aria-label="TOWN">TOWN</p>
+            </div>
+            <div class="signal-detail__top-right">
+              <p class="signal-detail__status-user" id="detail-user-status"></p>
+            </div>
+          </header>
+
+          <div class="signal-detail__scroll">
+            <p class="signal-detail__community" id="detail-community"></p>
+            <p class="signal-detail__category" id="detail-category"></p>
+            <h1 class="signal-detail__headline" id="detail-headline"></h1>
+            <p class="signal-detail__meta" id="detail-meta"></p>
+            <p class="signal-detail__civic" id="detail-civic-status"></p>
+            <p class="signal-detail__lead" id="detail-description"></p>
+
+            <section class="signal-detail__section">
+              <h2 class="signal-detail__label" id="detail-why-label"></h2>
+              <p class="signal-detail__text" id="detail-why"></p>
+            </section>
+
+            <section class="signal-detail__section">
+              <h2 class="signal-detail__label" id="detail-who-label"></h2>
+              <p class="signal-detail__text" id="detail-who"></p>
+            </section>
+
+            <section class="signal-detail__section">
+              <h2 class="signal-detail__label" id="detail-update-label"></h2>
+              <p class="signal-detail__text" id="detail-update"></p>
+            </section>
+
+            <section class="signal-detail__section">
+              <h2 class="signal-detail__label" id="detail-status-label"></h2>
+              <p class="signal-detail__text" id="detail-status-note"></p>
+            </section>
           </div>
-          <button
-            type="button"
-            class="btn btn--primary sheet__close"
-            id="signal-sheet-close"
-            data-close-signal
-          >
-            Close
-          </button>
+
+          <div class="signal-detail__actions">
+            <button type="button" class="feed__primary" id="detail-see-too">
+              I SEE THIS TOO
+            </button>
+            <div class="feed__done" id="detail-see-too-done" hidden>
+              <p class="feed__done-title" id="detail-done-title"></p>
+              <p class="feed__done-note" id="detail-done-note"></p>
+            </div>
+          </div>
         </div>
       </div>
 
