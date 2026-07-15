@@ -79,7 +79,6 @@ for fragment in (
     "view-country",
     "view-city",
     "view-location",
-    "view-boundary",
     "view-feed",
     "location-verify",
 ):

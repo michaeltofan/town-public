@@ -324,6 +324,10 @@
             <button type="button" class="feed__primary" id="feed-see-too">
               I SEE THIS TOO
             </button>
+            <div class="feed__done" id="feed-see-too-done" hidden>
+              <p class="feed__done-title" id="feed-done-title"></p>
+              <p class="feed__done-note" id="feed-done-note"></p>
+            </div>
             <button type="button" class="feed__secondary" id="feed-open-signal">
               Open signal
             </button>
@@ -692,27 +696,26 @@
       </div>
     </div>
 
-    <!-- Screen 13 boundary placeholder only -->
-    <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 13 boundary">
-        <div class="boundary__frame">
-          <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 13 boundary</p>
-          <h1 class="boundary__title" id="boundary-title">
-            Membership Active return experience is not implemented yet.
-          </h1>
-          <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after payment boundary Continue.
-            Screen 13 has not been built.
-          </p>
-          <p class="boundary__meta" id="boundary-meta" hidden></p>
-          <button
-            type="button"
-            class="btn btn--secondary boundary__back"
-            id="boundary-back"
-          >
-            Back to membership payment boundary
-          </button>
+    <!-- Screen 13: Membership Active confirmation -->
+    <div id="view-active" hidden>
+      <main class="active" aria-label="Membership active confirmation">
+        <div class="active__frame">
+          <p class="active__brand" aria-label="TOWN">TOWN</p>
+          <p class="active__label" id="active-label"></p>
+          <h1 class="active__title" id="active-title"></h1>
+          <p class="active__community" id="active-community"></p>
+          <p class="active__status" id="active-member-status"></p>
+          <p class="active__lead" id="active-body"></p>
+          <p class="active__lead" id="active-body-second"></p>
+          <p class="active__note" id="active-prototype"></p>
+          <div class="active__actions">
+            <button type="button" class="btn btn--primary" id="active-return">
+              Return to the signal
+            </button>
+            <button type="button" class="btn btn--secondary" id="active-back">
+              Back
+            </button>
+          </div>
         </div>
       </main>
     </div>

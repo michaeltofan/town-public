@@ -48,7 +48,7 @@ require_contains "script.js" "Wähle deine Stadt"
 require_contains "script.js" "Continua"
 require_contains "script.js" "Weiter"
 require_contains "script.js" 'go("city")'
-require_contains "script.js" 'go("boundary")'
+require_contains "script.js" 'go("location")'
 
 echo "== Guardrails =="
 if grep -qiE 'followers|trending|dashboard' index.html script.js; then
@@ -81,7 +81,6 @@ for fragment in (
     "view-entry",
     "view-country",
     "view-city",
-    "view-boundary",
     "view-location",
     "continue-city",
 ):

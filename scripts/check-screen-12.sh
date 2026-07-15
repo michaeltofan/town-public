@@ -39,14 +39,14 @@ require_contains "index.html" "payment-simulate-start"
 require_contains "index.html" "payment-notice"
 require_contains "index.html" "payment-simulate-confirm"
 require_contains "index.html" "payment-success"
-require_contains "index.html" "Screen 13 boundary"
+require_contains "index.html" "view-active"
 require_contains "script.js" "PAYMENT_COPY"
 require_contains "script.js" "Attiva l’iscrizione annuale a TOWN."
 require_contains "script.js" "Aktiviere die jährliche TOWN-Mitgliedschaft."
 require_contains "script.js" "membershipSimulated"
 require_contains "script.js" "openPaymentNotice"
 require_contains "script.js" 'go("payment")'
-require_contains "script.js" 'go("boundary")'
+require_contains "script.js" 'go("active")'
 
 echo "== Guardrails =="
 if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
@@ -80,7 +80,7 @@ for fragment in (
     "payment-success",
     "payment-notice",
     "payment-continue",
-    "Screen 13 boundary",
+    "view-active",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
@@ -95,8 +95,6 @@ for fragment in (
     "Aktivierung simulieren",
     "solo prototipo",
     "nur Prototyp",
-    "Confine Screen 13",
-    "Screen-13-Grenze",
     "Nessun pagamento reale",
     "keine echte Zahlung",
 ):

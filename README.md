@@ -26,18 +26,24 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 11 — Account Ready Mock (approved on `main`)
 
-### Screen 12 — Membership Payment Boundary Mock (review)
+### Screen 12 — Membership Payment Boundary Mock (approved on `main`)
 
-Flow after Screen 11 **Continue**:
+### Screen 13 — Membership Active Confirmation + Return to Originating Signal (review)
 
-1. Payment boundary with €12/year terms
-2. Account ready / Membership inactive
-3. Prototype note: real payment not active; payment provider not integrated
-4. Simulate membership activation → notice → simulate → mock success
-5. **Back** → Screen 11
-6. **Continue** → Screen 13 boundary only
+Flow after Screen 12 mock success **Continue**:
 
-No real payment. No real entitlement. No membership activation beyond prototype simulation.
+1. Membership active confirmation — prototype only
+2. Selected local community + discreet member status
+3. Account setup complete / participation active in the prototype
+4. Explicit note: no real payment, no real entitlement
+5. **Back** → Screen 12 mock success state
+6. **Return to the signal** → exact originating feed scene
+7. Visitor status replaced by discreet member status
+8. I SEE THIS TOO shown as completed (prototype-only confirmation)
+9. Open signal remains available
+10. User remains on the local feed — no Screen 14
+
+No real payment. No real entitlement. No real civic confirmation stored.
 
 ### Local preview
 
@@ -49,11 +55,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–12):
+Interactive browser preview (Screens 01–13):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → … → Screen 11 → Screen 12 (IT) → simulate → success → Screen 13 boundary
-2. Germany → Munich → … → Screen 11 → Screen 12 (DE) → simulate → success → Screen 13 boundary
+1. Italy → Milano → feed → any scene → LO VEDO ANCH’IO → … → Screen 12 simulate → Screen 13 (IT) → Back → Return to the signal → originating Milano scene completed
+2. Germany → Munich → feed → any scene → ICH SEHE DAS AUCH → … → Screen 12 simulate → Screen 13 (DE) → Back → Return to the signal → originating Munich scene completed
