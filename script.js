@@ -41,6 +41,7 @@
   const feedCommunity = document.getElementById("feed-community");
   const feedCategory = document.getElementById("feed-category");
   const feedHeadline = document.getElementById("feed-headline");
+  const feedArea = document.getElementById("feed-area");
   const feedSummary = document.getElementById("feed-summary");
   const feedMeta = document.getElementById("feed-meta");
   const feedImage = document.getElementById("feed-image");
@@ -262,6 +263,7 @@
     !feedCommunity ||
     !feedCategory ||
     !feedHeadline ||
+    !feedArea ||
     !feedSummary ||
     !feedMeta ||
     !feedImage ||
@@ -1314,8 +1316,10 @@
     feedImage.style.objectPosition = scene.focus;
     feedCategory.textContent = scene.category;
     feedHeadline.textContent = scene.headline;
+    feedArea.textContent = scene.area;
     feedSummary.textContent = scene.summary;
-    feedMeta.textContent = scene.authorName + " · " + scene.observedTime + " · " + scene.area;
+    feedMeta.textContent =
+      scene.authorName + " · " + (scene.observedDate || scene.observedTime);
     feedPager.textContent = feedIndex + 1 + " / " + scenes.length;
     feedPrev.disabled = feedIndex <= 0;
     feedNext.disabled = feedIndex >= scenes.length - 1;
