@@ -10,17 +10,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 03 — City Selection (approved on `main`)
 
-### Screen 04 — Location Verification Mock (review)
+### Screen 04 — Location Verification Mock (approved on `main`)
 
-Flow:
+### Screen 05 — Visitor Local Feed (review)
 
-1. Screen 01 → **Enter My Town**
-2. Screen 02 → Italy / Germany
-3. Screen 03 → Milano / Munich
-4. Screen 04 → mock verification in Italian or German
-5. Success state → Continue stops at the Screen 05 boundary placeholder
+Controlled visitor feed using the approved Experience Prototype V1 scenes.
 
-This slice does not use real GPS, geolocation APIs, accounts, membership, payments, or a feed.
+- Milano → Italian
+- Munich → German
+- Finite scenes only (max 3)
+- **I SEE THIS TOO** → Screen 06 boundary only
+- **Open signal** → limited prototype detail layer
+
+No infinite scroll, membership flow, comments, backend, or feed beyond this slice.
 
 ### Local preview
 
@@ -34,4 +36,4 @@ Open `http://localhost:4173/`.
 
 Interactive review (starts on Screen 01):
 
-https://finger-mon-beaver-employ.trycloudflare.com/
+https://aged-front-perfectly-guys.trycloudflare.com/
