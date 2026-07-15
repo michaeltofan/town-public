@@ -466,18 +466,57 @@
       </main>
     </div>
 
-    <!-- Screen 08 boundary placeholder only -->
+    <!-- Screen 08: Email Entry Mock -->
+    <div id="view-email" hidden>
+      <main class="email" aria-label="Email entry">
+        <div class="email__frame">
+          <p class="email__brand" aria-label="TOWN">TOWN</p>
+          <p class="email__label" id="email-label"></p>
+          <h1 class="email__title" id="email-title"></h1>
+          <p class="email__lead" id="email-body"></p>
+          <p class="email__lead" id="email-body-second"></p>
+          <p class="email__note" id="email-prototype"></p>
+          <label class="email__field-label" for="email-input" id="email-field-label"></label>
+          <input
+            class="email__input"
+            id="email-input"
+            type="email"
+            name="email"
+            autocomplete="email"
+            inputmode="email"
+            spellcheck="false"
+          />
+          <p class="email__error" id="email-error" hidden></p>
+          <p class="email__note" id="email-privacy"></p>
+          <div class="email__actions">
+            <button
+              type="button"
+              class="btn btn--primary"
+              id="email-continue"
+              disabled
+            >
+              Continue
+            </button>
+            <button type="button" class="btn btn--secondary" id="email-back">
+              Back
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 09 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 08 boundary">
+      <main class="boundary" aria-label="Screen 09 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 08 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 09 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Email entry is not implemented yet.
+            Verification code is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after account setup Continue. Screen
-            08 has not been built.
+            This is a deliberate stop point after email Continue. Screen 09 has
+            not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -485,7 +524,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to account setup
+            Back to email entry
           </button>
         </div>
       </main>
