@@ -178,26 +178,76 @@
       </main>
     </div>
 
-    <!-- Screen 03 boundary placeholder only -->
+    <!-- Screen 03: City Selection -->
+    <div id="view-city" hidden>
+      <main class="country city" aria-label="City selection" id="city-content">
+        <div class="country__frame">
+          <header class="country__header">
+            <button type="button" class="country__back" id="city-back" data-i18n="back">
+              Back
+            </button>
+            <p class="country__brand" aria-label="TOWN">TOWN</p>
+          </header>
+
+          <h1 class="country__title" id="city-title" data-i18n="title">
+            Choose your city
+          </h1>
+          <p class="country__lead" id="city-lead" data-i18n="lead">
+            TOWN connects you to one verified local community.
+          </p>
+
+          <p class="city__context" id="city-context" hidden></p>
+
+          <fieldset class="country__fieldset">
+            <legend class="country__legend" id="city-legend" data-i18n="cityLegend">
+              City
+            </legend>
+
+            <div
+              class="country__options"
+              role="radiogroup"
+              aria-label="City"
+              id="city-options"
+            >
+              <!-- Populated for the selected country only -->
+            </div>
+          </fieldset>
+
+          <div class="country__actions">
+            <button
+              type="button"
+              class="btn btn--primary"
+              id="continue-city"
+              disabled
+              data-i18n="continue"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 04 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 03 boundary">
+      <main class="boundary" aria-label="Screen 04 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label">Screen 03 boundary</p>
+          <p class="boundary__label">Screen 04 boundary</p>
           <h1 class="boundary__title">
-            City selection is not implemented yet.
+            Location verification is not implemented yet.
           </h1>
           <p class="boundary__lead">
-            This is a deliberate stop point after country selection. Screen 03
-            has not been built.
+            This is a deliberate stop point after city selection. Screen 04 has
+            not been built.
           </p>
-          <p class="boundary__meta" id="boundary-country" hidden></p>
+          <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
             type="button"
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to country selection
+            Back to city selection
           </button>
         </div>
       </main>

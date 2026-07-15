@@ -6,22 +6,20 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 01 — TOWN Entry (approved on `main`)
 
-`index.html`
+### Screen 02 — Country Selection (approved on `main`)
 
-### Screen 02 — Country Selection (review)
-
-Implemented in `index.html` as the next view after Screen 01 (`#/country`).
+### Screen 03 — City Selection (review)
 
 Flow:
 
-1. Open Screen 01
-2. Press **Enter My Town**
-3. Choose **Italy** or **Germany**
-4. **Continue** enables after a country is selected
-5. **Back** returns to Screen 01
-6. Continue stops at the Screen 03 boundary placeholder (`#/boundary`)
+1. Screen 01 → **Enter My Town**
+2. Screen 02 → Italy or Germany → **Continue**
+3. Screen 03 → Milano (Italy) or Munich (Germany)
+4. Community language applies after city selection (Italian / German)
+5. **Back** returns to Screen 02 with country preserved
+6. **Continue** stops at the Screen 04 boundary placeholder
 
-No account flow, membership, authentication, payments, API, or city selection are included.
+No location verification, account flow, membership, authentication, payments, or API are included.
 
 ### Local preview
 
@@ -31,10 +29,8 @@ python3 -m http.server 4173
 
 Open `http://localhost:4173/`.
 
-### Visual review URL (Screen 02)
+### Visual review URL
 
-Interactive review (open Screen 01, then Enter My Town):
+Interactive review (starts on Screen 01):
 
-https://opponent-joyce-important-flavor.trycloudflare.com/
-
-PR: https://github.com/michaeltofan/town-public/pull/2
+https://holding-permission-shopping-boss.trycloudflare.com/
