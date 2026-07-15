@@ -33,27 +33,33 @@ require_contains "index.html" "Choose your country"
 require_contains "index.html" "view-city"
 require_contains "index.html" "view-location"
 require_contains "index.html" "view-feed"
-
-echo "== Screen 06 structural checks =="
-require_file "script.js"
-require_contains "index.html" "membership-invite"
 require_contains "index.html" "view-membership"
-require_contains "index.html" "view-ended"
+
+echo "== Screen 07 structural checks =="
+require_file "script.js"
 require_contains "index.html" "view-account"
-require_contains "script.js" "MEMBERSHIP_COPY"
-require_contains "script.js" "Ti sta a cuore"
-require_contains "script.js" "Dir ist wichtig"
-require_contains "script.js" "€12"
-require_contains "script.js" "openInvite"
-require_contains "script.js" 'go("membership")'
-require_contains "script.js" 'go("ended")'
+require_contains "index.html" "account-continue"
+require_contains "index.html" "account-back"
+require_contains "index.html" "Screen 08 boundary"
+require_contains "script.js" "ACCOUNT_COPY"
+require_contains "script.js" "Crea il tuo account TOWN."
+require_contains "script.js" "Erstelle dein TOWN-Konto."
+require_contains "script.js" "applyAccountCopy"
+require_contains "script.js" 'go("account")'
+require_contains "script.js" 'go("boundary")'
 
 echo "== Guardrails =="
 if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|type="email"|passkey|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden account/payment/social pattern present"
   fail=1
 else
-  echo "OK: no account/payment/social patterns"
+  echo "OK: no email/password fields or payment/social patterns"
+fi
+if grep -Eiq '<input[^>]+(email|password)|inputmode="email"' index.html; then
+  echo "FAIL: account data input present on Screen 07"
+  fail=1
+else
+  echo "OK: no account data inputs"
 fi
 
 echo "== HTML smoke =="
@@ -69,29 +75,31 @@ html = Path("index.html").read_text(encoding="utf-8")
 Checker().feed(html)
 Checker().close()
 for fragment in (
-    "membership-invite",
-    "view-membership",
-    "view-ended",
     "view-account",
-    "invite-continue",
-    "membership-not-now",
-    "ended-return",
+    "account-label",
+    "account-why-list",
+    "account-privacy",
+    "account-prototype",
+    "Screen 08 boundary",
+    "boundary-back",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
 
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
-    "Non ora",
-    "Noch nicht",
-    "Torna all’ingresso TOWN",
-    "Zurück zum TOWN-Eingang",
-    "MEMBERSHIP LOCALE",
-    "LOKALE MITGLIEDSCHAFT",
+    "ACCOUNT PERSONALE",
+    "PERSÖNLICHES KONTO",
+    "non è richiesta una password",
+    "kein Passwort erforderlich",
+    "sistema reale di account non è attivo",
+    "reale Kontosystem nicht aktiv",
+    "Confine Screen 08",
+    "Screen-08-Grenze",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 06 membership invitation present")
+print("OK: Screen 07 account setup introduction present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

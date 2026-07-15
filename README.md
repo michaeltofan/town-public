@@ -14,16 +14,17 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 05 — Visitor Local Feed (approved on `main`)
 
-### Screen 06 — Membership Invitation (review)
+### Screen 06 — Membership Invitation (approved on `main`)
 
-Flow after **I SEE THIS TOO**:
+### Screen 07 — Account Setup Introduction (review)
 
-1. Contextual invitation over the originating signal
-2. Membership details (`€12/year`)
-3. **Not now** → experience end → Return to TOWN Entry
-4. **Continue** → Screen 07 boundary only
+Flow after membership details **Continue**:
 
-No account creation, payments, authentication, or later screens.
+1. Account setup introduction (why an account is required)
+2. **Back** → Screen 06 membership details (state preserved)
+3. **Continue** → Screen 08 boundary only
+
+No email input, authentication, payments, or later screens.
 
 ### Local preview
 
@@ -35,11 +36,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–06):
+Interactive browser preview (Screens 01–07):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → mock verify → feed → **LO VEDO ANCH’IO** → invite → membership / Not now / Screen 07 boundary
-2. Germany → Munich → mock verify → feed → **ICH SEHE DAS AUCH** → invite → membership / Not now / Screen 07 boundary
+1. Italy → Milano → mock verify → feed → **LO VEDO ANCH’IO** → invite → membership → Screen 07 (IT) → Back / Screen 08 boundary
+2. Germany → Munich → mock verify → feed → **ICH SEHE DAS AUCH** → invite → membership → Screen 07 (DE) → Back / Screen 08 boundary
