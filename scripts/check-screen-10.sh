@@ -49,7 +49,7 @@ require_contains "script.js" 'go("passkey")'
 require_contains "script.js" 'go("ready")'
 
 echo "== Guardrails =="
-if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|PublicKeyCredential' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|PublicKeyCredential' index.html script.js; then
   echo "FAIL: forbidden WebAuthn/auth/storage/payment pattern present"
   fail=1
 else

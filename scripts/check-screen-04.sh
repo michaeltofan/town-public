@@ -55,7 +55,7 @@ else
   echo "OK: no geolocation API usage"
 fi
 
-if grep -Eiq 'language selector|language menu|Stripe|followers|trending|dashboard|feed is implemented' index.html script.js; then
+if grep -Eiq 'language selector|language menu|followers|trending|dashboard|feed is implemented' index.html script.js; then
   echo "FAIL: forbidden pattern present"
   fail=1
 else

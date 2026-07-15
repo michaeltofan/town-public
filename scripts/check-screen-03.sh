@@ -51,7 +51,7 @@ require_contains "script.js" 'go("city")'
 require_contains "script.js" 'go("boundary")'
 
 echo "== Guardrails =="
-if grep -qiE 'Stripe|followers|trending|dashboard' index.html script.js; then
+if grep -qiE 'followers|trending|dashboard' index.html script.js; then
   echo "FAIL: forbidden implementation pattern present"
   fail=1
 else

@@ -44,7 +44,6 @@ require_contains "index.html" "What is TOWN?"
 # Guardrails: unfinished journey / marketing patterns must not appear
 forbidden_patterns=(
   "Select City"
-  "Stripe"
   "pricing"
   "followers"
   "trending"
@@ -66,6 +65,18 @@ for pattern in "${forbidden_patterns[@]}"; do
     echo "OK: no forbidden pattern '$pattern'"
   fi
 done
+
+# Stripe may appear only as an explicit non-integration note (Screen 12).
+if grep -Eiq 'Stripe' index.html script.js README.md; then
+  if grep -Eiq 'paymentIntent|card number|sk_live|pk_live' index.html script.js README.md; then
+    echo "FAIL: Stripe payment integration pattern present"
+    fail=1
+  else
+    echo "OK: Stripe mentioned only as not integrated"
+  fi
+else
+  echo "OK: no Stripe mention"
+fi
 
 echo "== HTML well-formed smoke =="
 python3 - <<'PY'

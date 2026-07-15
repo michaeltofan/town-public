@@ -24,17 +24,20 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 10 — Passkey Introduction Mock (approved on `main`)
 
-### Screen 11 — Account Ready Mock (review)
+### Screen 11 — Account Ready Mock (approved on `main`)
 
-Flow after Screen 10 passkey simulation **Continue**:
+### Screen 12 — Membership Payment Boundary Mock (review)
 
-1. Account Ready confirmation (prototype)
-2. Clear distinction: Account ready ≠ Membership active
-3. Membership context: €12/year; no real payment
-4. **Back** → Screen 10 success state
-5. **Continue** → Screen 12 boundary only
+Flow after Screen 11 **Continue**:
 
-No membership activation. No payment fields. No real session.
+1. Payment boundary with €12/year terms
+2. Account ready / Membership inactive
+3. Prototype note: real payment not active; payment provider not integrated
+4. Simulate membership activation → notice → simulate → mock success
+5. **Back** → Screen 11
+6. **Continue** → Screen 13 boundary only
+
+No real payment. No real entitlement. No membership activation beyond prototype simulation.
 
 ### Local preview
 
@@ -46,11 +49,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–11):
+Interactive browser preview (Screens 01–12):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → … → Screen 10 simulate → Screen 11 (IT) → Back / Screen 12 boundary
-2. Germany → Munich → … → Screen 10 simulate → Screen 11 (DE) → Back / Screen 12 boundary
+1. Italy → Milano → … → Screen 11 → Screen 12 (IT) → simulate → success → Screen 13 boundary
+2. Germany → Munich → … → Screen 11 → Screen 12 (DE) → simulate → success → Screen 13 boundary
