@@ -48,6 +48,38 @@
   const signalSheetClose = document.getElementById("signal-sheet-close");
   const boundaryBack = document.getElementById("boundary-back");
   const boundaryMeta = document.getElementById("boundary-meta");
+  const boundaryLabel = document.getElementById("boundary-label");
+  const boundaryTitle = document.getElementById("boundary-title");
+  const boundaryLead = document.getElementById("boundary-lead");
+  const membershipInvite = document.getElementById("membership-invite");
+  const inviteTitle = document.getElementById("invite-title");
+  const inviteBody = document.getElementById("invite-body");
+  const inviteBodySecond = document.getElementById("invite-body-second");
+  const inviteContinue = document.getElementById("invite-continue");
+  const inviteNotNow = document.getElementById("invite-not-now");
+  const viewMembership = document.getElementById("view-membership");
+  const membershipLabel = document.getElementById("membership-label");
+  const membershipTitle = document.getElementById("membership-title");
+  const membershipCommunity = document.getElementById("membership-community");
+  const membershipBody = document.getElementById("membership-body");
+  const membershipBodySecond = document.getElementById("membership-body-second");
+  const membershipPrice = document.getElementById("membership-price");
+  const membershipRenewal = document.getElementById("membership-renewal");
+  const membershipRenewalSecond = document.getElementById(
+    "membership-renewal-second"
+  );
+  const membershipWhyTitle = document.getElementById("membership-why-title");
+  const membershipWhyList = document.getElementById("membership-why-list");
+  const membershipRightsTitle = document.getElementById(
+    "membership-rights-title"
+  );
+  const membershipRights = document.getElementById("membership-rights");
+  const membershipContinue = document.getElementById("membership-continue");
+  const membershipNotNow = document.getElementById("membership-not-now");
+  const viewEnded = document.getElementById("view-ended");
+  const endedTitle = document.getElementById("ended-title");
+  const endedBody = document.getElementById("ended-body");
+  const endedReturn = document.getElementById("ended-return");
   const countryInputs = Array.from(
     document.querySelectorAll('input[name="country"]')
   );
@@ -101,7 +133,35 @@
     !signalSheetMessage ||
     !signalSheetClose ||
     !boundaryBack ||
-    !boundaryMeta
+    !boundaryMeta ||
+    !boundaryLabel ||
+    !boundaryTitle ||
+    !boundaryLead ||
+    !membershipInvite ||
+    !inviteTitle ||
+    !inviteBody ||
+    !inviteBodySecond ||
+    !inviteContinue ||
+    !inviteNotNow ||
+    !viewMembership ||
+    !membershipLabel ||
+    !membershipTitle ||
+    !membershipCommunity ||
+    !membershipBody ||
+    !membershipBodySecond ||
+    !membershipPrice ||
+    !membershipRenewal ||
+    !membershipRenewalSecond ||
+    !membershipWhyTitle ||
+    !membershipWhyList ||
+    !membershipRightsTitle ||
+    !membershipRights ||
+    !membershipContinue ||
+    !membershipNotNow ||
+    !viewEnded ||
+    !endedTitle ||
+    !endedBody ||
+    !endedReturn
   ) {
     return;
   }
@@ -291,6 +351,96 @@
     },
   };
 
+  const MEMBERSHIP_COPY = {
+    it: {
+      inviteTitle: "Ti sta a cuore ciò che accade nella tua comunità.",
+      inviteBody:
+        "Per confermare questo segnale e diventare parte della soluzione, unisciti a TOWN come membro locale verificato.",
+      inviteBodySecond:
+        "TOWN è costruito intorno a persone reali della stessa comunità — non su account anonimi, follower o popolarità sui social.",
+      continue: "Continua",
+      notNow: "Non ora",
+      label: "MEMBERSHIP LOCALE",
+      title: "Entra nella comunità di {city}.",
+      body: "TOWN è uno spazio civico locale per persone reali.",
+      bodySecond:
+        "Per partecipare servono un account, una verifica locale valida e un abbonamento attivo.",
+      price: "€12 all’anno",
+      renewal: "Rinnovo annuale.",
+      renewalSecond:
+        "Puoi annullare in qualsiasi momento. L’accesso resta attivo fino alla fine del periodo già pagato.",
+      whyTitle: "Perché esiste la membership",
+      why: [
+        "Persone reali nella stessa comunità",
+        "Partecipazione locale verificata",
+        "Meno bot e account fantasma",
+        "Spazio civico calmo, senza pubblicità",
+      ],
+      rightsTitle: "Con una membership attiva puoi:",
+      rights:
+        "Confermare segnali, pubblicare, commentare e partecipare alle decisioni della comunità.",
+      endedTitle:
+        "TOWN è per chi è pronto a partecipare alla propria comunità.",
+      endedBody: "Puoi tornare quando sei pronto a farne parte.",
+      endedReturn: "Torna all’ingresso TOWN",
+      boundaryLabel: "Confine Screen 07",
+      boundaryTitle:
+        "L’introduzione alla creazione dell’account non è ancora implementata.",
+      boundaryLead:
+        "Questo è un punto di stop deliberato dopo Continua sulla membership. Lo Screen 07 non è stato costruito.",
+      boundaryMeta:
+        "Selezionato: {country} · {city}{verified}",
+      boundaryVerified: " · verificato (mock)",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna ai dettagli della membership",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
+      inviteBody:
+        "Um dieses Signal zu bestätigen und Teil der Lösung zu werden, tritt TOWN als verifiziertes lokales Mitglied bei.",
+      inviteBodySecond:
+        "TOWN wird von echten Menschen aus derselben Gemeinschaft getragen — nicht von anonymen Konten, Followern oder Popularität in sozialen Medien.",
+      continue: "Weiter",
+      notNow: "Noch nicht",
+      label: "LOKALE MITGLIEDSCHAFT",
+      title: "Werde Mitglied in deiner Münchner Gemeinschaft.",
+      body: "TOWN ist ein lokaler zivilgesellschaftlicher Raum für echte Menschen.",
+      bodySecond:
+        "Für die Teilnahme brauchst du ein Konto, eine gültige lokale Verifizierung und eine aktive Mitgliedschaft.",
+      price: "€12 pro Jahr",
+      renewal: "Jährliche Verlängerung.",
+      renewalSecond:
+        "Du kannst jederzeit kündigen. Der Zugang bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv.",
+      whyTitle: "Warum es die Mitgliedschaft gibt",
+      why: [
+        "Echte Menschen in derselben Gemeinschaft",
+        "Verifizierte lokale Teilnahme",
+        "Weniger Bots und Geisterkonten",
+        "Ruhiger zivilgesellschaftlicher Raum ohne Werbung",
+      ],
+      rightsTitle: "Mit einer aktiven Mitgliedschaft kannst du:",
+      rights:
+        "Signale bestätigen, Beiträge veröffentlichen, kommentieren und an Entscheidungen der Gemeinschaft teilnehmen.",
+      endedTitle:
+        "TOWN ist für Menschen, die bereit sind, sich an ihrer Gemeinschaft zu beteiligen.",
+      endedBody:
+        "Du kannst zurückkehren, wenn du bereit bist, ein Teil davon zu sein.",
+      endedReturn: "Zurück zum TOWN-Eingang",
+      boundaryLabel: "Screen-07-Grenze",
+      boundaryTitle:
+        "Die Einführung zur Kontoeinrichtung ist noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach Weiter auf der Mitgliedschaftsseite. Screen 07 wurde nicht gebaut.",
+      boundaryMeta:
+        "Ausgewählt: {country} · {city}{verified}",
+      boundaryVerified: " · verifiziert (Mock)",
+      boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
+      boundaryBack: "Zurück zu den Mitgliedschaftsdetails",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
   let lastFocus = null;
   let selectedCountry = null;
   let selectedCity = null;
@@ -303,7 +453,9 @@
     city: "TOWN — Choose your city",
     location: "TOWN — Confirm local community",
     feed: "TOWN — Local feed",
-    boundary: "TOWN — Screen 06 boundary",
+    membership: "TOWN — Membership",
+    ended: "TOWN — Experience end",
+    boundary: "TOWN — Screen 07 boundary",
   };
 
   function parseRoute() {
@@ -312,6 +464,8 @@
     if (raw.startsWith("city")) return "city";
     if (raw.startsWith("location")) return "location";
     if (raw.startsWith("feed")) return "feed";
+    if (raw.startsWith("membership")) return "membership";
+    if (raw.startsWith("ended")) return "ended";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -469,19 +623,138 @@
     }
   }
 
+
+  function membershipLang() {
+    const lang = communityLanguage();
+    return lang === "de" ? "de" : "it";
+  }
+
+  function applyInviteCopy() {
+    const copy = MEMBERSHIP_COPY[membershipLang()];
+    inviteTitle.textContent = copy.inviteTitle;
+    inviteBody.textContent = copy.inviteBody;
+    inviteBodySecond.textContent = copy.inviteBodySecond;
+    inviteContinue.textContent = copy.continue;
+    inviteNotNow.textContent = copy.notNow;
+  }
+
+  function applyMembershipCopy() {
+    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const cityName = copy.cityNames[selectedCity] || selectedCity || "";
+    membershipLabel.textContent = copy.label;
+    membershipTitle.textContent =
+      selectedCity === "Munich"
+        ? copy.title
+        : copy.title.replace("{city}", cityName);
+    membershipCommunity.textContent = cityName;
+    membershipBody.textContent = copy.body;
+    membershipBodySecond.textContent = copy.bodySecond;
+    membershipPrice.textContent = copy.price;
+    membershipRenewal.textContent = copy.renewal;
+    membershipRenewalSecond.textContent = copy.renewalSecond;
+    membershipWhyTitle.textContent = copy.whyTitle;
+    membershipWhyList.innerHTML = "";
+    copy.why.forEach((item) => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      membershipWhyList.appendChild(li);
+    });
+    membershipRightsTitle.textContent = copy.rightsTitle;
+    membershipRights.textContent = copy.rights;
+    membershipContinue.textContent = copy.continue;
+    membershipNotNow.textContent = copy.notNow;
+    boundaryBack.textContent = copy.boundaryBack;
+    document.documentElement.lang = membershipLang();
+  }
+
+  function applyEndedCopy() {
+    const copy = MEMBERSHIP_COPY[membershipLang()];
+    endedTitle.textContent = copy.endedTitle;
+    endedBody.textContent = copy.endedBody;
+    endedReturn.textContent = copy.endedReturn;
+    document.documentElement.lang = membershipLang();
+  }
+
+  function applyBoundaryCopy() {
+    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const cityName = copy.cityNames[selectedCity] || selectedCity || "";
+    const countryName =
+      (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
+      selectedCountry ||
+      "";
+    boundaryLabel.textContent = copy.boundaryLabel;
+    boundaryTitle.textContent = copy.boundaryTitle;
+    boundaryLead.textContent = copy.boundaryLead;
+    boundaryBack.textContent = copy.boundaryBack;
+    if (selectedCountry && selectedCity) {
+      boundaryMeta.hidden = false;
+      boundaryMeta.textContent = copy.boundaryMeta
+        .replace("{country}", countryName)
+        .replace("{city}", cityName)
+        .replace(
+          "{verified}",
+          locationVerified ? copy.boundaryVerified : ""
+        );
+    } else {
+      boundaryMeta.hidden = true;
+      boundaryMeta.textContent = "";
+    }
+    document.documentElement.lang = membershipLang();
+  }
+
+  function openInvite() {
+    closeSignalSheet();
+    applyInviteCopy();
+    membershipInvite.hidden = false;
+    document.body.style.overflow = "hidden";
+    inviteContinue.focus();
+  }
+
+  function closeInvite() {
+    if (membershipInvite.hidden) return;
+    membershipInvite.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function resetVisitorSession() {
+    selectedCountry = null;
+    selectedCity = null;
+    locationVerified = false;
+    feedIndex = 0;
+    countryInputs.forEach((input) => {
+      input.checked = false;
+    });
+    cityOptions.innerHTML = "";
+    continueCountry.disabled = true;
+    continueCity.disabled = true;
+    locationIdle.hidden = false;
+    locationSuccess.hidden = true;
+    closeInvite();
+    closeSignalSheet();
+    closeSheet();
+  }
+
   function showView(name) {
     viewEntry.hidden = name !== "entry";
     viewCountry.hidden = name !== "country";
     viewCity.hidden = name !== "city";
     viewLocation.hidden = name !== "location";
     viewFeed.hidden = name !== "feed";
+    viewMembership.hidden = name !== "membership";
+    viewEnded.hidden = name !== "ended";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
     document.body.classList.toggle("page-city", name === "city");
     document.body.classList.toggle("page-location", name === "location");
     document.body.classList.toggle("page-feed", name === "feed");
+    document.body.classList.toggle("page-membership", name === "membership");
+    document.body.classList.toggle("page-ended", name === "ended");
     document.body.classList.toggle("page-boundary", name === "boundary");
+
+    if (name !== "feed") {
+      closeInvite();
+    }
 
     if (name === "city") applyCityCopy();
     if (name === "location") {
@@ -492,31 +765,36 @@
       applyFeedCopyChrome();
       renderFeedScene();
     }
+    if (name === "membership") {
+      applyMembershipCopy();
+    }
+    if (name === "ended") {
+      applyEndedCopy();
+    }
     if (name === "boundary") {
-      if (selectedCountry && selectedCity) {
-        boundaryMeta.hidden = false;
-        boundaryMeta.textContent =
-          "Selected: " +
-          selectedCountry +
-          " · " +
-          selectedCity +
-          (locationVerified ? " · verified (mock)" : "");
-      } else {
-        boundaryMeta.hidden = true;
-        boundaryMeta.textContent = "";
-      }
+      applyBoundaryCopy();
     }
   }
 
   function go(route) {
     if (route === "city" && !selectedCountry) route = "country";
     if (
-      (route === "location" || route === "feed" || route === "boundary") &&
+      (route === "location" ||
+        route === "feed" ||
+        route === "membership" ||
+        route === "ended" ||
+        route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
       route = selectedCountry ? "city" : "country";
     }
-    if ((route === "feed" || route === "boundary") && !locationVerified) {
+    if (
+      (route === "feed" ||
+        route === "membership" ||
+        route === "ended" ||
+        route === "boundary") &&
+      !locationVerified
+    ) {
       route = "location";
     }
 
@@ -585,6 +863,8 @@
       (route === "city" ||
         route === "location" ||
         route === "feed" ||
+        route === "membership" ||
+        route === "ended" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -596,13 +876,23 @@
       return;
     }
     if (
-      (route === "location" || route === "feed" || route === "boundary") &&
+      (route === "location" ||
+        route === "feed" ||
+        route === "membership" ||
+        route === "ended" ||
+        route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
       go(selectedCountry ? "city" : "country");
       return;
     }
-    if ((route === "feed" || route === "boundary") && !locationVerified) {
+    if (
+      (route === "feed" ||
+        route === "membership" ||
+        route === "ended" ||
+        route === "boundary") &&
+      !locationVerified
+    ) {
       go("location");
       return;
     }
@@ -649,6 +939,11 @@
       if (!signalSheet.hidden) {
         event.preventDefault();
         closeSignalSheet();
+        return;
+      }
+      if (!membershipInvite.hidden) {
+        // Escape does not dismiss the invitation — Not now is the exit.
+        event.preventDefault();
         return;
       }
       if (!sheet.hidden) {
@@ -729,8 +1024,32 @@
 
   feedSeeToo.addEventListener("click", () => {
     closeSignalSheet();
-    // Visitor action stops at Screen 06 boundary — no membership flow.
+    // Screen 06 stage 1: contextual invitation over originating signal.
+    openInvite();
+  });
+
+  inviteContinue.addEventListener("click", () => {
+    closeInvite();
+    go("membership");
+  });
+
+  inviteNotNow.addEventListener("click", () => {
+    closeInvite();
+    go("ended");
+  });
+
+  membershipContinue.addEventListener("click", () => {
+    // Screen 07 boundary only — account setup is not built.
     go("boundary");
+  });
+
+  membershipNotNow.addEventListener("click", () => {
+    go("ended");
+  });
+
+  endedReturn.addEventListener("click", () => {
+    resetVisitorSession();
+    go("entry");
   });
 
   feedOpenSignal.addEventListener("click", () => {
@@ -738,7 +1057,7 @@
   });
 
   boundaryBack.addEventListener("click", () => {
-    go("feed");
+    go("membership");
   });
 
   window.addEventListener("hashchange", render);

@@ -12,17 +12,18 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 04 — Location Verification Mock (approved on `main`)
 
-### Screen 05 — Visitor Local Feed (review)
+### Screen 05 — Visitor Local Feed (approved on `main`)
 
-Controlled visitor feed using the approved Experience Prototype V1 scenes.
+### Screen 06 — Membership Invitation (review)
 
-- Milano → Italian
-- Munich → German
-- Finite scenes only (max 3)
-- **I SEE THIS TOO** → Screen 06 boundary only
-- **Open signal** → limited prototype detail layer
+Flow after **I SEE THIS TOO**:
 
-No infinite scroll, membership flow, comments, backend, or feed beyond this slice.
+1. Contextual invitation over the originating signal
+2. Membership details (`€12/year`)
+3. **Not now** → experience end → Return to TOWN Entry
+4. **Continue** → Screen 07 boundary only
+
+No account creation, payments, authentication, or later screens.
 
 ### Local preview
 
@@ -34,6 +35,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive review (starts on Screen 01):
+Interactive browser preview (Screens 01–06):
 
-https://aged-front-perfectly-guys.trycloudflare.com/
+**https://aged-front-perfectly-guys.trycloudflare.com/**
+
+Review paths:
+
+1. Italy → Milano → mock verify → feed → **LO VEDO ANCH’IO** → invite → membership / Not now / Screen 07 boundary
+2. Germany → Munich → mock verify → feed → **ICH SEHE DAS AUCH** → invite → membership / Not now / Screen 07 boundary
