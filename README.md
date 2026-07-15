@@ -32,4 +32,6 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-See the Screen 04 pull request for the current browser-accessible preview URL.
+Interactive review (starts on Screen 01):
+
+https://finger-mon-beaver-employ.trycloudflare.com/
