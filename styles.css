@@ -1508,3 +1508,128 @@ body.page-ended {
   display: none !important;
 }
 
+/* ——— Screen 09: Verification Code Mock ——— */
+
+.page-code {
+  overflow: auto;
+}
+
+.code {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 6vh, 4rem) 1.5rem;
+}
+
+.code__frame {
+  width: 100%;
+  max-width: 32rem;
+}
+
+.code__brand {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--charcoal);
+}
+
+.code__label {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.code__title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--charcoal);
+}
+
+.code__lead {
+  margin: 0 0 0.55rem;
+  max-width: 40ch;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+.code__email {
+  margin: 0 0 1.2rem;
+  max-width: 40ch;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  word-break: break-word;
+}
+
+.code__field-label {
+  display: block;
+  margin: 0 0 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+.code__input {
+  display: block;
+  width: 100%;
+  max-width: 12rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(30, 20, 15, 0.18);
+  border-radius: 0.55rem;
+  background: rgba(255, 253, 249, 0.92);
+  color: var(--charcoal);
+  font-size: 1.25rem;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+}
+
+.code__input:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(92, 74, 58, 0.16);
+}
+
+.code__note {
+  margin: 0.85rem 0 0;
+  max-width: 40ch;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.code__error {
+  margin: 0.55rem 0 0;
+  max-width: 40ch;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #8a4a32;
+}
+
+.code__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 1.75rem;
+}
+
+.code__actions .btn {
+  width: var(--btn-width);
+  max-width: 100%;
+}
+
+#view-code[hidden] {
+  display: none !important;
+}
+

@@ -7,6 +7,7 @@
   const viewBoundary = document.getElementById("view-boundary");
   const viewAccount = document.getElementById("view-account");
   const viewEmail = document.getElementById("view-email");
+  const viewCode = document.getElementById("view-code");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -76,6 +77,16 @@
   const emailPrivacy = document.getElementById("email-privacy");
   const emailContinue = document.getElementById("email-continue");
   const emailBack = document.getElementById("email-back");
+  const codeLabel = document.getElementById("code-label");
+  const codeTitle = document.getElementById("code-title");
+  const codeBody = document.getElementById("code-body");
+  const codeEmail = document.getElementById("code-email");
+  const codeFieldLabel = document.getElementById("code-field-label");
+  const codeInput = document.getElementById("code-input");
+  const codePrototype = document.getElementById("code-prototype");
+  const codeError = document.getElementById("code-error");
+  const codeVerify = document.getElementById("code-verify");
+  const codeChangeEmail = document.getElementById("code-change-email");
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -118,6 +129,7 @@
     !viewBoundary ||
     !viewAccount ||
     !viewEmail ||
+    !viewCode ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -187,6 +199,16 @@
     !emailPrivacy ||
     !emailContinue ||
     !emailBack ||
+    !codeLabel ||
+    !codeTitle ||
+    !codeBody ||
+    !codeEmail ||
+    !codeFieldLabel ||
+    !codeInput ||
+    !codePrototype ||
+    !codeError ||
+    !codeVerify ||
+    !codeChangeEmail ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -537,17 +559,6 @@
       invalid: "Inserisci un indirizzo email valido.",
       continue: "Continua",
       back: "Indietro",
-      boundaryLabel: "Confine Screen 09",
-      boundaryTitle:
-        "Il passaggio del codice di verifica non è ancora implementato.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo Continua sull’email. Lo Screen 09 non è stato costruito.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}{email}",
-      boundaryVerified: " · verificato (mock)",
-      boundaryEmail: " · email: {value}",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna all’inserimento email",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -564,22 +575,59 @@
       invalid: "Gib eine gültige E-Mail-Adresse ein.",
       continue: "Weiter",
       back: "Zurück",
-      boundaryLabel: "Screen-09-Grenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const CODE_COPY = {
+    it: {
+      label: "VERIFICA EMAIL",
+      title: "Controlla la tua email.",
+      body: "Abbiamo inviato un codice di 6 cifre a:",
+      fieldLabel: "Codice di verifica",
+      prototype: "Nel prototipo, inserisci 123456 per continuare.",
+      invalid: "Il codice non è corretto.",
+      verify: "Verifica",
+      changeEmail: "Cambia email",
+      boundaryLabel: "Confine Screen 10",
       boundaryTitle:
-        "Der Bestätigungscode-Schritt ist noch nicht implementiert.",
+        "L’introduzione alla passkey non è ancora implementata.",
       boundaryLead:
-        "Dies ist ein bewusster Halt nach Weiter auf der E-Mail-Seite. Screen 09 wurde nicht gebaut.",
+        "Questo è un punto di stop deliberato dopo la verifica email. Lo Screen 10 non è stato costruito.",
+      boundaryMeta:
+        "Selezionato: {country} · {city}{verified}{email}",
+      boundaryVerified: " · verificato (mock)",
+      boundaryEmail: " · email: {value}",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna al codice di verifica",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "E-MAIL BESTÄTIGEN",
+      title: "Prüfe deine E-Mails.",
+      body: "Wir haben einen sechsstelligen Code gesendet an:",
+      fieldLabel: "Bestätigungscode",
+      prototype: "Gib im Prototyp 123456 ein, um fortzufahren.",
+      invalid: "Der Code ist nicht korrekt.",
+      verify: "Bestätigen",
+      changeEmail: "E-Mail-Adresse ändern",
+      boundaryLabel: "Screen-10-Grenze",
+      boundaryTitle:
+        "Die Passkey-Einführung ist noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach der E-Mail-Bestätigung. Screen 10 wurde nicht gebaut.",
       boundaryMeta:
         "Ausgewählt: {country} · {city}{verified}{email}",
       boundaryVerified: " · verifiziert (Mock)",
       boundaryEmail: " · E-Mail: {value}",
       boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zur E-Mail-Eingabe",
+      boundaryBack: "Zurück zum Bestätigungscode",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const PROTOTYPE_CODE = "123456";
 
   let lastFocus = null;
   let selectedCountry = null;
@@ -598,7 +646,8 @@
     ended: "TOWN — Experience end",
     account: "TOWN — Account setup",
     email: "TOWN — Email entry",
-    boundary: "TOWN — Screen 09 boundary",
+    code: "TOWN — Verification code",
+    boundary: "TOWN — Screen 10 boundary",
   };
 
   function parseRoute() {
@@ -611,6 +660,7 @@
     if (raw.startsWith("ended")) return "ended";
     if (raw.startsWith("account")) return "account";
     if (raw.startsWith("email")) return "email";
+    if (raw.startsWith("code")) return "code";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -884,8 +934,49 @@
     emailError.textContent = "";
   }
 
+  function applyCodeCopy() {
+    const copy = CODE_COPY[membershipLang()];
+    codeLabel.textContent = copy.label;
+    codeTitle.textContent = copy.title;
+    codeBody.textContent = copy.body;
+    codeEmail.textContent = enteredEmail || "";
+    codeFieldLabel.textContent = copy.fieldLabel;
+    codePrototype.textContent = copy.prototype;
+    codeVerify.textContent = copy.verify;
+    codeChangeEmail.textContent = copy.changeEmail;
+    syncCodeVerify();
+    document.documentElement.lang = membershipLang();
+  }
+
+  function digitsOnly(value) {
+    return String(value || "").replace(/\D/g, "").slice(0, 6);
+  }
+
+  function syncCodeVerify() {
+    const copy = CODE_COPY[membershipLang()];
+    const value = digitsOnly(codeInput.value);
+    if (codeInput.value !== value) {
+      codeInput.value = value;
+    }
+    const complete = value.length === 6;
+    const accepted = value === PROTOTYPE_CODE;
+    codeVerify.disabled = !accepted;
+    if (!complete) {
+      codeError.hidden = true;
+      codeError.textContent = "";
+      return;
+    }
+    if (!accepted) {
+      codeError.hidden = false;
+      codeError.textContent = copy.invalid;
+      return;
+    }
+    codeError.hidden = true;
+    codeError.textContent = "";
+  }
+
   function applyBoundaryCopy() {
-    const copy = EMAIL_COPY[membershipLang()];
+    const copy = CODE_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     const countryName =
       (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
@@ -939,6 +1030,10 @@
     emailError.hidden = true;
     emailError.textContent = "";
     emailContinue.disabled = true;
+    codeInput.value = "";
+    codeError.hidden = true;
+    codeError.textContent = "";
+    codeVerify.disabled = true;
     countryInputs.forEach((input) => {
       input.checked = false;
     });
@@ -962,6 +1057,7 @@
     viewEnded.hidden = name !== "ended";
     viewAccount.hidden = name !== "account";
     viewEmail.hidden = name !== "email";
+    viewCode.hidden = name !== "code";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
@@ -972,6 +1068,7 @@
     document.body.classList.toggle("page-ended", name === "ended");
     document.body.classList.toggle("page-account", name === "account");
     document.body.classList.toggle("page-email", name === "email");
+    document.body.classList.toggle("page-code", name === "code");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name !== "feed") {
@@ -999,6 +1096,9 @@
     if (name === "email") {
       applyEmailCopy();
     }
+    if (name === "code") {
+      applyCodeCopy();
+    }
     if (name === "boundary") {
       applyBoundaryCopy();
     }
@@ -1013,6 +1113,7 @@
         route === "ended" ||
         route === "account" ||
         route === "email" ||
+        route === "code" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1024,10 +1125,14 @@
         route === "ended" ||
         route === "account" ||
         route === "email" ||
+        route === "code" ||
         route === "boundary") &&
       !locationVerified
     ) {
       route = "location";
+    }
+    if ((route === "code" || route === "boundary") && !enteredEmail) {
+      route = "email";
     }
 
     if (route === "entry") {
@@ -1099,6 +1204,7 @@
         route === "ended" ||
         route === "account" ||
         route === "email" ||
+        route === "code" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -1116,6 +1222,7 @@
         route === "ended" ||
         route === "account" ||
         route === "email" ||
+        route === "code" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1128,6 +1235,7 @@
         route === "ended" ||
         route === "account" ||
         route === "email" ||
+        route === "code" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1312,8 +1420,10 @@
       return;
     }
     enteredEmail = value;
-    // Screen 09 boundary only — verification code is not built.
-    go("boundary");
+    codeInput.value = "";
+    codeError.hidden = true;
+    codeError.textContent = "";
+    go("code");
   });
 
   emailBack.addEventListener("click", () => {
@@ -1321,8 +1431,26 @@
     go("account");
   });
 
-  boundaryBack.addEventListener("click", () => {
+  codeInput.addEventListener("input", () => {
+    syncCodeVerify();
+  });
+
+  codeVerify.addEventListener("click", () => {
+    const value = digitsOnly(codeInput.value);
+    if (value !== PROTOTYPE_CODE) {
+      syncCodeVerify();
+      return;
+    }
+    // Screen 10 boundary only — passkey introduction is not built.
+    go("boundary");
+  });
+
+  codeChangeEmail.addEventListener("click", () => {
     go("email");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("code");
   });
 
   window.addEventListener("hashchange", render);
