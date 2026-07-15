@@ -28,32 +28,31 @@ require_contains() {
 
 echo "== Prior screens preserved =="
 require_file "index.html"
+require_contains "index.html" "view-passkey"
 require_contains "index.html" "view-code"
 require_contains "index.html" "view-email"
-require_contains "index.html" "view-account"
 
-echo "== Screen 10 structural checks =="
+echo "== Screen 11 structural checks =="
 require_file "script.js"
-require_contains "index.html" "view-passkey"
-require_contains "index.html" "passkey-create"
-require_contains "index.html" "passkey-notice"
-require_contains "index.html" "passkey-simulate"
-require_contains "index.html" "passkey-success"
 require_contains "index.html" "view-ready"
-require_contains "script.js" "PASSKEY_COPY"
-require_contains "script.js" "Proteggi il tuo account TOWN."
-require_contains "script.js" "Schütze dein TOWN-Konto."
-require_contains "script.js" "openPasskeyNotice"
-require_contains "script.js" "passkeySimulated"
-require_contains "script.js" 'go("passkey")'
+require_contains "index.html" "ready-continue"
+require_contains "index.html" "ready-back"
+require_contains "index.html" "ready-inactive"
+require_contains "index.html" "Screen 12 boundary"
+require_contains "script.js" "READY_COPY"
+require_contains "script.js" "Il tuo account TOWN è pronto."
+require_contains "script.js" "Dein TOWN-Konto ist bereit."
+require_contains "script.js" "membership: non attiva"
+require_contains "script.js" "Mitgliedschaft: nicht aktiv"
 require_contains "script.js" 'go("ready")'
+require_contains "script.js" 'go("boundary")'
 
 echo "== Guardrails =="
-if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|PublicKeyCredential' index.html script.js; then
-  echo "FAIL: forbidden WebAuthn/auth/storage/payment pattern present"
+if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|Membership active|membershipActive\s*=\s*true' index.html script.js; then
+  echo "FAIL: forbidden payment/auth/activation pattern present"
   fail=1
 else
-  echo "OK: no WebAuthn, real credentials, storage, or payment patterns"
+  echo "OK: no Stripe, auth, dashboard, or membership activation"
 fi
 
 echo "== HTML smoke =="
@@ -69,31 +68,30 @@ html = Path("index.html").read_text(encoding="utf-8")
 Checker().feed(html)
 Checker().close()
 for fragment in (
-    "view-passkey",
-    "passkey-intro",
-    "passkey-success",
-    "passkey-notice",
-    "passkey-simulate",
-    "passkey-continue",
     "view-ready",
+    "ready-label",
+    "ready-inactive",
+    "ready-membership",
+    "ready-payment-note",
+    "Screen 12 boundary",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
 
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
-    "ACCESSO SICURO",
-    "SICHERER ZUGANG",
-    "Simula configurazione",
-    "Einrichtung simulieren",
-    "Face ID",
-    "Touch ID",
-    "non è attiva",
-    "nicht aktiv",
+    "ACCOUNT PRONTO",
+    "KONTO BEREIT",
+    "€12",
+    "membership non è attiva",
+    "Mitgliedschaft ist nicht aktiv",
+    "Confine Screen 12",
+    "Screen-12-Grenze",
+    "Does not activate membership",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 10 passkey introduction mock present")
+print("OK: Screen 11 Account Ready mock present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

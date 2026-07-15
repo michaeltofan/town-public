@@ -9,6 +9,7 @@
   const viewEmail = document.getElementById("view-email");
   const viewCode = document.getElementById("view-code");
   const viewPasskey = document.getElementById("view-passkey");
+  const viewReady = document.getElementById("view-ready");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -112,6 +113,19 @@
   const passkeyNoticeTitle = document.getElementById("passkey-notice-title");
   const passkeyNoticeBody = document.getElementById("passkey-notice-body");
   const passkeySimulate = document.getElementById("passkey-simulate");
+  const readyLabel = document.getElementById("ready-label");
+  const readyTitle = document.getElementById("ready-title");
+  const readyCommunity = document.getElementById("ready-community");
+  const readyEmail = document.getElementById("ready-email");
+  const readyEmailStatus = document.getElementById("ready-email-status");
+  const readyAccessStatus = document.getElementById("ready-access-status");
+  const readyBody = document.getElementById("ready-body");
+  const readyBodySecond = document.getElementById("ready-body-second");
+  const readyInactive = document.getElementById("ready-inactive");
+  const readyMembership = document.getElementById("ready-membership");
+  const readyPaymentNote = document.getElementById("ready-payment-note");
+  const readyContinue = document.getElementById("ready-continue");
+  const readyBack = document.getElementById("ready-back");
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -156,6 +170,7 @@
     !viewEmail ||
     !viewCode ||
     !viewPasskey ||
+    !viewReady ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -259,6 +274,19 @@
     !passkeyNoticeTitle ||
     !passkeyNoticeBody ||
     !passkeySimulate ||
+    !readyLabel ||
+    !readyTitle ||
+    !readyCommunity ||
+    !readyEmail ||
+    !readyEmailStatus ||
+    !readyAccessStatus ||
+    !readyBody ||
+    !readyBodySecond ||
+    !readyInactive ||
+    !readyMembership ||
+    !readyPaymentNote ||
+    !readyContinue ||
+    !readyBack ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -688,18 +716,6 @@
       successNote:
         "Questo è solo uno stato di simulazione. Non esiste un account autenticato reale.",
       continue: "Continua",
-      boundaryLabel: "Confine Screen 11",
-      boundaryTitle:
-        "Account Ready non è ancora implementato.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo Continua sulla passkey. Lo Screen 11 non è stato costruito.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}{email}{passkey}",
-      boundaryVerified: " · verificato (mock)",
-      boundaryEmail: " · email: {value}",
-      boundaryPasskey: " · accesso sicuro: simulato",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna all’introduzione passkey",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -735,18 +751,73 @@
       successNote:
         "Dies ist nur ein Simulationszustand. Es gibt kein echt authentifiziertes Konto.",
       continue: "Weiter",
-      boundaryLabel: "Screen-11-Grenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const READY_COPY = {
+    it: {
+      label: "ACCOUNT PRONTO",
+      title: "Il tuo account TOWN è pronto.",
+      community: "Comunità: {city}",
+      emailLine: "Email: {email}",
+      emailStatus: "Email verificata (prototipo)",
+      accessStatus: "Accesso sicuro configurato (prototipo)",
+      body:
+        "La configurazione dell’account nel prototipo è completa.",
+      bodySecond:
+        "Il prossimo passo è attivare l’iscrizione annuale a TOWN.",
+      inactive:
+        "Account pronto — la membership non è attiva. Non puoi ancora partecipare come membro.",
+      membership: "Iscrizione TOWN — €12 all’anno",
+      paymentNote:
+        "In questo prototipo non è attivo alcun pagamento reale.",
+      continue: "Continua",
+      back: "Indietro",
+      boundaryLabel: "Confine Screen 12",
       boundaryTitle:
-        "Account Ready ist noch nicht implementiert.",
+        "Il confine del pagamento membership non è ancora implementato.",
       boundaryLead:
-        "Dies ist ein bewusster Halt nach Weiter auf der Passkey-Seite. Screen 11 wurde nicht gebaut.",
+        "Questo è un punto di stop deliberato dopo Continua su Account Ready. Lo Screen 12 non è stato costruito. Nessuna membership è stata attivata.",
       boundaryMeta:
-        "Ausgewählt: {country} · {city}{verified}{email}{passkey}",
+        "Selezionato: {country} · {city}{verified}{email}{passkey} · account: pronto · membership: non attiva",
+      boundaryVerified: " · verificato (mock)",
+      boundaryEmail: " · email: {value}",
+      boundaryPasskey: " · accesso sicuro: simulato",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna ad Account Ready",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "KONTO BEREIT",
+      title: "Dein TOWN-Konto ist bereit.",
+      community: "Gemeinschaft: {city}",
+      emailLine: "E-Mail: {email}",
+      emailStatus: "E-Mail bestätigt (Prototyp)",
+      accessStatus: "Sicherer Zugang eingerichtet (Prototyp)",
+      body:
+        "Die Kontoeinrichtung im Prototyp ist abgeschlossen.",
+      bodySecond:
+        "Als Nächstes aktivierst du deine jährliche TOWN-Mitgliedschaft.",
+      inactive:
+        "Konto bereit — die Mitgliedschaft ist nicht aktiv. Du kannst noch nicht als Mitglied teilnehmen.",
+      membership: "TOWN-Mitgliedschaft — €12 pro Jahr",
+      paymentNote:
+        "In diesem Prototyp ist keine echte Zahlung aktiv.",
+      continue: "Weiter",
+      back: "Zurück",
+      boundaryLabel: "Screen-12-Grenze",
+      boundaryTitle:
+        "Die Mitgliedschafts-Zahlungsgrenze ist noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach Weiter auf Account Ready. Screen 12 wurde nicht gebaut. Es wurde keine Mitgliedschaft aktiviert.",
+      boundaryMeta:
+        "Ausgewählt: {country} · {city}{verified}{email}{passkey} · Konto: bereit · Mitgliedschaft: nicht aktiv",
       boundaryVerified: " · verifiziert (Mock)",
       boundaryEmail: " · E-Mail: {value}",
       boundaryPasskey: " · sicherer Zugang: simuliert",
       boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zur Passkey-Einführung",
+      boundaryBack: "Zurück zu Account Ready",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
@@ -775,7 +846,8 @@
     email: "TOWN — Email entry",
     code: "TOWN — Verification code",
     passkey: "TOWN — Secure access",
-    boundary: "TOWN — Screen 11 boundary",
+    ready: "TOWN — Account ready",
+    boundary: "TOWN — Screen 12 boundary",
   };
 
   function parseRoute() {
@@ -790,6 +862,7 @@
     if (raw.startsWith("email")) return "email";
     if (raw.startsWith("code")) return "code";
     if (raw.startsWith("passkey")) return "passkey";
+    if (raw.startsWith("ready")) return "ready";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -1167,8 +1240,30 @@
     document.documentElement.lang = membershipLang();
   }
 
+  function applyReadyCopy() {
+    const copy = READY_COPY[membershipLang()];
+    const cityName = copy.cityNames[selectedCity] || selectedCity || "";
+    readyLabel.textContent = copy.label;
+    readyTitle.textContent = copy.title;
+    readyCommunity.textContent = copy.community.replace("{city}", cityName);
+    readyEmail.textContent = enteredEmail
+      ? copy.emailLine.replace("{email}", enteredEmail)
+      : "";
+    readyEmail.hidden = !enteredEmail;
+    readyEmailStatus.textContent = copy.emailStatus;
+    readyAccessStatus.textContent = copy.accessStatus;
+    readyBody.textContent = copy.body;
+    readyBodySecond.textContent = copy.bodySecond;
+    readyInactive.textContent = copy.inactive;
+    readyMembership.textContent = copy.membership;
+    readyPaymentNote.textContent = copy.paymentNote;
+    readyContinue.textContent = copy.continue;
+    readyBack.textContent = copy.back;
+    document.documentElement.lang = membershipLang();
+  }
+
   function applyBoundaryCopy() {
-    const copy = PASSKEY_COPY[membershipLang()];
+    const copy = READY_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     const countryName =
       (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
@@ -1257,6 +1352,7 @@
     viewEmail.hidden = name !== "email";
     viewCode.hidden = name !== "code";
     viewPasskey.hidden = name !== "passkey";
+    viewReady.hidden = name !== "ready";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
@@ -1269,6 +1365,7 @@
     document.body.classList.toggle("page-email", name === "email");
     document.body.classList.toggle("page-code", name === "code");
     document.body.classList.toggle("page-passkey", name === "passkey");
+    document.body.classList.toggle("page-ready", name === "ready");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name !== "feed") {
@@ -1305,6 +1402,9 @@
     if (name === "passkey") {
       applyPasskeyCopy();
     }
+    if (name === "ready") {
+      applyReadyCopy();
+    }
     if (name === "boundary") {
       applyBoundaryCopy();
     }
@@ -1321,6 +1421,7 @@
         route === "email" ||
         route === "code" ||
         route === "passkey" ||
+        route === "ready" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1334,6 +1435,7 @@
         route === "email" ||
         route === "code" ||
         route === "passkey" ||
+        route === "ready" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1342,8 +1444,11 @@
     if ((route === "code" || route === "passkey" || route === "boundary") && !enteredEmail) {
       route = "email";
     }
-    if ((route === "passkey" || route === "boundary") && !emailVerified) {
+    if ((route === "passkey" || route === "ready" || route === "boundary") && !emailVerified) {
       route = "code";
+    }
+    if ((route === "ready" || route === "boundary") && !passkeySimulated) {
+      route = "passkey";
     }
 
     if (route === "entry") {
@@ -1417,6 +1522,7 @@
         route === "email" ||
         route === "code" ||
         route === "passkey" ||
+        route === "ready" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -1436,6 +1542,7 @@
         route === "email" ||
         route === "code" ||
         route === "passkey" ||
+        route === "ready" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1450,6 +1557,7 @@
         route === "email" ||
         route === "code" ||
         route === "passkey" ||
+        route === "ready" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1684,12 +1792,23 @@
   });
 
   passkeyContinue.addEventListener("click", () => {
-    // Screen 11 boundary only — Account Ready is not built.
+    go("ready");
+  });
+
+  readyContinue.addEventListener("click", () => {
+    // Screen 12 boundary only — membership payment is not built.
+    // Does not activate membership.
     go("boundary");
   });
 
-  boundaryBack.addEventListener("click", () => {
+  readyBack.addEventListener("click", () => {
+    // Return to Screen 10 success state.
+    passkeySimulated = true;
     go("passkey");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("ready");
   });
 
   window.addEventListener("hashchange", render);
