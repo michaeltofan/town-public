@@ -38,7 +38,7 @@
   };
 
   function parseRoute() {
-    const raw = window.location.hash.replace(/^#\/?/, "");
+    const raw = (window.location.hash || "").replace(/^#\/?/, "");
     if (raw.startsWith("country")) return "country";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
@@ -65,23 +65,19 @@
 
   function go(route) {
     if (route === "entry") {
+      const base = window.location.href.split("#")[0];
       if (window.location.hash) {
-        history.pushState(
-          null,
-          "",
-          window.location.pathname + window.location.search
-        );
+        history.pushState(null, "", base);
       }
       showView("entry");
       return;
     }
 
-    const hash = "#/" + route;
-    if (window.location.hash !== hash) {
+    const target = "#/" + route;
+    if (window.location.hash !== target) {
       window.location.hash = "/" + route;
-    } else {
-      showView(route);
     }
+    showView(route);
   }
 
   function syncContinue() {

@@ -45,6 +45,7 @@ require_contains "index.html" "country-back"
 require_contains "index.html" "continue-country"
 require_contains "index.html" "Screen 03 boundary"
 require_contains "script.js" 'go("country")'
+require_contains "script.js" "location.hash"
 require_contains "script.js" "continueButton.disabled"
 
 echo "== Guardrails =="
