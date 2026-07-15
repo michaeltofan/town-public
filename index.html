@@ -228,18 +228,74 @@
       </main>
     </div>
 
-    <!-- Screen 04 boundary placeholder only -->
+    <!-- Screen 04: Location Verification Mock -->
+    <div id="view-location" hidden>
+      <main class="country location" aria-label="Location verification" id="location-content">
+        <div class="country__frame">
+          <header class="country__header">
+            <button type="button" class="country__back" id="location-back">
+              Back
+            </button>
+            <p class="country__brand" aria-label="TOWN">TOWN</p>
+          </header>
+
+          <div id="location-idle">
+            <h1 class="country__title" id="location-title">
+              Confirm your local community
+            </h1>
+            <p class="location__city" id="location-city"></p>
+            <p class="country__lead" id="location-lead">
+              TOWN is local. Participation belongs to people connected to this
+              community.
+            </p>
+            <p class="location__privacy" id="location-privacy">
+              This prototype does not perform real GPS verification. No real
+              location data is collected or stored in this slice.
+            </p>
+            <div class="country__actions">
+              <button type="button" class="btn btn--primary" id="location-verify">
+                Simulate verification
+              </button>
+            </div>
+          </div>
+
+          <div id="location-success" hidden>
+            <p class="location__status-label" id="location-status-label">
+              Prototype only
+            </p>
+            <h1 class="country__title" id="location-success-title">
+              Location verified
+            </h1>
+            <p class="country__lead" id="location-success-lead">
+              Your local community is confirmed for this prototype. No real GPS
+              was used.
+            </p>
+            <div class="country__actions">
+              <button
+                type="button"
+                class="btn btn--primary"
+                id="location-continue"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 05 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 04 boundary">
+      <main class="boundary" aria-label="Screen 05 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label">Screen 04 boundary</p>
+          <p class="boundary__label">Screen 05 boundary</p>
           <h1 class="boundary__title">
-            Location verification is not implemented yet.
+            The local feed is not implemented yet.
           </h1>
           <p class="boundary__lead">
-            This is a deliberate stop point after city selection. Screen 04 has
-            not been built.
+            This is a deliberate stop point after location verification. Screen
+            05 has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -247,7 +303,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to city selection
+            Back to location verification
           </button>
         </div>
       </main>

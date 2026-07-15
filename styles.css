@@ -772,6 +772,7 @@ button {
 #view-entry[hidden],
 #view-country[hidden],
 #view-city[hidden],
+#view-location[hidden],
 #view-boundary[hidden] {
   display: none !important;
 }
@@ -786,5 +787,37 @@ button {
 .city__thumb {
   object-fit: cover;
   border-radius: 3px;
+}
+
+.location__city {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--charcoal);
+}
+
+.location__privacy {
+  margin: 0 0 2rem;
+  max-width: 36ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.location__status-label {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+#location-idle[hidden],
+#location-success[hidden] {
+  display: none !important;
 }
 
