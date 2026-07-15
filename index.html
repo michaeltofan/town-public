@@ -365,20 +365,92 @@
           </button>
         </div>
       </div>
+
+      <!-- Screen 06 stage 1: contextual invitation over originating signal -->
+      <div
+        class="invite"
+        id="membership-invite"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="invite-title"
+      >
+        <div class="invite__dim" aria-hidden="true"></div>
+        <div class="invite__panel" role="document">
+          <h2 class="invite__title" id="invite-title"></h2>
+          <p class="invite__body" id="invite-body"></p>
+          <p class="invite__body" id="invite-body-second"></p>
+          <div class="invite__actions">
+            <button type="button" class="feed__primary" id="invite-continue">
+              Continue
+            </button>
+            <button type="button" class="feed__secondary" id="invite-not-now">
+              Not now
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Screen 06 boundary placeholder only -->
+    <!-- Screen 06 stage 2: membership details -->
+    <div id="view-membership" hidden>
+      <main class="membership" aria-label="Membership details">
+        <div class="membership__frame">
+          <p class="membership__brand" aria-label="TOWN">TOWN</p>
+          <p class="membership__label" id="membership-label"></p>
+          <h1 class="membership__title" id="membership-title"></h1>
+          <p class="membership__community" id="membership-community"></p>
+          <p class="membership__lead" id="membership-body"></p>
+          <p class="membership__lead" id="membership-body-second"></p>
+          <p class="membership__price" id="membership-price"></p>
+          <p class="membership__note" id="membership-renewal"></p>
+          <p class="membership__note" id="membership-renewal-second"></p>
+          <h2 class="membership__subtitle" id="membership-why-title"></h2>
+          <ul class="membership__list" id="membership-why-list"></ul>
+          <h2 class="membership__subtitle" id="membership-rights-title"></h2>
+          <p class="membership__lead" id="membership-rights"></p>
+          <div class="membership__actions">
+            <button type="button" class="btn btn--primary" id="membership-continue">
+              Continue
+            </button>
+            <button
+              type="button"
+              class="btn btn--secondary"
+              id="membership-not-now"
+            >
+              Not now
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 06: experience end after Not now -->
+    <div id="view-ended" hidden>
+      <main class="ended" aria-label="Experience end">
+        <div class="ended__frame">
+          <p class="ended__brand" aria-label="TOWN">TOWN</p>
+          <h1 class="ended__title" id="ended-title"></h1>
+          <p class="ended__lead" id="ended-body"></p>
+          <button type="button" class="btn btn--primary" id="ended-return">
+            Return to TOWN Entry
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 07 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 06 boundary">
+      <main class="boundary" aria-label="Screen 07 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label">Screen 06 boundary</p>
-          <h1 class="boundary__title">
-            Membership invitation is not implemented yet.
+          <p class="boundary__label" id="boundary-label">Screen 07 boundary</p>
+          <h1 class="boundary__title" id="boundary-title">
+            Account setup introduction is not implemented yet.
           </h1>
-          <p class="boundary__lead">
-            This is a deliberate stop point after I SEE THIS TOO. Screen 06 has
-            not been built.
+          <p class="boundary__lead" id="boundary-lead">
+            This is a deliberate stop point after membership Continue. Screen 07
+            has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -386,7 +458,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to local feed
+            Back to membership details
           </button>
         </div>
       </main>
