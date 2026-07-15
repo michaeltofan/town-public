@@ -18,16 +18,18 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 07 — Account Setup Introduction (approved on `main`)
 
-### Screen 08 — Email Entry Mock (review)
+### Screen 08 — Email Entry Mock (approved on `main`)
 
-Flow after Screen 07 **Continue**:
+### Screen 09 — Verification Code Mock (review)
 
-1. Email entry (prototype input only)
-2. Continue disabled until a valid email is entered
-3. **Back** → Screen 07 (state preserved)
-4. **Continue** → Screen 09 boundary only
+Flow after Screen 08 **Continue**:
 
-No real email is sent. No real account is created. No authentication.
+1. Verification code mock (prototype code `123456`)
+2. Verify disabled until `123456` is entered
+3. **Change email** → Screen 08 (state preserved)
+4. **Verify** → Screen 10 boundary only
+
+No real code is sent. No real email verification. No real account is created.
 
 ### Local preview
 
@@ -39,11 +41,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview (Screens 01–08):
+Interactive browser preview (Screens 01–09):
 
 **https://aged-front-perfectly-guys.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → … → Screen 07 → Screen 08 (IT) → validation → Back / Screen 09 boundary
-2. Germany → Munich → … → Screen 07 → Screen 08 (DE) → validation → Back / Screen 09 boundary
+1. Italy → Milano → … → Screen 08 → Screen 09 (IT) → validation → Change email / Screen 10 boundary
+2. Germany → Munich → … → Screen 08 → Screen 09 (DE) → validation → Change email / Screen 10 boundary

@@ -505,18 +505,57 @@
       </main>
     </div>
 
-    <!-- Screen 09 boundary placeholder only -->
+    <!-- Screen 09: Verification Code Mock -->
+    <div id="view-code" hidden>
+      <main class="code" aria-label="Verification code">
+        <div class="code__frame">
+          <p class="code__brand" aria-label="TOWN">TOWN</p>
+          <p class="code__label" id="code-label"></p>
+          <h1 class="code__title" id="code-title"></h1>
+          <p class="code__lead" id="code-body"></p>
+          <p class="code__email" id="code-email"></p>
+          <label class="code__field-label" for="code-input" id="code-field-label"></label>
+          <input
+            class="code__input"
+            id="code-input"
+            type="text"
+            name="code"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="6"
+            spellcheck="false"
+          />
+          <p class="code__note" id="code-prototype"></p>
+          <p class="code__error" id="code-error" hidden></p>
+          <div class="code__actions">
+            <button
+              type="button"
+              class="btn btn--primary"
+              id="code-verify"
+              disabled
+            >
+              Verify
+            </button>
+            <button type="button" class="btn btn--secondary" id="code-change-email">
+              Change email
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Screen 10 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 09 boundary">
+      <main class="boundary" aria-label="Screen 10 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 09 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 10 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Verification code is not implemented yet.
+            Passkey introduction is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after email Continue. Screen 09 has
-            not been built.
+            This is a deliberate stop point after verification Continue. Screen
+            10 has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -524,7 +563,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to email entry
+            Back to verification code
           </button>
         </div>
       </main>

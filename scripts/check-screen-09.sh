@@ -28,32 +28,32 @@ require_contains() {
 
 echo "== Prior screens preserved =="
 require_file "index.html"
-require_contains "index.html" "Return to your real local community."
+require_contains "index.html" "view-email"
 require_contains "index.html" "view-account"
 require_contains "index.html" "view-membership"
-require_contains "index.html" "view-feed"
 
-echo "== Screen 08 structural checks =="
+echo "== Screen 09 structural checks =="
 require_file "script.js"
-require_contains "index.html" "view-email"
-require_contains "index.html" "email-input"
-require_contains "index.html" "email-continue"
-require_contains "index.html" "email-back"
 require_contains "index.html" "view-code"
-require_contains "script.js" "EMAIL_COPY"
-require_contains "script.js" "Inserisci la tua email."
-require_contains "script.js" "Gib deine E-Mail-Adresse ein."
-require_contains "script.js" "EMAIL_PATTERN"
-require_contains "script.js" "syncEmailContinue"
-require_contains "script.js" 'go("email")'
+require_contains "index.html" "code-input"
+require_contains "index.html" "code-verify"
+require_contains "index.html" "code-change-email"
+require_contains "index.html" "Screen 10 boundary"
+require_contains "script.js" "CODE_COPY"
+require_contains "script.js" "PROTOTYPE_CODE"
+require_contains "script.js" "123456"
+require_contains "script.js" "Controlla la tua email."
+require_contains "script.js" "Prüfe deine E-Mails."
+require_contains "script.js" "syncCodeVerify"
 require_contains "script.js" 'go("code")'
+require_contains "script.js" 'go("boundary")'
 
 echo "== Guardrails =="
-if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials' index.html script.js; then
+if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|Face ID|WebAuthn|navigator\.credentials' index.html script.js; then
   echo "FAIL: forbidden auth/storage/payment/social pattern present"
   fail=1
 else
-  echo "OK: no real email send, storage, auth, or payment patterns"
+  echo "OK: no real code send, passkey flow, storage, or payment patterns"
 fi
 
 echo "== HTML smoke =="
@@ -69,30 +69,32 @@ html = Path("index.html").read_text(encoding="utf-8")
 Checker().feed(html)
 Checker().close()
 for fragment in (
-    "view-email",
-    'id="email-input"',
-    'type="email"',
-    "email-error",
-    "email-privacy",
     "view-code",
+    'id="code-input"',
+    "code-prototype",
+    "code-error",
+    "code-email",
+    "Screen 10 boundary",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
 
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
-    "CREA IL TUO ACCOUNT",
-    "KONTO ERSTELLEN",
-    "Non serve una password.",
-    "Du brauchst kein Passwort.",
-    "non viene inviata alcuna email",
-    "keine E-Mail gesendet",
-    "Inserisci un indirizzo email valido.",
-    "Gib eine gültige E-Mail-Adresse ein.",
+    "VERIFICA EMAIL",
+    "E-MAIL BESTÄTIGEN",
+    "inserisci 123456",
+    "Gib im Prototyp 123456",
+    "Il codice non è corretto.",
+    "Der Code ist nicht korrekt.",
+    "Cambia email",
+    "E-Mail-Adresse ändern",
+    "Confine Screen 10",
+    "Screen-10-Grenze",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 08 email entry mock present")
+print("OK: Screen 09 verification code mock present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then
