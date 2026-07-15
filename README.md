@@ -31,6 +31,10 @@ python3 -m http.server 4173
 
 Open `http://localhost:4173/`.
 
-### Visual review URL
+### Visual review URL (Screen 02)
 
-See the Screen 02 pull request for the current browser-accessible preview URL.
+Interactive review (open Screen 01, then Enter My Town):
+
+https://opponent-joyce-important-flavor.trycloudflare.com/
+
+PR: https://github.com/michaeltofan/town-public/pull/2
