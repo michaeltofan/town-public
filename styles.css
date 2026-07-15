@@ -530,6 +530,7 @@ button {
 .country__back {
   color: var(--muted);
   text-decoration: none;
+  background: transparent;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -766,5 +767,11 @@ button {
   width: var(--btn-width);
   max-width: 100%;
   text-decoration: none;
+}
+
+#view-entry[hidden],
+#view-country[hidden],
+#view-boundary[hidden] {
+  display: none !important;
 }
 

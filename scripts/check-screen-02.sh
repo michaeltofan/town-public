@@ -30,35 +30,34 @@ echo "== Screen 01 still present (not redesigned away) =="
 require_file "index.html"
 require_contains "index.html" "Return to your real local community."
 require_contains "index.html" "Enter My Town"
-require_contains "script.js" "country.html"
+require_contains "index.html" "welcome-street.png"
 
 echo "== Screen 02 structural checks =="
-require_file "country.html"
-require_file "country.js"
-require_file "screen-03-boundary.html"
+require_file "script.js"
 require_file "assets/flags/italy.png"
 require_file "assets/flags/germany.png"
-
-require_contains "country.html" "Choose your country"
-require_contains "country.html" "real local community"
-require_contains "country.html" "Italy"
-require_contains "country.html" "Germany"
-require_contains "country.html" "Continue"
-require_contains "country.html" "Back"
-require_contains "country.html" 'disabled'
-require_contains "screen-03-boundary.html" "Screen 03 boundary"
+require_contains "index.html" "Choose your country"
+require_contains "index.html" "real local community"
+require_contains "index.html" "Italy"
+require_contains "index.html" "Germany"
+require_contains "index.html" "Continue"
+require_contains "index.html" "country-back"
+require_contains "index.html" "continue-country"
+require_contains "index.html" "Screen 03 boundary"
+require_contains "script.js" 'go("country")'
+require_contains "script.js" "continueButton.disabled"
 
 echo "== Guardrails =="
-if grep -qiE 'select city|city selection' country.html country.js; then
-  echo "FAIL: city selection appears in Screen 02 implementation"
+if grep -qiE 'select city|city selection is implemented' index.html script.js; then
+  echo "FAIL: city selection appears implemented"
   fail=1
 else
-  echo "OK: no city selection in Screen 02"
+  echo "OK: city selection not implemented"
 fi
 
 for pattern in Stripe pricing followers trending dashboard; do
-  if grep -Fqi "$pattern" country.html country.js screen-03-boundary.html; then
-    echo "FAIL: forbidden pattern in Screen 02 files: $pattern"
+  if grep -Fqi "$pattern" index.html script.js; then
+    echo "FAIL: forbidden pattern: $pattern"
     fail=1
   else
     echo "OK: no forbidden pattern '$pattern'"
@@ -74,17 +73,22 @@ class Checker(HTMLParser):
     def error(self, message):
         raise SystemExit(message)
 
-for name in ("index.html", "country.html", "screen-03-boundary.html"):
-    html = Path(name).read_text(encoding="utf-8")
-    Checker().feed(html)
-    Checker().close()
-    print(f"OK: {name} parsed")
-
-country = Path("country.html").read_text(encoding="utf-8")
-for fragment in ("Italy", "Germany", "Continue", "country-italy", "country-germany"):
-    if fragment not in country:
-        raise SystemExit(f"Missing fragment in country.html: {fragment}")
-print("OK: country.html required fragments present")
+html = Path("index.html").read_text(encoding="utf-8")
+Checker().feed(html)
+Checker().close()
+for fragment in (
+    "Enter My Town",
+    "Choose your country",
+    "Italy",
+    "Germany",
+    "continue-country",
+    "Screen 03 boundary",
+    "view-country",
+    "view-boundary",
+):
+    if fragment not in html:
+        raise SystemExit(f"Missing fragment: {fragment}")
+print("OK: index.html parsed with Screen 01 + 02 + boundary")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

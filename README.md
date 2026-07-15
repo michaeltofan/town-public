@@ -10,7 +10,7 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 02 — Country Selection (review)
 
-`country.html`
+Implemented in `index.html` as the next view after Screen 01 (`#/country`).
 
 Flow:
 
@@ -19,7 +19,7 @@ Flow:
 3. Choose **Italy** or **Germany**
 4. **Continue** enables after a country is selected
 5. **Back** returns to Screen 01
-6. Continue stops at the Screen 03 boundary placeholder
+6. Continue stops at the Screen 03 boundary placeholder (`#/boundary`)
 
 No account flow, membership, authentication, payments, API, or city selection are included.
 
