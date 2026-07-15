@@ -1,15 +1,94 @@
 (() => {
+  const viewEntry = document.getElementById("view-entry");
+  const viewCountry = document.getElementById("view-country");
+  const viewBoundary = document.getElementById("view-boundary");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
-  const accessNote = document.getElementById("access-note");
+  const continueButton = document.getElementById("continue-country");
+  const countryBack = document.getElementById("country-back");
+  const boundaryBack = document.getElementById("boundary-back");
+  const boundaryCountry = document.getElementById("boundary-country");
+  const countryInputs = Array.from(
+    document.querySelectorAll('input[name="country"]')
+  );
 
-  if (!learnMoreButton || !enterButton || !sheet || !accessNote) {
+  if (
+    !viewEntry ||
+    !viewCountry ||
+    !viewBoundary ||
+    !learnMoreButton ||
+    !enterButton ||
+    !sheet ||
+    !continueButton ||
+    !countryBack ||
+    !boundaryBack ||
+    !boundaryCountry
+  ) {
     return;
   }
 
   let lastFocus = null;
-  let noteTimer = null;
+  let selectedCountry = null;
+
+  const titles = {
+    entry: "TOWN — Entry",
+    country: "TOWN — Choose your country",
+    boundary: "TOWN — Screen 03 boundary",
+  };
+
+  function parseRoute() {
+    const raw = (window.location.hash || "").replace(/^#\/?/, "");
+    if (raw.startsWith("country")) return "country";
+    if (raw.startsWith("boundary")) return "boundary";
+    return "entry";
+  }
+
+  function showView(name) {
+    viewEntry.hidden = name !== "entry";
+    viewCountry.hidden = name !== "country";
+    viewBoundary.hidden = name !== "boundary";
+    document.title = titles[name] || titles.entry;
+    document.body.classList.toggle("page-country", name === "country");
+    document.body.classList.toggle("page-boundary", name === "boundary");
+
+    if (name === "boundary") {
+      if (selectedCountry) {
+        boundaryCountry.hidden = false;
+        boundaryCountry.textContent = "Selected country: " + selectedCountry;
+      } else {
+        boundaryCountry.hidden = true;
+        boundaryCountry.textContent = "";
+      }
+    }
+  }
+
+  function go(route) {
+    if (route === "entry") {
+      const base = window.location.href.split("#")[0];
+      if (window.location.hash) {
+        history.pushState(null, "", base);
+      }
+      showView("entry");
+      return;
+    }
+
+    const target = "#/" + route;
+    if (window.location.hash !== target) {
+      window.location.hash = "/" + route;
+    }
+    showView(route);
+  }
+
+  function syncContinue() {
+    const chosen = countryInputs.find((input) => input.checked);
+    selectedCountry = chosen ? chosen.value : null;
+    continueButton.disabled = !selectedCountry;
+  }
+
+  function render() {
+    showView(parseRoute());
+  }
 
   const focusableSelector =
     'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -24,12 +103,8 @@
     lastFocus = document.activeElement;
     sheet.hidden = false;
     document.body.style.overflow = "hidden";
-    const focusable = getFocusable();
-    (focusable[0] || sheet.querySelector(".sheet__panel")).focus?.();
     const closeBtn = sheet.querySelector(".sheet__close");
-    if (closeBtn) {
-      closeBtn.focus();
-    }
+    if (closeBtn) closeBtn.focus();
   }
 
   function closeSheet() {
@@ -42,11 +117,8 @@
   }
 
   learnMoreButton.addEventListener("click", openSheet);
-
   sheet.addEventListener("click", (event) => {
-    if (event.target.closest("[data-close-sheet]")) {
-      closeSheet();
-    }
+    if (event.target.closest("[data-close-sheet]")) closeSheet();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -55,15 +127,11 @@
       closeSheet();
       return;
     }
-
     if (event.key !== "Tab" || sheet.hidden) return;
-
     const focusable = getFocusable();
     if (focusable.length === 0) return;
-
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
-
     if (event.shiftKey && document.activeElement === first) {
       event.preventDefault();
       last.focus();
@@ -73,19 +141,30 @@
     }
   });
 
-  // Primary action stays on Screen 01 — no later journey screens.
   enterButton.addEventListener("click", () => {
-    accessNote.classList.add("is-emphasized");
-    accessNote.setAttribute("tabindex", "-1");
-    accessNote.focus({ preventScroll: false });
-    accessNote.scrollIntoView({ block: "nearest", behavior: "smooth" });
-
-    if (noteTimer) {
-      clearTimeout(noteTimer);
-    }
-    noteTimer = setTimeout(() => {
-      accessNote.classList.remove("is-emphasized");
-      accessNote.removeAttribute("tabindex");
-    }, 3200);
+    closeSheet();
+    go("country");
   });
+
+  countryBack.addEventListener("click", () => {
+    go("entry");
+  });
+
+  countryInputs.forEach((input) => {
+    input.addEventListener("change", syncContinue);
+  });
+
+  continueButton.addEventListener("click", () => {
+    if (!selectedCountry) return;
+    go("boundary");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("country");
+  });
+
+  window.addEventListener("hashchange", render);
+  window.addEventListener("popstate", render);
+  syncContinue();
+  render();
 })();
