@@ -54,7 +54,7 @@ Open `http://localhost:4173/`.
 
 Interactive browser preview:
 
-**https://aged-front-perfectly-guys.trycloudflare.com/**
+**https://swing-minutes-jerry-eugene.trycloudflare.com/**
 
 Review paths:
 
