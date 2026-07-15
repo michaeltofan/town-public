@@ -2,14 +2,12 @@
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
-  const accessNote = document.getElementById("access-note");
 
-  if (!learnMoreButton || !enterButton || !sheet || !accessNote) {
+  if (!learnMoreButton || !enterButton || !sheet) {
     return;
   }
 
   let lastFocus = null;
-  let noteTimer = null;
 
   const focusableSelector =
     'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -24,8 +22,6 @@
     lastFocus = document.activeElement;
     sheet.hidden = false;
     document.body.style.overflow = "hidden";
-    const focusable = getFocusable();
-    (focusable[0] || sheet.querySelector(".sheet__panel")).focus?.();
     const closeBtn = sheet.querySelector(".sheet__close");
     if (closeBtn) {
       closeBtn.focus();
@@ -73,19 +69,8 @@
     }
   });
 
-  // Primary action stays on Screen 01 — no later journey screens.
+  // Primary action continues to Screen 02 — Country Selection.
   enterButton.addEventListener("click", () => {
-    accessNote.classList.add("is-emphasized");
-    accessNote.setAttribute("tabindex", "-1");
-    accessNote.focus({ preventScroll: false });
-    accessNote.scrollIntoView({ block: "nearest", behavior: "smooth" });
-
-    if (noteTimer) {
-      clearTimeout(noteTimer);
-    }
-    noteTimer = setTimeout(() => {
-      accessNote.classList.remove("is-emphasized");
-      accessNote.removeAttribute("tabindex");
-    }, 3200);
+    window.location.href = "country.html";
   });
 })();

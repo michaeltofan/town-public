@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="TOWN — Screen 03 boundary placeholder." />
+    <title>TOWN — Screen 03 boundary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page-boundary">
+    <main class="boundary" aria-label="Screen 03 boundary">
+      <div class="boundary__frame">
+        <p class="boundary__brand" aria-label="TOWN">TOWN</p>
+        <p class="boundary__label">Screen 03 boundary</p>
+        <h1 class="boundary__title">City selection is not implemented yet.</h1>
+        <p class="boundary__lead">
+          This is a deliberate stop point after country selection. Screen 03 has
+          not been built.
+        </p>
+        <p class="boundary__meta" id="boundary-country" hidden></p>
+        <a class="btn btn--secondary boundary__back" href="country.html"
+          >Back to country selection</a
+        >
+      </div>
+    </main>
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const country = params.get("country");
+        const meta = document.getElementById("boundary-country");
+        if (country && meta) {
+          meta.hidden = false;
+          meta.textContent = "Selected country: " + country;
+        }
+      })();
+    </script>
+  </body>
+</html>

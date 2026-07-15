@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TOWN — choose your country to enter your real local community."
+    />
+    <title>TOWN — Choose your country</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page-country">
+    <a class="skip-link" href="#country-content">Skip to content</a>
+
+    <main class="country" aria-label="Country selection" id="country-content">
+      <div class="country__frame">
+        <header class="country__header">
+          <a class="country__back" href="index.html">Back</a>
+          <p class="country__brand" aria-label="TOWN">TOWN</p>
+        </header>
+
+        <h1 class="country__title">Choose your country</h1>
+        <p class="country__lead">
+          TOWN connects people only to their real local community — not to a
+          global feed.
+        </p>
+
+        <fieldset class="country__fieldset">
+          <legend class="country__legend">Country</legend>
+
+          <div class="country__options" role="radiogroup" aria-label="Country">
+            <label class="country__option">
+              <input
+                type="radio"
+                name="country"
+                value="Italy"
+                id="country-italy"
+              />
+              <span class="country__option-face">
+                <img
+                  class="country__flag"
+                  src="assets/flags/italy.png"
+                  alt=""
+                  width="28"
+                  height="20"
+                  decoding="async"
+                />
+                <span class="country__option-label">Italy</span>
+              </span>
+            </label>
+
+            <label class="country__option">
+              <input
+                type="radio"
+                name="country"
+                value="Germany"
+                id="country-germany"
+              />
+              <span class="country__option-face">
+                <img
+                  class="country__flag"
+                  src="assets/flags/germany.png"
+                  alt=""
+                  width="28"
+                  height="20"
+                  decoding="async"
+                />
+                <span class="country__option-label">Germany</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="country__actions">
+          <button
+            type="button"
+            class="btn btn--primary"
+            id="continue-country"
+            disabled
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script src="country.js" defer></script>
+  </body>
+</html>

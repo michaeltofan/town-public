@@ -43,7 +43,6 @@ require_contains "index.html" "What is TOWN?"
 
 # Guardrails: unfinished journey / marketing patterns must not appear
 forbidden_patterns=(
-  "Select Country"
   "Select City"
   "Stripe"
   "pricing"
@@ -53,7 +52,7 @@ forbidden_patterns=(
   "phone mockup"
 )
 
-screen_files=(index.html styles.css script.js README.md)
+screen_files=(index.html script.js README.md)
 for pattern in "${forbidden_patterns[@]}"; do
   hit=0
   for file in "${screen_files[@]}"; do

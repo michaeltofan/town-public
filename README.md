@@ -2,11 +2,26 @@
 
 Public web surface for **TOWN** (`towncivic.org`).
 
-## Screen 01 — TOWN Entry (visual review)
+## Screens
 
-This repository currently contains **only Screen 01: TOWN Entry**.
+### Screen 01 — TOWN Entry (approved on `main`)
 
-It is a single static screen. No account flow, membership, authentication, payments, API, or later journey screens are included.
+`index.html`
+
+### Screen 02 — Country Selection (review)
+
+`country.html`
+
+Flow:
+
+1. Open Screen 01
+2. Press **Enter My Town**
+3. Choose **Italy** or **Germany**
+4. **Continue** enables after a country is selected
+5. **Back** returns to Screen 01
+6. Continue stops at the Screen 03 boundary placeholder
+
+No account flow, membership, authentication, payments, API, or city selection are included.
 
 ### Local preview
 
@@ -16,10 +31,6 @@ python3 -m http.server 4173
 
 Open `http://localhost:4173/`.
 
-### Visual review URL (Screen 01 only)
+### Visual review URL
 
-Open this URL directly in a browser (no local setup required):
-
-https://htmlpreview.github.io/?https://github.com/michaeltofan/town-public/blob/cursor/town-web-screen-01-entry-bbf4/index.html
-
-This preview renders **Screen 01: TOWN Entry** from the review branch `cursor/town-web-screen-01-entry-bbf4`.
+See the Screen 02 pull request for the current browser-accessible preview URL.
