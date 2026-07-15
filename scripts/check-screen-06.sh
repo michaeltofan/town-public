@@ -49,7 +49,7 @@ require_contains "script.js" 'go("membership")'
 require_contains "script.js" 'go("ended")'
 
 echo "== Guardrails =="
-if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|type="email"|passkey|dashboard|followers|trending' index.html script.js; then
+if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|passkey|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden account/payment/social pattern present"
   fail=1
 else
