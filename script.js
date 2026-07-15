@@ -4,13 +4,13 @@
   const viewCity = document.getElementById("view-city");
   const viewLocation = document.getElementById("view-location");
   const viewFeed = document.getElementById("view-feed");
-  const viewBoundary = document.getElementById("view-boundary");
   const viewAccount = document.getElementById("view-account");
   const viewEmail = document.getElementById("view-email");
   const viewCode = document.getElementById("view-code");
   const viewPasskey = document.getElementById("view-passkey");
   const viewReady = document.getElementById("view-ready");
   const viewPayment = document.getElementById("view-payment");
+  const viewActive = document.getElementById("view-active");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -52,11 +52,18 @@
   const signalSheetTitle = document.getElementById("signal-sheet-title");
   const signalSheetMessage = document.getElementById("signal-sheet-message");
   const signalSheetClose = document.getElementById("signal-sheet-close");
-  const boundaryBack = document.getElementById("boundary-back");
-  const boundaryMeta = document.getElementById("boundary-meta");
-  const boundaryLabel = document.getElementById("boundary-label");
-  const boundaryTitle = document.getElementById("boundary-title");
-  const boundaryLead = document.getElementById("boundary-lead");
+  const feedSeeTooDone = document.getElementById("feed-see-too-done");
+  const feedDoneTitle = document.getElementById("feed-done-title");
+  const feedDoneNote = document.getElementById("feed-done-note");
+  const activeLabel = document.getElementById("active-label");
+  const activeTitle = document.getElementById("active-title");
+  const activeCommunity = document.getElementById("active-community");
+  const activeMemberStatus = document.getElementById("active-member-status");
+  const activeBody = document.getElementById("active-body");
+  const activeBodySecond = document.getElementById("active-body-second");
+  const activePrototype = document.getElementById("active-prototype");
+  const activeReturn = document.getElementById("active-return");
+  const activeBack = document.getElementById("active-back");
   const accountLabel = document.getElementById("account-label");
   const accountTitle = document.getElementById("account-title");
   const accountCommunity = document.getElementById("account-community");
@@ -200,13 +207,13 @@
     !viewCity ||
     !viewLocation ||
     !viewFeed ||
-    !viewBoundary ||
     !viewAccount ||
     !viewEmail ||
     !viewCode ||
     !viewPasskey ||
     !viewReady ||
     !viewPayment ||
+    !viewActive ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -248,11 +255,18 @@
     !signalSheetTitle ||
     !signalSheetMessage ||
     !signalSheetClose ||
-    !boundaryBack ||
-    !boundaryMeta ||
-    !boundaryLabel ||
-    !boundaryTitle ||
-    !boundaryLead ||
+    !feedSeeTooDone ||
+    !feedDoneTitle ||
+    !feedDoneNote ||
+    !activeLabel ||
+    !activeTitle ||
+    !activeCommunity ||
+    !activeMemberStatus ||
+    !activeBody ||
+    !activeBodySecond ||
+    !activePrototype ||
+    !activeReturn ||
+    !activeBack ||
     !accountLabel ||
     !accountTitle ||
     !accountCommunity ||
@@ -538,7 +552,10 @@
     it: {
       back: "Indietro",
       visitor: "Visitatore",
+      member: "Membro · {city}",
       seeThisToo: "LO VEDO ANCH’IO",
+      doneTitle: "Lo vedi anche tu",
+      doneNote: "Conferma registrata nel prototipo",
       openSignal: "Apri segnale",
       openSignalTitle: "Dettaglio del segnale",
       openSignalMessage:
@@ -551,7 +568,10 @@
     de: {
       back: "Zurück",
       visitor: "Besucher",
+      member: "Mitglied · {city}",
       seeThisToo: "ICH SEHE DAS AUCH",
+      doneTitle: "Du siehst das auch",
+      doneNote: "Bestätigung im Prototyp registriert",
       openSignal: "Signal öffnen",
       openSignalTitle: "Signaldetails",
       openSignalMessage:
@@ -891,18 +911,6 @@
       successNote:
         "Questo stato è solo una simulazione. Non implica conferma civica, autenticazione reale o abbonamento reale.",
       continue: "Continua",
-      boundaryLabel: "Confine Screen 13",
-      boundaryTitle:
-        "L’esperienza Membership Active e il ritorno al segnale non sono ancora implementati.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo Continua sul confine pagamento. Lo Screen 13 non è stato costruito.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}{email}{passkey} · account: pronto · membership: attiva (prototipo)",
-      boundaryVerified: " · verificato (mock)",
-      boundaryEmail: " · email: {value}",
-      boundaryPasskey: " · accesso sicuro: simulato",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna al confine pagamento",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -935,18 +943,39 @@
       successNote:
         "Dieser Zustand ist nur eine Simulation. Er bedeutet keine zivile Bestätigung, keine echte Authentifizierung und kein echtes Abonnement.",
       continue: "Weiter",
-      boundaryLabel: "Screen-13-Grenze",
-      boundaryTitle:
-        "Die Membership-Active-Erfahrung und die Rückkehr zum Signal sind noch nicht implementiert.",
-      boundaryLead:
-        "Dies ist ein bewusster Halt nach Weiter auf der Zahlungsgrenze. Screen 13 wurde nicht gebaut.",
-      boundaryMeta:
-        "Ausgewählt: {country} · {city}{verified}{email}{passkey} · Konto: bereit · Mitgliedschaft: aktiv (Prototyp)",
-      boundaryVerified: " · verifiziert (Mock)",
-      boundaryEmail: " · E-Mail: {value}",
-      boundaryPasskey: " · sicherer Zugang: simuliert",
-      boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zur Zahlungsgrenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const ACTIVE_COPY = {
+    it: {
+      label: "MEMBERSHIP ATTIVA",
+      title: "Membership attiva — solo prototipo.",
+      community: "Comunità: {city}",
+      memberStatus: "Membro · {city}",
+      body:
+        "La configurazione dell’account nel prototipo è completa e la partecipazione è ora attiva nel prototipo.",
+      bodySecond:
+        "Nessun pagamento reale è avvenuto e non esiste alcun entitlement reale.",
+      prototype:
+        "Questo è solo lo stato di chiusura del percorso prototipo. Non implica autenticazione reale o conferma civica salvata.",
+      returnSignal: "Torna al segnale",
+      back: "Indietro",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "MITGLIEDSCHAFT AKTIV",
+      title: "Mitgliedschaft aktiv — nur Prototyp.",
+      community: "Gemeinschaft: {city}",
+      memberStatus: "Mitglied · {city}",
+      body:
+        "Die Kontoeinrichtung im Prototyp ist abgeschlossen und die Teilnahme ist im Prototyp jetzt aktiv.",
+      bodySecond:
+        "Es ist keine echte Zahlung erfolgt und es gibt kein reales Entitlement.",
+      prototype:
+        "Dies ist nur der Abschlusszustand des Prototypwegs. Er bedeutet keine echte Authentifizierung und keine gespeicherte zivile Bestätigung.",
+      returnSignal: "Zurück zum Signal",
+      back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
@@ -959,10 +988,12 @@
   let selectedCity = null;
   let locationVerified = false;
   let feedIndex = 0;
+  let originatingFeedIndex = 0;
   let enteredEmail = "";
   let emailVerified = false;
   let passkeySimulated = false;
   let membershipSimulated = false;
+  let signalConfirmed = false;
 
   const titles = {
     entry: "TOWN — Entry",
@@ -978,7 +1009,7 @@
     passkey: "TOWN — Secure access",
     ready: "TOWN — Account ready",
     payment: "TOWN — Membership payment",
-    boundary: "TOWN — Screen 13 boundary",
+    active: "TOWN — Membership active",
   };
 
   function parseRoute() {
@@ -995,7 +1026,7 @@
     if (raw.startsWith("passkey")) return "passkey";
     if (raw.startsWith("ready")) return "ready";
     if (raw.startsWith("payment")) return "payment";
-    if (raw.startsWith("boundary")) return "boundary";
+    if (raw.startsWith("active")) return "active";
     return "entry";
   }
 
@@ -1067,11 +1098,45 @@
     locationSuccess.hidden = !locationVerified;
   }
 
+  function syncFeedMemberState() {
+    const lang = communityLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const cityName = cityDisplayName(lang);
+    const onOrigin =
+      signalConfirmed &&
+      membershipSimulated &&
+      feedIndex === originatingFeedIndex;
+
+    if (membershipSimulated) {
+      feedVisitor.textContent = copy.member.replace("{city}", cityName);
+    } else {
+      feedVisitor.textContent = copy.visitor;
+    }
+
+    feedDoneTitle.textContent = copy.doneTitle;
+    feedDoneNote.textContent = copy.doneNote;
+
+    if (onOrigin) {
+      feedSeeToo.hidden = true;
+      feedSeeToo.disabled = true;
+      feedSeeTooDone.hidden = false;
+    } else if (membershipSimulated) {
+      // Membership journey complete: do not reopen visitor invitation on other scenes.
+      feedSeeToo.hidden = true;
+      feedSeeToo.disabled = true;
+      feedSeeTooDone.hidden = true;
+    } else {
+      feedSeeToo.hidden = false;
+      feedSeeToo.disabled = false;
+      feedSeeTooDone.hidden = true;
+      feedSeeToo.textContent = copy.seeThisToo;
+    }
+  }
+
   function applyFeedCopyChrome() {
     const lang = communityLanguage();
     const copy = FEED_COPY[lang] || FEED_COPY.it;
     feedBack.textContent = copy.back;
-    feedVisitor.textContent = copy.visitor;
     feedSeeToo.textContent = copy.seeThisToo;
     feedOpenSignal.textContent = copy.openSignal;
     feedPrev.textContent = copy.previous;
@@ -1080,6 +1145,7 @@
     signalSheetMessage.textContent = copy.openSignalMessage;
     signalSheetClose.textContent = copy.openSignalClose;
     feedCommunity.textContent = cityDisplayName(lang);
+    syncFeedMemberState();
     document.documentElement.lang = lang === "en" ? "en" : lang;
   }
 
@@ -1099,6 +1165,7 @@
     feedPager.textContent = feedIndex + 1 + " / " + scenes.length;
     feedPrev.disabled = feedIndex <= 0;
     feedNext.disabled = feedIndex >= scenes.length - 1;
+    syncFeedMemberState();
   }
 
   function renderCityOptions(options) {
@@ -1454,36 +1521,21 @@
     document.documentElement.lang = membershipLang();
   }
 
-  function applyBoundaryCopy() {
-    const copy = PAYMENT_COPY[membershipLang()];
+  function applyActiveCopy() {
+    const copy = ACTIVE_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
-    const countryName =
-      (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
-      selectedCountry ||
-      "";
-    boundaryLabel.textContent = copy.boundaryLabel;
-    boundaryTitle.textContent = copy.boundaryTitle;
-    boundaryLead.textContent = copy.boundaryLead;
-    boundaryBack.textContent = copy.boundaryBack;
-    if (selectedCountry && selectedCity) {
-      const emailPart = enteredEmail
-        ? copy.boundaryEmail.replace("{value}", enteredEmail)
-        : "";
-      const passkeyPart = passkeySimulated ? copy.boundaryPasskey : "";
-      boundaryMeta.hidden = false;
-      boundaryMeta.textContent = copy.boundaryMeta
-        .replace("{country}", countryName)
-        .replace("{city}", cityName)
-        .replace(
-          "{verified}",
-          locationVerified ? copy.boundaryVerified : ""
-        )
-        .replace("{email}", emailPart)
-        .replace("{passkey}", passkeyPart);
-    } else {
-      boundaryMeta.hidden = true;
-      boundaryMeta.textContent = "";
-    }
+    activeLabel.textContent = copy.label;
+    activeTitle.textContent = copy.title;
+    activeCommunity.textContent = copy.community.replace("{city}", cityName);
+    activeMemberStatus.textContent = copy.memberStatus.replace(
+      "{city}",
+      cityName
+    );
+    activeBody.textContent = copy.body;
+    activeBodySecond.textContent = copy.bodySecond;
+    activePrototype.textContent = copy.prototype;
+    activeReturn.textContent = copy.returnSignal;
+    activeBack.textContent = copy.back;
     document.documentElement.lang = membershipLang();
   }
 
@@ -1510,6 +1562,11 @@
     emailVerified = false;
     passkeySimulated = false;
     membershipSimulated = false;
+    signalConfirmed = false;
+    originatingFeedIndex = 0;
+    feedSeeToo.hidden = false;
+    feedSeeToo.disabled = false;
+    feedSeeTooDone.hidden = true;
     emailInput.value = "";
     emailError.hidden = true;
     emailError.textContent = "";
@@ -1549,7 +1606,7 @@
     viewPasskey.hidden = name !== "passkey";
     viewReady.hidden = name !== "ready";
     viewPayment.hidden = name !== "payment";
-    viewBoundary.hidden = name !== "boundary";
+    viewActive.hidden = name !== "active";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
     document.body.classList.toggle("page-city", name === "city");
@@ -1563,7 +1620,7 @@
     document.body.classList.toggle("page-passkey", name === "passkey");
     document.body.classList.toggle("page-ready", name === "ready");
     document.body.classList.toggle("page-payment", name === "payment");
-    document.body.classList.toggle("page-boundary", name === "boundary");
+    document.body.classList.toggle("page-active", name === "active");
 
     if (name !== "feed") {
       closeInvite();
@@ -1608,8 +1665,8 @@
     if (name === "payment") {
       applyPaymentCopy();
     }
-    if (name === "boundary") {
-      applyBoundaryCopy();
+    if (name === "active") {
+      applyActiveCopy();
     }
   }
 
@@ -1626,7 +1683,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       (!selectedCountry || !selectedCity)
     ) {
       route = selectedCountry ? "city" : "country";
@@ -1641,7 +1698,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       !locationVerified
     ) {
       route = "location";
@@ -1651,7 +1708,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       !enteredEmail
     ) {
       route = "email";
@@ -1660,18 +1717,18 @@
       (route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       !emailVerified
     ) {
       route = "code";
     }
     if (
-      (route === "ready" || route === "payment" || route === "boundary") &&
+      (route === "ready" || route === "payment" || route === "active") &&
       !passkeySimulated
     ) {
       route = "passkey";
     }
-    if (route === "boundary" && !membershipSimulated) {
+    if (route === "active" && !membershipSimulated) {
       route = "payment";
     }
 
@@ -1748,7 +1805,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       !selectedCountry
     ) {
       syncCountryContinue();
@@ -1769,7 +1826,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       (!selectedCountry || !selectedCity)
     ) {
       go(selectedCountry ? "city" : "country");
@@ -1785,7 +1842,7 @@
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
-        route === "boundary") &&
+        route === "active") &&
       !locationVerified
     ) {
       go("location");
@@ -1918,7 +1975,9 @@
   });
 
   feedSeeToo.addEventListener("click", () => {
+    if (membershipSimulated || feedSeeToo.disabled) return;
     closeSignalSheet();
+    originatingFeedIndex = feedIndex;
     // Screen 06 stage 1: contextual invitation over originating signal.
     openInvite();
   });
@@ -2051,11 +2110,17 @@
   });
 
   paymentContinue.addEventListener("click", () => {
-    // Screen 13 boundary only — Membership Active return is not built.
-    go("boundary");
+    go("active");
   });
 
-  boundaryBack.addEventListener("click", () => {
+  activeReturn.addEventListener("click", () => {
+    feedIndex = originatingFeedIndex;
+    signalConfirmed = true;
+    go("feed");
+  });
+
+  activeBack.addEventListener("click", () => {
+    membershipSimulated = true;
     go("payment");
   });
 
