@@ -54,7 +54,7 @@ Open `http://localhost:4173/`.
 
 Interactive browser preview:
 
-**https://swing-minutes-jerry-eugene.trycloudflare.com/**
+**https://like-southeast-relatives-only.trycloudflare.com/**
 
 Review paths:
 
