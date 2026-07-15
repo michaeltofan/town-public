@@ -16,6 +16,10 @@ python3 -m http.server 4173
 
 Open `http://localhost:4173/`.
 
-### Visual review URL
+### Visual review URL (Screen 01 only)
 
-See the pull request description for the current stable browser preview URL used for Mihail’s visual approval.
+Open this URL directly in a browser (no local setup required):
+
+https://htmlpreview.github.io/?https://github.com/michaeltofan/town-public/blob/cursor/town-web-screen-01-entry-bbf4/index.html
+
+This preview renders **Screen 01: TOWN Entry** from the review branch `cursor/town-web-screen-01-entry-bbf4`.
