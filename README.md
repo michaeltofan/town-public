@@ -31,4 +31,6 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-See the Screen 03 pull request for the current browser-accessible preview URL.
+Interactive review (starts on Screen 01):
+
+https://holding-permission-shopping-boss.trycloudflare.com/
