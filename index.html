@@ -284,18 +284,101 @@
       </main>
     </div>
 
-    <!-- Screen 05 boundary placeholder only -->
+    <!-- Screen 05: Visitor Local Feed -->
+    <div id="view-feed" hidden>
+      <main class="feed" aria-label="Visitor local feed">
+        <div class="feed__media" aria-hidden="true">
+          <img
+            class="feed__image"
+            id="feed-image"
+            src="assets/feed/signal_citta_studi_pavement.jpg"
+            alt=""
+            decoding="async"
+          />
+          <div class="feed__veil"></div>
+        </div>
+
+        <div class="feed__chrome">
+          <header class="feed__top">
+            <div class="feed__top-left">
+              <button type="button" class="feed__back" id="feed-back">
+                Back
+              </button>
+              <p class="feed__brand" aria-label="TOWN">TOWN</p>
+            </div>
+            <div class="feed__top-right">
+              <p class="feed__visitor" id="feed-visitor">Visitor</p>
+              <p class="feed__pager" id="feed-pager" aria-live="polite">1 / 3</p>
+            </div>
+          </header>
+
+          <div class="feed__body">
+            <p class="feed__community" id="feed-community"></p>
+            <p class="feed__category" id="feed-category"></p>
+            <h1 class="feed__headline" id="feed-headline"></h1>
+            <p class="feed__summary" id="feed-summary"></p>
+            <p class="feed__meta" id="feed-meta"></p>
+          </div>
+
+          <div class="feed__actions">
+            <button type="button" class="feed__primary" id="feed-see-too">
+              I SEE THIS TOO
+            </button>
+            <button type="button" class="feed__secondary" id="feed-open-signal">
+              Open signal
+            </button>
+            <div class="feed__scene-nav">
+              <button type="button" class="feed__nav" id="feed-prev" disabled>
+                Previous
+              </button>
+              <button type="button" class="feed__nav" id="feed-next">
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div
+        class="sheet feed-sheet"
+        id="signal-sheet"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="signal-sheet-title"
+      >
+        <div class="sheet__backdrop" data-close-signal></div>
+        <div class="sheet__panel feed-sheet__panel" role="document">
+          <h2 class="sheet__title" id="signal-sheet-title">Signal detail</h2>
+          <div class="sheet__body">
+            <p id="signal-sheet-message">
+              Signal details will be added in the next TOWN phase.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn btn--primary sheet__close"
+            id="signal-sheet-close"
+            data-close-signal
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 06 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 05 boundary">
+      <main class="boundary" aria-label="Screen 06 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label">Screen 05 boundary</p>
+          <p class="boundary__label">Screen 06 boundary</p>
           <h1 class="boundary__title">
-            The local feed is not implemented yet.
+            Membership invitation is not implemented yet.
           </h1>
           <p class="boundary__lead">
-            This is a deliberate stop point after location verification. Screen
-            05 has not been built.
+            This is a deliberate stop point after I SEE THIS TOO. Screen 06 has
+            not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -303,7 +386,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to location verification
+            Back to local feed
           </button>
         </div>
       </main>

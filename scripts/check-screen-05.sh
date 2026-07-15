@@ -31,31 +31,33 @@ require_file "index.html"
 require_contains "index.html" "Return to your real local community."
 require_contains "index.html" "Choose your country"
 require_contains "index.html" "Choose your city"
-require_contains "index.html" "view-city"
-
-echo "== Screen 04 structural checks =="
-require_file "script.js"
 require_contains "index.html" "view-location"
-require_contains "index.html" "location-verify"
-require_contains "index.html" "location-success"
+
+echo "== Screen 05 structural checks =="
+require_file "script.js"
+require_file "assets/feed/signal_citta_studi_pavement.jpg"
+require_file "assets/feed/signal_porta_romana_lighting.jpg"
+require_file "assets/feed/signal_lorenteggio_works.jpg"
 require_contains "index.html" "view-feed"
-require_contains "script.js" "Simula la verifica"
-require_contains "script.js" "Prüfung simulieren"
-require_contains "script.js" "Conferma la tua comunità locale"
-require_contains "script.js" "Bestätige deine lokale Gemeinschaft"
-require_contains "script.js" "locationVerified"
-require_contains "script.js" 'go("location")'
-require_contains "script.js" "Mock-only verification"
+require_contains "index.html" "feed-see-too"
+require_contains "index.html" "feed-open-signal"
+require_contains "index.html" "Screen 06 boundary"
+require_contains "script.js" "LO VEDO ANCH’IO"
+require_contains "script.js" "ICH SEHE DAS AUCH"
+require_contains "script.js" "Apri segnale"
+require_contains "script.js" "Signal öffnen"
+require_contains "script.js" "FEED_SCENES"
+require_contains "script.js" 'go("feed")'
 
 echo "== Guardrails =="
-if grep -Eiq 'navigator\.geolocation|getCurrentPosition|watchPosition' index.html script.js; then
-  echo "FAIL: geolocation API usage present"
+if grep -Eiq 'infinite scroll|IntersectionObserver|wheel\.|addEventListener\("wheel"|endless' index.html script.js; then
+  echo "FAIL: infinite/endless scroll mechanics present"
   fail=1
 else
-  echo "OK: no geolocation API usage"
+  echo "OK: no infinite scroll mechanics"
 fi
 
-if grep -Eiq 'language selector|language menu|Stripe|followers|trending|dashboard|feed is implemented' index.html script.js; then
+if grep -Eiq 'navigator\.geolocation|getCurrentPosition|Stripe|followers|trending|dashboard|comment thread|bookmark' index.html script.js; then
   echo "FAIL: forbidden pattern present"
   fail=1
 else
@@ -75,28 +77,25 @@ html = Path("index.html").read_text(encoding="utf-8")
 Checker().feed(html)
 Checker().close()
 for fragment in (
-    "view-entry",
-    "view-country",
-    "view-city",
-    "view-location",
-    "view-boundary",
     "view-feed",
-    "location-verify",
+    "feed-see-too",
+    "feed-open-signal",
+    "Screen 06 boundary",
+    "signal-sheet",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
 
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
-    "Posizione verificata per",
-    "Standort für",
-    "Solo prototipo",
-    "Nur Prototyp",
-    "locationVerified = true",
+    "Marciapiede danneggiato",
+    "Der Gehweg ist hier kaum noch sicher",
+    "Visitatore",
+    "Besucher",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 04 markup and copy present")
+print("OK: Screen 05 feed markup and approved copy present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then
