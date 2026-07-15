@@ -56,7 +56,7 @@ Open `http://localhost:4173/`.
 
 Interactive desktop preview:
 
-**https://heel-republican-olive-costs.trycloudflare.com/**
+**https://william-athens-echo-revealed.trycloudflare.com/**
 
 Review paths:
 
