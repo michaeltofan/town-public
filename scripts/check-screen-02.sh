@@ -47,7 +47,7 @@ require_contains "script.js" "location.hash"
 require_contains "script.js" "continueCountry.disabled"
 
 echo "== Guardrails =="
-for pattern in Stripe pricing followers trending dashboard; do
+for pattern in pricing followers trending dashboard; do
   if grep -Fqi "$pattern" index.html script.js; then
     echo "FAIL: forbidden pattern: $pattern"
     fail=1

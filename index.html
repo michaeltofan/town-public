@@ -631,18 +631,79 @@
       </main>
     </div>
 
-    <!-- Screen 12 boundary placeholder only -->
+    <!-- Screen 12: Membership Payment Boundary Mock -->
+    <div id="view-payment" hidden>
+      <main class="payment" aria-label="Membership payment boundary">
+        <div class="payment__frame" id="payment-intro">
+          <p class="payment__brand" aria-label="TOWN">TOWN</p>
+          <p class="payment__label" id="payment-label"></p>
+          <h1 class="payment__title" id="payment-title"></h1>
+          <p class="payment__community" id="payment-community"></p>
+          <p class="payment__price" id="payment-price"></p>
+          <p class="payment__note" id="payment-renewal"></p>
+          <p class="payment__note" id="payment-cancel"></p>
+          <p class="payment__lead" id="payment-body"></p>
+          <p class="payment__status" id="payment-account-status"></p>
+          <p class="payment__status" id="payment-membership-status"></p>
+          <p class="payment__note" id="payment-prototype"></p>
+          <div class="payment__actions">
+            <button type="button" class="btn btn--primary" id="payment-simulate-start">
+              Simulate membership activation
+            </button>
+            <button type="button" class="btn btn--secondary" id="payment-back">
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div class="payment__frame" id="payment-success" hidden>
+          <p class="payment__brand" aria-label="TOWN">TOWN</p>
+          <p class="payment__label" id="payment-success-label"></p>
+          <h1 class="payment__title" id="payment-success-title"></h1>
+          <p class="payment__community" id="payment-success-community"></p>
+          <p class="payment__status" id="payment-success-account"></p>
+          <p class="payment__status" id="payment-success-membership"></p>
+          <p class="payment__lead" id="payment-success-body"></p>
+          <p class="payment__note" id="payment-success-note"></p>
+          <div class="payment__actions">
+            <button type="button" class="btn btn--primary" id="payment-continue">
+              Continue
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <div
+        class="payment-notice"
+        id="payment-notice"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-notice-title"
+      >
+        <div class="payment-notice__dim"></div>
+        <div class="payment-notice__panel">
+          <h2 class="payment-notice__title" id="payment-notice-title"></h2>
+          <p class="payment-notice__body" id="payment-notice-body"></p>
+          <button type="button" class="btn btn--primary" id="payment-simulate-confirm">
+            Simulate activation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 13 boundary placeholder only -->
     <div id="view-boundary" hidden>
-      <main class="boundary" aria-label="Screen 12 boundary">
+      <main class="boundary" aria-label="Screen 13 boundary">
         <div class="boundary__frame">
           <p class="boundary__brand" aria-label="TOWN">TOWN</p>
-          <p class="boundary__label" id="boundary-label">Screen 12 boundary</p>
+          <p class="boundary__label" id="boundary-label">Screen 13 boundary</p>
           <h1 class="boundary__title" id="boundary-title">
-            Membership payment boundary is not implemented yet.
+            Membership Active return experience is not implemented yet.
           </h1>
           <p class="boundary__lead" id="boundary-lead">
-            This is a deliberate stop point after Account Ready Continue. Screen
-            12 has not been built.
+            This is a deliberate stop point after payment boundary Continue.
+            Screen 13 has not been built.
           </p>
           <p class="boundary__meta" id="boundary-meta" hidden></p>
           <button
@@ -650,7 +711,7 @@
             class="btn btn--secondary boundary__back"
             id="boundary-back"
           >
-            Back to Account Ready
+            Back to membership payment boundary
           </button>
         </div>
       </main>

@@ -38,21 +38,19 @@ require_contains "index.html" "view-ready"
 require_contains "index.html" "ready-continue"
 require_contains "index.html" "ready-back"
 require_contains "index.html" "ready-inactive"
-require_contains "index.html" "Screen 12 boundary"
+require_contains "index.html" "view-payment"
 require_contains "script.js" "READY_COPY"
 require_contains "script.js" "Il tuo account TOWN è pronto."
 require_contains "script.js" "Dein TOWN-Konto ist bereit."
-require_contains "script.js" "membership: non attiva"
-require_contains "script.js" "Mitgliedschaft: nicht aktiv"
 require_contains "script.js" 'go("ready")'
-require_contains "script.js" 'go("boundary")'
+require_contains "script.js" 'go("payment")'
 
 echo "== Guardrails =="
-if grep -Eiq 'Stripe|card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|Membership active|membershipActive\s*=\s*true' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials|membershipActive\s*=\s*true' index.html script.js; then
   echo "FAIL: forbidden payment/auth/activation pattern present"
   fail=1
 else
-  echo "OK: no Stripe, auth, dashboard, or membership activation"
+  echo "OK: no payment form, auth, dashboard, or hard membership activation"
 fi
 
 echo "== HTML smoke =="
@@ -73,7 +71,7 @@ for fragment in (
     "ready-inactive",
     "ready-membership",
     "ready-payment-note",
-    "Screen 12 boundary",
+    "view-payment",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
@@ -85,9 +83,6 @@ for fragment in (
     "€12",
     "membership non è attiva",
     "Mitgliedschaft ist nicht aktiv",
-    "Confine Screen 12",
-    "Screen-12-Grenze",
-    "Does not activate membership",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")

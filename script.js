@@ -10,6 +10,7 @@
   const viewCode = document.getElementById("view-code");
   const viewPasskey = document.getElementById("view-passkey");
   const viewReady = document.getElementById("view-ready");
+  const viewPayment = document.getElementById("view-payment");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
   const sheet = document.getElementById("learn-more-sheet");
@@ -126,6 +127,40 @@
   const readyPaymentNote = document.getElementById("ready-payment-note");
   const readyContinue = document.getElementById("ready-continue");
   const readyBack = document.getElementById("ready-back");
+  const paymentIntro = document.getElementById("payment-intro");
+  const paymentSuccess = document.getElementById("payment-success");
+  const paymentLabel = document.getElementById("payment-label");
+  const paymentTitle = document.getElementById("payment-title");
+  const paymentCommunity = document.getElementById("payment-community");
+  const paymentPrice = document.getElementById("payment-price");
+  const paymentRenewal = document.getElementById("payment-renewal");
+  const paymentCancel = document.getElementById("payment-cancel");
+  const paymentBody = document.getElementById("payment-body");
+  const paymentAccountStatus = document.getElementById("payment-account-status");
+  const paymentMembershipStatus = document.getElementById(
+    "payment-membership-status"
+  );
+  const paymentPrototype = document.getElementById("payment-prototype");
+  const paymentSimulateStart = document.getElementById("payment-simulate-start");
+  const paymentBack = document.getElementById("payment-back");
+  const paymentSuccessLabel = document.getElementById("payment-success-label");
+  const paymentSuccessTitle = document.getElementById("payment-success-title");
+  const paymentSuccessCommunity = document.getElementById(
+    "payment-success-community"
+  );
+  const paymentSuccessAccount = document.getElementById("payment-success-account");
+  const paymentSuccessMembership = document.getElementById(
+    "payment-success-membership"
+  );
+  const paymentSuccessBody = document.getElementById("payment-success-body");
+  const paymentSuccessNote = document.getElementById("payment-success-note");
+  const paymentContinue = document.getElementById("payment-continue");
+  const paymentNotice = document.getElementById("payment-notice");
+  const paymentNoticeTitle = document.getElementById("payment-notice-title");
+  const paymentNoticeBody = document.getElementById("payment-notice-body");
+  const paymentSimulateConfirm = document.getElementById(
+    "payment-simulate-confirm"
+  );
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -171,6 +206,7 @@
     !viewCode ||
     !viewPasskey ||
     !viewReady ||
+    !viewPayment ||
     !learnMoreButton ||
     !enterButton ||
     !sheet ||
@@ -287,6 +323,32 @@
     !readyPaymentNote ||
     !readyContinue ||
     !readyBack ||
+    !paymentIntro ||
+    !paymentSuccess ||
+    !paymentLabel ||
+    !paymentTitle ||
+    !paymentCommunity ||
+    !paymentPrice ||
+    !paymentRenewal ||
+    !paymentCancel ||
+    !paymentBody ||
+    !paymentAccountStatus ||
+    !paymentMembershipStatus ||
+    !paymentPrototype ||
+    !paymentSimulateStart ||
+    !paymentBack ||
+    !paymentSuccessLabel ||
+    !paymentSuccessTitle ||
+    !paymentSuccessCommunity ||
+    !paymentSuccessAccount ||
+    !paymentSuccessMembership ||
+    !paymentSuccessBody ||
+    !paymentSuccessNote ||
+    !paymentContinue ||
+    !paymentNotice ||
+    !paymentNoticeTitle ||
+    !paymentNoticeBody ||
+    !paymentSimulateConfirm ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -774,18 +836,6 @@
         "In questo prototipo non è attivo alcun pagamento reale.",
       continue: "Continua",
       back: "Indietro",
-      boundaryLabel: "Confine Screen 12",
-      boundaryTitle:
-        "Il confine del pagamento membership non è ancora implementato.",
-      boundaryLead:
-        "Questo è un punto di stop deliberato dopo Continua su Account Ready. Lo Screen 12 non è stato costruito. Nessuna membership è stata attivata.",
-      boundaryMeta:
-        "Selezionato: {country} · {city}{verified}{email}{passkey} · account: pronto · membership: non attiva",
-      boundaryVerified: " · verificato (mock)",
-      boundaryEmail: " · email: {value}",
-      boundaryPasskey: " · accesso sicuro: simulato",
-      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
-      boundaryBack: "Torna ad Account Ready",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
     de: {
@@ -806,18 +856,97 @@
         "In diesem Prototyp ist keine echte Zahlung aktiv.",
       continue: "Weiter",
       back: "Zurück",
-      boundaryLabel: "Screen-12-Grenze",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+  };
+
+  const PAYMENT_COPY = {
+    it: {
+      label: "MEMBERSHIP ANNUALE",
+      title: "Attiva l’iscrizione annuale a TOWN.",
+      community: "Comunità: {city}",
+      price: "€12 all’anno",
+      renewal: "Rinnovo annuale automatico.",
+      cancel:
+        "Puoi annullare in qualsiasi momento. L’accesso resta attivo fino alla fine del periodo già pagato.",
+      body:
+        "Con una membership attiva potrai partecipare alla comunità locale verificata.",
+      accountStatus: "Account: pronto",
+      membershipStatus: "Membership: non attiva",
+      prototype:
+        "In questo prototipo il pagamento reale non è attivo, Stripe non è integrato e nessuna membership verrà attivata davvero.",
+      simulateStart: "Simula attivazione membership",
+      back: "Indietro",
+      noticeTitle: "Pagamento non attivo",
+      noticeBody:
+        "Il pagamento reale non è attivo in questo prototipo. Stripe non è integrato. Puoi solo simulare l’attivazione.",
+      simulateConfirm: "Simula attivazione",
+      successLabel: "MEMBERSHIP SIMULATA",
+      successTitle: "Membership attiva — solo prototipo.",
+      successCommunity: "Comunità: {city}",
+      successAccount: "Account: pronto",
+      successMembership: "Membership: attiva — solo prototipo",
+      successBody:
+        "Nessun pagamento reale è avvenuto. Non esiste alcun entitlement reale.",
+      successNote:
+        "Questo stato è solo una simulazione. Non implica conferma civica, autenticazione reale o abbonamento reale.",
+      continue: "Continua",
+      boundaryLabel: "Confine Screen 13",
       boundaryTitle:
-        "Die Mitgliedschafts-Zahlungsgrenze ist noch nicht implementiert.",
+        "L’esperienza Membership Active e il ritorno al segnale non sono ancora implementati.",
       boundaryLead:
-        "Dies ist ein bewusster Halt nach Weiter auf Account Ready. Screen 12 wurde nicht gebaut. Es wurde keine Mitgliedschaft aktiviert.",
+        "Questo è un punto di stop deliberato dopo Continua sul confine pagamento. Lo Screen 13 non è stato costruito.",
       boundaryMeta:
-        "Ausgewählt: {country} · {city}{verified}{email}{passkey} · Konto: bereit · Mitgliedschaft: nicht aktiv",
+        "Selezionato: {country} · {city}{verified}{email}{passkey} · account: pronto · membership: attiva (prototipo)",
+      boundaryVerified: " · verificato (mock)",
+      boundaryEmail: " · email: {value}",
+      boundaryPasskey: " · accesso sicuro: simulato",
+      boundaryCountry: { Italy: "Italia", Germany: "Germania" },
+      boundaryBack: "Torna al confine pagamento",
+      cityNames: { Milano: "Milano", Munich: "München" },
+    },
+    de: {
+      label: "JÄHRLICHE MITGLIEDSCHAFT",
+      title: "Aktiviere die jährliche TOWN-Mitgliedschaft.",
+      community: "Gemeinschaft: {city}",
+      price: "€12 pro Jahr",
+      renewal: "Jährliche automatische Verlängerung.",
+      cancel:
+        "Du kannst jederzeit kündigen. Der Zugang bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv.",
+      body:
+        "Mit einer aktiven Mitgliedschaft kannst du an der verifizierten lokalen Gemeinschaft teilnehmen.",
+      accountStatus: "Konto: bereit",
+      membershipStatus: "Mitgliedschaft: nicht aktiv",
+      prototype:
+        "In diesem Prototyp ist keine echte Zahlung aktiv, Stripe ist nicht integriert und es wird keine echte Mitgliedschaft aktiviert.",
+      simulateStart: "Mitgliedschaftsaktivierung simulieren",
+      back: "Zurück",
+      noticeTitle: "Zahlung nicht aktiv",
+      noticeBody:
+        "Echte Zahlung ist in diesem Prototyp nicht aktiv. Stripe ist nicht integriert. Du kannst die Aktivierung nur simulieren.",
+      simulateConfirm: "Aktivierung simulieren",
+      successLabel: "MITGLIEDSCHAFT SIMULIERT",
+      successTitle: "Mitgliedschaft aktiv — nur Prototyp.",
+      successCommunity: "Gemeinschaft: {city}",
+      successAccount: "Konto: bereit",
+      successMembership: "Mitgliedschaft: aktiv — nur Prototyp",
+      successBody:
+        "Es ist keine echte Zahlung erfolgt. Es gibt kein reales Entitlement.",
+      successNote:
+        "Dieser Zustand ist nur eine Simulation. Er bedeutet keine zivile Bestätigung, keine echte Authentifizierung und kein echtes Abonnement.",
+      continue: "Weiter",
+      boundaryLabel: "Screen-13-Grenze",
+      boundaryTitle:
+        "Die Membership-Active-Erfahrung und die Rückkehr zum Signal sind noch nicht implementiert.",
+      boundaryLead:
+        "Dies ist ein bewusster Halt nach Weiter auf der Zahlungsgrenze. Screen 13 wurde nicht gebaut.",
+      boundaryMeta:
+        "Ausgewählt: {country} · {city}{verified}{email}{passkey} · Konto: bereit · Mitgliedschaft: aktiv (Prototyp)",
       boundaryVerified: " · verifiziert (Mock)",
       boundaryEmail: " · E-Mail: {value}",
       boundaryPasskey: " · sicherer Zugang: simuliert",
       boundaryCountry: { Italy: "Italien", Germany: "Deutschland" },
-      boundaryBack: "Zurück zu Account Ready",
+      boundaryBack: "Zurück zur Zahlungsgrenze",
       cityNames: { Milano: "Milano", Munich: "München" },
     },
   };
@@ -833,6 +962,7 @@
   let enteredEmail = "";
   let emailVerified = false;
   let passkeySimulated = false;
+  let membershipSimulated = false;
 
   const titles = {
     entry: "TOWN — Entry",
@@ -847,7 +977,8 @@
     code: "TOWN — Verification code",
     passkey: "TOWN — Secure access",
     ready: "TOWN — Account ready",
-    boundary: "TOWN — Screen 12 boundary",
+    payment: "TOWN — Membership payment",
+    boundary: "TOWN — Screen 13 boundary",
   };
 
   function parseRoute() {
@@ -863,6 +994,7 @@
     if (raw.startsWith("code")) return "code";
     if (raw.startsWith("passkey")) return "passkey";
     if (raw.startsWith("ready")) return "ready";
+    if (raw.startsWith("payment")) return "payment";
     if (raw.startsWith("boundary")) return "boundary";
     return "entry";
   }
@@ -1262,8 +1394,68 @@
     document.documentElement.lang = membershipLang();
   }
 
+  function closePaymentNotice() {
+    if (paymentNotice.hidden) return;
+    paymentNotice.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function openPaymentNotice() {
+    const copy = PAYMENT_COPY[membershipLang()];
+    paymentNoticeTitle.textContent = copy.noticeTitle;
+    paymentNoticeBody.textContent = copy.noticeBody;
+    paymentSimulateConfirm.textContent = copy.simulateConfirm;
+    paymentNotice.hidden = false;
+    document.body.style.overflow = "hidden";
+    paymentSimulateConfirm.focus();
+  }
+
+  function showPaymentIntro() {
+    paymentIntro.hidden = false;
+    paymentSuccess.hidden = true;
+  }
+
+  function showPaymentSuccess() {
+    paymentIntro.hidden = true;
+    paymentSuccess.hidden = false;
+  }
+
+  function applyPaymentCopy() {
+    const copy = PAYMENT_COPY[membershipLang()];
+    const cityName = copy.cityNames[selectedCity] || selectedCity || "";
+    paymentLabel.textContent = copy.label;
+    paymentTitle.textContent = copy.title;
+    paymentCommunity.textContent = copy.community.replace("{city}", cityName);
+    paymentPrice.textContent = copy.price;
+    paymentRenewal.textContent = copy.renewal;
+    paymentCancel.textContent = copy.cancel;
+    paymentBody.textContent = copy.body;
+    paymentAccountStatus.textContent = copy.accountStatus;
+    paymentMembershipStatus.textContent = copy.membershipStatus;
+    paymentPrototype.textContent = copy.prototype;
+    paymentSimulateStart.textContent = copy.simulateStart;
+    paymentBack.textContent = copy.back;
+    paymentSuccessLabel.textContent = copy.successLabel;
+    paymentSuccessTitle.textContent = copy.successTitle;
+    paymentSuccessCommunity.textContent = copy.successCommunity.replace(
+      "{city}",
+      cityName
+    );
+    paymentSuccessAccount.textContent = copy.successAccount;
+    paymentSuccessMembership.textContent = copy.successMembership;
+    paymentSuccessBody.textContent = copy.successBody;
+    paymentSuccessNote.textContent = copy.successNote;
+    paymentContinue.textContent = copy.continue;
+    if (membershipSimulated) {
+      showPaymentSuccess();
+    } else {
+      showPaymentIntro();
+    }
+    document.documentElement.lang = membershipLang();
+  }
+
   function applyBoundaryCopy() {
-    const copy = READY_COPY[membershipLang()];
+    const copy = PAYMENT_COPY[membershipLang()];
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     const countryName =
       (copy.boundaryCountry && copy.boundaryCountry[selectedCountry]) ||
@@ -1317,6 +1509,7 @@
     enteredEmail = "";
     emailVerified = false;
     passkeySimulated = false;
+    membershipSimulated = false;
     emailInput.value = "";
     emailError.hidden = true;
     emailError.textContent = "";
@@ -1327,6 +1520,8 @@
     codeVerify.disabled = true;
     closePasskeyNotice();
     showPasskeyIntro();
+    closePaymentNotice();
+    showPaymentIntro();
     countryInputs.forEach((input) => {
       input.checked = false;
     });
@@ -1353,6 +1548,7 @@
     viewCode.hidden = name !== "code";
     viewPasskey.hidden = name !== "passkey";
     viewReady.hidden = name !== "ready";
+    viewPayment.hidden = name !== "payment";
     viewBoundary.hidden = name !== "boundary";
     document.title = titles[name] || titles.entry;
     document.body.classList.toggle("page-country", name === "country");
@@ -1366,6 +1562,7 @@
     document.body.classList.toggle("page-code", name === "code");
     document.body.classList.toggle("page-passkey", name === "passkey");
     document.body.classList.toggle("page-ready", name === "ready");
+    document.body.classList.toggle("page-payment", name === "payment");
     document.body.classList.toggle("page-boundary", name === "boundary");
 
     if (name !== "feed") {
@@ -1373,6 +1570,9 @@
     }
     if (name !== "passkey") {
       closePasskeyNotice();
+    }
+    if (name !== "payment") {
+      closePaymentNotice();
     }
 
     if (name === "city") applyCityCopy();
@@ -1405,6 +1605,9 @@
     if (name === "ready") {
       applyReadyCopy();
     }
+    if (name === "payment") {
+      applyPaymentCopy();
+    }
     if (name === "boundary") {
       applyBoundaryCopy();
     }
@@ -1422,6 +1625,7 @@
         route === "code" ||
         route === "passkey" ||
         route === "ready" ||
+        route === "payment" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1436,19 +1640,39 @@
         route === "code" ||
         route === "passkey" ||
         route === "ready" ||
+        route === "payment" ||
         route === "boundary") &&
       !locationVerified
     ) {
       route = "location";
     }
-    if ((route === "code" || route === "passkey" || route === "boundary") && !enteredEmail) {
+    if (
+      (route === "code" ||
+        route === "passkey" ||
+        route === "ready" ||
+        route === "payment" ||
+        route === "boundary") &&
+      !enteredEmail
+    ) {
       route = "email";
     }
-    if ((route === "passkey" || route === "ready" || route === "boundary") && !emailVerified) {
+    if (
+      (route === "passkey" ||
+        route === "ready" ||
+        route === "payment" ||
+        route === "boundary") &&
+      !emailVerified
+    ) {
       route = "code";
     }
-    if ((route === "ready" || route === "boundary") && !passkeySimulated) {
+    if (
+      (route === "ready" || route === "payment" || route === "boundary") &&
+      !passkeySimulated
+    ) {
       route = "passkey";
+    }
+    if (route === "boundary" && !membershipSimulated) {
+      route = "payment";
     }
 
     if (route === "entry") {
@@ -1523,6 +1747,7 @@
         route === "code" ||
         route === "passkey" ||
         route === "ready" ||
+        route === "payment" ||
         route === "boundary") &&
       !selectedCountry
     ) {
@@ -1543,6 +1768,7 @@
         route === "code" ||
         route === "passkey" ||
         route === "ready" ||
+        route === "payment" ||
         route === "boundary") &&
       (!selectedCountry || !selectedCity)
     ) {
@@ -1558,6 +1784,7 @@
         route === "code" ||
         route === "passkey" ||
         route === "ready" ||
+        route === "payment" ||
         route === "boundary") &&
       !locationVerified
     ) {
@@ -1796,9 +2023,8 @@
   });
 
   readyContinue.addEventListener("click", () => {
-    // Screen 12 boundary only — membership payment is not built.
-    // Does not activate membership.
-    go("boundary");
+    membershipSimulated = false;
+    go("payment");
   });
 
   readyBack.addEventListener("click", () => {
@@ -1807,8 +2033,30 @@
     go("passkey");
   });
 
-  boundaryBack.addEventListener("click", () => {
+  paymentSimulateStart.addEventListener("click", () => {
+    // Prototype notice only — no Stripe / card fields / real activation.
+    openPaymentNotice();
+  });
+
+  paymentSimulateConfirm.addEventListener("click", () => {
+    membershipSimulated = true;
+    closePaymentNotice();
+    applyPaymentCopy();
+    paymentContinue.focus();
+  });
+
+  paymentBack.addEventListener("click", () => {
+    closePaymentNotice();
     go("ready");
+  });
+
+  paymentContinue.addEventListener("click", () => {
+    // Screen 13 boundary only — Membership Active return is not built.
+    go("boundary");
+  });
+
+  boundaryBack.addEventListener("click", () => {
+    go("payment");
   });
 
   window.addEventListener("hashchange", render);

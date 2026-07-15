@@ -57,7 +57,7 @@ else
   echo "OK: no infinite scroll mechanics"
 fi
 
-if grep -Eiq 'navigator\.geolocation|getCurrentPosition|Stripe|followers|trending|dashboard|comment thread|bookmark' index.html script.js; then
+if grep -Eiq 'navigator\.geolocation|getCurrentPosition|followers|trending|dashboard|comment thread|bookmark' index.html script.js; then
   echo "FAIL: forbidden pattern present"
   fail=1
 else
