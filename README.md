@@ -30,17 +30,19 @@ Public web surface for **TOWN** (`towncivic.org`).
 
 ### Screen 13 — Membership Active Confirmation + Return to Originating Signal (approved on `main`)
 
-### Signal Detail V1 (review)
+### Signal Detail V1 (approved on `main`)
 
-Replaces the placeholder Open signal modal with a cinematic editorial detail for the currently visible signal.
+### Desktop Feed Experience V1 (review)
 
-1. Opens from the exact feed signal
-2. Preserves community language (IT / DE)
-3. Full-bleed image continuation + expanded civic context
-4. Visitor: LO VEDO ANCH’IO / ICH SEHE DAS AUCH still starts membership invitation
-5. Member: discreet status + completed confirmation when applicable
-6. Close returns to the same feed signal
-7. No comments, backend, or later screens
+Adapts the existing six local feed scenes for a premium desktop reading layout:
+
+1. One full-screen scene at a time
+2. Full-bleed photography with restrained left-weighted overlays
+3. Single editorial text column on the left
+4. Warm pearl-white body text and quiet metadata
+5. Finite Previous / Next across three signals only
+6. Open signal continues into approved Signal Detail V1
+7. Visitor and member states preserved — no new product journey
 
 ### Local preview
 
@@ -52,11 +54,11 @@ Open `http://localhost:4173/`.
 
 ### Visual review URL
 
-Interactive browser preview:
+Interactive desktop preview:
 
-**https://like-southeast-relatives-only.trycloudflare.com/**
+**https://william-athens-echo-revealed.trycloudflare.com/**
 
 Review paths:
 
-1. Italy → Milano → open each of the three signals → Close → LO VEDO ANCH’IO from detail still works
-2. Germany → Munich → open each of the three signals → Close → member completed state remains after Screen 13 return
+1. Italy → Milano → inspect scenes 1–3 on a wide desktop viewport → Open signal → Close
+2. Germany → Munich → inspect scenes 1–3 → membership completion → member status + completed confirmation remain
