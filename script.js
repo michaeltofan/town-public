@@ -433,6 +433,7 @@
   const CITY_BY_COUNTRY = {
     Italy: { id: "Milano", image: "assets/cities/milano.png" },
     Germany: { id: "Munich", image: "assets/cities/munich.png" },
+    Romania: { id: "Arad", image: "assets/cities/arad.png" },
   };
 
   // Approved Experience Prototype V1 scenes (fictional content).
@@ -586,12 +587,89 @@
           "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
       },
     ],
+    Arad: [
+      {
+        id: "arad-signal-1",
+        category: "MEDIU",
+        authorName: "Redacția TOWN Arad",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "20 iulie 2026",
+        area: "Pădurea Ceala",
+        headline: "Moloz depozitat ilegal la marginea pădurii Ceala",
+        summary:
+          "Camioane cu moloz ajung în continuare pe malul Mureșului, lângă pădurea Ceala. Traseul rămâne deschis, fără barieră.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "La capătul străzii Mărului, în zona Alfa, transporturile de moloz continuă pe un traseu care trece inclusiv pe pista de biciclete, către malul Mureșului și marginea pădurii Ceala. Amenzile aplicate până acum nu au oprit depozitările, iar accesul camioanelor rămâne posibil în lipsa unei bariere.",
+        whyMatters:
+          "Pădurea Ceala și malul Mureșului sunt printre puținele zone naturale de agrement ale orașului. Depozitarea necontrolată a molozului afectează peisajul, mediul și siguranța celor care folosesc pista de biciclete.",
+        whoAffected:
+          "Bicicliști, familii care se plimbă în zona Ceala, pescari, locuitorii cartierului Alfa și oricine folosește malul Mureșului pentru recreere.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. O barieră de acces nu a fost încă instalată.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+      {
+        id: "arad-signal-2",
+        category: "INFRASTRUCTURĂ",
+        authorName: "Redacția TOWN Arad",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "21 iulie 2026",
+        area: "Petriș",
+        headline: "Lucrările la Drumul Regelui avansează pe tronsonul Petriș–Vața",
+        summary:
+          "Pe cei 4 km din județul Arad se construiesc ziduri de sprijin și fundații continue. Termen de finalizare: aprilie 2028.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: în lucru — intervenție publică în desfășurare",
+        description:
+          "Pe sectorul arădean al Drumului Regelui, între Petriș și limita cu județul Hunedoara, constructorul execută aproximativ 2,5 kilometri de ziduri de sprijin și 1.900 de metri de fundații continue. Lucrările stabilizează versanții și lărgesc platforma drumului montan.",
+        whyMatters:
+          "Drumul Regelui va lega modern județele Arad și Hunedoara și va deschide accesul către Munții Zărandului, pe unul dintre cele mai spectaculoase trasee panoramice din vestul României.",
+        whoAffected:
+          "Locuitorii comunei Petriș și ai zonei montane, șoferii care circulă între cele două județe, turiștii care vizitează Munții Zărandului.",
+        latestUpdate:
+          "Lucrările avansează în ritm susținut. Proiectul are termen de finalizare în aprilie 2028.",
+        statusNote:
+          "„În lucru” înseamnă că o intervenție publică este în desfășurare, cu termen asumat. Semnalul urmărește evoluția lucrărilor.",
+      },
+      {
+        id: "arad-signal-3",
+        category: "SPAȚIU PUBLIC",
+        authorName: "Redacția TOWN Arad",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "21 iulie 2026",
+        area: "Strada Someșului",
+        headline:
+          "Strada Someșului rămâne neasfaltată, în ciuda unei sentințe definitive",
+        summary:
+          "Instanța a obligat Primăria să asfalteze strada. Trotuarele au fost realizate; carosabilul, încă nu.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus:
+          "Stare civică: observat — hotărâre judecătorească în așteptarea executării",
+        description:
+          "Strada Someșului este în continuare din pământ, deși o sentință definitivă din 2024 obligă Primăria la asfaltare și amenajarea trotuarelor. Trotuarele au fost realizate anul trecut; partea carosabilă așteaptă încă documentația tehnică și execuția.",
+        whyMatters:
+          "O stradă de pământ într-o zonă cu impozite calculate pentru infrastructură completă ridică o întrebare simplă de echitate: locuitorii plătesc pentru condiții pe care nu le au.",
+        whoAffected:
+          "Locuitorii străzii Someșului și ai zonei — pietoni, familii, șoferi care folosesc zilnic o stradă fără asfalt, pe orice vreme.",
+        latestUpdate:
+          "Primăria a comunicat că strada este inclusă pe lista de asfaltare, investiția fiind în etapa documentației tehnico-economice.",
+        statusNote:
+          "Semnalul privește o obligație stabilită printr-o hotărâre judecătorească definitivă, a cărei executare este încă în curs.",
+      },
+    ],
   };
 
   const API_BASE = "https://api-staging.towncivic.org";
   const CITY_API_SLUG = {
     Milano: "milano-it",
     Munich: "munich-de",
+    Arad: "arad-ro",
   };
   const KNOWN_FEED_IMAGES = {
     "assets/feed/signal_citta_studi_pavement.jpg": true,
@@ -602,6 +680,7 @@
   const liveScenes = {
     Milano: null,
     Munich: null,
+    Arad: null,
   };
 
   const CITY_COPY = {
@@ -611,10 +690,11 @@
       cityLegend: "City",
       back: "Back",
       continue: "Continue",
-      cityNames: { Milano: "Milano", Munich: "Munich" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad" },
       context: {
         Italy: "Country: Italy",
         Germany: "Country: Germany",
+        Romania: "Country: Romania",
       },
     },
     it: {
@@ -623,10 +703,11 @@
       cityLegend: "Città",
       back: "Indietro",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "Munich" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad" },
       context: {
         Italy: "Paese: Italia",
         Germany: "Paese: Germania",
+        Romania: "Paese: România",
       },
     },
     de: {
@@ -635,10 +716,24 @@
       cityLegend: "Stadt",
       back: "Zurück",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
       context: {
         Italy: "Land: Italien",
         Germany: "Land: Deutschland",
+        Romania: "Land: Rumänien",
+      },
+    },
+    ro: {
+      title: "Alege-ți orașul",
+      lead: "TOWN te leagă de o singură comunitate locală verificată.",
+      cityLegend: "Oraș",
+      back: "Înapoi",
+      continue: "Continuă",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      context: {
+        Italy: "Țară: Italia",
+        Germany: "Țară: Germania",
+        Romania: "Țară: România",
       },
     },
   };
@@ -656,7 +751,7 @@
       successLead:
         "La tua comunità locale è confermata in questo prototipo. Non è stato usato alcun GPS reale.",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       back: "Zurück",
@@ -670,7 +765,21 @@
       successLead:
         "Deine lokale Gemeinschaft ist in diesem Prototyp bestätigt. Es wurde kein echtes GPS verwendet.",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      back: "Înapoi",
+      title: "Confirmă-ți comunitatea locală",
+      lead: "TOWN este local. Participarea aparține celor legați de această comunitate.",
+      privacy:
+        "Acest prototip nu face o verificare GPS reală. În această etapă nu se colectează și nu se stochează date reale de localizare.",
+      verify: "Simulează verificarea",
+      statusLabel: "Doar prototip",
+      successTitle: "Locație verificată pentru {city}",
+      successLead:
+        "Comunitatea ta locală este confirmată în acest prototip. Nu a fost folosit niciun GPS real.",
+      continue: "Continuă",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -691,7 +800,7 @@
       communityArea: "{city} · {area}",
       previous: "Precedente",
       next: "Successiva",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       back: "Zurück",
@@ -709,7 +818,25 @@
       communityArea: "{city} · {area}",
       previous: "Zurück",
       next: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      back: "Înapoi",
+      visitor: "Vizitator",
+      member: "Membru · {city}",
+      seeThisToo: "VĂD ȘI EU ASTA",
+      doneTitle: "Vezi și tu",
+      doneNote: "Confirmare înregistrată în prototip",
+      openSignal: "Deschide semnalul",
+      openSignalClose: "Închide",
+      whyLabel: "De ce contează aici",
+      whoLabel: "Cine este implicat",
+      updateLabel: "Ultima actualizare",
+      statusLabel: "Ce înseamnă această stare",
+      communityArea: "{city} · {area}",
+      previous: "Anterior",
+      next: "Următorul",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -745,7 +872,7 @@
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
       endedReturn: "Torna all’ingresso TOWN",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
@@ -779,7 +906,40 @@
       endedBody:
         "Du kannst zurückkehren, wenn du bereit bist, ein Teil davon zu sein.",
       endedReturn: "Zurück zum TOWN-Eingang",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      inviteTitle: "Îți pasă de ceea ce se întâmplă în comunitatea ta.",
+      inviteBody:
+        "Pentru a confirma acest semnal și a deveni parte din soluție, alătură-te TOWN ca membru local verificat.",
+      inviteBodySecond:
+        "TOWN este construit în jurul oamenilor reali din aceeași comunitate — nu pe conturi anonime, urmăritori sau popularitate pe social media.",
+      continue: "Continuă",
+      notNow: "Nu acum",
+      label: "MEMBERSHIP LOCAL",
+      title: "Intră în comunitatea din {city}.",
+      body: "TOWN este un spațiu civic local pentru oameni reali.",
+      bodySecond:
+        "Pentru a participa ai nevoie de un cont, o verificare locală validă și un abonament activ.",
+      price: "12 € pe an",
+      renewal: "Reînnoire anuală.",
+      renewalSecond:
+        "Poți anula oricând. Accesul rămâne activ până la sfârșitul perioadei deja plătite.",
+      whyTitle: "De ce există membership-ul",
+      why: [
+        "Oameni reali în aceeași comunitate",
+        "Participare locală verificată",
+        "Mai puține boturi și conturi fantomă",
+        "Spațiu civic calm, fără publicitate",
+      ],
+      rightsTitle: "Cu un membership activ poți:",
+      rights:
+        "Confirma semnale, publica, comenta și participa la deciziile comunității.",
+      endedTitle:
+        "TOWN este pentru cei gata să participe în comunitatea lor.",
+      endedBody: "Poți reveni când ești pregătit să faci parte din ea.",
+      endedReturn: "Înapoi la intrarea TOWN",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -806,7 +966,7 @@
         "In questo prototipo il sistema reale di account non è attivo.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "PERSÖNLICHES KONTO",
@@ -830,7 +990,31 @@
         "In diesem Prototyp ist das reale Kontosystem nicht aktiv.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "CONT PERSONAL",
+      title: "Creează-ți contul TOWN.",
+      community: "Comunitate: {city}",
+      body:
+        "Înainte de a cere orice informație personală, îți explicăm de ce este nevoie de un cont.",
+      whyTitle: "Contul tău TOWN va servi la:",
+      why: [
+        "identificarea unei singure persoane reale;",
+        "păstrarea comunității locale verificate;",
+        "permiterea accesului pe web și mobil;",
+        "protejarea participării de boturi și conturi fantomă.",
+      ],
+      privacyTitle: "Confidențialitate",
+      privacy:
+        "Vor fi cerute doar informațiile esențiale pentru cont.",
+      privacySecond:
+        "În fluxul aprobat nu este necesară o parolă.",
+      prototype:
+        "În acest prototip sistemul real de conturi nu este activ.",
+      continue: "Continuă",
+      back: "Înapoi",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -849,7 +1033,7 @@
       invalid: "Inserisci un indirizzo email valido.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "KONTO ERSTELLEN",
@@ -865,7 +1049,23 @@
       invalid: "Gib eine gültige E-Mail-Adresse ein.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "CREEAZĂ-ȚI CONTUL",
+      title: "Introdu adresa ta de email.",
+      body: "În mod normal ți-am trimite un cod de verificare din 6 cifre.",
+      bodySecond: "Nu este nevoie de o parolă.",
+      prototype:
+        "În acest prototip nu se trimite niciun email și nu se creează un cont real.",
+      fieldLabel: "Adresă de email",
+      placeholder: "nume@exemplu.ro",
+      privacy:
+        "Vom folosi acest email pentru a-ți verifica contul, a-ți trimite comunicări esențiale și a te ajuta să-ți recuperezi accesul.",
+      invalid: "Introdu o adresă de email validă.",
+      continue: "Continuă",
+      back: "Înapoi",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -879,7 +1079,7 @@
       invalid: "Il codice non è corretto.",
       verify: "Verifica",
       changeEmail: "Cambia email",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "E-MAIL BESTÄTIGEN",
@@ -890,7 +1090,18 @@
       invalid: "Der Code ist nicht korrekt.",
       verify: "Bestätigen",
       changeEmail: "E-Mail-Adresse ändern",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "VERIFICARE EMAIL",
+      title: "Verifică-ți emailul.",
+      body: "Am trimis un cod din 6 cifre la:",
+      fieldLabel: "Cod de verificare",
+      prototype: "În prototip, introdu 123456 pentru a continua.",
+      invalid: "Codul nu este corect.",
+      verify: "Verifică",
+      changeEmail: "Schimbă emailul",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -928,7 +1139,7 @@
       successNote:
         "Questo è solo uno stato di simulazione. Non esiste un account autenticato reale.",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "SICHERER ZUGANG",
@@ -963,7 +1174,42 @@
       successNote:
         "Dies ist nur ein Simulationszustand. Es gibt kein echt authentifiziertes Konto.",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "ACCES SIGUR",
+      title: "Protejează-ți contul TOWN.",
+      body:
+        "TOWN folosește o passkey: nu trebuie să creezi sau să ții minte o parolă.",
+      bodySecond:
+        "În fluxul aprobat, accesul sigur folosește metodele dispozitivului tău.",
+      methodsTitle: "Metode disponibile pe dispozitiv",
+      methods: ["Face ID", "Touch ID", "Amprentă", "PIN-ul dispozitivului"],
+      benefitsTitle: "De ce o passkey",
+      benefits: [
+        "Nicio parolă de ținut minte",
+        "Rezistență mai bună la phishing",
+        "Nicio parolă partajată cu TOWN",
+        "Poți adăuga alte dispozitive mai târziu",
+      ],
+      prototype:
+        "În acest prototip crearea reală a passkey-ului nu este activă și nu se creează nicio credențială de autentificare.",
+      create: "Creează acces sigur",
+      back: "Înapoi",
+      noticeTitle: "Simulare de prototip",
+      noticeBody:
+        "Crearea reală a passkey-ului nu este încă activă în acest prototip.",
+      simulate: "Simulează configurarea",
+      successLabel: "ACCES CONFIGURAT",
+      successTitle: "Acces sigur configurat în prototip.",
+      successBody:
+        "Emailul tău rămâne verificat. Nu a fost creată o passkey reală.",
+      successEmail: "Email verificat",
+      successAccess: "Acces sigur configurat (prototip)",
+      successNote:
+        "Aceasta este doar o stare de simulare. Nu există un cont autentificat real.",
+      continue: "Continuă",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -986,7 +1232,7 @@
         "In questo prototipo non è attivo alcun pagamento reale.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "KONTO BEREIT",
@@ -1006,7 +1252,27 @@
         "In diesem Prototyp ist keine echte Zahlung aktiv.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "CONT PREGĂTIT",
+      title: "Contul tău TOWN este pregătit.",
+      community: "Comunitate: {city}",
+      emailLine: "Email: {email}",
+      emailStatus: "Email verificat (prototip)",
+      accessStatus: "Acces sigur configurat (prototip)",
+      body:
+        "Configurarea contului în prototip este completă.",
+      bodySecond:
+        "Următorul pas este activarea abonamentului anual TOWN.",
+      inactive:
+        "Cont pregătit — membership-ul nu este activ. Nu poți încă participa ca membru.",
+      membership: "Abonament TOWN — 12 € pe an",
+      paymentNote:
+        "În acest prototip nu este activă nicio plată reală.",
+      continue: "Continuă",
+      back: "Înapoi",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -1041,7 +1307,7 @@
       successNote:
         "Questo stato è solo una simulazione. Non implica conferma civica, autenticazione reale o abbonamento reale.",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "JÄHRLICHE MITGLIEDSCHAFT",
@@ -1073,7 +1339,39 @@
       successNote:
         "Dieser Zustand ist nur eine Simulation. Er bedeutet keine zivile Bestätigung, keine echte Authentifizierung und kein echtes Abonnement.",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "MEMBERSHIP ANUAL",
+      title: "Activează abonamentul anual TOWN.",
+      community: "Comunitate: {city}",
+      price: "12 € pe an",
+      renewal: "Reînnoire anuală automată.",
+      cancel:
+        "Poți anula oricând. Accesul rămâne activ până la sfârșitul perioadei deja plătite.",
+      body:
+        "Cu un membership activ vei putea participa în comunitatea locală verificată.",
+      accountStatus: "Cont: pregătit",
+      membershipStatus: "Membership: inactiv",
+      prototype:
+        "În acest prototip plata reală nu este activă, Stripe nu este integrat și niciun membership nu va fi activat cu adevărat.",
+      simulateStart: "Simulează activarea membership-ului",
+      back: "Înapoi",
+      noticeTitle: "Plată inactivă",
+      noticeBody:
+        "Plata reală nu este activă în acest prototip. Stripe nu este integrat. Poți doar simula activarea.",
+      simulateConfirm: "Simulează activarea",
+      successLabel: "MEMBERSHIP SIMULAT",
+      successTitle: "Membership activ — doar prototip.",
+      successCommunity: "Comunitate: {city}",
+      successAccount: "Cont: pregătit",
+      successMembership: "Membership: activ — doar prototip",
+      successBody:
+        "Nu a avut loc nicio plată reală. Nu există niciun entitlement real.",
+      successNote:
+        "Această stare este doar o simulare. Nu implică confirmare civică, autentificare reală sau abonament real.",
+      continue: "Continuă",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -1091,7 +1389,7 @@
         "Questo è solo lo stato di chiusura del percorso prototipo. Non implica autenticazione reale o conferma civica salvata.",
       returnSignal: "Torna al segnale",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "MITGLIEDSCHAFT AKTIV",
@@ -1106,7 +1404,22 @@
         "Dies ist nur der Abschlusszustand des Prototypwegs. Er bedeutet keine echte Authentifizierung und keine gespeicherte zivile Bestätigung.",
       returnSignal: "Zurück zum Signal",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+    },
+    ro: {
+      label: "MEMBERSHIP ACTIV",
+      title: "Membership activ — doar prototip.",
+      community: "Comunitate: {city}",
+      memberStatus: "Membru · {city}",
+      body:
+        "Configurarea contului în prototip este completă, iar participarea este acum activă în prototip.",
+      bodySecond:
+        "Nu a avut loc nicio plată reală și nu există niciun entitlement real.",
+      prototype:
+        "Aceasta este doar starea de încheiere a parcursului prototip. Nu implică autentificare reală sau confirmare civică salvată.",
+      returnSignal: "Înapoi la semnal",
+      back: "Înapoi",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
 
@@ -1163,6 +1476,7 @@
   function communityLanguage() {
     if (selectedCountry === "Italy" && selectedCity === "Milano") return "it";
     if (selectedCountry === "Germany" && selectedCity === "Munich") return "de";
+    if (selectedCountry === "Romania" && selectedCity === "Arad") return "ro";
     return "en";
   }
 
@@ -1209,7 +1523,11 @@
   function mapSignalDetailToScene(detail, cityId) {
     const localeTag =
       detail.locale ||
-      (cityId === "Munich" ? "de-DE" : "it-IT");
+      (cityId === "Munich"
+        ? "de-DE"
+        : cityId === "Arad"
+          ? "ro-RO"
+          : "it-IT");
     const focusX =
       detail.imageFocus && typeof detail.imageFocus.x === "number"
         ? detail.imageFocus.x
@@ -1322,6 +1640,7 @@
   function clearLiveScenes() {
     liveScenes.Milano = null;
     liveScenes.Munich = null;
+    liveScenes.Arad = null;
   }
 
   function applyCityCopy() {
@@ -1543,7 +1862,9 @@
 
   function membershipLang() {
     const lang = communityLanguage();
-    return lang === "de" ? "de" : "it";
+    if (lang === "de") return "de";
+    if (lang === "ro") return "ro";
+    return "it";
   }
 
   function applyInviteCopy() {
