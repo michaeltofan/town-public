@@ -1463,8 +1463,42 @@ body.page-feed {
 }
 
 .signal-detail__actions .feed__primary,
-.signal-detail__actions .feed__done {
+.signal-detail__actions .feed__done,
+.signal-detail__actions .feed__secondary {
   width: 100%;
+}
+
+/* DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure. */
+.signal-detail__demo-testimony {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 0.15rem;
+}
+
+.signal-detail__demo-testimony[hidden] {
+  display: none !important;
+}
+
+.signal-detail__demo-testimony-note {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__demo-testimony-media {
+  width: 100%;
+  max-height: 14rem;
+  object-fit: cover;
+  border-radius: 0.35rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.signal-detail__demo-testimony-media[hidden] {
+  display: none !important;
 }
 
 @media (max-width: 720px) {
