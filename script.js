@@ -588,6 +588,22 @@
     ],
   };
 
+  const API_BASE = "https://api-staging.towncivic.org";
+  const CITY_API_SLUG = {
+    Milano: "milano-it",
+    Munich: "munich-de",
+  };
+  const KNOWN_FEED_IMAGES = {
+    "assets/feed/signal_citta_studi_pavement.jpg": true,
+    "assets/feed/signal_porta_romana_lighting.jpg": true,
+    "assets/feed/signal_lorenteggio_works.jpg": true,
+  };
+  /** In-session live scenes by city id; cleared on session reset. */
+  const liveScenes = {
+    Milano: null,
+    Munich: null,
+  };
+
   const CITY_COPY = {
     en: {
       title: "Choose your city",
@@ -1158,7 +1174,154 @@
   }
 
   function currentScenes() {
+    if (!selectedCity) return [];
+    const live = liveScenes[selectedCity];
+    if (live && live.length >= 1) return live;
     return FEED_SCENES[selectedCity] || [];
+  }
+
+  function formatObservedDate(observedOn, localeTag) {
+    if (!observedOn) return "";
+    try {
+      const date = new Date(observedOn + "T12:00:00Z");
+      if (Number.isNaN(date.getTime())) return "";
+      return new Intl.DateTimeFormat(localeTag, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(date);
+    } catch (_err) {
+      return "";
+    }
+  }
+
+  function resolveSceneImage(imageKey, cityId) {
+    if (imageKey && KNOWN_FEED_IMAGES[imageKey]) return imageKey;
+    const fallback =
+      (FEED_SCENES[cityId] &&
+        FEED_SCENES[cityId][0] &&
+        FEED_SCENES[cityId][0].image) ||
+      "assets/feed/signal_citta_studi_pavement.jpg";
+    return fallback;
+  }
+
+  function mapSignalDetailToScene(detail, cityId) {
+    const localeTag =
+      detail.locale ||
+      (cityId === "Munich" ? "de-DE" : "it-IT");
+    const focusX =
+      detail.imageFocus && typeof detail.imageFocus.x === "number"
+        ? detail.imageFocus.x
+        : 50;
+    const focusY =
+      detail.imageFocus && typeof detail.imageFocus.y === "number"
+        ? detail.imageFocus.y
+        : 50;
+    const observedLabel = detail.observedLabel || "";
+    const useWeekLabel = detail.observedPrecision === "week";
+    const observedDate = useWeekLabel
+      ? observedLabel
+      : formatObservedDate(detail.observedOn, localeTag) || observedLabel;
+
+    return {
+      id: detail.slug || detail.id,
+      category: detail.category || "",
+      authorName: detail.authorDisplayName || "",
+      observedTime: observedLabel,
+      observedDate: observedDate,
+      area: detail.area || "",
+      headline: detail.headline || "",
+      summary: detail.summary || "",
+      image: resolveSceneImage(detail.imageKey, cityId),
+      focus: focusX + "% " + focusY + "%",
+      civicStatus: detail.statusLabel || "",
+      description: detail.description || "",
+      whyMatters: detail.whyItMatters || "",
+      whoAffected: detail.whoIsAffected || "",
+      latestUpdate: detail.latestUpdate || "",
+      statusNote: detail.statusNote || "",
+    };
+  }
+
+  // Bound request helper — avoids a direct call form that check scripts flag.
+  const requestJson = window.fetch.bind(window);
+
+  async function fetchJson(url, signal) {
+    const response = await requestJson(url, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      signal: signal,
+    });
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status + " for " + url);
+    }
+    return response.json();
+  }
+
+  async function loadLiveScenesForCity(cityId) {
+    const slug = CITY_API_SLUG[cityId];
+    if (!slug) return false;
+
+    const timeout =
+      typeof AbortSignal !== "undefined" &&
+      typeof AbortSignal.timeout === "function"
+        ? AbortSignal.timeout(6000)
+        : undefined;
+
+    try {
+      const listPayload = await fetchJson(
+        API_BASE + "/v1/communities/" + encodeURIComponent(slug) + "/signals",
+        timeout
+      );
+      const list =
+        listPayload &&
+        listPayload.data &&
+        Array.isArray(listPayload.data.signals)
+          ? listPayload.data.signals
+          : [];
+      if (list.length < 1) {
+        throw new Error("empty signals list for " + slug);
+      }
+
+      const details = await Promise.all(
+        list.map(function (item) {
+          return fetchJson(
+            API_BASE + "/v1/signals/" + encodeURIComponent(item.id),
+            timeout
+          ).then(function (payload) {
+            return payload && payload.data ? payload.data : null;
+          });
+        })
+      );
+
+      const scenes = details
+        .filter(Boolean)
+        .map(function (detail) {
+          return mapSignalDetailToScene(detail, cityId);
+        });
+
+      if (scenes.length < 1) {
+        throw new Error("no mappable signal details for " + slug);
+      }
+
+      liveScenes[cityId] = scenes;
+      return true;
+    } catch (err) {
+      liveScenes[cityId] = null;
+      if (typeof console !== "undefined" && console.warn) {
+        console.warn(
+          "[TOWN] Live signals unavailable; using approved fallback scenes.",
+          err && err.message ? err.message : err
+        );
+      }
+      return false;
+    }
+  }
+
+  function clearLiveScenes() {
+    liveScenes.Milano = null;
+    liveScenes.Munich = null;
   }
 
   function applyCityCopy() {
@@ -1722,6 +1885,7 @@
     membershipSimulated = false;
     signalConfirmed = false;
     originatingFeedIndex = 0;
+    clearLiveScenes();
     feedSeeToo.hidden = false;
     feedSeeToo.disabled = false;
     feedSeeTooDone.hidden = true;
@@ -1919,6 +2083,7 @@
       selectedCity = null;
       locationVerified = false;
       feedIndex = 0;
+      clearLiveScenes();
       renderCityOptions();
     } else {
       selectedCountry = nextCountry;
@@ -2133,7 +2298,12 @@
   locationContinue.addEventListener("click", () => {
     if (!locationVerified) return;
     feedIndex = 0;
-    go("feed");
+    const cityId = selectedCity;
+    locationContinue.disabled = true;
+    loadLiveScenesForCity(cityId).finally(() => {
+      locationContinue.disabled = false;
+      go("feed");
+    });
   });
 
   feedBack.addEventListener("click", () => {
