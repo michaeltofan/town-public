@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TOWN — mock: Signal Detail vista membro con testimonianze (esplorazione design)."
+    />
+    <title>TOWN — Signal Detail · Membro (mock)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="member-signal-detail.css" />
+  </head>
+  <body class="mock-member-detail">
+    <a class="skip-link" href="#mock-detail-scroll">Vai al contenuto</a>
+
+    <!--
+      Static design mock: Signal Detail as seen by an active member.
+      Reuses approved Signal Detail V1 structure and milano-signal-1 copy.
+      Does not alter index.html / styles.css / script.js.
+    -->
+    <div
+      class="signal-detail"
+      role="document"
+      aria-labelledby="detail-headline"
+    >
+      <div class="signal-detail__media" aria-hidden="true">
+        <img
+          class="signal-detail__image"
+          src="../assets/feed/signal_citta_studi_pavement.jpg"
+          alt=""
+          style="object-position: 50% 42%"
+          decoding="async"
+        />
+        <div class="signal-detail__veil"></div>
+      </div>
+
+      <div class="signal-detail__chrome">
+        <header class="signal-detail__top">
+          <div class="signal-detail__top-left">
+            <button type="button" class="signal-detail__close">
+              Chiudi
+            </button>
+            <p class="signal-detail__brand" aria-label="TOWN">TOWN</p>
+          </div>
+          <div class="signal-detail__top-right">
+            <p class="signal-detail__status-user">Membro · Milano</p>
+          </div>
+        </header>
+
+        <div class="signal-detail__scroll" id="mock-detail-scroll">
+          <p class="signal-detail__community">Milano · Città Studi</p>
+          <p class="signal-detail__category">SPAZIO PUBBLICO</p>
+          <h1 class="signal-detail__headline" id="detail-headline">
+            Marciapiede danneggiato davanti alla scuola di via Padova
+          </h1>
+          <p class="signal-detail__meta">
+            14 luglio 2026 · Marta Rinaldi · Città Studi
+          </p>
+          <p class="signal-detail__civic">
+            Stato civico: osservato — in attesa di attenzione locale
+          </p>
+          <p class="signal-detail__lead">
+            Davanti alla scuola di via Padova il marciapiede è sollevato e
+            spezzato. Il passaggio pedonale resta irregolare per diversi metri e
+            costringe chi cammina a avvicinarsi alla carreggiata, soprattutto
+            nelle ore di entrata e uscita.
+          </p>
+
+          <section class="signal-detail__section">
+            <h2 class="signal-detail__label">Perché conta qui</h2>
+            <p class="signal-detail__text">
+              Qui passa ogni giorno chi accompagna i bambini a scuola e chi si
+              muove a piedi nel quartiere. Un marciapiede danneggiato non è un
+              dettaglio estetico: riduce la sicurezza di un tratto quotidiano e
+              molto frequentato.
+            </p>
+          </section>
+
+          <section class="signal-detail__section">
+            <h2 class="signal-detail__label">Chi è coinvolto</h2>
+            <p class="signal-detail__text">
+              Famiglie con bambini, anziani, persone con mobilità ridotta e chi
+              attraversa Città Studi a piedi nelle ore di punta.
+            </p>
+          </section>
+
+          <section class="signal-detail__section">
+            <h2 class="signal-detail__label">Ultimo aggiornamento</h2>
+            <p class="signal-detail__text">
+              Il segnale resta locale e aperto. Nessuna conferma rilevante di
+              intervento è ancora disponibile in questo prototipo.
+            </p>
+          </section>
+
+          <section class="signal-detail__section">
+            <h2 class="signal-detail__label">Cosa significa questo stato</h2>
+            <p class="signal-detail__text">
+              «Osservato» significa che il problema è stato riconosciuto dalla
+              comunità locale. Non implica una pratica ufficiale né un intervento
+              già avviato.
+            </p>
+          </section>
+
+          <!-- NEW: member testimonies (design exploration) -->
+          <section
+            class="signal-detail__section mock-testimonies"
+            aria-labelledby="mock-testimonies-title"
+          >
+            <h2 class="signal-detail__label" id="mock-testimonies-title">
+              Testimonianze dei membri
+            </h2>
+            <p class="mock-testimonies__fact">Confermato da 4 membri</p>
+
+            <ul class="mock-testimonies__list">
+              <li class="mock-testimony">
+                <div class="mock-testimony__header">
+                  <img
+                    class="mock-testimony__thumb"
+                    src="../assets/feed/signal_citta_studi_pavement.jpg"
+                    alt=""
+                    style="object-position: 30% 55%"
+                    width="40"
+                    height="40"
+                    decoding="async"
+                  />
+                  <div class="mock-testimony__identity">
+                    <p class="mock-testimony__name">Lucia · Isola</p>
+                    <p class="mock-testimony__date">16 luglio 2026</p>
+                  </div>
+                </div>
+                <p class="mock-testimony__body">
+                  Passo di qui ogni mattina con mia figlia. Il bordo sollevato
+                  obbliga a scendere verso la strada proprio davanti all’ingresso
+                  della scuola.
+                </p>
+              </li>
+
+              <li class="mock-testimony">
+                <div class="mock-testimony__header">
+                  <img
+                    class="mock-testimony__thumb"
+                    src="../assets/feed/signal_porta_romana_lighting.jpg"
+                    alt=""
+                    style="object-position: 50% 35%"
+                    width="40"
+                    height="40"
+                    decoding="async"
+                  />
+                  <div class="mock-testimony__identity">
+                    <p class="mock-testimony__name">Marco · Porta Venezia</p>
+                    <p class="mock-testimony__date">15 luglio 2026</p>
+                  </div>
+                </div>
+                <p class="mock-testimony__body">
+                  Ho registrato il tratto a piedi ieri sera: si vede bene dove il
+                  marciapiede si interrompe e costringe a spostarsi.
+                </p>
+                <div
+                  class="mock-testimony__video"
+                  role="img"
+                  aria-label="Testimonianza video di Marco, durata 0 minuti e 47 secondi — solo prototipo, senza riproduzione"
+                >
+                  <img
+                    class="mock-testimony__video-still"
+                    src="../assets/feed/signal_porta_romana_lighting.jpg"
+                    alt=""
+                    decoding="async"
+                  />
+                  <div class="mock-testimony__play" aria-hidden="true">
+                    <svg
+                      class="mock-testimony__play-glyph"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="24"
+                        cy="24"
+                        r="23"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        opacity="0.85"
+                      />
+                      <path
+                        d="M20 15.5v17l14-8.5-14-8.5z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p class="mock-testimony__duration">0:47</p>
+                </div>
+              </li>
+
+              <li class="mock-testimony">
+                <div class="mock-testimony__header">
+                  <img
+                    class="mock-testimony__thumb"
+                    src="../assets/feed/signal_lorenteggio_works.jpg"
+                    alt=""
+                    style="object-position: 45% 40%"
+                    width="40"
+                    height="40"
+                    decoding="async"
+                  />
+                  <div class="mock-testimony__identity">
+                    <p class="mock-testimony__name">Elena · Città Studi</p>
+                    <p class="mock-testimony__date">14 luglio 2026</p>
+                  </div>
+                </div>
+                <p class="mock-testimony__body">
+                  Anche per chi usa il bastone il passaggio è difficile. Una
+                  riparazione locale aiuterebbe molte persone del quartiere.
+                </p>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="signal-detail__actions">
+          <!-- Non-functional: capture flow is the next mock -->
+          <button type="button" class="feed__primary">
+            Lo vedo anch’io — aggiungi la tua testimonianza
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
