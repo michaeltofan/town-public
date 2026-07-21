@@ -71,6 +71,15 @@
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
+  const detailAddTestimony = document.getElementById("detail-add-testimony");
+  const detailTestimonyInput = document.getElementById("detail-testimony-input");
+  const detailTestimonyPreview = document.getElementById(
+    "detail-testimony-preview"
+  );
+  const detailTestimonyNote = document.getElementById("detail-testimony-note");
+  const detailTestimonyImage = document.getElementById("detail-testimony-image");
+  const detailTestimonyVideo = document.getElementById("detail-testimony-video");
+  const detailTestimonyClear = document.getElementById("detail-testimony-clear");
   const feedSeeTooDone = document.getElementById("feed-see-too-done");
   const feedDoneTitle = document.getElementById("feed-done-title");
   const feedDoneNote = document.getElementById("feed-done-note");
@@ -293,6 +302,13 @@
     !detailSeeTooDone ||
     !detailDoneTitle ||
     !detailDoneNote ||
+    !detailAddTestimony ||
+    !detailTestimonyInput ||
+    !detailTestimonyPreview ||
+    !detailTestimonyNote ||
+    !detailTestimonyImage ||
+    !detailTestimonyVideo ||
+    !detailTestimonyClear ||
     !feedSeeTooDone ||
     !feedDoneTitle ||
     !feedDoneNote ||
@@ -800,6 +816,9 @@
       communityArea: "{city} · {area}",
       previous: "Precedente",
       next: "Successiva",
+      addTestimony: "Aggiungi testimonianza",
+      clearTestimony: "Rimuovi",
+      demoTestimonyNote: "Solo demo — non caricata, non salvata",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -818,6 +837,9 @@
       communityArea: "{city} · {area}",
       previous: "Zurück",
       next: "Weiter",
+      addTestimony: "Zeugnis hinzufügen",
+      clearTestimony: "Entfernen",
+      demoTestimonyNote: "Nur Demo — nicht hochgeladen, nicht gespeichert",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -836,6 +858,9 @@
       communityArea: "{city} · {area}",
       previous: "Anterior",
       next: "Următorul",
+      addTestimony: "Adaugă mărturie",
+      clearTestimony: "Elimină",
+      demoTestimonyNote: "Doar demo — nu este încărcată, nu este salvată",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1438,6 +1463,10 @@
   let membershipSimulated = false;
   let signalConfirmed = false;
 
+  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
+  let demoTestimony = null;
+  let demoTestimonyFeedIndex = null;
+
   const titles = {
     entry: "TOWN — Entry",
     country: "TOWN — Choose your country",
@@ -1756,6 +1785,9 @@
     detailWhoLabel.textContent = copy.whoLabel;
     detailUpdateLabel.textContent = copy.updateLabel;
     detailStatusLabel.textContent = copy.statusLabel;
+    detailAddTestimony.textContent = copy.addTestimony;
+    detailTestimonyClear.textContent = copy.clearTestimony;
+    detailTestimonyNote.textContent = copy.demoTestimonyNote;
     feedCommunity.textContent = cityDisplayName(lang);
     syncFeedMemberState();
     document.documentElement.lang = lang === "en" ? "en" : lang;
@@ -2207,6 +2239,7 @@
     signalConfirmed = false;
     originatingFeedIndex = 0;
     clearLiveScenes();
+    clearDemoTestimony();
     feedSeeToo.hidden = false;
     feedSeeToo.disabled = false;
     feedSeeTooDone.hidden = true;
@@ -2405,6 +2438,7 @@
       locationVerified = false;
       feedIndex = 0;
       clearLiveScenes();
+      clearDemoTestimony();
       renderCityOptions();
     } else {
       selectedCountry = nextCountry;
@@ -2433,9 +2467,61 @@
     document.body.style.overflow = "";
   }
 
+  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
+  function clearDemoTestimony() {
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = null;
+    demoTestimonyFeedIndex = null;
+    detailTestimonyInput.value = "";
+    detailTestimonyImage.removeAttribute("src");
+    detailTestimonyImage.hidden = true;
+    detailTestimonyVideo.removeAttribute("src");
+    detailTestimonyVideo.hidden = true;
+    if (typeof detailTestimonyVideo.load === "function") {
+      detailTestimonyVideo.load();
+    }
+    detailTestimonyPreview.hidden = true;
+  }
+
+  function renderDemoTestimony() {
+    if (
+      !demoTestimony ||
+      demoTestimonyFeedIndex === null ||
+      demoTestimonyFeedIndex !== feedIndex
+    ) {
+      if (demoTestimony && demoTestimonyFeedIndex !== feedIndex) {
+        clearDemoTestimony();
+      } else if (!demoTestimony) {
+        detailTestimonyPreview.hidden = true;
+        detailTestimonyImage.hidden = true;
+        detailTestimonyVideo.hidden = true;
+      }
+      return;
+    }
+
+    detailTestimonyPreview.hidden = false;
+    if (demoTestimony.kind === "video") {
+      detailTestimonyImage.hidden = true;
+      detailTestimonyImage.removeAttribute("src");
+      detailTestimonyVideo.hidden = false;
+      detailTestimonyVideo.src = demoTestimony.objectUrl;
+    } else {
+      detailTestimonyVideo.hidden = true;
+      detailTestimonyVideo.removeAttribute("src");
+      if (typeof detailTestimonyVideo.load === "function") {
+        detailTestimonyVideo.load();
+      }
+      detailTestimonyImage.hidden = false;
+      detailTestimonyImage.src = demoTestimony.objectUrl;
+    }
+  }
+
   function openSignalDetail() {
     applyFeedCopyChrome();
     populateSignalDetail();
+    renderDemoTestimony();
     signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
     detailClose.focus();
@@ -2550,6 +2636,34 @@
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
+  });
+
+  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
+  detailAddTestimony.addEventListener("click", () => {
+    detailTestimonyInput.click();
+  });
+
+  detailTestimonyInput.addEventListener("change", () => {
+    const file =
+      detailTestimonyInput.files && detailTestimonyInput.files[0]
+        ? detailTestimonyInput.files[0]
+        : null;
+    if (!file) return;
+
+    const kind = file.type && file.type.indexOf("video/") === 0 ? "video" : "image";
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = {
+      kind: kind,
+      objectUrl: URL.createObjectURL(file),
+    };
+    demoTestimonyFeedIndex = feedIndex;
+    renderDemoTestimony();
+  });
+
+  detailTestimonyClear.addEventListener("click", () => {
+    clearDemoTestimony();
   });
 
   document.addEventListener("keydown", (event) => {

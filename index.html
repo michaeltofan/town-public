@@ -434,6 +434,47 @@
               <p class="feed__done-title" id="detail-done-title"></p>
               <p class="feed__done-note" id="detail-done-note"></p>
             </div>
+            <!-- DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure. -->
+            <button type="button" class="feed__secondary" id="detail-add-testimony">
+              Add testimony
+            </button>
+            <input
+              type="file"
+              id="detail-testimony-input"
+              accept="image/*,video/*"
+              capture="environment"
+              hidden
+            />
+            <div
+              class="signal-detail__demo-testimony"
+              id="detail-testimony-preview"
+              hidden
+            >
+              <p
+                class="signal-detail__demo-testimony-note"
+                id="detail-testimony-note"
+              ></p>
+              <img
+                class="signal-detail__demo-testimony-media"
+                id="detail-testimony-image"
+                alt=""
+                hidden
+              />
+              <video
+                class="signal-detail__demo-testimony-media"
+                id="detail-testimony-video"
+                controls
+                playsinline
+                hidden
+              ></video>
+              <button
+                type="button"
+                class="feed__secondary"
+                id="detail-testimony-clear"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         </div>
       </div>
