@@ -85,14 +85,22 @@ for fragment in (
     "KONTO ERSTELLEN",
     "Non serve una password.",
     "Du brauchst kein Passwort.",
-    "non viene inviata alcuna email",
-    "keine E-Mail gesendet",
+    "Ti invieremo un codice di verifica a 6 cifre via email.",
+    "Wir senden dir einen 6-stelligen Bestätigungscode per E-Mail.",
+    "Îți trimitem un cod de verificare din 6 cifre pe email.",
     "Inserisci un indirizzo email valido.",
     "Gib eine gültige E-Mail-Adresse ein.",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 08 email entry mock present")
+for absent in (
+    "non viene inviata alcuna email",
+    "keine E-Mail gesendet",
+    "nu se trimite niciun email",
+):
+    if absent in js:
+        raise SystemExit(f"Unexpected JS fragment still present: {absent}")
+print("OK: Screen 08 email entry copy present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

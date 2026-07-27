@@ -1050,7 +1050,7 @@
       body: "Normalmente ti invieremmo un codice di verifica di 6 cifre.",
       bodySecond: "Non serve una password.",
       prototype:
-        "In questo prototipo non viene inviata alcuna email e non viene creato un account reale.",
+        "Ti invieremo un codice di verifica a 6 cifre via email.",
       fieldLabel: "Indirizzo email",
       placeholder: "nome@esempio.it",
       privacy:
@@ -1068,7 +1068,7 @@
       body: "Normalerweise würden wir dir einen sechsstelligen Bestätigungscode senden.",
       bodySecond: "Du brauchst kein Passwort.",
       prototype:
-        "In diesem Prototyp wird keine E-Mail gesendet und kein reales Konto erstellt.",
+        "Wir senden dir einen 6-stelligen Bestätigungscode per E-Mail.",
       fieldLabel: "E-Mail-Adresse",
       placeholder: "name@beispiel.de",
       privacy:
@@ -1087,7 +1087,7 @@
       body: "În mod normal ți-am trimite un cod de verificare din 6 cifre.",
       bodySecond: "Nu este nevoie de o parolă.",
       prototype:
-        "În acest prototip nu se trimite niciun email și nu se creează un cont real.",
+        "Îți trimitem un cod de verificare din 6 cifre pe email.",
       fieldLabel: "Adresă de email",
       placeholder: "nume@exemplu.ro",
       privacy:
@@ -1107,7 +1107,7 @@
       title: "Controlla la tua email.",
       body: "Abbiamo inviato un codice di 6 cifre a:",
       fieldLabel: "Codice di verifica",
-      prototype: "Nel prototipo, inserisci 123456 per continuare.",
+      prototype: "Inserisci il codice a 6 cifre che ti abbiamo inviato via email.",
       invalid: "Il codice non è corretto.",
       rateLimited: "Troppi tentativi. Riprova tra poco.",
       failed: "Non è stato possibile continuare. Riprova.",
@@ -1120,7 +1120,7 @@
       title: "Prüfe deine E-Mails.",
       body: "Wir haben einen sechsstelligen Code gesendet an:",
       fieldLabel: "Bestätigungscode",
-      prototype: "Gib im Prototyp 123456 ein, um fortzufahren.",
+      prototype: "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.",
       invalid: "Der Code ist nicht korrekt.",
       rateLimited:
         "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
@@ -1134,7 +1134,7 @@
       title: "Verifică-ți emailul.",
       body: "Am trimis un cod din 6 cifre la:",
       fieldLabel: "Cod de verificare",
-      prototype: "În prototip, introdu 123456 pentru a continua.",
+      prototype: "Introdu codul din 6 cifre pe care ți l-am trimis pe email.",
       invalid: "Codul nu este corect.",
       rateLimited: "Prea multe încercări. Încearcă din nou în curând.",
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
@@ -1463,7 +1463,6 @@
   };
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const PROTOTYPE_CODE = "123456";
 
   let lastFocus = null;
   let selectedCountry = null;
@@ -2129,7 +2128,6 @@
       codeInput.value = value;
     }
     const complete = value.length === 6;
-    // PROTOTYPE_CODE remains declared for check-script compatibility; live verify uses the API.
     codeVerify.disabled = !complete || codeSubmitting;
     if (!complete) {
       codeError.hidden = true;
