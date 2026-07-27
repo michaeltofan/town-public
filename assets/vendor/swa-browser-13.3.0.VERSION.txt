@@ -1,0 +1,4 @@
+@simplewebauthn/browser@13.3.0
+Source: npm pack @simplewebauthn/browser@13.3.0
+Vendored file: dist/bundle/index.umd.min.js
+Global: SimpleWebAuthnBrowser

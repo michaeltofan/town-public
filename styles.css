@@ -2123,6 +2123,14 @@ body.page-ended {
   color: var(--muted);
 }
 
+.passkey__error {
+  margin: 0.55rem 0 0;
+  max-width: 40ch;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #8a4a32;
+}
+
 .passkey__status {
   margin: 0 0 0.45rem;
   max-width: 40ch;

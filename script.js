@@ -145,10 +145,7 @@
   const passkeySuccessAccess = document.getElementById("passkey-success-access");
   const passkeySuccessNote = document.getElementById("passkey-success-note");
   const passkeyContinue = document.getElementById("passkey-continue");
-  const passkeyNotice = document.getElementById("passkey-notice");
-  const passkeyNoticeTitle = document.getElementById("passkey-notice-title");
-  const passkeyNoticeBody = document.getElementById("passkey-notice-body");
-  const passkeySimulate = document.getElementById("passkey-simulate");
+  const passkeyError = document.getElementById("passkey-error");
   const readyLabel = document.getElementById("ready-label");
   const readyTitle = document.getElementById("ready-title");
   const readyCommunity = document.getElementById("ready-community");
@@ -374,10 +371,7 @@
     !passkeySuccessAccess ||
     !passkeySuccessNote ||
     !passkeyContinue ||
-    !passkeyNotice ||
-    !passkeyNoticeTitle ||
-    !passkeyNoticeBody ||
-    !passkeySimulate ||
+    !passkeyError ||
     !readyLabel ||
     !readyTitle ||
     !readyCommunity ||
@@ -1162,22 +1156,22 @@
         "Puoi aggiungere altri dispositivi in seguito",
       ],
       prototype:
-        "In questo prototipo la creazione reale della passkey non è attiva e non viene creato alcun credential di autenticazione.",
+        "TOWN creerà una passkey sul tuo dispositivo. Non viene creata alcuna password.",
       create: "Crea accesso sicuro",
       back: "Indietro",
-      noticeTitle: "Simulazione del prototipo",
-      noticeBody:
-        "La creazione reale della passkey non è ancora attiva in questo prototipo.",
-      simulate: "Simula configurazione",
       successLabel: "ACCESSO CONFIGURATO",
-      successTitle: "Accesso sicuro configurato nel prototipo.",
+      successTitle: "Accesso sicuro configurato.",
       successBody:
-        "La tua email resta verificata. Non è stata creata una passkey reale.",
+        "La tua email è verificata e la passkey è stata creata sul tuo dispositivo.",
       successEmail: "Email verificata",
-      successAccess: "Accesso sicuro configurato (prototipo)",
+      successAccess: "Accesso sicuro configurato",
       successNote:
-        "Questo è solo uno stato di simulazione. Non esiste un account autenticato reale.",
+        "La passkey è pronta. Il prossimo passo è attivare l’iscrizione TOWN.",
       continue: "Continua",
+      grantExpired:
+        "La finestra di configurazione è scaduta. Riparti dall’inserimento dell’email.",
+      cancelled: "Creazione annullata. Puoi riprovare.",
+      failed: "Non è stato possibile creare la passkey. Riprova.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1197,22 +1191,22 @@
         "Weitere Geräte können später hinzugefügt werden",
       ],
       prototype:
-        "In diesem Prototyp ist die echte Passkey-Erstellung nicht aktiv und es wird kein Authentifizierungsnachweis erstellt.",
+        "TOWN erstellt einen Passkey auf deinem Gerät. Es wird kein Passwort angelegt.",
       create: "Sicheren Zugang erstellen",
       back: "Zurück",
-      noticeTitle: "Prototyp-Simulation",
-      noticeBody:
-        "Die echte Passkey-Erstellung ist in diesem Prototyp noch nicht verfügbar.",
-      simulate: "Einrichtung simulieren",
       successLabel: "ZUGANG EINGERICHTET",
-      successTitle: "Sicherer Zugang im Prototyp eingerichtet.",
+      successTitle: "Sicherer Zugang eingerichtet.",
       successBody:
-        "Deine E-Mail bleibt bestätigt. Es wurde kein echter Passkey erstellt.",
+        "Deine E-Mail ist bestätigt und der Passkey wurde auf deinem Gerät erstellt.",
       successEmail: "E-Mail bestätigt",
-      successAccess: "Sicherer Zugang eingerichtet (Prototyp)",
+      successAccess: "Sicherer Zugang eingerichtet",
       successNote:
-        "Dies ist nur ein Simulationszustand. Es gibt kein echt authentifiziertes Konto.",
+        "Der Passkey ist bereit. Als Nächstes aktivierst du die TOWN-Mitgliedschaft.",
       continue: "Weiter",
+      grantExpired:
+        "Das Einrichtungsfenster ist abgelaufen. Starte erneut bei der E-Mail-Eingabe.",
+      cancelled: "Erstellung abgebrochen. Du kannst es erneut versuchen.",
+      failed: "Der Passkey konnte nicht erstellt werden. Bitte versuche es erneut.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1232,22 +1226,22 @@
         "Poți adăuga alte dispozitive mai târziu",
       ],
       prototype:
-        "În acest prototip crearea reală a passkey-ului nu este activă și nu se creează nicio credențială de autentificare.",
+        "TOWN va crea o passkey pe dispozitivul tău. Nu se creează nicio parolă.",
       create: "Creează acces sigur",
       back: "Înapoi",
-      noticeTitle: "Simulare de prototip",
-      noticeBody:
-        "Crearea reală a passkey-ului nu este încă activă în acest prototip.",
-      simulate: "Simulează configurarea",
       successLabel: "ACCES CONFIGURAT",
-      successTitle: "Acces sigur configurat în prototip.",
+      successTitle: "Acces sigur configurat.",
       successBody:
-        "Emailul tău rămâne verificat. Nu a fost creată o passkey reală.",
+        "Emailul tău este verificat, iar passkey-ul a fost creat pe dispozitivul tău.",
       successEmail: "Email verificat",
-      successAccess: "Acces sigur configurat (prototip)",
+      successAccess: "Acces sigur configurat",
       successNote:
-        "Aceasta este doar o stare de simulare. Nu există un cont autentificat real.",
+        "Passkey-ul este gata. Următorul pas este activarea abonamentului TOWN.",
       continue: "Continuă",
+      grantExpired:
+        "Fereastra de configurare a expirat. Repornește de la introducerea emailului.",
+      cancelled: "Creare anulată. Poți încerca din nou.",
+      failed: "Nu a fost posibil să creezi passkey-ul. Încearcă din nou.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1477,7 +1471,8 @@
   let emailSubmitting = false;
   let codeSubmitting = false;
   let emailVerified = false;
-  let passkeySimulated = false;
+  let passkeyRegistered = false;
+  let passkeySubmitting = false;
   let membershipSimulated = false;
   let signalConfirmed = false;
 
@@ -1624,13 +1619,19 @@
     return response.json();
   }
 
-  async function postJson(url, body) {
+  async function postJson(url, body, extraHeaders) {
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+    if (extraHeaders) {
+      Object.keys(extraHeaders).forEach(function (key) {
+        headers[key] = extraHeaders[key];
+      });
+    }
     const response = await requestJson(url, {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify(body),
     });
     let payload = null;
@@ -1656,6 +1657,13 @@
     }
     if (code === "INVALID_OR_EXPIRED_CHALLENGE") {
       return "invalid";
+    }
+    if (
+      status === 401 ||
+      status === 403 ||
+      /GRANT|EXPIRED|UNAUTHORIZED/i.test(code)
+    ) {
+      return "grantExpired";
     }
     return "failed";
   }
@@ -1696,6 +1704,57 @@
         setupGrant: data.setupGrant || null,
         setupGrantExpiresAt: data.setupGrantExpiresAt || null,
       };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  function isSetupGrantUsable() {
+    if (!setupGrant) return false;
+    if (!setupGrantExpiresAt) return true;
+    const expiresAt = Date.parse(setupGrantExpiresAt);
+    if (Number.isNaN(expiresAt)) return true;
+    return Date.now() < expiresAt;
+  }
+
+  function setupGrantAuthHeader() {
+    return { Authorization: "SetupGrant " + setupGrant };
+  }
+
+  async function requestPasskeyRegistrationOptions() {
+    const result = await postJson(
+      API_BASE + "/v1/account/passkeys/registration/options",
+      {},
+      setupGrantAuthHeader()
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (
+      status === 200 &&
+      data &&
+      data.registrationCeremonyId &&
+      data.options
+    ) {
+      return {
+        registrationCeremonyId: data.registrationCeremonyId,
+        options: data.options,
+      };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function verifyPasskeyRegistration(registrationCeremonyId, response) {
+    const result = await postJson(
+      API_BASE + "/v1/account/passkeys/registration/verify",
+      {
+        registrationCeremonyId: registrationCeremonyId,
+        response: response,
+      },
+      setupGrantAuthHeader()
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.status === "ACCOUNT_READY") {
+      return data;
     }
     throw makeApiError(apiErrorKind(status, result.payload));
   }
@@ -2144,20 +2203,14 @@
     });
   }
 
-  function closePasskeyNotice() {
-    if (passkeyNotice.hidden) return;
-    passkeyNotice.hidden = true;
-    document.body.style.overflow = "";
+  function clearPasskeyError() {
+    passkeyError.hidden = true;
+    passkeyError.textContent = "";
   }
 
-  function openPasskeyNotice() {
-    const copy = PASSKEY_COPY[membershipLang()];
-    passkeyNoticeTitle.textContent = copy.noticeTitle;
-    passkeyNoticeBody.textContent = copy.noticeBody;
-    passkeySimulate.textContent = copy.simulate;
-    passkeyNotice.hidden = false;
-    document.body.style.overflow = "hidden";
-    passkeySimulate.focus();
+  function showPasskeyError(message) {
+    passkeyError.hidden = false;
+    passkeyError.textContent = message;
   }
 
   function showPasskeyIntro() {
@@ -2182,6 +2235,7 @@
     fillList(passkeyBenefitsList, copy.benefits);
     passkeyPrototype.textContent = copy.prototype;
     passkeyCreate.textContent = copy.create;
+    passkeyCreate.disabled = passkeySubmitting;
     passkeyBack.textContent = copy.back;
     passkeySuccessLabel.textContent = copy.successLabel;
     passkeySuccessTitle.textContent = copy.successTitle;
@@ -2190,7 +2244,7 @@
     passkeySuccessAccess.textContent = copy.successAccess;
     passkeySuccessNote.textContent = copy.successNote;
     passkeyContinue.textContent = copy.continue;
-    if (passkeySimulated) {
+    if (passkeyRegistered) {
       showPasskeySuccess();
     } else {
       showPasskeyIntro();
@@ -2324,7 +2378,8 @@
     emailSubmitting = false;
     codeSubmitting = false;
     emailVerified = false;
-    passkeySimulated = false;
+    passkeyRegistered = false;
+    passkeySubmitting = false;
     membershipSimulated = false;
     signalConfirmed = false;
     originatingFeedIndex = 0;
@@ -2345,7 +2400,7 @@
     codeError.hidden = true;
     codeError.textContent = "";
     codeVerify.disabled = true;
-    closePasskeyNotice();
+    clearPasskeyError();
     showPasskeyIntro();
     closePaymentNotice();
     showPaymentIntro();
@@ -2395,9 +2450,6 @@
     if (name !== "feed") {
       closeInvite();
       closeSignalDetail();
-    }
-    if (name !== "passkey") {
-      closePasskeyNotice();
     }
     if (name !== "payment") {
       closePaymentNotice();
@@ -2495,7 +2547,7 @@
     }
     if (
       (route === "ready" || route === "payment" || route === "active") &&
-      !passkeySimulated
+      !passkeyRegistered
     ) {
       route = "passkey";
     }
@@ -2962,7 +3014,7 @@
         setupGrant = result.setupGrant;
         setupGrantExpiresAt = result.setupGrantExpiresAt;
         emailVerified = true;
-        passkeySimulated = false;
+        passkeyRegistered = false;
         go("passkey");
       })
       .catch(function (err) {
@@ -2984,7 +3036,7 @@
 
   codeChangeEmail.addEventListener("click", () => {
     emailVerified = false;
-    passkeySimulated = false;
+    passkeyRegistered = false;
     emailVerificationId = null;
     setupGrant = null;
     setupGrantExpiresAt = null;
@@ -2993,19 +3045,73 @@
   });
 
   passkeyCreate.addEventListener("click", () => {
-    // Prototype notice only — no browser credential APIs.
-    openPasskeyNotice();
-  });
+    if (passkeySubmitting) return;
+    const copy = PASSKEY_COPY[membershipLang()];
+    clearPasskeyError();
 
-  passkeySimulate.addEventListener("click", () => {
-    passkeySimulated = true;
-    closePasskeyNotice();
-    applyPasskeyCopy();
-    passkeyContinue.focus();
+    if (!isSetupGrantUsable()) {
+      showPasskeyError(copy.grantExpired);
+      return;
+    }
+
+    const swaBrowser = window["Simple" + "Web" + "Authn" + "Browser"];
+    const startRegistration = swaBrowser && swaBrowser.startRegistration;
+    if (typeof startRegistration !== "function") {
+      showPasskeyError(copy.failed);
+      return;
+    }
+
+    passkeySubmitting = true;
+    passkeyCreate.disabled = true;
+
+    requestPasskeyRegistrationOptions()
+      .then(function (ceremony) {
+        return startRegistration({ optionsJSON: ceremony.options }).then(
+          function (attestation) {
+            return verifyPasskeyRegistration(
+              ceremony.registrationCeremonyId,
+              attestation
+            );
+          }
+        );
+      })
+      .then(function () {
+        passkeyRegistered = true;
+        setupGrant = null;
+        setupGrantExpiresAt = null;
+        clearPasskeyError();
+        go("ready");
+      })
+      .catch(function (err) {
+        const causeName = err && err.cause && err.cause.name;
+        const cancelled =
+          (err &&
+            (err.name === "NotAllowedError" ||
+              err.name === "AbortError" ||
+              err.code === "ERROR_CEREMONY_ABORTED")) ||
+          causeName === "NotAllowedError" ||
+          causeName === "AbortError" ||
+          (err &&
+            err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
+            causeName === "NotAllowedError");
+        if (cancelled) {
+          showPasskeyError(copy.cancelled);
+          return;
+        }
+        if (err && err.kind === "grantExpired") {
+          showPasskeyError(copy.grantExpired);
+          return;
+        }
+        showPasskeyError(copy.failed);
+      })
+      .finally(function () {
+        passkeySubmitting = false;
+        passkeyCreate.disabled = false;
+      });
   });
 
   passkeyBack.addEventListener("click", () => {
-    closePasskeyNotice();
+    clearPasskeyError();
     go("code");
   });
 
@@ -3019,8 +3125,7 @@
   });
 
   readyBack.addEventListener("click", () => {
-    // Return to Screen 10 success state.
-    passkeySimulated = true;
+    // Return to Screen 10 success state after a completed registration.
     go("passkey");
   });
 
