@@ -657,7 +657,7 @@
       </main>
     </div>
 
-    <!-- Screen 10: Passkey Introduction Mock -->
+    <!-- Screen 10: Passkey registration -->
     <div id="view-passkey" hidden>
       <main class="passkey" aria-label="Passkey introduction">
         <div class="passkey__frame" id="passkey-intro">
@@ -671,6 +671,7 @@
           <h2 class="passkey__subtitle" id="passkey-benefits-title"></h2>
           <ul class="passkey__list" id="passkey-benefits-list"></ul>
           <p class="passkey__note" id="passkey-prototype"></p>
+          <p class="passkey__error" id="passkey-error" hidden></p>
           <div class="passkey__actions">
             <button type="button" class="btn btn--primary" id="passkey-create">
               Create secure access
@@ -696,24 +697,6 @@
           </div>
         </div>
       </main>
-
-      <div
-        class="passkey-notice"
-        id="passkey-notice"
-        hidden
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="passkey-notice-title"
-      >
-        <div class="passkey-notice__dim" id="passkey-notice-dim"></div>
-        <div class="passkey-notice__panel">
-          <h2 class="passkey-notice__title" id="passkey-notice-title"></h2>
-          <p class="passkey-notice__body" id="passkey-notice-body"></p>
-          <button type="button" class="btn btn--primary" id="passkey-simulate">
-            Simulate setup
-          </button>
-        </div>
-      </div>
     </div>
 
     <!-- Screen 11: Account Ready Mock -->
@@ -829,6 +812,10 @@
       </main>
     </div>
 
+    <script
+      src="assets/vendor/swa-browser-13.3.0.umd.min.js"
+      defer
+    ></script>
     <script src="script.js" defer></script>
   </body>
 </html>
