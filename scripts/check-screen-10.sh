@@ -73,17 +73,44 @@ require_absent "script.js" "openPasskeyNotice"
 require_absent "script.js" "passkeySimulate"
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|localStorage|sessionStorage|dashboard|followers|trending|/v1/auth|/session|credentials:\s*['\''"]include' index.html script.js; then
+# Storage / password / social patterns remain forbidden.
+# Passkey LOGIN may use /v1/authentication/* with credentials:"include" for the
+# HttpOnly session cookie; do not treat those as forbidden sessionStorage patterns.
+if grep -Eiq 'card number|paymentIntent|type="password"|localStorage|sessionStorage|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden storage/payment/session pattern present"
   fail=1
 else
-  echo "OK: no storage, payment, or session/login patterns"
+  echo "OK: no storage, payment, or social patterns"
 fi
 if grep -Eiq 'unpkg\.com|cdn\.jsdelivr|cdnjs\.cloudflare|simplewebauthn/browser@' index.html script.js; then
   echo "FAIL: runtime CDN reference to SimpleWebAuthn present"
   fail=1
 else
   echo "OK: no runtime CDN SimpleWebAuthn fetch"
+fi
+# Registration ceremony must remain SetupGrant-based (not Session cookie).
+if grep -qF 'SetupGrant ' script.js && grep -qF '/v1/account/passkeys/registration/options' script.js; then
+  echo "OK: registration still uses SetupGrant ceremony paths"
+else
+  echo "FAIL: registration SetupGrant ceremony paths missing"
+  fail=1
+fi
+# Login must not reuse SetupGrant on authentication routes.
+if grep -n 'authentication/passkeys' script.js | grep -q 'SetupGrant'; then
+  echo "FAIL: authentication login incorrectly uses SetupGrant"
+  fail=1
+else
+  echo "OK: authentication login does not use SetupGrant"
+fi
+if grep -qF '/v1/authentication/passkeys/options' script.js \
+  && grep -qF '/v1/authentication/passkeys/verify' script.js \
+  && grep -qF '/v1/authentication/session' script.js \
+  && grep -qF 'postJsonWithCredentials' script.js \
+  && grep -qF 'startAuthentication' script.js; then
+  echo "OK: passkey login + session wiring present"
+else
+  echo "FAIL: passkey login + session wiring incomplete"
+  fail=1
 fi
 
 echo "== HTML smoke =="

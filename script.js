@@ -13,6 +13,8 @@
   const viewActive = document.getElementById("view-active");
   const learnMoreButton = document.getElementById("learn-more");
   const enterButton = document.getElementById("enter-town");
+  const entrySignIn = document.getElementById("entry-sign-in");
+  const entryLoginStatus = document.getElementById("entry-login-status");
   const sheet = document.getElementById("learn-more-sheet");
   const continueCountry = document.getElementById("continue-country");
   const countryBack = document.getElementById("country-back");
@@ -241,6 +243,8 @@
     !viewActive ||
     !learnMoreButton ||
     !enterButton ||
+    !entrySignIn ||
+    !entryLoginStatus ||
     !sheet ||
     !continueCountry ||
     !countryBack ||
@@ -1456,6 +1460,31 @@
     },
   };
 
+  // Returning-user passkey login (Screen 01). Does not use SetupGrant.
+  const LOGIN_COPY = {
+    it: {
+      signIn: "Usa l’accesso sicuro",
+      working: "Verifica in corso…",
+      success: "Accesso effettuato. Sessione attiva.",
+      cancelled: "Accesso annullato. Puoi riprovare.",
+      failed: "Accesso non riuscito. Riprova.",
+    },
+    de: {
+      signIn: "Sicheren Zugang verwenden",
+      working: "Überprüfung läuft…",
+      success: "Angemeldet. Sitzung aktiv.",
+      cancelled: "Anmeldung abgebrochen. Du kannst es erneut versuchen.",
+      failed: "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    },
+    ro: {
+      signIn: "Folosește accesul sigur",
+      working: "Verificare în curs…",
+      success: "Autentificare reușită. Sesiune activă.",
+      cancelled: "Autentificare anulată. Poți încerca din nou.",
+      failed: "Autentificarea a eșuat. Încearcă din nou.",
+    },
+  };
+
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   let lastFocus = null;
@@ -1475,6 +1504,9 @@
   let passkeySubmitting = false;
   let membershipSimulated = false;
   let signalConfirmed = false;
+  let sessionAuthenticated = false;
+  let loginSubmitting = false;
+  let anonymousClientKey = null;
 
   // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
   let demoTestimony = null;
@@ -1633,6 +1665,41 @@
       method: "POST",
       headers: headers,
       body: JSON.stringify(body),
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  // Credentialed helpers for login/session only — leave SetupGrant registration on postJson.
+  async function postJsonWithCredentials(url, body) {
+    const response = await requestJson(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+      credentials: "include",
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  async function getJsonWithCredentials(url) {
+    const response = await requestJson(url, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      credentials: "include",
     });
     let payload = null;
     try {
@@ -2052,6 +2119,118 @@
     return "it";
   }
 
+  function entryLang() {
+    const nav = String(
+      (typeof navigator !== "undefined" &&
+        (navigator.language || navigator.userLanguage)) ||
+        ""
+    ).toLowerCase();
+    if (nav.indexOf("de") === 0) return "de";
+    if (nav.indexOf("ro") === 0) return "ro";
+    if (nav.indexOf("it") === 0) return "it";
+    if (selectedCountry) return membershipLang();
+    return "it";
+  }
+
+  function getAnonymousClientKey() {
+    if (anonymousClientKey) return anonymousClientKey;
+    const bytes = new Uint8Array(24);
+    if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+      crypto.getRandomValues(bytes);
+    } else {
+      for (let i = 0; i < bytes.length; i += 1) {
+        bytes[i] = (Math.random() * 256) | 0;
+      }
+    }
+    let binary = "";
+    for (let i = 0; i < bytes.length; i += 1) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    anonymousClientKey = btoa(binary)
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/g, "");
+    return anonymousClientKey;
+  }
+
+  function clearEntryLoginStatus() {
+    entryLoginStatus.hidden = true;
+    entryLoginStatus.textContent = "";
+    entryLoginStatus.classList.remove("is-success", "is-error");
+  }
+
+  function showEntryLoginStatus(message, kind) {
+    entryLoginStatus.hidden = false;
+    entryLoginStatus.textContent = message;
+    entryLoginStatus.classList.toggle("is-success", kind === "success");
+    entryLoginStatus.classList.toggle("is-error", kind === "error");
+  }
+
+  function applyEntryLoginCopy() {
+    const copy = LOGIN_COPY[entryLang()];
+    entrySignIn.textContent = copy.signIn;
+    entrySignIn.disabled = loginSubmitting;
+    if (sessionAuthenticated) {
+      showEntryLoginStatus(copy.success, "success");
+    }
+  }
+
+  async function requestPasskeyAuthenticationOptions() {
+    const result = await postJsonWithCredentials(
+      API_BASE + "/v1/authentication/passkeys/options",
+      {
+        clientType: "web",
+        anonymousClientKey: getAnonymousClientKey(),
+      }
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (
+      status === 200 &&
+      data &&
+      data.authenticationCeremonyId &&
+      data.options
+    ) {
+      return {
+        authenticationCeremonyId: data.authenticationCeremonyId,
+        options: data.options,
+      };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function verifyPasskeyAuthentication(
+    authenticationCeremonyId,
+    assertion
+  ) {
+    const result = await postJsonWithCredentials(
+      API_BASE + "/v1/authentication/passkeys/verify",
+      {
+        authenticationCeremonyId: authenticationCeremonyId,
+        clientType: "web",
+        response: assertion,
+      }
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.status === "AUTHENTICATED") {
+      return data;
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function fetchAuthenticationSession() {
+    const result = await getJsonWithCredentials(
+      API_BASE + "/v1/authentication/session"
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.authenticated === true) {
+      return data;
+    }
+    throw makeApiError("failed");
+  }
+
   function applyInviteCopy() {
     const copy = MEMBERSHIP_COPY[membershipLang()];
     inviteTitle.textContent = copy.inviteTitle;
@@ -2382,9 +2561,16 @@
     passkeySubmitting = false;
     membershipSimulated = false;
     signalConfirmed = false;
+    loginSubmitting = false;
+    // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
     clearLiveScenes();
     clearDemoTestimony();
+    clearEntryLoginStatus();
+    if (sessionAuthenticated) {
+      showEntryLoginStatus(LOGIN_COPY[entryLang()].success, "success");
+    }
+    entrySignIn.disabled = false;
     feedSeeToo.hidden = false;
     feedSeeToo.disabled = false;
     feedSeeTooDone.hidden = true;
@@ -2455,6 +2641,9 @@
       closePaymentNotice();
     }
 
+    if (name === "entry") {
+      applyEntryLoginCopy();
+    }
     if (name === "city") applyCityCopy();
     if (name === "location") {
       applyLocationCopy();
@@ -2830,6 +3019,65 @@
   enterButton.addEventListener("click", () => {
     closeSheet();
     go("country");
+  });
+
+  entrySignIn.addEventListener("click", () => {
+    if (loginSubmitting) return;
+    const copy = LOGIN_COPY[entryLang()];
+    clearEntryLoginStatus();
+
+    const swaBrowser = window["Simple" + "Web" + "Authn" + "Browser"];
+    const startAuthentication = swaBrowser && swaBrowser.startAuthentication;
+    if (typeof startAuthentication !== "function") {
+      showEntryLoginStatus(copy.failed, "error");
+      return;
+    }
+
+    loginSubmitting = true;
+    entrySignIn.disabled = true;
+    showEntryLoginStatus(copy.working, "success");
+
+    requestPasskeyAuthenticationOptions()
+      .then(function (ceremony) {
+        return startAuthentication({ optionsJSON: ceremony.options }).then(
+          function (assertion) {
+            return verifyPasskeyAuthentication(
+              ceremony.authenticationCeremonyId,
+              assertion
+            );
+          }
+        );
+      })
+      .then(function () {
+        return fetchAuthenticationSession();
+      })
+      .then(function () {
+        sessionAuthenticated = true;
+        showEntryLoginStatus(copy.success, "success");
+      })
+      .catch(function (err) {
+        sessionAuthenticated = false;
+        const causeName = err && err.cause && err.cause.name;
+        const cancelled =
+          (err &&
+            (err.name === "NotAllowedError" ||
+              err.name === "AbortError" ||
+              err.code === "ERROR_CEREMONY_ABORTED")) ||
+          causeName === "NotAllowedError" ||
+          causeName === "AbortError" ||
+          (err &&
+            err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
+            causeName === "NotAllowedError");
+        if (cancelled) {
+          showEntryLoginStatus(copy.cancelled, "error");
+          return;
+        }
+        showEntryLoginStatus(copy.failed, "error");
+      })
+      .finally(function () {
+        loginSubmitting = false;
+        entrySignIn.disabled = false;
+      });
   });
 
   countryBack.addEventListener("click", () => {
