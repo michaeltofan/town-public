@@ -26,6 +26,17 @@ require_contains() {
   fi
 }
 
+require_absent() {
+  local file="$1"
+  local pattern="$2"
+  if grep -qF "$pattern" "$file"; then
+    echo "FAIL: '$pattern' unexpectedly found in $file"
+    fail=1
+  else
+    echo "OK: absent '$pattern'"
+  fi
+}
+
 echo "== Prior screens preserved =="
 require_file "index.html"
 require_contains "index.html" "view-email"
@@ -40,8 +51,8 @@ require_contains "index.html" "code-verify"
 require_contains "index.html" "code-change-email"
 require_contains "index.html" "view-passkey"
 require_contains "script.js" "CODE_COPY"
-require_contains "script.js" "PROTOTYPE_CODE"
-require_contains "script.js" "123456"
+require_absent "script.js" "PROTOTYPE_CODE"
+require_absent "script.js" "123456"
 require_contains "script.js" "Controlla la tua email."
 require_contains "script.js" "Prüfe deine E-Mails."
 require_contains "script.js" "syncCodeVerify"
@@ -83,8 +94,9 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "VERIFICA EMAIL",
     "E-MAIL BESTÄTIGEN",
-    "inserisci 123456",
-    "Gib im Prototyp 123456",
+    "Inserisci il codice a 6 cifre che ti abbiamo inviato via email.",
+    "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.",
+    "Introdu codul din 6 cifre pe care ți l-am trimis pe email.",
     "Il codice non è corretto.",
     "Der Code ist nicht korrekt.",
     "Cambia email",
@@ -92,7 +104,14 @@ for fragment in (
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 09 verification code mock present")
+for absent in (
+    "inserisci 123456",
+    "Gib im Prototyp 123456",
+    "introdu 123456",
+):
+    if absent in js:
+        raise SystemExit(f"Unexpected JS fragment still present: {absent}")
+print("OK: Screen 09 verification code copy present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

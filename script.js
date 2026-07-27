@@ -1050,12 +1050,14 @@
       body: "Normalmente ti invieremmo un codice di verifica di 6 cifre.",
       bodySecond: "Non serve una password.",
       prototype:
-        "In questo prototipo non viene inviata alcuna email e non viene creato un account reale.",
+        "Ti invieremo un codice di verifica a 6 cifre via email.",
       fieldLabel: "Indirizzo email",
       placeholder: "nome@esempio.it",
       privacy:
         "Useremo questa email per verificare il tuo account, inviarti comunicazioni essenziali e aiutarti a recuperare l’accesso.",
       invalid: "Inserisci un indirizzo email valido.",
+      rateLimited: "Troppi tentativi. Riprova tra poco.",
+      failed: "Non è stato possibile continuare. Riprova.",
       continue: "Continua",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1066,12 +1068,15 @@
       body: "Normalerweise würden wir dir einen sechsstelligen Bestätigungscode senden.",
       bodySecond: "Du brauchst kein Passwort.",
       prototype:
-        "In diesem Prototyp wird keine E-Mail gesendet und kein reales Konto erstellt.",
+        "Wir senden dir einen 6-stelligen Bestätigungscode per E-Mail.",
       fieldLabel: "E-Mail-Adresse",
       placeholder: "name@beispiel.de",
       privacy:
         "Wir verwenden diese E-Mail-Adresse, um dein Konto zu bestätigen, dir notwendige Mitteilungen zu senden und dir bei der Wiederherstellung des Zugangs zu helfen.",
       invalid: "Gib eine gültige E-Mail-Adresse ein.",
+      rateLimited:
+        "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
+      failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       continue: "Weiter",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1082,12 +1087,14 @@
       body: "În mod normal ți-am trimite un cod de verificare din 6 cifre.",
       bodySecond: "Nu este nevoie de o parolă.",
       prototype:
-        "În acest prototip nu se trimite niciun email și nu se creează un cont real.",
+        "Îți trimitem un cod de verificare din 6 cifre pe email.",
       fieldLabel: "Adresă de email",
       placeholder: "nume@exemplu.ro",
       privacy:
         "Vom folosi acest email pentru a-ți verifica contul, a-ți trimite comunicări esențiale și a te ajuta să-ți recuperezi accesul.",
       invalid: "Introdu o adresă de email validă.",
+      rateLimited: "Prea multe încercări. Încearcă din nou în curând.",
+      failed: "Nu a fost posibil să continui. Încearcă din nou.",
       continue: "Continuă",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
@@ -1100,8 +1107,10 @@
       title: "Controlla la tua email.",
       body: "Abbiamo inviato un codice di 6 cifre a:",
       fieldLabel: "Codice di verifica",
-      prototype: "Nel prototipo, inserisci 123456 per continuare.",
+      prototype: "Inserisci il codice a 6 cifre che ti abbiamo inviato via email.",
       invalid: "Il codice non è corretto.",
+      rateLimited: "Troppi tentativi. Riprova tra poco.",
+      failed: "Non è stato possibile continuare. Riprova.",
       verify: "Verifica",
       changeEmail: "Cambia email",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1111,8 +1120,11 @@
       title: "Prüfe deine E-Mails.",
       body: "Wir haben einen sechsstelligen Code gesendet an:",
       fieldLabel: "Bestätigungscode",
-      prototype: "Gib im Prototyp 123456 ein, um fortzufahren.",
+      prototype: "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.",
       invalid: "Der Code ist nicht korrekt.",
+      rateLimited:
+        "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
+      failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       verify: "Bestätigen",
       changeEmail: "E-Mail-Adresse ändern",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1122,8 +1134,10 @@
       title: "Verifică-ți emailul.",
       body: "Am trimis un cod din 6 cifre la:",
       fieldLabel: "Cod de verificare",
-      prototype: "În prototip, introdu 123456 pentru a continua.",
+      prototype: "Introdu codul din 6 cifre pe care ți l-am trimis pe email.",
       invalid: "Codul nu este corect.",
+      rateLimited: "Prea multe încercări. Încearcă din nou în curând.",
+      failed: "Nu a fost posibil să continui. Încearcă din nou.",
       verify: "Verifică",
       changeEmail: "Schimbă emailul",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
@@ -1449,7 +1463,6 @@
   };
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const PROTOTYPE_CODE = "123456";
 
   let lastFocus = null;
   let selectedCountry = null;
@@ -1458,6 +1471,11 @@
   let feedIndex = 0;
   let originatingFeedIndex = 0;
   let enteredEmail = "";
+  let emailVerificationId = null;
+  let setupGrant = null;
+  let setupGrantExpiresAt = null;
+  let emailSubmitting = false;
+  let codeSubmitting = false;
   let emailVerified = false;
   let passkeySimulated = false;
   let membershipSimulated = false;
@@ -1604,6 +1622,82 @@
       throw new Error("HTTP " + response.status + " for " + url);
     }
     return response.json();
+  }
+
+  async function postJson(url, body) {
+    const response = await requestJson(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  function apiErrorKind(status, payload) {
+    const code =
+      payload && payload.error && payload.error.code
+        ? payload.error.code
+        : "";
+    if (
+      status === 429 ||
+      code === "RATE_LIMITED" ||
+      code === "TOO_MANY_REQUESTS"
+    ) {
+      return "rateLimited";
+    }
+    if (code === "INVALID_OR_EXPIRED_CHALLENGE") {
+      return "invalid";
+    }
+    return "failed";
+  }
+
+  function makeApiError(kind) {
+    const err = new Error(kind);
+    err.kind = kind;
+    return err;
+  }
+
+  async function requestEmailVerification(email) {
+    const result = await postJson(
+      API_BASE + "/v1/account/email-verifications",
+      { email: email }
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (
+      status === 202 &&
+      data &&
+      data.status === "VERIFICATION_REQUEST_ACCEPTED" &&
+      data.verificationId
+    ) {
+      return data.verificationId;
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function completeEmailVerification(verificationId, code) {
+    const result = await postJson(
+      API_BASE + "/v1/account/email-verifications/complete",
+      { verificationId: verificationId, code: code }
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.status === "EMAIL_VERIFIED") {
+      return {
+        setupGrant: data.setupGrant || null,
+        setupGrantExpiresAt: data.setupGrantExpiresAt || null,
+      };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
   }
 
   async function loadLiveScenesForCity(cityId) {
@@ -1994,7 +2088,7 @@
     const copy = EMAIL_COPY[membershipLang()];
     const value = (emailInput.value || "").trim();
     const valid = isValidEmail(value);
-    emailContinue.disabled = !valid;
+    emailContinue.disabled = !valid || emailSubmitting;
     if (!value) {
       emailError.hidden = true;
       emailError.textContent = "";
@@ -2005,6 +2099,7 @@
       emailError.textContent = copy.invalid;
       return;
     }
+    if (emailSubmitting) return;
     emailError.hidden = true;
     emailError.textContent = "";
   }
@@ -2028,26 +2123,16 @@
   }
 
   function syncCodeVerify() {
-    const copy = CODE_COPY[membershipLang()];
     const value = digitsOnly(codeInput.value);
     if (codeInput.value !== value) {
       codeInput.value = value;
     }
     const complete = value.length === 6;
-    const accepted = value === PROTOTYPE_CODE;
-    codeVerify.disabled = !accepted;
+    codeVerify.disabled = !complete || codeSubmitting;
     if (!complete) {
       codeError.hidden = true;
       codeError.textContent = "";
-      return;
     }
-    if (!accepted) {
-      codeError.hidden = false;
-      codeError.textContent = copy.invalid;
-      return;
-    }
-    codeError.hidden = true;
-    codeError.textContent = "";
   }
 
   function fillList(node, items) {
@@ -2233,6 +2318,11 @@
     locationVerified = false;
     feedIndex = 0;
     enteredEmail = "";
+    emailVerificationId = null;
+    setupGrant = null;
+    setupGrantExpiresAt = null;
+    emailSubmitting = false;
+    codeSubmitting = false;
     emailVerified = false;
     passkeySimulated = false;
     membershipSimulated = false;
@@ -2808,15 +2898,37 @@
 
   emailContinue.addEventListener("click", () => {
     const value = (emailInput.value || "").trim();
-    if (!isValidEmail(value)) {
+    if (!isValidEmail(value) || emailSubmitting) {
       syncEmailContinue();
       return;
     }
     enteredEmail = value;
-    codeInput.value = "";
-    codeError.hidden = true;
-    codeError.textContent = "";
-    go("code");
+    emailSubmitting = true;
+    emailContinue.disabled = true;
+    emailError.hidden = true;
+    emailError.textContent = "";
+
+    requestEmailVerification(value)
+      .then(function (verificationId) {
+        emailVerificationId = verificationId;
+        codeInput.value = "";
+        codeError.hidden = true;
+        codeError.textContent = "";
+        go("code");
+      })
+      .catch(function (err) {
+        const copy = EMAIL_COPY[membershipLang()];
+        emailError.hidden = false;
+        if (err && err.kind === "rateLimited") {
+          emailError.textContent = copy.rateLimited;
+        } else {
+          emailError.textContent = copy.failed;
+        }
+      })
+      .finally(function () {
+        emailSubmitting = false;
+        syncEmailContinue();
+      });
   });
 
   emailBack.addEventListener("click", () => {
@@ -2830,18 +2942,53 @@
 
   codeVerify.addEventListener("click", () => {
     const value = digitsOnly(codeInput.value);
-    if (value !== PROTOTYPE_CODE) {
+    if (value.length !== 6 || codeSubmitting) {
       syncCodeVerify();
       return;
     }
-    emailVerified = true;
-    passkeySimulated = false;
-    go("passkey");
+    if (!emailVerificationId) {
+      const copy = CODE_COPY[membershipLang()];
+      codeError.hidden = false;
+      codeError.textContent = copy.failed;
+      return;
+    }
+    codeSubmitting = true;
+    codeVerify.disabled = true;
+    codeError.hidden = true;
+    codeError.textContent = "";
+
+    completeEmailVerification(emailVerificationId, value)
+      .then(function (result) {
+        setupGrant = result.setupGrant;
+        setupGrantExpiresAt = result.setupGrantExpiresAt;
+        emailVerified = true;
+        passkeySimulated = false;
+        go("passkey");
+      })
+      .catch(function (err) {
+        const copy = CODE_COPY[membershipLang()];
+        codeError.hidden = false;
+        if (err && err.kind === "invalid") {
+          codeError.textContent = copy.invalid;
+        } else if (err && err.kind === "rateLimited") {
+          codeError.textContent = copy.rateLimited;
+        } else {
+          codeError.textContent = copy.failed;
+        }
+      })
+      .finally(function () {
+        codeSubmitting = false;
+        syncCodeVerify();
+      });
   });
 
   codeChangeEmail.addEventListener("click", () => {
     emailVerified = false;
     passkeySimulated = false;
+    emailVerificationId = null;
+    setupGrant = null;
+    setupGrantExpiresAt = null;
+    codeSubmitting = false;
     go("email");
   });
 
