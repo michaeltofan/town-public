@@ -194,6 +194,59 @@ button {
   color: var(--body);
 }
 
+.entry__sign-in-wrap {
+  margin: 0.85rem 0 0;
+  max-width: 34ch;
+}
+
+.entry__sign-in {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.entry__sign-in:hover {
+  color: var(--body);
+}
+
+.entry__sign-in:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.entry__sign-in:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.entry__login-status {
+  margin: 0.55rem 0 0;
+  max-width: 34ch;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.entry__login-status.is-success {
+  color: var(--body);
+}
+
+.entry__login-status.is-error {
+  color: var(--body);
+}
+
 .entry__visual {
   position: relative;
   display: flex;
