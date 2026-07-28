@@ -199,37 +199,6 @@ button {
   max-width: 34ch;
 }
 
-.entry__sign-in {
-  display: inline;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.84rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1.5;
-  text-decoration: underline;
-  text-underline-offset: 0.18em;
-  cursor: pointer;
-}
-
-.entry__sign-in:hover {
-  color: var(--body);
-}
-
-.entry__sign-in:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
-}
-
-.entry__sign-in:disabled {
-  opacity: 0.55;
-  cursor: default;
-}
-
 .entry__login-status {
   margin: 0.55rem 0 0;
   max-width: 34ch;
@@ -490,7 +459,9 @@ button {
 
   .entry__headline,
   .entry__support,
-  .entry__note {
+  .entry__note,
+  .entry__sign-in-wrap,
+  .entry__login-status {
     margin-left: auto;
     margin-right: auto;
   }
