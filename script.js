@@ -186,6 +186,7 @@
     "payment-membership-status"
   );
   const paymentPrototype = document.getElementById("payment-prototype");
+  const paymentError = document.getElementById("payment-error");
   const paymentSimulateStart = document.getElementById("payment-simulate-start");
   const paymentBack = document.getElementById("payment-back");
   const paymentSuccessLabel = document.getElementById("payment-success-label");
@@ -421,6 +422,7 @@
     !paymentAccountStatus ||
     !paymentMembershipStatus ||
     !paymentPrototype ||
+    !paymentError ||
     !paymentSimulateStart ||
     !paymentBack ||
     !paymentSuccessLabel ||
@@ -1399,8 +1401,8 @@
       accountStatus: "Account: pronto",
       membershipStatus: "Membership: non attiva",
       prototype:
-        "In questo prototipo il pagamento reale non è attivo, Stripe non è integrato e nessuna membership verrà attivata davvero.",
-      simulateStart: "Simula attivazione membership",
+        "Verrai indirizzato a Stripe Checkout per completare il pagamento in modo sicuro.",
+      simulateStart: "Attiva membership",
       back: "Indietro",
       noticeTitle: "Pagamento non attivo",
       noticeBody:
@@ -1416,6 +1418,16 @@
       successNote:
         "Questo stato è solo una simulazione. Non implica conferma civica, autenticazione reale o abbonamento reale.",
       continue: "Continua",
+      errorUnauthenticated:
+        "Non hai effettuato l’accesso oppure la sessione è scaduta.",
+      errorAlreadyMember:
+        "Hai già una membership attiva. Gestisci l’abbonamento esistente.",
+      errorRateLimited: "Troppi tentativi. Riprova tra poco.",
+      errorUnavailable:
+        "Il pagamento non è disponibile in questo momento.",
+      errorCheckoutFailed:
+        "Non è stato possibile avviare il checkout. Riprova.",
+      errorNetwork: "Non è stato possibile continuare. Riprova.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1431,8 +1443,8 @@
       accountStatus: "Konto: bereit",
       membershipStatus: "Mitgliedschaft: nicht aktiv",
       prototype:
-        "In diesem Prototyp ist keine echte Zahlung aktiv, Stripe ist nicht integriert und es wird keine echte Mitgliedschaft aktiviert.",
-      simulateStart: "Mitgliedschaftsaktivierung simulieren",
+        "Du wirst zu Stripe Checkout weitergeleitet, um die Zahlung sicher abzuschließen.",
+      simulateStart: "Mitgliedschaft aktivieren",
       back: "Zurück",
       noticeTitle: "Zahlung nicht aktiv",
       noticeBody:
@@ -1448,6 +1460,18 @@
       successNote:
         "Dieser Zustand ist nur eine Simulation. Er bedeutet keine zivile Bestätigung, keine echte Authentifizierung und kein echtes Abonnement.",
       continue: "Weiter",
+      errorUnauthenticated:
+        "Du bist nicht angemeldet oder die Sitzung ist abgelaufen.",
+      errorAlreadyMember:
+        "Du hast bereits eine aktive Mitgliedschaft. Verwalte dein bestehendes Abonnement.",
+      errorRateLimited:
+        "Zu viele Versuche. Bitte versuche es später erneut.",
+      errorUnavailable:
+        "Die Zahlung ist derzeit nicht verfügbar.",
+      errorCheckoutFailed:
+        "Der Checkout konnte nicht gestartet werden. Bitte versuche es erneut.",
+      errorNetwork:
+        "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1463,8 +1487,8 @@
       accountStatus: "Cont: pregătit",
       membershipStatus: "Membership: inactiv",
       prototype:
-        "În acest prototip plata reală nu este activă, Stripe nu este integrat și niciun membership nu va fi activat cu adevărat.",
-      simulateStart: "Simulează activarea membership-ului",
+        "Vei fi redirecționat către Stripe Checkout pentru a finaliza plata în siguranță.",
+      simulateStart: "Activează membership-ul",
       back: "Înapoi",
       noticeTitle: "Plată inactivă",
       noticeBody:
@@ -1480,6 +1504,16 @@
       successNote:
         "Această stare este doar o simulare. Nu implică confirmare civică, autentificare reală sau abonament real.",
       continue: "Continuă",
+      errorUnauthenticated:
+        "Nu ești autentificat sau sesiunea a expirat.",
+      errorAlreadyMember:
+        "Ai deja un membership activ. Gestionează abonamentul existent.",
+      errorRateLimited: "Prea multe încercări. Încearcă din nou în curând.",
+      errorUnavailable:
+        "Plata nu este disponibilă în acest moment.",
+      errorCheckoutFailed:
+        "Nu a fost posibil să pornești checkout-ul. Încearcă din nou.",
+      errorNetwork: "Nu a fost posibil să continui. Încearcă din nou.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1576,6 +1610,7 @@
   let passkeyRegistered = false;
   let passkeySubmitting = false;
   let membershipSimulated = false;
+  let paymentCheckoutSubmitting = false;
   let signalConfirmed = false;
   let sessionAuthenticated = false;
   let loginSubmitting = false;
@@ -1748,7 +1783,8 @@
     return { response: response, payload: payload };
   }
 
-  // Credentialed helpers for login/session only — leave SetupGrant registration on postJson.
+  // Credentialed helpers for cookie session auth (login/session/billing).
+  // SetupGrant registration stays on postJson.
   async function postJsonWithCredentials(url, body) {
     const response = await requestJson(url, {
       method: "POST",
@@ -2496,6 +2532,53 @@
     throw makeApiError("failed");
   }
 
+  function checkoutErrorKind(status) {
+    if (status === 401) return "unauthenticated";
+    if (status === 409) return "alreadyMember";
+    if (status === 429) return "rateLimited";
+    if (status === 503 || status === 404) return "unavailable";
+    if (status === 502) return "checkoutFailed";
+    return "network";
+  }
+
+  async function requestCheckoutSession() {
+    let result;
+    try {
+      result = await postJsonWithCredentials(
+        API_BASE + "/v1/billing/checkout-session",
+        {}
+      );
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.checkoutUrl) {
+      return data.checkoutUrl;
+    }
+    throw makeApiError(checkoutErrorKind(status));
+  }
+
+  function clearPaymentError() {
+    paymentError.hidden = true;
+    paymentError.textContent = "";
+  }
+
+  function showPaymentError(message) {
+    paymentError.hidden = false;
+    paymentError.textContent = message;
+  }
+
+  function paymentErrorMessage(kind) {
+    const copy = PAYMENT_COPY[membershipLang()];
+    if (kind === "unauthenticated") return copy.errorUnauthenticated;
+    if (kind === "alreadyMember") return copy.errorAlreadyMember;
+    if (kind === "rateLimited") return copy.errorRateLimited;
+    if (kind === "unavailable") return copy.errorUnavailable;
+    if (kind === "checkoutFailed") return copy.errorCheckoutFailed;
+    return copy.errorNetwork;
+  }
+
   function applyInviteCopy() {
     const copy = MEMBERSHIP_COPY[membershipLang()];
     inviteTitle.textContent = copy.inviteTitle;
@@ -2758,6 +2841,7 @@
     paymentMembershipStatus.textContent = copy.membershipStatus;
     paymentPrototype.textContent = copy.prototype;
     paymentSimulateStart.textContent = copy.simulateStart;
+    paymentSimulateStart.disabled = paymentCheckoutSubmitting;
     paymentBack.textContent = copy.back;
     paymentSuccessLabel.textContent = copy.successLabel;
     paymentSuccessTitle.textContent = copy.successTitle;
@@ -2826,6 +2910,7 @@
     passkeyRegistered = false;
     passkeySubmitting = false;
     membershipSimulated = false;
+    paymentCheckoutSubmitting = false;
     signalConfirmed = false;
     loginSubmitting = false;
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
@@ -2854,6 +2939,7 @@
     codeVerify.disabled = true;
     clearPasskeyError();
     showPasskeyIntro();
+    clearPaymentError();
     closePaymentNotice();
     showPaymentIntro();
     countryInputs.forEach((input) => {
@@ -3756,8 +3842,22 @@
   });
 
   paymentSimulateStart.addEventListener("click", () => {
-    // Prototype notice only — no Stripe / card fields / real activation.
-    openPaymentNotice();
+    if (paymentCheckoutSubmitting) return;
+    clearPaymentError();
+    closePaymentNotice();
+    paymentCheckoutSubmitting = true;
+    paymentSimulateStart.disabled = true;
+
+    requestCheckoutSession()
+      .then(function (checkoutUrl) {
+        window.location = checkoutUrl;
+      })
+      .catch(function (err) {
+        const kind = err && err.kind ? err.kind : "network";
+        showPaymentError(paymentErrorMessage(kind));
+        paymentCheckoutSubmitting = false;
+        paymentSimulateStart.disabled = false;
+      });
   });
 
   paymentSimulateConfirm.addEventListener("click", () => {
@@ -3769,6 +3869,7 @@
 
   paymentBack.addEventListener("click", () => {
     closePaymentNotice();
+    clearPaymentError();
     go("ready");
   });
 
