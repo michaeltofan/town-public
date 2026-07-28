@@ -2144,15 +2144,15 @@
       err.code = "boundary-unavailable";
       throw err;
     }
-    const response = await fetch(path, { cache: "force-cache" });
-    if (!response.ok) {
+    try {
+      const geojson = await fetchJson(path);
+      boundaryCache[cityId] = geojson;
+      return geojson;
+    } catch (loadErr) {
       const err = new Error("boundary-unavailable");
       err.code = "boundary-unavailable";
       throw err;
     }
-    const geojson = await response.json();
-    boundaryCache[cityId] = geojson;
-    return geojson;
   }
 
   function requestDevicePosition() {
