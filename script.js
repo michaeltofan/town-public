@@ -1567,7 +1567,15 @@
   };
 
   // Returning-user passkey login (Screen 01). Does not use SetupGrant.
+  // S01 chrome is English until a community is selected; en is the pre-selection default.
   const LOGIN_COPY = {
+    en: {
+      signIn: "Members Login",
+      working: "Verifying…",
+      success: "Signed in. Session active.",
+      cancelled: "Sign-in cancelled. You can try again.",
+      failed: "Sign-in failed. Please try again.",
+    },
     it: {
       signIn: "Usa l’accesso sicuro",
       working: "Verifica in corso…",
@@ -2421,16 +2429,9 @@
   }
 
   function entryLang() {
-    const nav = String(
-      (typeof navigator !== "undefined" &&
-        (navigator.language || navigator.userLanguage)) ||
-        ""
-    ).toLowerCase();
-    if (nav.indexOf("de") === 0) return "de";
-    if (nav.indexOf("ro") === 0) return "ro";
-    if (nav.indexOf("it") === 0) return "it";
-    if (selectedCountry) return membershipLang();
-    return "it";
+    // S01 is English until a community (city) is selected — match the rest of the entry screen.
+    if (!selectedCity) return "en";
+    return membershipLang();
   }
 
   function getAnonymousClientKey() {
