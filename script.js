@@ -16,6 +16,9 @@
   const entrySignIn = document.getElementById("entry-sign-in");
   const entryLoginStatus = document.getElementById("entry-login-status");
   const sheet = document.getElementById("learn-more-sheet");
+  const termsSheet = document.getElementById("terms-sheet");
+  const termsAccept = document.getElementById("terms-accept");
+  const termsCancel = document.getElementById("terms-cancel");
   const continueCountry = document.getElementById("continue-country");
   const countryBack = document.getElementById("country-back");
   const cityBack = document.getElementById("city-back");
@@ -246,6 +249,9 @@
     !entrySignIn ||
     !entryLoginStatus ||
     !sheet ||
+    !termsSheet ||
+    !termsAccept ||
+    !termsCancel ||
     !continueCountry ||
     !countryBack ||
     !cityBack ||
@@ -2601,6 +2607,7 @@
     closeInvite();
     closeSignalSheet();
     closeSheet();
+    closeTermsSheet();
   }
 
   function showView(name) {
@@ -2937,6 +2944,7 @@
   }
 
   function openSheet() {
+    closeTermsSheet();
     lastFocus = document.activeElement;
     sheet.hidden = false;
     document.body.style.overflow = "hidden";
@@ -2947,7 +2955,33 @@
   function closeSheet() {
     if (sheet.hidden) return;
     sheet.hidden = true;
-    document.body.style.overflow = "";
+    if (termsSheet.hidden) {
+      document.body.style.overflow = "";
+    }
+    if (lastFocus && typeof lastFocus.focus === "function") {
+      lastFocus.focus();
+    }
+  }
+
+  function openTermsSheet() {
+    closeSheetQuiet();
+    lastFocus = document.activeElement;
+    termsSheet.hidden = false;
+    document.body.style.overflow = "hidden";
+    if (termsAccept) termsAccept.focus();
+  }
+
+  function closeSheetQuiet() {
+    if (sheet.hidden) return;
+    sheet.hidden = true;
+  }
+
+  function closeTermsSheet() {
+    if (termsSheet.hidden) return;
+    termsSheet.hidden = true;
+    if (sheet.hidden) {
+      document.body.style.overflow = "";
+    }
     if (lastFocus && typeof lastFocus.focus === "function") {
       lastFocus.focus();
     }
@@ -2956,6 +2990,13 @@
   learnMoreButton.addEventListener("click", openSheet);
   sheet.addEventListener("click", (event) => {
     if (event.target.closest("[data-close-sheet]")) closeSheet();
+  });
+  termsSheet.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close-terms]")) closeTermsSheet();
+  });
+  termsAccept.addEventListener("click", () => {
+    closeTermsSheet();
+    go("country");
   });
 
   detailClose.addEventListener("click", () => {
@@ -3009,6 +3050,11 @@
         event.preventDefault();
         return;
       }
+      if (!termsSheet.hidden) {
+        event.preventDefault();
+        closeTermsSheet();
+        return;
+      }
       if (!sheet.hidden) {
         event.preventDefault();
         closeSheet();
@@ -3017,8 +3063,7 @@
   });
 
   enterButton.addEventListener("click", () => {
-    closeSheet();
-    go("country");
+    openTermsSheet();
   });
 
   entrySignIn.addEventListener("click", () => {
