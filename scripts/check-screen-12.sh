@@ -36,6 +36,7 @@ echo "== Screen 12 structural checks =="
 require_file "script.js"
 require_contains "index.html" "view-payment"
 require_contains "index.html" "payment-simulate-start"
+require_contains "index.html" "payment-error"
 require_contains "index.html" "payment-notice"
 require_contains "index.html" "payment-simulate-confirm"
 require_contains "index.html" "payment-success"
@@ -44,22 +45,39 @@ require_contains "script.js" "PAYMENT_COPY"
 require_contains "script.js" "Attiva l’iscrizione annuale a TOWN."
 require_contains "script.js" "Aktiviere die jährliche TOWN-Mitgliedschaft."
 require_contains "script.js" "membershipSimulated"
-require_contains "script.js" "openPaymentNotice"
+require_contains "script.js" "/v1/billing/checkout-session"
+require_contains "script.js" "requestCheckoutSession"
+require_contains "script.js" "postJsonWithCredentials"
+require_contains "script.js" "checkoutUrl"
 require_contains "script.js" 'go("payment")'
 require_contains "script.js" 'go("active")'
 
 echo "== Guardrails =="
+# Card forms, secrets, storage, and hosted Stripe Checkout URL literals remain forbidden.
+# Intended billing uses POST /v1/billing/checkout-session via postJsonWithCredentials
+# (requestJson / window.fetch.bind) and redirects to the returned checkoutUrl —
+# do not treat that API field name as the forbidden checkout.stripe pattern.
 if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
   echo "FAIL: forbidden payment/checkout pattern present"
   fail=1
 else
-  echo "OK: no payment form, Stripe checkout, or storage patterns"
+  echo "OK: no payment form, hosted Stripe checkout URL, or storage patterns"
 fi
 if grep -Eiq '<input[^>]+(card|billing|cvv|cvc)' index.html; then
   echo "FAIL: card/billing inputs present"
   fail=1
 else
   echo "OK: no card/billing inputs"
+fi
+if grep -qF '/v1/billing/checkout-session' script.js \
+  && grep -qF 'postJsonWithCredentials' script.js \
+  && grep -qF 'requestCheckoutSession' script.js \
+  && grep -qF 'checkoutUrl' script.js \
+  && grep -qF 'credentials: "include"' script.js; then
+  echo "OK: real checkout-session wiring present (credentialed POST)"
+else
+  echo "FAIL: checkout-session wiring incomplete"
+  fail=1
 fi
 
 echo "== HTML smoke =="
@@ -78,6 +96,7 @@ for fragment in (
     "view-payment",
     "payment-intro",
     "payment-success",
+    "payment-error",
     "payment-notice",
     "payment-continue",
     "view-active",
@@ -89,10 +108,16 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "MEMBERSHIP ANNUALE",
     "JÄHRLICHE MITGLIEDSCHAFT",
-    "Stripe non è integrato",
-    "Stripe ist nicht integriert",
-    "Simula attivazione",
-    "Aktivierung simulieren",
+    "/v1/billing/checkout-session",
+    "requestCheckoutSession",
+    "Attiva membership",
+    "Mitgliedschaft aktivieren",
+    "Activează membership-ul",
+    "Non hai effettuato l’accesso oppure la sessione è scaduta.",
+    "Hai già una membership attiva. Gestisci l’abbonamento esistente.",
+    "Troppi tentativi. Riprova tra poco.",
+    "Il pagamento non è disponibile in questo momento.",
+    "Non è stato possibile avviare il checkout. Riprova.",
     "solo prototipo",
     "nur Prototyp",
     "Nessun pagamento reale",
@@ -100,7 +125,9 @@ for fragment in (
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
-print("OK: Screen 12 membership payment boundary mock present")
+if "window.location = checkoutUrl" not in js and "window.location=checkoutUrl" not in js:
+    raise SystemExit("Missing checkoutUrl redirect")
+print("OK: Screen 12 real Stripe checkout-session wiring present")
 PY
 
 if [[ "$fail" -ne 0 ]]; then

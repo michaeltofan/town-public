@@ -2479,6 +2479,14 @@ body.page-ended {
   color: var(--charcoal);
 }
 
+.payment__error {
+  margin: 0.85rem 0 0;
+  max-width: 40ch;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #8a4a32;
+}
+
 .payment__actions {
   display: flex;
   flex-direction: column;
