@@ -3416,16 +3416,6 @@
           return;
         }
 
-        let boundary;
-        try {
-          boundary = await loadCityBoundary(cityId);
-        } catch (boundaryErr) {
-          showLocationMessage(
-            copy.notAvailable.replace("{city}", cityName || "")
-          );
-          return;
-        }
-
         let position;
         try {
           position = await requestDevicePosition();
@@ -3441,6 +3431,16 @@
           typeof coords.longitude !== "number"
         ) {
           showLocationMessage(copy.errorUnavailable);
+          return;
+        }
+
+        let boundary;
+        try {
+          boundary = await loadCityBoundary(cityId);
+        } catch (boundaryErr) {
+          showLocationMessage(
+            copy.notAvailable.replace("{city}", cityName || "")
+          );
           return;
         }
 
