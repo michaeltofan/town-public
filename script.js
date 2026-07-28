@@ -2164,11 +2164,38 @@
         reject({ code: "unsupported" });
         return;
       }
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0,
-      });
+
+      // PositionOptions.timeout can fail to fire in some Safari states where
+      // getCurrentPosition never invokes success or error. Race an independent
+      // setTimeout so the verify UI can recover with the existing timeout path.
+      var settled = false;
+      var hardTimeoutMs = 20000;
+      var hardTimeoutId = setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        reject({ code: 3 });
+      }, hardTimeoutMs);
+
+      function finish(handler, value) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(hardTimeoutId);
+        handler(value);
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          finish(resolve, position);
+        },
+        function (err) {
+          finish(reject, err);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0,
+        }
+      );
     });
   }
 
