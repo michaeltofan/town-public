@@ -31,15 +31,23 @@
   const locationBack = document.getElementById("location-back");
   const locationIdle = document.getElementById("location-idle");
   const locationSuccess = document.getElementById("location-success");
+  const locationOutside = document.getElementById("location-outside");
   const locationTitle = document.getElementById("location-title");
   const locationCity = document.getElementById("location-city");
   const locationLead = document.getElementById("location-lead");
   const locationPrivacy = document.getElementById("location-privacy");
+  const locationMessage = document.getElementById("location-message");
   const locationVerify = document.getElementById("location-verify");
   const locationStatusLabel = document.getElementById("location-status-label");
   const locationSuccessTitle = document.getElementById("location-success-title");
   const locationSuccessLead = document.getElementById("location-success-lead");
   const locationContinue = document.getElementById("location-continue");
+  const locationOutsideLabel = document.getElementById("location-outside-label");
+  const locationOutsideTitle = document.getElementById("location-outside-title");
+  const locationOutsideLead = document.getElementById("location-outside-lead");
+  const locationOutsideContinue = document.getElementById(
+    "location-outside-continue"
+  );
   const feedBack = document.getElementById("feed-back");
   const feedVisitor = document.getElementById("feed-visitor");
   const feedPager = document.getElementById("feed-pager");
@@ -264,15 +272,21 @@
     !locationBack ||
     !locationIdle ||
     !locationSuccess ||
+    !locationOutside ||
     !locationTitle ||
     !locationCity ||
     !locationLead ||
     !locationPrivacy ||
+    !locationMessage ||
     !locationVerify ||
     !locationStatusLabel ||
     !locationSuccessTitle ||
     !locationSuccessLead ||
     !locationContinue ||
+    !locationOutsideLabel ||
+    !locationOutsideTitle ||
+    !locationOutsideLead ||
+    !locationOutsideContinue ||
     !feedBack ||
     !feedVisitor ||
     !feedPager ||
@@ -764,44 +778,96 @@
       title: "Conferma la tua comunità locale",
       lead: "TOWN è locale. La partecipazione appartiene a chi è connesso a questa comunità.",
       privacy:
-        "Questo prototipo non esegue una verifica GPS reale. In questa fase non vengono raccolti né memorizzati dati di posizione reali.",
-      verify: "Simula la verifica",
-      statusLabel: "Solo prototipo",
+        "Questo controllo viene eseguito sul tuo dispositivo, rispetto al confine della città che hai selezionato. Le tue coordinate non vengono inviate né memorizzate.",
+      verify: "Verifica la posizione",
+      verifying: "Verifica in corso…",
+      retry: "Riprova",
+      statusLabel: "Confermato",
       successTitle: "Posizione verificata per {city}",
       successLead:
-        "La tua comunità locale è confermata in questo prototipo. Non è stato usato alcun GPS reale.",
+        "La tua comunità locale è confermata. Il controllo è avvenuto sul tuo dispositivo.",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      outsideLabel: "Avviso",
+      outsideTitle: "Sembri essere fuori da {city}",
+      outsideLead:
+        "Risulti fuori dal confine di {city}. Dichiarare una posizione non veritiera viola i Termini di utilizzo. Puoi comunque continuare.",
+      notAvailable:
+        "La verifica di posizione per {city} non è ancora disponibile.",
+      errorPermission:
+        "Permesso di posizione negato. Abilita la posizione e riprova.",
+      errorUnavailable: "Posizione non disponibile. Riprova.",
+      errorTimeout: "Tempo scaduto per ottenere la posizione. Riprova.",
+      errorUnsupported:
+        "La verifica di posizione non è disponibile in questo contesto. Usa una connessione sicura e riprova.",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
     de: {
       back: "Zurück",
       title: "Bestätige deine lokale Gemeinschaft",
       lead: "TOWN ist lokal. Teilnahme gehört zu den Menschen, die mit dieser Gemeinschaft verbunden sind.",
       privacy:
-        "Dieser Prototyp führt keine echte GPS-Prüfung durch. In diesem Schritt werden keine echten Standortdaten erfasst oder gespeichert.",
-      verify: "Prüfung simulieren",
-      statusLabel: "Nur Prototyp",
+        "Diese Prüfung läuft auf deinem Gerät und vergleicht deinen Standort mit der Grenze der gewählten Stadt. Deine Koordinaten werden weder gesendet noch gespeichert.",
+      verify: "Standort prüfen",
+      verifying: "Prüfung läuft…",
+      retry: "Erneut versuchen",
+      statusLabel: "Bestätigt",
       successTitle: "Standort für {city} bestätigt",
       successLead:
-        "Deine lokale Gemeinschaft ist in diesem Prototyp bestätigt. Es wurde kein echtes GPS verwendet.",
+        "Deine lokale Gemeinschaft ist bestätigt. Die Prüfung erfolgte auf deinem Gerät.",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      outsideLabel: "Hinweis",
+      outsideTitle: "Du scheinst außerhalb von {city} zu sein",
+      outsideLead:
+        "Du scheinst außerhalb der Grenze von {city} zu sein. Eine falsche Angabe deines Standorts verstößt gegen die Nutzungsbedingungen. Du kannst trotzdem fortfahren.",
+      notAvailable:
+        "Die Standortprüfung für {city} ist noch nicht verfügbar.",
+      errorPermission:
+        "Standortzugriff verweigert. Bitte erlauben und erneut versuchen.",
+      errorUnavailable: "Standort nicht verfügbar. Bitte erneut versuchen.",
+      errorTimeout:
+        "Zeitüberschreitung bei der Standortabfrage. Bitte erneut versuchen.",
+      errorUnsupported:
+        "Standortprüfung ist in diesem Kontext nicht verfügbar. Bitte eine sichere Verbindung nutzen und erneut versuchen.",
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
     ro: {
       back: "Înapoi",
       title: "Confirmă-ți comunitatea locală",
       lead: "TOWN este local. Participarea aparține celor legați de această comunitate.",
       privacy:
-        "Acest prototip nu face o verificare GPS reală. În această etapă nu se colectează și nu se stochează date reale de localizare.",
-      verify: "Simulează verificarea",
-      statusLabel: "Doar prototip",
+        "Această verificare rulează pe dispozitivul tău, față de granița orașului selectat. Coordonatele tale nu sunt trimise și nu sunt stocate.",
+      verify: "Verifică locația",
+      verifying: "Verificare în curs…",
+      retry: "Încearcă din nou",
+      statusLabel: "Confirmat",
       successTitle: "Locație verificată pentru {city}",
       successLead:
-        "Comunitatea ta locală este confirmată în acest prototip. Nu a fost folosit niciun GPS real.",
+        "Comunitatea ta locală este confirmată. Verificarea s-a făcut pe dispozitivul tău.",
       continue: "Continuă",
+      outsideLabel: "Avertisment",
+      outsideTitle: "Pari să fii în afara orașului {city}",
+      outsideLead:
+        "Pari să fii în afara graniței orașului {city}. Declararea unei locații neadevărate încalcă Termenii de utilizare. Poți totuși continua.",
+      notAvailable:
+        "Verificarea locației pentru {city} nu este încă disponibilă.",
+      errorPermission:
+        "Permisiunea pentru locație a fost refuzată. Activează locația și încearcă din nou.",
+      errorUnavailable: "Locația nu este disponibilă. Încearcă din nou.",
+      errorTimeout:
+        "Timpul pentru obținerea locației a expirat. Încearcă din nou.",
+      errorUnsupported:
+        "Verificarea locației nu este disponibilă în acest context. Folosește o conexiune sigură și încearcă din nou.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
+
+  const BOUNDARY_BY_CITY = {
+    Milano: "assets/boundaries/milano_boundary_simplified.geojson",
+    Munich: "assets/boundaries/munich_boundary_simplified.geojson",
+    Arad: "assets/boundaries/arad_boundary_simplified.geojson",
+  };
+
+  const boundaryCache = Object.create(null);
 
   const FEED_COPY = {
     it: {
@@ -1497,6 +1563,7 @@
   let selectedCountry = null;
   let selectedCity = null;
   let locationVerified = false;
+  let locationOutsideBoundary = false;
   let feedIndex = 0;
   let originatingFeedIndex = 0;
   let enteredEmail = "";
@@ -1933,7 +2000,13 @@
     locationCity.textContent = cityName;
     locationLead.textContent = copy.lead;
     locationPrivacy.textContent = copy.privacy;
-    locationVerify.textContent = copy.verify;
+    if (!locationVerify.disabled) {
+      locationVerify.textContent = locationMessage.hidden
+        ? copy.verify
+        : copy.retry;
+    } else {
+      locationVerify.textContent = copy.verifying;
+    }
     locationStatusLabel.textContent = copy.statusLabel;
     locationSuccessTitle.textContent = copy.successTitle.replace(
       "{city}",
@@ -1941,12 +2014,171 @@
     );
     locationSuccessLead.textContent = copy.successLead;
     locationContinue.textContent = copy.continue;
+    locationOutsideLabel.textContent = copy.outsideLabel;
+    locationOutsideTitle.textContent = copy.outsideTitle.replace(
+      "{city}",
+      cityName
+    );
+    locationOutsideLead.textContent = copy.outsideLead.replace(
+      /\{city\}/g,
+      cityName
+    );
+    locationOutsideContinue.textContent = copy.continue;
     document.documentElement.lang = lang === "en" ? "en" : lang;
   }
 
+  function clearLocationMessage() {
+    locationMessage.textContent = "";
+    locationMessage.hidden = true;
+  }
+
+  function showLocationMessage(text) {
+    locationMessage.textContent = text;
+    locationMessage.hidden = false;
+  }
+
   function syncLocationState() {
+    const showSuccess = locationVerified && !locationOutsideBoundary;
+    const showOutside = locationVerified && locationOutsideBoundary;
     locationIdle.hidden = locationVerified;
-    locationSuccess.hidden = !locationVerified;
+    locationSuccess.hidden = !showSuccess;
+    locationOutside.hidden = !showOutside;
+  }
+
+  function resetLocationVerification() {
+    locationVerified = false;
+    locationOutsideBoundary = false;
+    clearLocationMessage();
+    locationVerify.disabled = false;
+    const lang = communityLanguage();
+    const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
+    locationVerify.textContent = copy.verify;
+    syncLocationState();
+  }
+
+  function ringBBox(ring) {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (let i = 0; i < ring.length; i++) {
+      const x = ring[i][0];
+      const y = ring[i][1];
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+    return [minX, minY, maxX, maxY];
+  }
+
+  function pointInRing(lon, lat, ring) {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const xi = ring[i][0];
+      const yi = ring[i][1];
+      const xj = ring[j][0];
+      const yj = ring[j][1];
+      const denom = yj - yi || 0;
+      const intersect =
+        yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / denom + xi;
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function pointInPolygonCoords(lon, lat, polygonCoords) {
+    if (!polygonCoords || !polygonCoords.length || !polygonCoords[0]) {
+      return false;
+    }
+    const exterior = polygonCoords[0];
+    const bbox = ringBBox(exterior);
+    if (lon < bbox[0] || lon > bbox[2] || lat < bbox[1] || lat > bbox[3]) {
+      return false;
+    }
+    if (!pointInRing(lon, lat, exterior)) return false;
+    for (let h = 1; h < polygonCoords.length; h++) {
+      if (pointInRing(lon, lat, polygonCoords[h])) return false;
+    }
+    return true;
+  }
+
+  function featureContainsPoint(feature, lon, lat) {
+    const geometry = feature && feature.geometry;
+    if (!geometry || !geometry.type || !geometry.coordinates) return false;
+    if (geometry.type === "Polygon") {
+      return pointInPolygonCoords(lon, lat, geometry.coordinates);
+    }
+    if (geometry.type === "MultiPolygon") {
+      for (let i = 0; i < geometry.coordinates.length; i++) {
+        if (pointInPolygonCoords(lon, lat, geometry.coordinates[i])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function geojsonContainsPoint(geojson, lon, lat) {
+    if (!geojson) return false;
+    if (geojson.type === "FeatureCollection") {
+      const features = geojson.features || [];
+      for (let i = 0; i < features.length; i++) {
+        if (featureContainsPoint(features[i], lon, lat)) return true;
+      }
+      return false;
+    }
+    if (geojson.type === "Feature") {
+      return featureContainsPoint(geojson, lon, lat);
+    }
+    return featureContainsPoint({ geometry: geojson }, lon, lat);
+  }
+
+  async function loadCityBoundary(cityId) {
+    if (Object.prototype.hasOwnProperty.call(boundaryCache, cityId)) {
+      return boundaryCache[cityId];
+    }
+    const path = BOUNDARY_BY_CITY[cityId];
+    if (!path) {
+      const err = new Error("boundary-unavailable");
+      err.code = "boundary-unavailable";
+      throw err;
+    }
+    try {
+      const geojson = await fetchJson(path);
+      boundaryCache[cityId] = geojson;
+      return geojson;
+    } catch (loadErr) {
+      const err = new Error("boundary-unavailable");
+      err.code = "boundary-unavailable";
+      throw err;
+    }
+  }
+
+  function requestDevicePosition() {
+    return new Promise(function (resolve, reject) {
+      if (
+        !navigator.geolocation ||
+        typeof navigator.geolocation.getCurrentPosition !== "function"
+      ) {
+        reject({ code: "unsupported" });
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      });
+    });
+  }
+
+  function geolocationErrorMessage(copy, err) {
+    const code = err && err.code;
+    if (code === "unsupported") return copy.errorUnsupported;
+    if (code === 1) return copy.errorPermission;
+    if (code === 2) return copy.errorUnavailable;
+    if (code === 3) return copy.errorTimeout;
+    return copy.errorUnavailable;
   }
 
   function syncFeedMemberState() {
@@ -2555,6 +2787,7 @@
     selectedCountry = null;
     selectedCity = null;
     locationVerified = false;
+    locationOutsideBoundary = false;
     feedIndex = 0;
     enteredEmail = "";
     emailVerificationId = null;
@@ -2604,6 +2837,9 @@
     continueCity.disabled = true;
     locationIdle.hidden = false;
     locationSuccess.hidden = true;
+    locationOutside.hidden = true;
+    clearLocationMessage();
+    locationVerify.disabled = false;
     closeInvite();
     closeSignalSheet();
     closeSheet();
@@ -2774,6 +3010,7 @@
       selectedCountry = nextCountry;
       selectedCity = null;
       locationVerified = false;
+      locationOutsideBoundary = false;
       feedIndex = 0;
       clearLiveScenes();
       clearDemoTestimony();
@@ -3136,6 +3373,7 @@
   continueCountry.addEventListener("click", () => {
     if (!selectedCountry) return;
     locationVerified = false;
+    locationOutsideBoundary = false;
     feedIndex = 0;
     renderCityOptions();
     applyCityCopy();
@@ -3148,7 +3386,7 @@
 
   continueCity.addEventListener("click", () => {
     if (!selectedCountry || !selectedCity) return;
-    locationVerified = false;
+    resetLocationVerification();
     feedIndex = 0;
     go("location");
   });
@@ -3159,22 +3397,90 @@
   });
 
   locationVerify.addEventListener("click", () => {
-    // Mock-only verification. No device location access or network calls.
-    locationVerified = true;
-    applyLocationCopy();
-    syncLocationState();
+    if (locationVerify.disabled) return;
+    const lang = communityLanguage();
+    const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
+    const cityName = cityDisplayName(lang);
+    const cityId = selectedCity;
+
+    clearLocationMessage();
+    locationVerify.disabled = true;
+    locationVerify.textContent = copy.verifying;
+
+    (async function runLocationVerification() {
+      try {
+        if (!cityId || !BOUNDARY_BY_CITY[cityId]) {
+          showLocationMessage(
+            copy.notAvailable.replace("{city}", cityName || "")
+          );
+          return;
+        }
+
+        let boundary;
+        try {
+          boundary = await loadCityBoundary(cityId);
+        } catch (boundaryErr) {
+          showLocationMessage(
+            copy.notAvailable.replace("{city}", cityName || "")
+          );
+          return;
+        }
+
+        let position;
+        try {
+          position = await requestDevicePosition();
+        } catch (geoErr) {
+          showLocationMessage(geolocationErrorMessage(copy, geoErr));
+          return;
+        }
+
+        const coords = position && position.coords;
+        if (
+          !coords ||
+          typeof coords.latitude !== "number" ||
+          typeof coords.longitude !== "number"
+        ) {
+          showLocationMessage(copy.errorUnavailable);
+          return;
+        }
+
+        const inside = geojsonContainsPoint(
+          boundary,
+          coords.longitude,
+          coords.latitude
+        );
+
+        locationVerified = true;
+        locationOutsideBoundary = !inside;
+        clearLocationMessage();
+        applyLocationCopy();
+        syncLocationState();
+      } finally {
+        if (!locationVerified) {
+          locationVerify.disabled = false;
+          locationVerify.textContent = locationMessage.hidden
+            ? copy.verify
+            : copy.retry;
+        }
+      }
+    })();
   });
 
-  locationContinue.addEventListener("click", () => {
+  function continueFromLocation() {
     if (!locationVerified) return;
     feedIndex = 0;
     const cityId = selectedCity;
     locationContinue.disabled = true;
+    locationOutsideContinue.disabled = true;
     loadLiveScenesForCity(cityId).finally(() => {
       locationContinue.disabled = false;
+      locationOutsideContinue.disabled = false;
       go("feed");
     });
-  });
+  }
+
+  locationContinue.addEventListener("click", continueFromLocation);
+  locationOutsideContinue.addEventListener("click", continueFromLocation);
 
   feedBack.addEventListener("click", () => {
     closeSignalSheet();

@@ -871,8 +871,22 @@ button {
   color: var(--muted);
 }
 
+.location__message {
+  margin: -0.75rem 0 1.75rem;
+  max-width: 36ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--body);
+}
+
+.location__message[hidden] {
+  display: none !important;
+}
+
 #location-idle[hidden],
-#location-success[hidden] {
+#location-success[hidden],
+#location-outside[hidden] {
   display: none !important;
 }
 

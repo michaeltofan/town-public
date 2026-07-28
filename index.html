@@ -390,32 +390,54 @@
               community.
             </p>
             <p class="location__privacy" id="location-privacy">
-              This prototype does not perform real GPS verification. No real
-              location data is collected or stored in this slice.
+              This check runs on your device, against your selected city's
+              boundary. Your coordinates are not sent or stored.
             </p>
+            <p class="location__message" id="location-message" hidden></p>
             <div class="country__actions">
               <button type="button" class="btn btn--primary" id="location-verify">
-                Simulate verification
+                Verify location
               </button>
             </div>
           </div>
 
           <div id="location-success" hidden>
             <p class="location__status-label" id="location-status-label">
-              Prototype only
+              Confirmed
             </p>
             <h1 class="country__title" id="location-success-title">
               Location verified
             </h1>
             <p class="country__lead" id="location-success-lead">
-              Your local community is confirmed for this prototype. No real GPS
-              was used.
+              Your local community is confirmed. The check ran on your device.
             </p>
             <div class="country__actions">
               <button
                 type="button"
                 class="btn btn--primary"
                 id="location-continue"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+
+          <div id="location-outside" hidden>
+            <p class="location__status-label" id="location-outside-label">
+              Notice
+            </p>
+            <h1 class="country__title" id="location-outside-title">
+              You appear to be outside this city
+            </h1>
+            <p class="country__lead" id="location-outside-lead">
+              You appear to be outside the selected city. Misrepresenting your
+              location violates the Terms of Use. You may still continue.
+            </p>
+            <div class="country__actions">
+              <button
+                type="button"
+                class="btn btn--primary"
+                id="location-outside-continue"
               >
                 Continue
               </button>

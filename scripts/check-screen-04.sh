@@ -38,21 +38,45 @@ require_file "script.js"
 require_contains "index.html" "view-location"
 require_contains "index.html" "location-verify"
 require_contains "index.html" "location-success"
+require_contains "index.html" "location-outside"
+require_contains "index.html" "location-message"
 require_contains "index.html" "view-feed"
-require_contains "script.js" "Simula la verifica"
-require_contains "script.js" "Prüfung simulieren"
+require_contains "script.js" "Verifica la posizione"
+require_contains "script.js" "Standort prüfen"
 require_contains "script.js" "Conferma la tua comunità locale"
 require_contains "script.js" "Bestätige deine lokale Gemeinschaft"
 require_contains "script.js" "locationVerified"
 require_contains "script.js" 'go("location")'
-require_contains "script.js" "Mock-only verification"
+require_contains "script.js" "navigator.geolocation"
+require_contains "script.js" "getCurrentPosition"
+require_contains "script.js" "non vengono inviate né memorizzate"
+require_contains "script.js" "viola i Termini di utilizzo"
+require_contains "script.js" "non è ancora disponibile"
+require_contains "script.js" "assets/boundaries/milano_boundary_simplified.geojson"
+require_contains "script.js" "assets/boundaries/munich_boundary_simplified.geojson"
+require_contains "script.js" "assets/boundaries/arad_boundary_simplified.geojson"
+require_file "assets/boundaries/.gitkeep"
 
 echo "== Guardrails =="
-if grep -Eiq 'navigator\.geolocation|getCurrentPosition|watchPosition' index.html script.js; then
-  echo "FAIL: geolocation API usage present"
+if ! grep -Fq 'navigator.geolocation' script.js; then
+  echo "FAIL: intended navigator.geolocation usage missing"
   fail=1
 else
-  echo "OK: no geolocation API usage"
+  echo "OK: navigator.geolocation present"
+fi
+
+if ! grep -Fq 'getCurrentPosition' script.js; then
+  echo "FAIL: intended getCurrentPosition usage missing"
+  fail=1
+else
+  echo "OK: getCurrentPosition present"
+fi
+
+if grep -Eiq 'watchPosition' index.html script.js; then
+  echo "FAIL: watchPosition continuous tracking present"
+  fail=1
+else
+  echo "OK: no watchPosition usage"
 fi
 
 if grep -Eiq 'language selector|language menu|followers|trending|dashboard|feed is implemented' index.html script.js; then
@@ -81,6 +105,8 @@ for fragment in (
     "view-location",
     "view-feed",
     "location-verify",
+    "location-outside",
+    "location-message",
 ):
     if fragment not in html:
         raise SystemExit(f"Missing fragment: {fragment}")
@@ -89,12 +115,23 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "Posizione verificata per",
     "Standort für",
-    "Solo prototipo",
-    "Nur Prototyp",
+    "Verifica la posizione",
+    "Standort prüfen",
+    "viola i Termini di utilizzo",
+    "non è ancora disponibile",
     "locationVerified = true",
+    "navigator.geolocation",
+    "getCurrentPosition",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
+
+if "watchPosition" in js or "watchPosition" in html:
+    raise SystemExit("watchPosition must not be present")
+if "Mock-only verification" in js:
+    raise SystemExit("Mock-only verification must be removed")
+if "Simula la verifica" in js:
+    raise SystemExit("Mock verify CTA must be removed")
 print("OK: Screen 04 markup and copy present")
 PY
 

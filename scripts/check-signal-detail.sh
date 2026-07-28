@@ -61,7 +61,7 @@ require_contains "script.js" "munich-signal-2"
 require_contains "script.js" "munich-signal-3"
 
 echo "== Guardrails =="
-if grep -Eiq 'fetch\(|XMLHttpRequest|localStorage|sessionStorage|navigator\.geolocation|WebAuthn|navigator\.credentials|checkout\.stripe|sk_live|pk_live|dashboard|followers|trending|comment thread|confetti' index.html script.js; then
+if grep -Eiq 'fetch\(|XMLHttpRequest|localStorage|sessionStorage|WebAuthn|navigator\.credentials|checkout\.stripe|sk_live|pk_live|dashboard|followers|trending|comment thread|confetti' index.html script.js; then
   echo "FAIL: forbidden backend/social/celebration pattern present"
   fail=1
 else
