@@ -507,6 +507,130 @@
         </div>
       </main>
 
+      <!-- Product navigation: desktop left rail / mobile bottom bar -->
+      <nav class="app-nav" id="app-nav" aria-label="Primary">
+        <ul class="app-nav__list">
+          <li>
+            <button
+              type="button"
+              class="app-nav__item is-active"
+              id="nav-home"
+              data-nav-target="home"
+              aria-current="page"
+            >
+              <span class="app-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                  <path
+                    d="M4.5 10.75 12 4.5l7.5 6.25V19a1.5 1.5 0 0 1-1.5 1.5h-3.25v-5.25h-5.5V20.5H6A1.5 1.5 0 0 1 4.5 19v-8.25Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="app-nav__label">HOME</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="app-nav__item"
+              id="nav-membership"
+              data-nav-target="membership"
+            >
+              <span class="app-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                  <rect
+                    x="5.25"
+                    y="6.5"
+                    width="13.5"
+                    height="11"
+                    rx="1.6"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M8.25 10.25h7.5M8.25 13.75h4.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <span class="app-nav__label">MEMBERSHIP</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="app-nav__item"
+              id="nav-chat"
+              data-nav-target="chat"
+            >
+              <span class="app-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                  <path
+                    d="M5.5 6.75h13A1.75 1.75 0 0 1 20.25 8.5v7A1.75 1.75 0 0 1 18.5 17.25H10.2L6.4 20.2a.6.6 0 0 1-.9-.52V17.25H5.5A1.75 1.75 0 0 1 3.75 15.5v-7A1.75 1.75 0 0 1 5.5 6.75Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="app-nav__label">CHAT</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="app-nav__item"
+              id="nav-activity"
+              data-nav-target="activity"
+            >
+              <span class="app-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                  <path
+                    d="M4.5 12h3.1l2.1-5.5 3.7 11 2.2-5.5H19.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="app-nav__label">ACTIVITY</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="app-nav__item"
+              id="nav-profile"
+              data-nav-target="profile"
+            >
+              <span class="app-nav__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+                  <circle
+                    cx="12"
+                    cy="9"
+                    r="3.25"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M6.25 18.25c1.35-2.2 3.2-3.25 5.75-3.25s4.4 1.05 5.75 3.25"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <span class="app-nav__label">PROFILE</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
       <!-- Signal Detail V1: cinematic editorial continuation of the open signal -->
       <div
         class="signal-detail"
@@ -643,6 +767,105 @@
             <button type="button" class="feed__secondary" id="invite-not-now">
               Not now
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shared authentication window (visual review only — no API calls) -->
+      <div
+        class="auth-window"
+        id="auth-window"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-window-title"
+      >
+        <div class="auth-window__dim" id="auth-window-dim" aria-hidden="true"></div>
+        <div class="auth-window__panel" role="document">
+          <button
+            type="button"
+            class="auth-window__close"
+            id="auth-window-close"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <div class="auth-window__frame">
+            <p class="auth-window__brand" aria-label="TOWN">TOWN</p>
+            <h2 class="auth-window__title" id="auth-window-title">Sign in</h2>
+            <button
+              type="button"
+              class="auth-window__mode-toggle"
+              id="auth-mode-toggle"
+            >
+              First time here? Create account
+            </button>
+
+            <div
+              class="auth-window__channel"
+              role="group"
+              aria-label="Identity method"
+            >
+              <button
+                type="button"
+                class="auth-window__channel-btn is-selected"
+                id="auth-channel-email"
+                data-auth-channel="email"
+                aria-pressed="true"
+              >
+                Email
+              </button>
+              <button
+                type="button"
+                class="auth-window__channel-btn"
+                id="auth-channel-phone"
+                data-auth-channel="phone"
+                aria-pressed="false"
+              >
+                Phone
+              </button>
+            </div>
+
+            <label
+              class="auth-window__field-label"
+              for="auth-identity-input"
+              id="auth-identity-label"
+            >
+              Email address
+            </label>
+            <input
+              class="auth-window__input"
+              id="auth-identity-input"
+              type="email"
+              name="identity"
+              autocomplete="email"
+              inputmode="email"
+              spellcheck="false"
+            />
+
+            <div class="auth-window__actions">
+              <button
+                type="button"
+                class="btn btn--primary"
+                id="auth-continue"
+              >
+                Continue
+              </button>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                id="auth-passkey"
+              >
+                Sign in with passkey
+              </button>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                id="auth-password"
+              >
+                Sign in with password
+              </button>
+            </div>
           </div>
         </div>
       </div>
