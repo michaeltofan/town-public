@@ -44,8 +44,9 @@ require_contains "index.html" "feed-open-signal"
 require_contains "index.html" "membership-invite"
 require_contains "script.js" "LO VEDO ANCH’IO"
 require_contains "script.js" "ICH SEHE DAS AUCH"
-require_contains "script.js" "Apri segnale"
+require_contains "script.js" "Apri il segnale"
 require_contains "script.js" "Signal öffnen"
+require_contains "script.js" "Deschide semnalul"
 require_contains "script.js" "FEED_SCENES"
 require_contains "script.js" 'go("feed")'
 
