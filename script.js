@@ -2468,7 +2468,83 @@
     syncFeedMemberState();
   }
 
-  function renderFeedScene() {
+  const feedNav = window.TownFeedNavigation;
+  const feedNavLock = feedNav
+    ? feedNav.createNavLock()
+    : { isLocked: () => false, lock: () => {}, unlock: () => {} };
+  let feedWheelAccumulator = 0;
+  let feedPointerGesture = null;
+  let feedNavSettleTimer = 0;
+
+  function prefersFeedReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function feedOverlaysBlockNavigation() {
+    return (
+      !membershipInvite.hidden ||
+      !signalDetail.hidden ||
+      !authWindow.hidden ||
+      (termsSheet && !termsSheet.hidden) ||
+      (sheet && !sheet.hidden)
+    );
+  }
+
+  function isFeedSurfaceActive() {
+    return !viewFeed.hidden && document.body.classList.contains("page-feed");
+  }
+
+  function preloadAdjacentFeedImages() {
+    const scenes = currentScenes();
+    if (!scenes.length) return;
+    const neighbors = [feedIndex - 1, feedIndex + 1];
+    for (let i = 0; i < neighbors.length; i++) {
+      const idx = neighbors[i];
+      if (idx < 0 || idx >= scenes.length) continue;
+      const src = scenes[idx] && scenes[idx].image;
+      if (!src) continue;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+    }
+  }
+
+  function applyFeedNavSettle(direction) {
+    const feedMain = viewFeed.querySelector("main.feed");
+    if (!feedMain) return;
+    feedMain.classList.remove("feed--nav-from-next", "feed--nav-from-previous");
+    if (prefersFeedReducedMotion()) return;
+    const fromClass =
+      direction === "next"
+        ? "feed--nav-from-next"
+        : direction === "previous"
+          ? "feed--nav-from-previous"
+          : null;
+    if (!fromClass) return;
+    feedMain.classList.add(fromClass);
+    // Double rAF: apply the offset, then release so the image settles into place.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        feedMain.classList.remove(
+          "feed--nav-from-next",
+          "feed--nav-from-previous"
+        );
+      });
+    });
+    if (feedNavSettleTimer) window.clearTimeout(feedNavSettleTimer);
+    feedNavSettleTimer = window.setTimeout(() => {
+      feedMain.classList.remove(
+        "feed--nav-from-next",
+        "feed--nav-from-previous"
+      );
+      feedNavSettleTimer = 0;
+    }, 320);
+  }
+
+  function renderFeedScene(options) {
     const scenes = currentScenes();
     if (!scenes.length) return;
     if (feedIndex < 0) feedIndex = 0;
@@ -2479,6 +2555,7 @@
       syncProductOnlyCityFromScene(scene);
       applyFeedCopyChrome();
     }
+    const direction = options && options.direction;
     feedImage.src = scene.image;
     feedImage.style.objectPosition = scene.focus;
     feedCategory.textContent = scene.category;
@@ -2491,6 +2568,76 @@
     feedPrev.disabled = feedIndex <= 0;
     feedNext.disabled = feedIndex >= scenes.length - 1;
     syncFeedMemberState();
+    preloadAdjacentFeedImages();
+    if (direction) applyFeedNavSettle(direction);
+  }
+
+  /**
+   * Canonical scene transition for swipe, wheel, keyboard, Previous, and Next.
+   * Returns true when the index changed.
+   */
+  function navigateFeedTo(targetIndex, options) {
+    const scenes = currentScenes();
+    if (!scenes.length) return false;
+    const next = feedNav
+      ? feedNav.clampIndex(targetIndex, scenes.length)
+      : Math.max(0, Math.min(scenes.length - 1, targetIndex | 0));
+    if (next === feedIndex) return false;
+    const direction =
+      (options && options.direction) ||
+      (next > feedIndex ? "next" : "previous");
+    feedIndex = next;
+    feedWheelAccumulator = 0;
+    if (feedNav) {
+      const lockMs = feedNav.lockDurationMs(prefersFeedReducedMotion());
+      feedNavLock.lock(lockMs);
+    }
+    renderFeedScene({ direction: direction });
+    return true;
+  }
+
+  function navigateFeedByDirection(direction) {
+    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
+    if (feedNavLock.isLocked()) return false;
+    const scenes = currentScenes();
+    if (!scenes.length) return false;
+    const target = feedNav
+      ? feedNav.resolveTargetIndex(feedIndex, scenes.length, {
+          type: "direction",
+          value: direction,
+        })
+      : direction === "next"
+        ? feedIndex + 1
+        : feedIndex - 1;
+    if (target == null || target < 0 || target > scenes.length - 1) return false;
+    if (target === feedIndex) return false;
+    return navigateFeedTo(target, { direction: direction });
+  }
+
+  function navigateFeedByIntent(intent) {
+    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
+    if (feedNavLock.isLocked()) return false;
+    const scenes = currentScenes();
+    if (!scenes.length) return false;
+    let target = null;
+    if (feedNav) {
+      target = feedNav.resolveTargetIndex(feedIndex, scenes.length, intent);
+    } else if (intent.type === "delta") {
+      target = feedIndex + intent.value;
+    } else if (intent.type === "absolute") {
+      target = intent.value;
+    } else if (intent.type === "direction") {
+      target = feedIndex + (intent.value === "next" ? 1 : -1);
+    }
+    if (target == null || target < 0 || target > scenes.length - 1) return false;
+    if (target === feedIndex) return false;
+    const direction =
+      intent.type === "direction"
+        ? intent.value
+        : target > feedIndex
+          ? "next"
+          : "previous";
+    return navigateFeedTo(target, { direction: direction });
   }
 
   function renderCityOptions(options) {
@@ -3927,16 +4074,133 @@
   });
 
   feedPrev.addEventListener("click", () => {
-    if (feedIndex <= 0) return;
-    feedIndex -= 1;
-    renderFeedScene();
+    navigateFeedByIntent({ type: "delta", value: -1 });
   });
 
   feedNext.addEventListener("click", () => {
+    navigateFeedByIntent({ type: "delta", value: 1 });
+  });
+
+  function feedEventTargetIsInteractive(target) {
+    if (!target || !feedNav) return false;
+    if (target.nodeType === 3) target = target.parentElement;
+    if (!target) return false;
+    if (
+      target === feedImage ||
+      (target.classList &&
+        (target.classList.contains("feed__media") ||
+          target.classList.contains("feed__veil") ||
+          target.classList.contains("feed__image")))
+    ) {
+      return false;
+    }
+    return feedNav.isInteractiveFocusTarget(target);
+  }
+
+  const feedMainEl = viewFeed.querySelector("main.feed");
+
+  if (feedMainEl && feedNav) {
+    feedMainEl.addEventListener("pointerdown", (event) => {
+      if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (feedEventTargetIsInteractive(event.target)) {
+        feedPointerGesture = null;
+        return;
+      }
+      feedPointerGesture = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        lastX: event.clientX,
+        lastY: event.clientY,
+      };
+    });
+
+    feedMainEl.addEventListener("pointermove", (event) => {
+      if (
+        !feedPointerGesture ||
+        feedPointerGesture.pointerId !== event.pointerId
+      ) {
+        return;
+      }
+      feedPointerGesture.lastX = event.clientX;
+      feedPointerGesture.lastY = event.clientY;
+    });
+
+    function endFeedPointerGesture(event) {
+      if (
+        !feedPointerGesture ||
+        feedPointerGesture.pointerId !== event.pointerId
+      ) {
+        return;
+      }
+      const gesture = feedPointerGesture;
+      feedPointerGesture = null;
+      if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
+      if (feedNavLock.isLocked()) return;
+      const dx = gesture.lastX - gesture.startX;
+      const dy = gesture.lastY - gesture.startY;
+      const direction = feedNav.classifySwipe(dx, dy);
+      if (!direction) return;
+      navigateFeedByDirection(direction);
+    }
+
+    feedMainEl.addEventListener("pointerup", endFeedPointerGesture);
+    feedMainEl.addEventListener("pointercancel", () => {
+      feedPointerGesture = null;
+    });
+
+    feedMainEl.addEventListener(
+      "wheel",
+      (event) => {
+        if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
+        // Consume wheel only on the active feed surface so other pages keep normal scrolling.
+        event.preventDefault();
+        if (feedNavLock.isLocked()) {
+          feedWheelAccumulator = 0;
+          return;
+        }
+        const result = feedNav.accumulateWheel(
+          feedWheelAccumulator,
+          event.deltaY
+        );
+        feedWheelAccumulator = result.accumulator;
+        if (!result.direction) return;
+        navigateFeedByDirection(result.direction);
+      },
+      { passive: false }
+    );
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (!feedNav) return;
+    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
+    const action = feedNav.keyboardAction(event.key);
+    if (!action) return;
+    if (feedNav.isInteractiveFocusTarget(document.activeElement)) return;
+    if (feedNavLock.isLocked()) {
+      event.preventDefault();
+      return;
+    }
     const scenes = currentScenes();
-    if (feedIndex >= scenes.length - 1) return;
-    feedIndex += 1;
-    renderFeedScene();
+    let intent = null;
+    if (action === "next") intent = { type: "direction", value: "next" };
+    else if (action === "previous")
+      intent = { type: "direction", value: "previous" };
+    else if (action === "first") intent = { type: "absolute", value: 0 };
+    else if (action === "last")
+      intent = { type: "absolute", value: scenes.length - 1 };
+    if (!intent) return;
+    const moved = navigateFeedByIntent(intent);
+    if (
+      moved ||
+      action === "first" ||
+      action === "last" ||
+      action === "next" ||
+      action === "previous"
+    ) {
+      event.preventDefault();
+    }
   });
 
   feedSeeToo.addEventListener("click", () => {

@@ -872,6 +872,7 @@ body.page-feed {
   min-height: 100dvh;
   color: #f4efe6;
   overflow: hidden;
+  touch-action: none;
 }
 
 .feed__media {
@@ -884,6 +885,40 @@ body.page-feed {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.feed__chrome,
+.feed__actions,
+.feed__scene-nav {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .feed__image {
+    transition: opacity 280ms ease, transform 280ms ease;
+  }
+
+  .feed.feed--nav-from-next .feed__image {
+    opacity: 0.88;
+    transform: translateY(12px);
+  }
+
+  .feed.feed--nav-from-previous .feed__image {
+    opacity: 0.88;
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feed__image {
+    transition: none;
+  }
+
+  .feed.feed--nav-from-next .feed__image,
+  .feed.feed--nav-from-previous .feed__image {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .feed__veil {
