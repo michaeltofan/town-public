@@ -62,6 +62,24 @@
   const feedOpenSignal = document.getElementById("feed-open-signal");
   const feedPrev = document.getElementById("feed-prev");
   const feedNext = document.getElementById("feed-next");
+  const appNav = document.getElementById("app-nav");
+  const navHome = document.getElementById("nav-home");
+  const navMembership = document.getElementById("nav-membership");
+  const navChat = document.getElementById("nav-chat");
+  const navActivity = document.getElementById("nav-activity");
+  const navProfile = document.getElementById("nav-profile");
+  const authWindow = document.getElementById("auth-window");
+  const authWindowDim = document.getElementById("auth-window-dim");
+  const authWindowClose = document.getElementById("auth-window-close");
+  const authWindowTitle = document.getElementById("auth-window-title");
+  const authModeToggle = document.getElementById("auth-mode-toggle");
+  const authChannelEmail = document.getElementById("auth-channel-email");
+  const authChannelPhone = document.getElementById("auth-channel-phone");
+  const authIdentityLabel = document.getElementById("auth-identity-label");
+  const authIdentityInput = document.getElementById("auth-identity-input");
+  const authContinue = document.getElementById("auth-continue");
+  const authPasskey = document.getElementById("auth-passkey");
+  const authPassword = document.getElementById("auth-password");
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -302,6 +320,24 @@
     !feedOpenSignal ||
     !feedPrev ||
     !feedNext ||
+    !appNav ||
+    !navHome ||
+    !navMembership ||
+    !navChat ||
+    !navActivity ||
+    !navProfile ||
+    !authWindow ||
+    !authWindowDim ||
+    !authWindowClose ||
+    !authWindowTitle ||
+    !authModeToggle ||
+    !authChannelEmail ||
+    !authChannelPhone ||
+    !authIdentityLabel ||
+    !authIdentityInput ||
+    !authContinue ||
+    !authPasskey ||
+    !authPassword ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -1673,6 +1709,10 @@
   }
 
   let lastFocus = null;
+  let lastAuthFocus = null;
+  let authOpenedByTarget = null;
+  let authMode = "signin";
+  let authChannel = "email";
   let selectedCountry = null;
   let selectedCity = null;
   let locationVerified = false;
@@ -2979,6 +3019,91 @@
     document.body.style.overflow = "";
   }
 
+  function setAuthFeedInert(isInert) {
+    const feedMain = viewFeed.querySelector("main.feed");
+    if (feedMain) feedMain.inert = isInert;
+    if (signalDetail) signalDetail.inert = isInert;
+    if (membershipInvite) membershipInvite.inert = isInert;
+  }
+
+  function syncAuthModeUi() {
+    if (authMode === "create") {
+      authWindowTitle.textContent = "Create account";
+      authModeToggle.textContent = "Sign in";
+    } else {
+      authWindowTitle.textContent = "Sign in";
+      authModeToggle.textContent = "First time here? Create account";
+    }
+  }
+
+  function syncAuthChannelUi() {
+    const isPhone = authChannel === "phone";
+    authChannelEmail.classList.toggle("is-selected", !isPhone);
+    authChannelPhone.classList.toggle("is-selected", isPhone);
+    authChannelEmail.setAttribute("aria-pressed", isPhone ? "false" : "true");
+    authChannelPhone.setAttribute("aria-pressed", isPhone ? "true" : "false");
+    if (isPhone) {
+      authIdentityLabel.textContent = "Phone number";
+      authIdentityInput.type = "tel";
+      authIdentityInput.setAttribute("inputmode", "tel");
+      authIdentityInput.setAttribute("autocomplete", "tel");
+      authIdentityInput.setAttribute("name", "phone");
+    } else {
+      authIdentityLabel.textContent = "Email address";
+      authIdentityInput.type = "email";
+      authIdentityInput.setAttribute("inputmode", "email");
+      authIdentityInput.setAttribute("autocomplete", "email");
+      authIdentityInput.setAttribute("name", "identity");
+    }
+  }
+
+  function openAuthWindow(openerEl, navTarget) {
+    // Close competing overlays before presenting the shared auth window.
+    closeInvite();
+    closeSignalDetail();
+
+    authOpenedByTarget = navTarget || null;
+    lastAuthFocus = openerEl || document.activeElement;
+    authMode = "signin";
+    authChannel = "email";
+    authIdentityInput.value = "";
+    syncAuthModeUi();
+    syncAuthChannelUi();
+
+    authWindow.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    authWindowClose.focus();
+  }
+
+  function closeAuthWindow() {
+    if (authWindow.hidden) return;
+    authWindow.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    const restore = lastAuthFocus;
+    lastAuthFocus = null;
+    authOpenedByTarget = null;
+    if (restore && typeof restore.focus === "function") {
+      restore.focus();
+    }
+  }
+
+  function handleProtectedNav(button, target) {
+    openAuthWindow(button, target);
+  }
+
+  function handleHomeNav() {
+    closeAuthWindow();
+    // HOME remains the active public surface; no route change.
+    navHome.classList.add("is-active");
+    navHome.setAttribute("aria-current", "page");
+    [navMembership, navChat, navActivity, navProfile].forEach((btn) => {
+      btn.classList.remove("is-active");
+      btn.removeAttribute("aria-current");
+    });
+  }
+
   function resetVisitorSession() {
     selectedCountry = null;
     selectedCity = null;
@@ -3040,6 +3165,7 @@
     locationVerify.disabled = false;
     closeInvite();
     closeSignalSheet();
+    closeAuthWindow();
     closeSheet();
     closeTermsSheet();
   }
@@ -3077,6 +3203,7 @@
     if (name !== "feed") {
       closeInvite();
       closeSignalDetail();
+      closeAuthWindow();
     }
     if (name !== "payment") {
       closePaymentNotice();
@@ -3396,6 +3523,19 @@
     );
   }
 
+  function getAuthFocusable() {
+    return Array.from(authWindow.querySelectorAll(focusableSelector)).filter(
+      (el) => {
+        if (el.hasAttribute("disabled")) return false;
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") {
+          return false;
+        }
+        return el.getClientRects().length > 0;
+      }
+    );
+  }
+
   function openSheet() {
     closeTermsSheet();
     lastFocus = document.activeElement;
@@ -3493,6 +3633,11 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      if (!authWindow.hidden) {
+        event.preventDefault();
+        closeAuthWindow();
+        return;
+      }
       if (!signalDetail.hidden) {
         event.preventDefault();
         closeSignalDetail();
@@ -3512,7 +3657,84 @@
         event.preventDefault();
         closeSheet();
       }
+      return;
     }
+
+    if (event.key === "Tab" && !authWindow.hidden) {
+      const focusable = getAuthFocusable();
+      if (!focusable.length) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  navHome.addEventListener("click", () => {
+    handleHomeNav();
+  });
+
+  navMembership.addEventListener("click", () => {
+    handleProtectedNav(navMembership, "membership");
+  });
+
+  navChat.addEventListener("click", () => {
+    handleProtectedNav(navChat, "chat");
+  });
+
+  navActivity.addEventListener("click", () => {
+    handleProtectedNav(navActivity, "activity");
+  });
+
+  navProfile.addEventListener("click", () => {
+    handleProtectedNav(navProfile, "profile");
+  });
+
+  authWindowClose.addEventListener("click", () => {
+    closeAuthWindow();
+  });
+
+  authWindowDim.addEventListener("click", () => {
+    closeAuthWindow();
+  });
+
+  authModeToggle.addEventListener("click", () => {
+    authMode = authMode === "signin" ? "create" : "signin";
+    syncAuthModeUi();
+  });
+
+  authChannelEmail.addEventListener("click", () => {
+    authChannel = "email";
+    syncAuthChannelUi();
+    authIdentityInput.focus();
+  });
+
+  authChannelPhone.addEventListener("click", () => {
+    authChannel = "phone";
+    syncAuthChannelUi();
+    authIdentityInput.focus();
+  });
+
+  // Visual-review only: Continue / passkey / password must not call APIs,
+  // navigate, simulate success, or write session state.
+  authContinue.addEventListener("click", (event) => {
+    event.preventDefault();
+  });
+
+  authPasskey.addEventListener("click", (event) => {
+    event.preventDefault();
+  });
+
+  authPassword.addEventListener("click", (event) => {
+    event.preventDefault();
   });
 
   enterButton.addEventListener("click", () => {
