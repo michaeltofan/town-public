@@ -1601,6 +1601,77 @@
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  // Public product-only mode: visitors land on the existing feed only.
+  // Onboarding / membership / payment screens remain in the codebase but are unreachable.
+  const PRODUCT_ONLY_PUBLIC_MODE = true;
+  const PRODUCT_ONLY_FEED_ROUTE = "feed";
+  const PRODUCT_ONLY_CITY_ORDER = ["Milano", "Munich", "Arad"];
+  const PRODUCT_ONLY_COUNTRY_BY_CITY = {
+    Milano: "Italy",
+    Munich: "Germany",
+    Arad: "Romania",
+  };
+  const NON_PRODUCT_ROUTES = {
+    entry: true,
+    country: true,
+    city: true,
+    location: true,
+    membership: true,
+    ended: true,
+    account: true,
+    email: true,
+    code: true,
+    passkey: true,
+    ready: true,
+    payment: true,
+    active: true,
+  };
+
+  function isProductOnlyPublicMode() {
+    return PRODUCT_ONLY_PUBLIC_MODE === true;
+  }
+
+  function isNonProductRoute(route) {
+    return !!NON_PRODUCT_ROUTES[route];
+  }
+
+  function productOnlyScenes() {
+    const out = [];
+    for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
+      const cityId = PRODUCT_ONLY_CITY_ORDER[i];
+      const scenes = FEED_SCENES[cityId] || [];
+      for (let j = 0; j < scenes.length; j++) {
+        out.push(scenes[j]);
+      }
+    }
+    return out;
+  }
+
+  function cityIdFromScene(scene) {
+    if (!scene || !scene.id) return null;
+    if (scene.id.indexOf("milano-") === 0) return "Milano";
+    if (scene.id.indexOf("munich-") === 0) return "Munich";
+    if (scene.id.indexOf("arad-") === 0) return "Arad";
+    return null;
+  }
+
+  function syncProductOnlyCityFromScene(scene) {
+    const cityId = cityIdFromScene(scene);
+    if (!cityId) return;
+    selectedCity = cityId;
+    selectedCountry = PRODUCT_ONLY_COUNTRY_BY_CITY[cityId] || selectedCountry;
+    locationVerified = true;
+  }
+
+  function ensureProductOnlyFeedHash() {
+    const target = "#/" + PRODUCT_ONLY_FEED_ROUTE;
+    if (window.location.hash !== target) {
+      window.location.hash = "/" + PRODUCT_ONLY_FEED_ROUTE;
+      return true;
+    }
+    return false;
+  }
+
   let lastFocus = null;
   let selectedCountry = null;
   let selectedCity = null;
@@ -1647,20 +1718,26 @@
 
   function parseRoute() {
     const raw = (window.location.hash || "").replace(/^#\/?/, "");
-    if (raw.startsWith("country")) return "country";
-    if (raw.startsWith("city")) return "city";
-    if (raw.startsWith("location")) return "location";
-    if (raw.startsWith("feed")) return "feed";
-    if (raw.startsWith("membership")) return "membership";
-    if (raw.startsWith("ended")) return "ended";
-    if (raw.startsWith("account")) return "account";
-    if (raw.startsWith("email")) return "email";
-    if (raw.startsWith("code")) return "code";
-    if (raw.startsWith("passkey")) return "passkey";
-    if (raw.startsWith("ready")) return "ready";
-    if (raw.startsWith("payment")) return "payment";
-    if (raw.startsWith("active")) return "active";
-    return "entry";
+    let route = "entry";
+    if (raw.startsWith("country")) route = "country";
+    else if (raw.startsWith("city")) route = "city";
+    else if (raw.startsWith("location")) route = "location";
+    else if (raw.startsWith("feed")) route = "feed";
+    else if (raw.startsWith("membership")) route = "membership";
+    else if (raw.startsWith("ended")) route = "ended";
+    else if (raw.startsWith("account")) route = "account";
+    else if (raw.startsWith("email")) route = "email";
+    else if (raw.startsWith("code")) route = "code";
+    else if (raw.startsWith("passkey")) route = "passkey";
+    else if (raw.startsWith("ready")) route = "ready";
+    else if (raw.startsWith("payment")) route = "payment";
+    else if (raw.startsWith("active")) route = "active";
+    else if (!raw) route = isProductOnlyPublicMode() ? PRODUCT_ONLY_FEED_ROUTE : "entry";
+
+    if (isProductOnlyPublicMode() && isNonProductRoute(route)) {
+      return PRODUCT_ONLY_FEED_ROUTE;
+    }
+    return route;
   }
 
   function communityLanguage() {
@@ -1678,6 +1755,9 @@
   }
 
   function currentScenes() {
+    if (isProductOnlyPublicMode()) {
+      return productOnlyScenes();
+    }
     if (!selectedCity) return [];
     const live = liveScenes[selectedCity];
     if (live && live.length >= 1) return live;
@@ -2355,6 +2435,10 @@
     if (feedIndex > scenes.length - 1) feedIndex = scenes.length - 1;
 
     const scene = scenes[feedIndex];
+    if (isProductOnlyPublicMode()) {
+      syncProductOnlyCityFromScene(scene);
+      applyFeedCopyChrome();
+    }
     feedImage.src = scene.image;
     feedImage.style.objectPosition = scene.focus;
     feedCategory.textContent = scene.category;
@@ -3040,6 +3124,16 @@
   }
 
   function go(route) {
+    if (isProductOnlyPublicMode()) {
+      route = PRODUCT_ONLY_FEED_ROUTE;
+      const target = "#/" + route;
+      if (window.location.hash !== target) {
+        window.location.hash = "/" + route;
+      }
+      showView(route);
+      return;
+    }
+
     if (route === "city" && !selectedCountry) route = "country";
     if (
       (route === "location" ||
@@ -3226,6 +3320,14 @@
   }
 
   function render() {
+    if (isProductOnlyPublicMode()) {
+      if (ensureProductOnlyFeedHash()) {
+        return;
+      }
+      showView(PRODUCT_ONLY_FEED_ROUTE);
+      return;
+    }
+
     const route = parseRoute();
     if (
       (route === "city" ||
@@ -3598,6 +3700,7 @@
 
   feedBack.addEventListener("click", () => {
     closeSignalSheet();
+    if (isProductOnlyPublicMode()) return;
     go("location");
   });
 
@@ -3624,11 +3727,13 @@
 
   inviteContinue.addEventListener("click", () => {
     closeInvite();
+    if (isProductOnlyPublicMode()) return;
     go("membership");
   });
 
   inviteNotNow.addEventListener("click", () => {
     closeInvite();
+    if (isProductOnlyPublicMode()) return;
     go("ended");
   });
 

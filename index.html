@@ -7,7 +7,7 @@
       name="description"
       content="TOWN — a calm, premium local civic space. Enter your real community."
     />
-    <title>TOWN — Entry</title>
+    <title>TOWN — Local feed</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <a class="skip-link" href="#entry-content">Skip to content</a>
+    <a class="skip-link" href="#view-feed">Skip to content</a>
 
-    <!-- Screen 01: Entry (approved visual — unchanged composition) -->
-    <div id="view-entry">
+    <!-- Screen 01: Entry (approved visual — unchanged composition; dormant in product-only mode) -->
+    <div id="view-entry" hidden>
       <main class="entry" aria-label="TOWN Entry">
         <section class="entry__content" id="entry-content">
           <div class="entry__copy">
@@ -448,7 +448,7 @@
     </div>
 
     <!-- Screen 05: Visitor Local Feed -->
-    <div id="view-feed" hidden>
+    <div id="view-feed">
       <main class="feed" aria-label="Visitor local feed">
         <div class="feed__media" aria-hidden="true">
           <img
