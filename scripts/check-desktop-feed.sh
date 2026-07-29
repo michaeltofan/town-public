@@ -42,8 +42,6 @@ require_contains "script.js" "munich-signal-3"
 echo "== Desktop feed structure =="
 require_contains "index.html" "feed-area"
 require_contains "index.html" "feed-open-signal"
-require_contains "index.html" "feed-prev"
-require_contains "index.html" "feed-next"
 require_contains "index.html" "feed-pager"
 require_contains "script.js" 'feed-area'
 require_contains "script.js" "observedDate || scene.observedTime"

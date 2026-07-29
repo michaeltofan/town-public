@@ -48,8 +48,7 @@ echo "== Production structure =="
 require_contains "index.html" 'id="feed-scroller"'
 require_contains "index.html" 'id="feed-panel-template"'
 require_contains "index.html" 'class="feed__panel"'
-require_contains "index.html" 'id="feed-prev"'
-require_contains "index.html" 'id="feed-next"'
+require_contains "index.html" 'id="feed-pager"'
 require_contains "script.js" "TownFeedNavigation"
 require_contains "script.js" "rebuildFeedPanels"
 require_contains "script.js" "scrollFeedToIndex"
@@ -74,6 +73,15 @@ require_absent "feed-navigation.js" "classifySwipe"
 require_absent "feed-navigation.js" "accumulateWheel"
 require_absent "feed-navigation.js" "NAV_LOCK_MS"
 require_absent "styles.css" "feed--nav-from-next"
+require_absent "index.html" "feed-prev"
+require_absent "index.html" "feed-next"
+require_absent "index.html" "feed__scene-nav"
+require_absent "styles.css" "feed__scene-nav"
+require_absent "styles.css" ".feed__nav"
+require_absent "script.js" 'feed-prev'
+require_absent "script.js" 'feed-next'
+require_absent "script.js" "copy.previous"
+require_absent "script.js" "copy.next"
 
 # No synthetic wheel interception / preventDefault navigation.
 if grep -n 'preventDefault' script.js | grep -Eiq 'wheel|deltaY|accumulateWheel'; then
@@ -98,10 +106,9 @@ else
   echo "OK: no forbidden engagement patterns"
 fi
 
-echo "== Shared prev/next + active index path =="
+echo "== Active index + keyboard path =="
 python3 - <<'PY'
 from pathlib import Path
-import re
 
 js = Path("script.js").read_text(encoding="utf-8")
 html = Path("index.html").read_text(encoding="utf-8")
@@ -126,11 +133,16 @@ if "scroll-snap-align: start" not in css:
 if "touch-action: pan-y" not in css:
     raise SystemExit("Missing touch-action: pan-y")
 
-# Event delegation must route Previous/Next through scrollFeedToIndex / navigateFeedByIntent
-if "feed-prev" not in js or "navigateFeedByIntent" not in js:
-    raise SystemExit("Previous must remain wired through navigateFeedByIntent")
-if "feed-next" not in js or "navigateFeedByIntent" not in js:
-    raise SystemExit("Next must remain wired through navigateFeedByIntent")
+# Keyboard navigation must remain; visible Previous/Next buttons must be gone.
+if "keyboardAction" not in js or "navigateFeedByIntent" not in js:
+    raise SystemExit("Keyboard navigation must remain wired through navigateFeedByIntent")
+for obsolete in ("feed-prev", "feed-next", "feed__scene-nav", "id=\"feed-prev\"", "id=\"feed-next\""):
+    if obsolete in html or obsolete in js:
+        # Allow keyboard intent values "previous"/"next" in JS helpers, but not button ids.
+        if obsolete in ("feed-prev", "feed-next") and obsolete in js:
+            raise SystemExit(f"Visible control wiring still present: {obsolete}")
+        if obsolete in html:
+            raise SystemExit(f"Visible control markup still present: {obsolete}")
 
 # Rejected synthetic APIs must stay gone from helpers.
 for obsolete in ("classifySwipe", "accumulateWheel", "createNavLock", "SWIPE_MIN_DISTANCE", "WHEEL_THRESHOLD"):
@@ -145,7 +157,7 @@ if "feedImage.src = scene.image" in js:
 if "rebuildFeedPanels" not in js:
     raise SystemExit("Missing multi-panel rebuild")
 
-print("OK: native panels, scroll snap, shared navigator, obsolete classifier removed")
+print("OK: native panels, scroll snap, keyboard navigator; visible Prev/Next removed")
 PY
 
 echo "== Deterministic navigation helpers =="

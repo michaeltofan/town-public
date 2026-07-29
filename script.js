@@ -894,8 +894,6 @@
       updateLabel: "Ultimo aggiornamento",
       statusLabel: "Cosa significa questo stato",
       communityArea: "{city} · {area}",
-      previous: "Precedente",
-      next: "Successiva",
       addTestimony: "Aggiungi testimonianza",
       clearTestimony: "Rimuovi",
       demoTestimonyNote: "Solo demo — non caricata, non salvata",
@@ -915,8 +913,6 @@
       updateLabel: "Letzte Aktualisierung",
       statusLabel: "Was dieser Status bedeutet",
       communityArea: "{city} · {area}",
-      previous: "Zurück",
-      next: "Weiter",
       addTestimony: "Zeugnis hinzufügen",
       clearTestimony: "Entfernen",
       demoTestimonyNote: "Nur Demo — nicht hochgeladen, nicht gespeichert",
@@ -936,8 +932,6 @@
       updateLabel: "Ultima actualizare",
       statusLabel: "Ce înseamnă această stare",
       communityArea: "{city} · {area}",
-      previous: "Anterior",
-      next: "Următorul",
       addTestimony: "Adaugă mărturie",
       clearTestimony: "Elimină",
       demoTestimonyNote: "Doar demo — nu este încărcată, nu este salvată",
@@ -2502,14 +2496,10 @@
       const back = feedRole("feed-back", panel);
       const seeToo = feedRole("feed-see-too", panel);
       const openSignal = feedRole("feed-open-signal", panel);
-      const prev = feedRole("feed-prev", panel);
-      const next = feedRole("feed-next", panel);
       const community = feedRole("feed-community", panel);
       if (back) back.textContent = copy.back;
       if (seeToo) seeToo.textContent = copy.seeThisToo;
       if (openSignal) openSignal.textContent = copy.openSignal;
-      if (prev) prev.textContent = copy.previous;
-      if (next) next.textContent = copy.next;
       if (community) community.textContent = cityName;
     }
     detailClose.textContent = copy.openSignalClose;
@@ -2564,11 +2554,7 @@
       panel.classList.toggle("is-active", isActive);
       panel.setAttribute("aria-current", isActive ? "true" : "false");
       const pager = feedRole("feed-pager", panel);
-      const prev = feedRole("feed-prev", panel);
-      const next = feedRole("feed-next", panel);
       if (pager) pager.textContent = panelIndex + 1 + " / " + total;
-      if (prev) prev.disabled = panelIndex <= 0;
-      if (next) next.disabled = panelIndex >= total - 1;
     }
     if (feedLiveStatus) {
       feedLiveStatus.textContent = "Story " + (index + 1) + " of " + total;
@@ -2672,8 +2658,6 @@
     const meta = feedRole("feed-meta", panel);
     const community = feedRole("feed-community", panel);
     const pager = feedRole("feed-pager", panel);
-    const prev = feedRole("feed-prev", panel);
-    const next = feedRole("feed-next", panel);
     const back = feedRole("feed-back", panel);
     const seeToo = feedRole("feed-see-too", panel);
     const openSignal = feedRole("feed-open-signal", panel);
@@ -2695,14 +2679,6 @@
     }
     if (community) community.textContent = cityName;
     if (pager) pager.textContent = index + 1 + " / " + total;
-    if (prev) {
-      prev.textContent = copy.previous;
-      prev.disabled = index <= 0;
-    }
-    if (next) {
-      next.textContent = copy.next;
-      next.disabled = index >= total - 1;
-    }
     if (back) back.textContent = copy.back;
     if (seeToo) seeToo.textContent = copy.seeThisToo;
     if (openSignal) openSignal.textContent = copy.openSignal;
@@ -4252,14 +4228,6 @@
         closeSignalSheet();
         if (isProductOnlyPublicMode()) return;
         go("location");
-        return;
-      }
-      if (role === "feed-prev") {
-        navigateFeedByIntent({ type: "delta", value: -1 });
-        return;
-      }
-      if (role === "feed-next") {
-        navigateFeedByIntent({ type: "delta", value: 1 });
         return;
       }
       if (role === "feed-see-too") {
