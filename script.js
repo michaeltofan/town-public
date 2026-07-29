@@ -887,7 +887,7 @@
       seeThisToo: "LO VEDO ANCH’IO",
       doneTitle: "Lo vedi anche tu",
       doneNote: "Conferma registrata nel prototipo",
-      openSignal: "Apri segnale",
+      openSignal: "Apri il segnale",
       openSignalClose: "Chiudi",
       whyLabel: "Perché conta qui",
       whoLabel: "Chi è coinvolto",
@@ -1753,6 +1753,24 @@
     return "en";
   }
 
+  function languageForCityId(cityId) {
+    if (cityId === "Milano") return "it";
+    if (cityId === "Munich") return "de";
+    if (cityId === "Arad") return "ro";
+    return null;
+  }
+
+  function feedLocaleForScene(scene) {
+    const cityId = cityIdFromScene(scene) || selectedCity;
+    const lang = languageForCityId(cityId) || communityLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const cityName =
+      (copy.cityNames && copy.cityNames[cityId]) ||
+      cityId ||
+      cityDisplayName(lang);
+    return { lang: lang, copy: copy, cityId: cityId, cityName: cityName };
+  }
+
   function cityDisplayName(lang) {
     const names =
       (LOCATION_COPY[lang] && LOCATION_COPY[lang].cityNames) ||
@@ -2448,16 +2466,24 @@
   }
 
   function syncFeedMemberState() {
-    const lang = communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
-    const cityName = cityDisplayName(lang);
+    const scenes = currentScenes();
     const panels = getFeedPanels();
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
       const panelIndex = Number(panel.getAttribute("data-feed-index"));
-      syncPanelMemberControls(panel, panelIndex, copy, cityName);
+      const scene = scenes[panelIndex];
+      const locale = feedLocaleForScene(scene);
+      syncPanelMemberControls(
+        panel,
+        panelIndex,
+        locale.copy,
+        locale.cityName
+      );
     }
 
+    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
+    const copy = activeLocale.copy;
+    const cityName = activeLocale.cityName;
     if (membershipSimulated) {
       detailUserStatus.textContent = copy.member.replace("{city}", cityName);
     } else {
@@ -2487,12 +2513,14 @@
   }
 
   function applyFeedCopyChrome() {
-    const lang = communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
-    const cityName = cityDisplayName(lang);
+    const scenes = currentScenes();
     const panels = getFeedPanels();
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
+      const panelIndex = Number(panel.getAttribute("data-feed-index"));
+      const scene = scenes[panelIndex];
+      const locale = feedLocaleForScene(scene);
+      const copy = locale.copy;
       const back = feedRole("feed-back", panel);
       const seeToo = feedRole("feed-see-too", panel);
       const openSignal = feedRole("feed-open-signal", panel);
@@ -2500,8 +2528,10 @@
       if (back) back.textContent = copy.back;
       if (seeToo) seeToo.textContent = copy.seeThisToo;
       if (openSignal) openSignal.textContent = copy.openSignal;
-      if (community) community.textContent = cityName;
+      if (community) community.textContent = locale.cityName;
     }
+    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
+    const copy = activeLocale.copy;
     detailClose.textContent = copy.openSignalClose;
     detailWhyLabel.textContent = copy.whyLabel;
     detailWhoLabel.textContent = copy.whoLabel;
@@ -2511,7 +2541,8 @@
     detailTestimonyClear.textContent = copy.clearTestimony;
     detailTestimonyNote.textContent = copy.demoTestimonyNote;
     syncFeedMemberState();
-    document.documentElement.lang = lang === "en" ? "en" : lang;
+    document.documentElement.lang =
+      activeLocale.lang === "en" ? "en" : activeLocale.lang;
   }
 
   function populateSignalDetail() {
@@ -2689,13 +2720,18 @@
   function rebuildFeedPanels() {
     const scenes = currentScenes();
     if (!feedScroller || !feedPanelTemplate) return;
-    const lang = communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
-    const cityName = cityDisplayName(lang);
     feedScroller.innerHTML = "";
     for (let i = 0; i < scenes.length; i++) {
+      const scene = scenes[i];
+      const locale = feedLocaleForScene(scene);
       feedScroller.appendChild(
-        buildFeedPanel(scenes[i], i, scenes.length, copy, cityName)
+        buildFeedPanel(
+          scene,
+          i,
+          scenes.length,
+          locale.copy,
+          locale.cityName
+        )
       );
     }
     if (feedIndex > scenes.length - 1) feedIndex = Math.max(0, scenes.length - 1);
