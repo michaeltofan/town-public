@@ -45,14 +45,16 @@ require_contains "index.html" "feed-open-signal"
 require_contains "index.html" "feed-prev"
 require_contains "index.html" "feed-next"
 require_contains "index.html" "feed-pager"
-require_contains "script.js" "feedArea"
+require_contains "script.js" 'feed-area'
 require_contains "script.js" "observedDate || scene.observedTime"
 require_contains "styles.css" "Desktop Feed Experience V1"
 require_contains "styles.css" "#f4efe6"
 require_contains "styles.css" "min-width: 960px"
 
 echo "== Guardrails =="
-if grep -Eiq 'infinite scroll|IntersectionObserver|dashboard|followers|trending|fetch\(|XMLHttpRequest|localStorage|sessionStorage|Screen 14|view-screen-14' index.html script.js; then
+# Infinite feeds / social dashboards remain forbidden. IntersectionObserver is
+# permitted for finite active-panel tracking with CSS scroll snap.
+if grep -Eiq 'infinite.?scroll|dashboard|followers|trending|fetch\(|XMLHttpRequest|localStorage|sessionStorage|Screen 14|view-screen-14' index.html script.js; then
   echo "FAIL: forbidden pattern present"
   fail=1
 else
@@ -79,7 +81,7 @@ for fragment in (
     if fragment not in html:
         raise SystemExit(f"Missing HTML: {fragment}")
 
-if "feedArea.textContent = scene.area" not in js:
+if 'feedRole("feed-area"' not in js and 'data-feed-role="feed-area"' not in js:
     raise SystemExit("Missing feed area wiring")
 
 # Exactly three scenes per city preserved

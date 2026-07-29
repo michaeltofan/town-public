@@ -50,15 +50,21 @@ require_contains "script.js" "FEED_SCENES"
 require_contains "script.js" 'go("feed")'
 
 echo "== Guardrails =="
-# Discrete one-story wheel navigation is allowed; infinite/endless scroll is not.
-if grep -Eiq 'infinite scroll|IntersectionObserver|endless' index.html script.js; then
+# Infinite/endless feeds remain forbidden. IntersectionObserver is allowed only as
+# active-panel tracking for the finite native scroll-snap feed (not infinite loading).
+if grep -Eiq 'infinite.?scroll|endless' index.html script.js; then
   echo "FAIL: infinite/endless scroll mechanics present"
   fail=1
 else
   echo "OK: no infinite scroll mechanics"
 fi
-if grep -q '"wheel"' script.js && ! grep -qF 'TownFeedNavigation' script.js; then
-  echo "FAIL: wheel listener must use discrete TownFeedNavigation"
+# Rejected synthetic wheel interception must stay gone.
+if grep -qF 'accumulateWheel' script.js || grep -qF 'classifySwipe' script.js; then
+  echo "FAIL: synthetic gesture/wheel classifier still present"
+  fail=1
+fi
+if grep -n 'preventDefault' script.js | grep -Eiq 'wheel|deltaY'; then
+  echo "FAIL: wheel preventDefault interception still present"
   fail=1
 fi
 

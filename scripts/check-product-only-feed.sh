@@ -121,19 +121,19 @@ for city in ("Milano", "Munich", "Arad"):
     if f"{city}: [" not in js:
         fail(f"FEED_SCENES must still define {city}")
 
-# Signal detail remains reachable from the feed.
-if 'feedOpenSignal.addEventListener("click"' not in js or "openSignalDetail()" not in js:
+# Signal detail remains reachable from the feed (event-delegated openSignalDetail).
+if 'role === "feed-open-signal"' not in js or "openSignalDetail()" not in js:
     fail("feed must still open signal detail")
 if 'id="signal-detail"' not in html:
     fail("signal-detail markup missing")
 
 # Feed controls cannot expose non-product full-screen views.
 feed_back = re.search(
-    r'feedBack\.addEventListener\("click", \(\) => \{([\s\S]*?)\}\);',
+    r'role === "feed-back"\) \{([\s\S]*?)return;\n\s*\}',
     js,
 )
 if not feed_back:
-    fail("missing feedBack handler")
+    fail("missing feed-back delegated handler")
 if "isProductOnlyPublicMode()" not in feed_back.group(1):
     fail("feed-back must not navigate to location in product-only mode")
 

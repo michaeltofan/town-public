@@ -26,31 +26,65 @@ require_contains() {
   fi
 }
 
-echo "== Feed navigation files =="
+require_absent() {
+  local file="$1"
+  local pattern="$2"
+  if grep -qF "$pattern" "$file"; then
+    echo "FAIL: obsolete pattern still present: '$pattern' in $file"
+    fail=1
+  else
+    echo "OK: absent obsolete '$pattern'"
+  fi
+}
+
+echo "== Native feed navigation files =="
 require_file "feed-navigation.js"
 require_file "script.js"
 require_file "index.html"
 require_file "styles.css"
 require_file "scripts/test-feed-navigation.js"
 
-echo "== Production wiring =="
-require_contains "index.html" 'src="feed-navigation.js"'
-require_contains "script.js" 'TownFeedNavigation'
-require_contains "script.js" "navigateFeedTo"
+echo "== Production structure =="
+require_contains "index.html" 'id="feed-scroller"'
+require_contains "index.html" 'id="feed-panel-template"'
+require_contains "index.html" 'class="feed__panel"'
+require_contains "index.html" 'id="feed-prev"'
+require_contains "index.html" 'id="feed-next"'
+require_contains "script.js" "TownFeedNavigation"
+require_contains "script.js" "rebuildFeedPanels"
+require_contains "script.js" "scrollFeedToIndex"
 require_contains "script.js" "navigateFeedByIntent"
+require_contains "script.js" "IntersectionObserver"
+require_contains "script.js" "indexFromScrollTop"
 require_contains "script.js" "preloadAdjacentFeedImages"
-require_contains "script.js" '"wheel"'
-require_contains "script.js" 'addEventListener("pointerdown"'
 require_contains "script.js" "keyboardAction"
-require_contains "script.js" "classifySwipe"
-require_contains "script.js" "accumulateWheel"
 require_contains "script.js" "prefers-reduced-motion"
-require_contains "styles.css" "touch-action"
-require_contains "styles.css" "feed--nav-from-next"
-require_contains "styles.css" "prefers-reduced-motion"
+require_contains "styles.css" "scroll-snap-type: y mandatory"
+require_contains "styles.css" "scroll-snap-align: start"
+require_contains "styles.css" "overflow-y: auto"
+require_contains "styles.css" "touch-action: pan-y"
 
-echo "== Guardrails (finite discrete nav only) =="
-if grep -Eiq 'IntersectionObserver|endless feed|infinite.?scroll' index.html script.js feed-navigation.js; then
+echo "== Obsolete synthetic mechanism removed =="
+require_absent "script.js" "classifySwipe"
+require_absent "script.js" "accumulateWheel"
+require_absent "script.js" "createNavLock"
+require_absent "script.js" "feed--nav-from-next"
+require_absent "script.js" 'addEventListener("pointerdown"'
+require_absent "feed-navigation.js" "classifySwipe"
+require_absent "feed-navigation.js" "accumulateWheel"
+require_absent "feed-navigation.js" "NAV_LOCK_MS"
+require_absent "styles.css" "feed--nav-from-next"
+
+# No synthetic wheel interception / preventDefault navigation.
+if grep -n 'preventDefault' script.js | grep -Eiq 'wheel|deltaY|accumulateWheel'; then
+  echo "FAIL: wheel preventDefault / synthetic wheel navigation still present"
+  fail=1
+else
+  echo "OK: no synthetic wheel interception"
+fi
+
+echo "== Guardrails (finite native scroll only) =="
+if grep -Eiq 'infinite.?scroll|endless feed' index.html script.js feed-navigation.js; then
   echo "FAIL: infinite/endless scroll mechanics present"
   fail=1
 else
@@ -64,47 +98,57 @@ else
   echo "OK: no forbidden engagement patterns"
 fi
 
-# Wheel is allowed only as discrete one-story navigation through TownFeedNavigation.
-if grep -q '"wheel"' script.js && ! grep -qF 'TownFeedNavigation' script.js; then
-  echo "FAIL: wheel listener must use discrete TownFeedNavigation"
-  fail=1
-fi
-
-echo "== Shared prev/next path =="
+echo "== Shared prev/next + active index path =="
 python3 - <<'PY'
 from pathlib import Path
 import re
 
 js = Path("script.js").read_text(encoding="utf-8")
-if "function navigateFeedTo(" not in js:
-    raise SystemExit("Missing shared navigateFeedTo")
-if "feedPrev.addEventListener(\"click\"" not in js:
-    raise SystemExit("Missing Previous click handler")
-if "feedNext.addEventListener(\"click\"" not in js:
-    raise SystemExit("Missing Next click handler")
-# Prev/Next must call the shared navigator, not mutate feedIndex inline alone.
-prev_block = re.search(
-    r'feedPrev\.addEventListener\("click",\s*\(\)\s*=>\s*\{(.*?)\}\);',
-    js,
-    re.S,
-)
-next_block = re.search(
-    r'feedNext\.addEventListener\("click",\s*\(\)\s*=>\s*\{(.*?)\}\);',
-    js,
-    re.S,
-)
-if not prev_block or "navigateFeedByIntent" not in prev_block.group(1):
-    raise SystemExit("Previous must use navigateFeedByIntent")
-if not next_block or "navigateFeedByIntent" not in next_block.group(1):
-    raise SystemExit("Next must use navigateFeedByIntent")
-if "preloadAdjacentFeedImages" not in js:
-    raise SystemExit("Missing adjacent image preload")
-if '"wheel"' not in js or "accumulateWheel" not in js:
-    raise SystemExit("Missing discrete wheel navigation wiring")
-print("OK: Previous/Next share navigateFeedByIntent; preload and wheel present")
+html = Path("index.html").read_text(encoding="utf-8")
+css = Path("styles.css").read_text(encoding="utf-8")
+nav = Path("feed-navigation.js").read_text(encoding="utf-8")
+
+for fragment in (
+    "function rebuildFeedPanels(",
+    "function scrollFeedToIndex(",
+    "function setActiveFeedIndex(",
+    "function navigateFeedByIntent(",
+    "data-feed-role",
+    "feed__panel",
+):
+    if fragment not in js and fragment not in html:
+        raise SystemExit(f"Missing production fragment: {fragment}")
+
+if "scroll-snap-type: y mandatory" not in css:
+    raise SystemExit("Missing CSS scroll-snap-type")
+if "scroll-snap-align: start" not in css:
+    raise SystemExit("Missing CSS scroll-snap-align")
+if "touch-action: pan-y" not in css:
+    raise SystemExit("Missing touch-action: pan-y")
+
+# Event delegation must route Previous/Next through scrollFeedToIndex / navigateFeedByIntent
+if "feed-prev" not in js or "navigateFeedByIntent" not in js:
+    raise SystemExit("Previous must remain wired through navigateFeedByIntent")
+if "feed-next" not in js or "navigateFeedByIntent" not in js:
+    raise SystemExit("Next must remain wired through navigateFeedByIntent")
+
+# Rejected synthetic APIs must stay gone from helpers.
+for obsolete in ("classifySwipe", "accumulateWheel", "createNavLock", "SWIPE_MIN_DISTANCE", "WHEEL_THRESHOLD"):
+    if obsolete in nav:
+        raise SystemExit(f"Obsolete helper still exported: {obsolete}")
+    if obsolete in js:
+        raise SystemExit(f"Obsolete helper still used in script.js: {obsolete}")
+
+# Active index follows scroll / intersection, not content replacement of a single image.
+if "feedImage.src = scene.image" in js:
+    raise SystemExit("Single-image scene replacement still present")
+if "rebuildFeedPanels" not in js:
+    raise SystemExit("Missing multi-panel rebuild")
+
+print("OK: native panels, scroll snap, shared navigator, obsolete classifier removed")
 PY
 
-echo "== Deterministic navigation logic =="
+echo "== Deterministic navigation helpers =="
 node scripts/test-feed-navigation.js
 
 if [[ "$fail" -ne 0 ]]; then
