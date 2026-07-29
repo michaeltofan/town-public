@@ -450,61 +450,76 @@
     <!-- Screen 05: Visitor Local Feed -->
     <div id="view-feed">
       <main class="feed" aria-label="Visitor local feed">
-        <div class="feed__media" aria-hidden="true">
-          <img
-            class="feed__image"
-            id="feed-image"
-            src="assets/feed/signal_citta_studi_pavement.jpg"
-            alt=""
-            decoding="async"
-          />
-          <div class="feed__veil"></div>
-        </div>
+        <div
+          class="feed__scroller"
+          id="feed-scroller"
+          tabindex="0"
+          aria-label="Local civic stories"
+        ></div>
+        <template id="feed-panel-template">
+          <article class="feed__panel">
+            <div class="feed__media" aria-hidden="true">
+              <img
+                class="feed__image"
+                id="feed-image"
+                src="assets/feed/signal_citta_studi_pavement.jpg"
+                alt=""
+                decoding="async"
+              />
+              <div class="feed__veil"></div>
+            </div>
 
-        <div class="feed__chrome">
-          <header class="feed__top">
-            <div class="feed__top-left">
-              <button type="button" class="feed__back" id="feed-back">
-                Back
-              </button>
-              <p class="feed__brand" aria-label="TOWN">TOWN</p>
-            </div>
-            <div class="feed__top-right">
-              <p class="feed__visitor" id="feed-visitor">Visitor</p>
-              <p class="feed__pager" id="feed-pager" aria-live="polite">1 / 3</p>
-            </div>
-          </header>
+            <div class="feed__chrome">
+              <header class="feed__top">
+                <div class="feed__top-left">
+                  <button type="button" class="feed__back" id="feed-back">
+                    Back
+                  </button>
+                  <p class="feed__brand" aria-label="TOWN">TOWN</p>
+                </div>
+                <div class="feed__top-right">
+                  <p class="feed__visitor" id="feed-visitor">Visitor</p>
+                  <p class="feed__pager" id="feed-pager">1 / 3</p>
+                </div>
+              </header>
 
-          <div class="feed__body">
-            <p class="feed__community" id="feed-community"></p>
-            <p class="feed__category" id="feed-category"></p>
-            <h1 class="feed__headline" id="feed-headline"></h1>
-            <p class="feed__area" id="feed-area"></p>
-            <p class="feed__summary" id="feed-summary"></p>
-            <p class="feed__meta" id="feed-meta"></p>
-          </div>
+              <div class="feed__body">
+                <p class="feed__community" id="feed-community"></p>
+                <p class="feed__category" id="feed-category"></p>
+                <h1 class="feed__headline" id="feed-headline"></h1>
+                <p class="feed__area" id="feed-area"></p>
+                <p class="feed__summary" id="feed-summary"></p>
+                <p class="feed__meta" id="feed-meta"></p>
+              </div>
 
-          <div class="feed__actions">
-            <button type="button" class="feed__primary" id="feed-see-too">
-              I SEE THIS TOO
-            </button>
-            <div class="feed__done" id="feed-see-too-done" hidden>
-              <p class="feed__done-title" id="feed-done-title"></p>
-              <p class="feed__done-note" id="feed-done-note"></p>
+              <div class="feed__actions">
+                <button type="button" class="feed__primary" id="feed-see-too">
+                  I SEE THIS TOO
+                </button>
+                <div class="feed__done" id="feed-see-too-done" hidden>
+                  <p class="feed__done-title" id="feed-done-title"></p>
+                  <p class="feed__done-note" id="feed-done-note"></p>
+                </div>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="feed-open-signal"
+                >
+                  Open signal
+                </button>
+                <div class="feed__scene-nav">
+                  <button type="button" class="feed__nav" id="feed-prev" disabled>
+                    Previous
+                  </button>
+                  <button type="button" class="feed__nav" id="feed-next">
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
-            <button type="button" class="feed__secondary" id="feed-open-signal">
-              Open signal
-            </button>
-            <div class="feed__scene-nav">
-              <button type="button" class="feed__nav" id="feed-prev" disabled>
-                Previous
-              </button>
-              <button type="button" class="feed__nav" id="feed-next">
-                Next
-              </button>
-            </div>
-          </div>
-        </div>
+          </article>
+        </template>
+        <p class="feed__live" id="feed-live-status" aria-live="polite"></p>
       </main>
 
       <!-- Product navigation: desktop left rail / mobile bottom bar -->

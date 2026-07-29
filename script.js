@@ -48,20 +48,9 @@
   const locationOutsideContinue = document.getElementById(
     "location-outside-continue"
   );
-  const feedBack = document.getElementById("feed-back");
-  const feedVisitor = document.getElementById("feed-visitor");
-  const feedPager = document.getElementById("feed-pager");
-  const feedCommunity = document.getElementById("feed-community");
-  const feedCategory = document.getElementById("feed-category");
-  const feedHeadline = document.getElementById("feed-headline");
-  const feedArea = document.getElementById("feed-area");
-  const feedSummary = document.getElementById("feed-summary");
-  const feedMeta = document.getElementById("feed-meta");
-  const feedImage = document.getElementById("feed-image");
-  const feedSeeToo = document.getElementById("feed-see-too");
-  const feedOpenSignal = document.getElementById("feed-open-signal");
-  const feedPrev = document.getElementById("feed-prev");
-  const feedNext = document.getElementById("feed-next");
+  const feedScroller = document.getElementById("feed-scroller");
+  const feedPanelTemplate = document.getElementById("feed-panel-template");
+  const feedLiveStatus = document.getElementById("feed-live-status");
   const appNav = document.getElementById("app-nav");
   const navHome = document.getElementById("nav-home");
   const navMembership = document.getElementById("nav-membership");
@@ -111,9 +100,6 @@
   const detailTestimonyImage = document.getElementById("detail-testimony-image");
   const detailTestimonyVideo = document.getElementById("detail-testimony-video");
   const detailTestimonyClear = document.getElementById("detail-testimony-clear");
-  const feedSeeTooDone = document.getElementById("feed-see-too-done");
-  const feedDoneTitle = document.getElementById("feed-done-title");
-  const feedDoneNote = document.getElementById("feed-done-note");
   const activeLabel = document.getElementById("active-label");
   const activeTitle = document.getElementById("active-title");
   const activeCommunity = document.getElementById("active-community");
@@ -306,20 +292,9 @@
     !locationOutsideTitle ||
     !locationOutsideLead ||
     !locationOutsideContinue ||
-    !feedBack ||
-    !feedVisitor ||
-    !feedPager ||
-    !feedCommunity ||
-    !feedCategory ||
-    !feedHeadline ||
-    !feedArea ||
-    !feedSummary ||
-    !feedMeta ||
-    !feedImage ||
-    !feedSeeToo ||
-    !feedOpenSignal ||
-    !feedPrev ||
-    !feedNext ||
+    !feedScroller ||
+    !feedPanelTemplate ||
+    !feedLiveStatus ||
     !appNav ||
     !navHome ||
     !navMembership ||
@@ -367,9 +342,6 @@
     !detailTestimonyImage ||
     !detailTestimonyVideo ||
     !detailTestimonyClear ||
-    !feedSeeTooDone ||
-    !feedDoneTitle ||
-    !feedDoneNote ||
     !activeLabel ||
     !activeTitle ||
     !activeCommunity ||
@@ -2372,49 +2344,148 @@
     return copy.errorUnavailable;
   }
 
+  function feedRole(role, root) {
+    if (!root) return null;
+    return root.querySelector('[data-feed-role="' + role + '"]');
+  }
+
+  function getFeedPanels() {
+    if (!feedScroller) return [];
+    return Array.prototype.slice.call(
+      feedScroller.querySelectorAll(".feed__panel")
+    );
+  }
+
+  function getFeedPanelByIndex(index) {
+    if (!feedScroller) return null;
+    return feedScroller.querySelector(
+      '.feed__panel[data-feed-index="' + index + '"]'
+    );
+  }
+
+  function getActiveFeedPanel() {
+    return (
+      (feedScroller && feedScroller.querySelector(".feed__panel.is-active")) ||
+      getFeedPanelByIndex(feedIndex) ||
+      (feedScroller && feedScroller.querySelector(".feed__panel"))
+    );
+  }
+
+  function prefersFeedReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function feedOverlaysBlockNavigation() {
+    return (
+      !membershipInvite.hidden ||
+      !signalDetail.hidden ||
+      !authWindow.hidden ||
+      (termsSheet && !termsSheet.hidden) ||
+      (sheet && !sheet.hidden)
+    );
+  }
+
+  function isFeedSurfaceActive() {
+    return !viewFeed.hidden && document.body.classList.contains("page-feed");
+  }
+
+  function setFeedScrollLocked(locked) {
+    if (!feedScroller) return;
+    feedScroller.classList.toggle("feed__scroller--locked", !!locked);
+  }
+
+  function syncFeedScrollLockFromOverlays() {
+    setFeedScrollLocked(feedOverlaysBlockNavigation());
+  }
+
+  function preloadAdjacentFeedImages() {
+    const scenes = currentScenes();
+    if (!scenes.length) return;
+    const neighbors = [feedIndex - 1, feedIndex + 1];
+    for (let i = 0; i < neighbors.length; i++) {
+      const idx = neighbors[i];
+      if (idx < 0 || idx >= scenes.length) continue;
+      const src = scenes[idx] && scenes[idx].image;
+      if (!src) continue;
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+    }
+  }
+
+  function syncPanelMemberControls(panel, panelIndex, copy, cityName) {
+    const visitorEl = feedRole("feed-visitor", panel);
+    const seeToo = feedRole("feed-see-too", panel);
+    const seeTooDone = feedRole("feed-see-too-done", panel);
+    const doneTitle = feedRole("feed-done-title", panel);
+    const doneNote = feedRole("feed-done-note", panel);
+    const onOrigin =
+      signalConfirmed &&
+      membershipSimulated &&
+      panelIndex === originatingFeedIndex;
+
+    if (visitorEl) {
+      visitorEl.textContent = membershipSimulated
+        ? copy.member.replace("{city}", cityName)
+        : copy.visitor;
+    }
+    if (doneTitle) doneTitle.textContent = copy.doneTitle;
+    if (doneNote) doneNote.textContent = copy.doneNote;
+
+    if (!seeToo || !seeTooDone) return;
+
+    if (onOrigin) {
+      seeToo.hidden = true;
+      seeToo.disabled = true;
+      seeTooDone.hidden = false;
+    } else if (membershipSimulated) {
+      seeToo.hidden = true;
+      seeToo.disabled = true;
+      seeTooDone.hidden = true;
+    } else {
+      seeToo.hidden = false;
+      seeToo.disabled = false;
+      seeTooDone.hidden = true;
+      seeToo.textContent = copy.seeThisToo;
+    }
+  }
+
   function syncFeedMemberState() {
     const lang = communityLanguage();
     const copy = FEED_COPY[lang] || FEED_COPY.it;
     const cityName = cityDisplayName(lang);
-    const onOrigin =
-      signalConfirmed &&
-      membershipSimulated &&
-      feedIndex === originatingFeedIndex;
-
-    if (membershipSimulated) {
-      feedVisitor.textContent = copy.member.replace("{city}", cityName);
-      detailUserStatus.textContent = copy.member.replace("{city}", cityName);
-    } else {
-      feedVisitor.textContent = copy.visitor;
-      detailUserStatus.textContent = copy.visitor;
+    const panels = getFeedPanels();
+    for (let i = 0; i < panels.length; i++) {
+      const panel = panels[i];
+      const panelIndex = Number(panel.getAttribute("data-feed-index"));
+      syncPanelMemberControls(panel, panelIndex, copy, cityName);
     }
 
-    feedDoneTitle.textContent = copy.doneTitle;
-    feedDoneNote.textContent = copy.doneNote;
+    if (membershipSimulated) {
+      detailUserStatus.textContent = copy.member.replace("{city}", cityName);
+    } else {
+      detailUserStatus.textContent = copy.visitor;
+    }
     detailDoneTitle.textContent = copy.doneTitle;
     detailDoneNote.textContent = copy.doneNote;
     detailSeeToo.textContent = copy.seeThisToo;
 
+    const onOrigin =
+      signalConfirmed &&
+      membershipSimulated &&
+      feedIndex === originatingFeedIndex;
     if (onOrigin) {
-      feedSeeToo.hidden = true;
-      feedSeeToo.disabled = true;
-      feedSeeTooDone.hidden = false;
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = false;
     } else if (membershipSimulated) {
-      // Membership journey complete: do not reopen visitor invitation on other scenes.
-      feedSeeToo.hidden = true;
-      feedSeeToo.disabled = true;
-      feedSeeTooDone.hidden = true;
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = true;
     } else {
-      feedSeeToo.hidden = false;
-      feedSeeToo.disabled = false;
-      feedSeeTooDone.hidden = true;
-      feedSeeToo.textContent = copy.seeThisToo;
       detailSeeToo.hidden = false;
       detailSeeToo.disabled = false;
       detailSeeTooDone.hidden = true;
@@ -2424,11 +2495,23 @@
   function applyFeedCopyChrome() {
     const lang = communityLanguage();
     const copy = FEED_COPY[lang] || FEED_COPY.it;
-    feedBack.textContent = copy.back;
-    feedSeeToo.textContent = copy.seeThisToo;
-    feedOpenSignal.textContent = copy.openSignal;
-    feedPrev.textContent = copy.previous;
-    feedNext.textContent = copy.next;
+    const cityName = cityDisplayName(lang);
+    const panels = getFeedPanels();
+    for (let i = 0; i < panels.length; i++) {
+      const panel = panels[i];
+      const back = feedRole("feed-back", panel);
+      const seeToo = feedRole("feed-see-too", panel);
+      const openSignal = feedRole("feed-open-signal", panel);
+      const prev = feedRole("feed-prev", panel);
+      const next = feedRole("feed-next", panel);
+      const community = feedRole("feed-community", panel);
+      if (back) back.textContent = copy.back;
+      if (seeToo) seeToo.textContent = copy.seeThisToo;
+      if (openSignal) openSignal.textContent = copy.openSignal;
+      if (prev) prev.textContent = copy.previous;
+      if (next) next.textContent = copy.next;
+      if (community) community.textContent = cityName;
+    }
     detailClose.textContent = copy.openSignalClose;
     detailWhyLabel.textContent = copy.whyLabel;
     detailWhoLabel.textContent = copy.whoLabel;
@@ -2437,7 +2520,6 @@
     detailAddTestimony.textContent = copy.addTestimony;
     detailTestimonyClear.textContent = copy.clearTestimony;
     detailTestimonyNote.textContent = copy.demoTestimonyNote;
-    feedCommunity.textContent = cityDisplayName(lang);
     syncFeedMemberState();
     document.documentElement.lang = lang === "en" ? "en" : lang;
   }
@@ -2469,175 +2551,242 @@
   }
 
   const feedNav = window.TownFeedNavigation;
-  const feedNavLock = feedNav
-    ? feedNav.createNavLock()
-    : { isLocked: () => false, lock: () => {}, unlock: () => {} };
-  let feedWheelAccumulator = 0;
-  let feedPointerGesture = null;
-  let feedNavSettleTimer = 0;
+  let feedPanelObserver = null;
+  let feedScrollRaf = 0;
+  let feedProgrammaticScroll = false;
 
-  function prefersFeedReducedMotion() {
-    return (
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    );
-  }
-
-  function feedOverlaysBlockNavigation() {
-    return (
-      !membershipInvite.hidden ||
-      !signalDetail.hidden ||
-      !authWindow.hidden ||
-      (termsSheet && !termsSheet.hidden) ||
-      (sheet && !sheet.hidden)
-    );
-  }
-
-  function isFeedSurfaceActive() {
-    return !viewFeed.hidden && document.body.classList.contains("page-feed");
-  }
-
-  function preloadAdjacentFeedImages() {
-    const scenes = currentScenes();
-    if (!scenes.length) return;
-    const neighbors = [feedIndex - 1, feedIndex + 1];
-    for (let i = 0; i < neighbors.length; i++) {
-      const idx = neighbors[i];
-      if (idx < 0 || idx >= scenes.length) continue;
-      const src = scenes[idx] && scenes[idx].image;
-      if (!src) continue;
-      const img = new Image();
-      img.decoding = "async";
-      img.src = src;
+  function updateFeedActiveChrome(index, total) {
+    const panels = getFeedPanels();
+    for (let i = 0; i < panels.length; i++) {
+      const panel = panels[i];
+      const panelIndex = Number(panel.getAttribute("data-feed-index"));
+      const isActive = panelIndex === index;
+      panel.classList.toggle("is-active", isActive);
+      panel.setAttribute("aria-current", isActive ? "true" : "false");
+      const pager = feedRole("feed-pager", panel);
+      const prev = feedRole("feed-prev", panel);
+      const next = feedRole("feed-next", panel);
+      if (pager) pager.textContent = panelIndex + 1 + " / " + total;
+      if (prev) prev.disabled = panelIndex <= 0;
+      if (next) next.disabled = panelIndex >= total - 1;
+    }
+    if (feedLiveStatus) {
+      feedLiveStatus.textContent = "Story " + (index + 1) + " of " + total;
     }
   }
 
-  function applyFeedNavSettle(direction) {
-    const feedMain = viewFeed.querySelector("main.feed");
-    if (!feedMain) return;
-    feedMain.classList.remove("feed--nav-from-next", "feed--nav-from-previous");
-    if (prefersFeedReducedMotion()) return;
-    const fromClass =
-      direction === "next"
-        ? "feed--nav-from-next"
-        : direction === "previous"
-          ? "feed--nav-from-previous"
-          : null;
-    if (!fromClass) return;
-    feedMain.classList.add(fromClass);
-    // Double rAF: apply the offset, then release so the image settles into place.
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        feedMain.classList.remove(
-          "feed--nav-from-next",
-          "feed--nav-from-previous"
-        );
-      });
-    });
-    if (feedNavSettleTimer) window.clearTimeout(feedNavSettleTimer);
-    feedNavSettleTimer = window.setTimeout(() => {
-      feedMain.classList.remove(
-        "feed--nav-from-next",
-        "feed--nav-from-previous"
-      );
-      feedNavSettleTimer = 0;
-    }, 320);
+  function setActiveFeedIndex(index, options) {
+    const scenes = currentScenes();
+    if (!scenes.length || !feedNav) return;
+    const next = feedNav.clampIndex(index, scenes.length);
+    const changed = next !== feedIndex;
+    feedIndex = next;
+    if (isProductOnlyPublicMode()) {
+      syncProductOnlyCityFromScene(scenes[feedIndex]);
+    }
+    updateFeedActiveChrome(feedIndex, scenes.length);
+    if (!(options && options.skipMemberSync)) syncFeedMemberState();
+    preloadAdjacentFeedImages();
+    return changed;
   }
 
-  function renderFeedScene(options) {
+  function indexFromScrollerPosition() {
+    const scenes = currentScenes();
+    if (!feedScroller || !scenes.length) return 0;
+    if (feedNav) {
+      return feedNav.indexFromScrollTop(
+        feedScroller.scrollTop,
+        feedScroller.clientHeight,
+        scenes.length
+      );
+    }
+    const h = feedScroller.clientHeight || 1;
+    return Math.max(
+      0,
+      Math.min(scenes.length - 1, Math.round(feedScroller.scrollTop / h))
+    );
+  }
+
+  function syncActiveIndexFromScroll() {
+    if (feedProgrammaticScroll) return;
+    if (!isFeedSurfaceActive()) return;
+    setActiveFeedIndex(indexFromScrollerPosition(), { fromScroll: true });
+  }
+
+  function observeFeedPanels() {
+    if (feedPanelObserver) {
+      feedPanelObserver.disconnect();
+      feedPanelObserver = null;
+    }
+    if (!feedScroller || typeof IntersectionObserver !== "function") return;
+    feedPanelObserver = new IntersectionObserver(
+      function (entries) {
+        if (feedProgrammaticScroll) return;
+        let best = null;
+        let bestRatio = 0;
+        for (let i = 0; i < entries.length; i++) {
+          const entry = entries[i];
+          if (!entry.isIntersecting) continue;
+          if (entry.intersectionRatio >= bestRatio) {
+            best = entry;
+            bestRatio = entry.intersectionRatio;
+          }
+        }
+        if (!best) return;
+        const idx = Number(best.target.getAttribute("data-feed-index"));
+        if (!Number.isNaN(idx)) {
+          setActiveFeedIndex(idx, { fromScroll: true });
+        }
+      },
+      {
+        root: feedScroller,
+        threshold: [0.55, 0.7, 0.85],
+      }
+    );
+    const panels = getFeedPanels();
+    for (let i = 0; i < panels.length; i++) {
+      feedPanelObserver.observe(panels[i]);
+    }
+  }
+
+  function buildFeedPanel(scene, index, total, copy, cityName) {
+    const fragment = feedPanelTemplate.content.cloneNode(true);
+    const panel = fragment.querySelector(".feed__panel");
+    panel.setAttribute("data-feed-index", String(index));
+    panel.setAttribute(
+      "aria-label",
+      "Story " + (index + 1) + " of " + total
+    );
+    const idNodes = panel.querySelectorAll("[id]");
+    for (let i = 0; i < idNodes.length; i++) {
+      const el = idNodes[i];
+      el.setAttribute("data-feed-role", el.id);
+      el.removeAttribute("id");
+    }
+
+    const image = feedRole("feed-image", panel);
+    const category = feedRole("feed-category", panel);
+    const headline = feedRole("feed-headline", panel);
+    const area = feedRole("feed-area", panel);
+    const summary = feedRole("feed-summary", panel);
+    const meta = feedRole("feed-meta", panel);
+    const community = feedRole("feed-community", panel);
+    const pager = feedRole("feed-pager", panel);
+    const prev = feedRole("feed-prev", panel);
+    const next = feedRole("feed-next", panel);
+    const back = feedRole("feed-back", panel);
+    const seeToo = feedRole("feed-see-too", panel);
+    const openSignal = feedRole("feed-open-signal", panel);
+
+    if (image) {
+      image.src = scene.image;
+      image.style.objectPosition = scene.focus || "50% 50%";
+      image.loading = index === 0 ? "eager" : "lazy";
+    }
+    if (category) category.textContent = scene.category;
+    if (headline) headline.textContent = scene.headline;
+    if (area) area.textContent = scene.area;
+    if (summary) summary.textContent = scene.summary;
+    if (meta) {
+      meta.textContent =
+        scene.authorName +
+        " · " +
+        (scene.observedDate || scene.observedTime);
+    }
+    if (community) community.textContent = cityName;
+    if (pager) pager.textContent = index + 1 + " / " + total;
+    if (prev) {
+      prev.textContent = copy.previous;
+      prev.disabled = index <= 0;
+    }
+    if (next) {
+      next.textContent = copy.next;
+      next.disabled = index >= total - 1;
+    }
+    if (back) back.textContent = copy.back;
+    if (seeToo) seeToo.textContent = copy.seeThisToo;
+    if (openSignal) openSignal.textContent = copy.openSignal;
+    syncPanelMemberControls(panel, index, copy, cityName);
+    return panel;
+  }
+
+  function rebuildFeedPanels() {
+    const scenes = currentScenes();
+    if (!feedScroller || !feedPanelTemplate) return;
+    const lang = communityLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const cityName = cityDisplayName(lang);
+    feedScroller.innerHTML = "";
+    for (let i = 0; i < scenes.length; i++) {
+      feedScroller.appendChild(
+        buildFeedPanel(scenes[i], i, scenes.length, copy, cityName)
+      );
+    }
+    if (feedIndex > scenes.length - 1) feedIndex = Math.max(0, scenes.length - 1);
+    if (feedIndex < 0) feedIndex = 0;
+    observeFeedPanels();
+    updateFeedActiveChrome(feedIndex, scenes.length);
+  }
+
+  function scrollFeedToIndex(targetIndex, options) {
+    const scenes = currentScenes();
+    if (!scenes.length || !feedScroller || !feedNav) return false;
+    const next = feedNav.clampIndex(targetIndex, scenes.length);
+    const panel = getFeedPanelByIndex(next);
+    if (!panel) return false;
+    const behavior =
+      options && options.behavior
+        ? options.behavior
+        : feedNav.programmaticScrollBehavior(prefersFeedReducedMotion());
+    feedProgrammaticScroll = true;
+    setActiveFeedIndex(next);
+    panel.scrollIntoView({
+      block: "start",
+      inline: "nearest",
+      behavior: behavior,
+    });
+    window.setTimeout(
+      function () {
+        feedProgrammaticScroll = false;
+        syncActiveIndexFromScroll();
+      },
+      behavior === "smooth" ? 420 : 40
+    );
+    return true;
+  }
+
+  function navigateFeedTo(targetIndex) {
+    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
+    return scrollFeedToIndex(targetIndex);
+  }
+
+  function navigateFeedByIntent(intent) {
+    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
+    if (!feedNav) return false;
+    const scenes = currentScenes();
+    const target = feedNav.resolveTargetIndex(
+      feedIndex,
+      scenes.length,
+      intent
+    );
+    if (target == null) return false;
+    return scrollFeedToIndex(target);
+  }
+
+  function renderFeedScene() {
     const scenes = currentScenes();
     if (!scenes.length) return;
     if (feedIndex < 0) feedIndex = 0;
     if (feedIndex > scenes.length - 1) feedIndex = scenes.length - 1;
 
-    const scene = scenes[feedIndex];
     if (isProductOnlyPublicMode()) {
-      syncProductOnlyCityFromScene(scene);
-      applyFeedCopyChrome();
+      syncProductOnlyCityFromScene(scenes[feedIndex]);
     }
-    const direction = options && options.direction;
-    feedImage.src = scene.image;
-    feedImage.style.objectPosition = scene.focus;
-    feedCategory.textContent = scene.category;
-    feedHeadline.textContent = scene.headline;
-    feedArea.textContent = scene.area;
-    feedSummary.textContent = scene.summary;
-    feedMeta.textContent =
-      scene.authorName + " · " + (scene.observedDate || scene.observedTime);
-    feedPager.textContent = feedIndex + 1 + " / " + scenes.length;
-    feedPrev.disabled = feedIndex <= 0;
-    feedNext.disabled = feedIndex >= scenes.length - 1;
-    syncFeedMemberState();
+    rebuildFeedPanels();
+    applyFeedCopyChrome();
+    // Instantly align the scroller to the canonical index (no PowerPoint fade).
+    scrollFeedToIndex(feedIndex, { behavior: "auto" });
     preloadAdjacentFeedImages();
-    if (direction) applyFeedNavSettle(direction);
-  }
-
-  /**
-   * Canonical scene transition for swipe, wheel, keyboard, Previous, and Next.
-   * Returns true when the index changed.
-   */
-  function navigateFeedTo(targetIndex, options) {
-    const scenes = currentScenes();
-    if (!scenes.length) return false;
-    const next = feedNav
-      ? feedNav.clampIndex(targetIndex, scenes.length)
-      : Math.max(0, Math.min(scenes.length - 1, targetIndex | 0));
-    if (next === feedIndex) return false;
-    const direction =
-      (options && options.direction) ||
-      (next > feedIndex ? "next" : "previous");
-    feedIndex = next;
-    feedWheelAccumulator = 0;
-    if (feedNav) {
-      const lockMs = feedNav.lockDurationMs(prefersFeedReducedMotion());
-      feedNavLock.lock(lockMs);
-    }
-    renderFeedScene({ direction: direction });
-    return true;
-  }
-
-  function navigateFeedByDirection(direction) {
-    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
-    if (feedNavLock.isLocked()) return false;
-    const scenes = currentScenes();
-    if (!scenes.length) return false;
-    const target = feedNav
-      ? feedNav.resolveTargetIndex(feedIndex, scenes.length, {
-          type: "direction",
-          value: direction,
-        })
-      : direction === "next"
-        ? feedIndex + 1
-        : feedIndex - 1;
-    if (target == null || target < 0 || target > scenes.length - 1) return false;
-    if (target === feedIndex) return false;
-    return navigateFeedTo(target, { direction: direction });
-  }
-
-  function navigateFeedByIntent(intent) {
-    if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return false;
-    if (feedNavLock.isLocked()) return false;
-    const scenes = currentScenes();
-    if (!scenes.length) return false;
-    let target = null;
-    if (feedNav) {
-      target = feedNav.resolveTargetIndex(feedIndex, scenes.length, intent);
-    } else if (intent.type === "delta") {
-      target = feedIndex + intent.value;
-    } else if (intent.type === "absolute") {
-      target = intent.value;
-    } else if (intent.type === "direction") {
-      target = feedIndex + (intent.value === "next" ? 1 : -1);
-    }
-    if (target == null || target < 0 || target > scenes.length - 1) return false;
-    if (target === feedIndex) return false;
-    const direction =
-      intent.type === "direction"
-        ? intent.value
-        : target > feedIndex
-          ? "next"
-          : "previous";
-    return navigateFeedTo(target, { direction: direction });
   }
 
   function renderCityOptions(options) {
@@ -3157,6 +3306,7 @@
     applyInviteCopy();
     membershipInvite.hidden = false;
     document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
     inviteContinue.focus();
   }
 
@@ -3164,6 +3314,7 @@
     if (membershipInvite.hidden) return;
     membershipInvite.hidden = true;
     document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
   }
 
   function setAuthFeedInert(isInert) {
@@ -3220,6 +3371,7 @@
     authWindow.hidden = false;
     setAuthFeedInert(true);
     document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
     authWindowClose.focus();
   }
 
@@ -3228,6 +3380,7 @@
     authWindow.hidden = true;
     setAuthFeedInert(false);
     document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
     const restore = lastAuthFocus;
     lastAuthFocus = null;
     authOpenedByTarget = null;
@@ -3279,13 +3432,11 @@
       showEntryLoginStatus(LOGIN_COPY[entryLang()].success, "success");
     }
     entrySignIn.disabled = false;
-    feedSeeToo.hidden = false;
-    feedSeeToo.disabled = false;
-    feedSeeTooDone.hidden = true;
     detailSeeToo.hidden = false;
     detailSeeToo.disabled = false;
     detailSeeTooDone.hidden = true;
     closeSignalDetail();
+    syncFeedMemberState();
     emailInput.value = "";
     emailError.hidden = true;
     emailError.textContent = "";
@@ -3522,6 +3673,7 @@
     if (signalDetail.hidden) return;
     signalDetail.hidden = true;
     document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
   }
 
   // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
@@ -3581,6 +3733,7 @@
     renderDemoTestimony();
     signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
     detailClose.focus();
   }
 
@@ -4067,109 +4220,59 @@
   locationContinue.addEventListener("click", continueFromLocation);
   locationOutsideContinue.addEventListener("click", continueFromLocation);
 
-  feedBack.addEventListener("click", () => {
-    closeSignalSheet();
-    if (isProductOnlyPublicMode()) return;
-    go("location");
-  });
-
-  feedPrev.addEventListener("click", () => {
-    navigateFeedByIntent({ type: "delta", value: -1 });
-  });
-
-  feedNext.addEventListener("click", () => {
-    navigateFeedByIntent({ type: "delta", value: 1 });
-  });
-
-  function feedEventTargetIsInteractive(target) {
-    if (!target || !feedNav) return false;
-    if (target.nodeType === 3) target = target.parentElement;
-    if (!target) return false;
-    if (
-      target === feedImage ||
-      (target.classList &&
-        (target.classList.contains("feed__media") ||
-          target.classList.contains("feed__veil") ||
-          target.classList.contains("feed__image")))
-    ) {
-      return false;
-    }
-    return feedNav.isInteractiveFocusTarget(target);
-  }
-
-  const feedMainEl = viewFeed.querySelector("main.feed");
-
-  if (feedMainEl && feedNav) {
-    feedMainEl.addEventListener("pointerdown", (event) => {
-      if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-      if (feedEventTargetIsInteractive(event.target)) {
-        feedPointerGesture = null;
-        return;
-      }
-      feedPointerGesture = {
-        pointerId: event.pointerId,
-        startX: event.clientX,
-        startY: event.clientY,
-        lastX: event.clientX,
-        lastY: event.clientY,
-      };
-    });
-
-    feedMainEl.addEventListener("pointermove", (event) => {
-      if (
-        !feedPointerGesture ||
-        feedPointerGesture.pointerId !== event.pointerId
-      ) {
-        return;
-      }
-      feedPointerGesture.lastX = event.clientX;
-      feedPointerGesture.lastY = event.clientY;
-    });
-
-    function endFeedPointerGesture(event) {
-      if (
-        !feedPointerGesture ||
-        feedPointerGesture.pointerId !== event.pointerId
-      ) {
-        return;
-      }
-      const gesture = feedPointerGesture;
-      feedPointerGesture = null;
-      if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
-      if (feedNavLock.isLocked()) return;
-      const dx = gesture.lastX - gesture.startX;
-      const dy = gesture.lastY - gesture.startY;
-      const direction = feedNav.classifySwipe(dx, dy);
-      if (!direction) return;
-      navigateFeedByDirection(direction);
-    }
-
-    feedMainEl.addEventListener("pointerup", endFeedPointerGesture);
-    feedMainEl.addEventListener("pointercancel", () => {
-      feedPointerGesture = null;
-    });
-
-    feedMainEl.addEventListener(
-      "wheel",
-      (event) => {
-        if (!isFeedSurfaceActive() || feedOverlaysBlockNavigation()) return;
-        // Consume wheel only on the active feed surface so other pages keep normal scrolling.
-        event.preventDefault();
-        if (feedNavLock.isLocked()) {
-          feedWheelAccumulator = 0;
-          return;
-        }
-        const result = feedNav.accumulateWheel(
-          feedWheelAccumulator,
-          event.deltaY
-        );
-        feedWheelAccumulator = result.accumulator;
-        if (!result.direction) return;
-        navigateFeedByDirection(result.direction);
+  if (feedScroller) {
+    feedScroller.addEventListener(
+      "scroll",
+      function () {
+        if (feedScrollRaf) return;
+        feedScrollRaf = window.requestAnimationFrame(function () {
+          feedScrollRaf = 0;
+          syncActiveIndexFromScroll();
+        });
       },
-      { passive: false }
+      { passive: true }
     );
+
+    feedScroller.addEventListener("click", function (event) {
+      let target = event.target;
+      if (target && target.nodeType === 3) target = target.parentElement;
+      if (!target || !target.closest) return;
+      const control = target.closest("[data-feed-role]");
+      if (!control || !feedScroller.contains(control)) return;
+      const role = control.getAttribute("data-feed-role");
+      const panel = control.closest(".feed__panel");
+      if (panel) {
+        const panelIndex = Number(panel.getAttribute("data-feed-index"));
+        if (!Number.isNaN(panelIndex)) {
+          setActiveFeedIndex(panelIndex, { skipMemberSync: true });
+        }
+      }
+
+      if (role === "feed-back") {
+        closeSignalSheet();
+        if (isProductOnlyPublicMode()) return;
+        go("location");
+        return;
+      }
+      if (role === "feed-prev") {
+        navigateFeedByIntent({ type: "delta", value: -1 });
+        return;
+      }
+      if (role === "feed-next") {
+        navigateFeedByIntent({ type: "delta", value: 1 });
+        return;
+      }
+      if (role === "feed-see-too") {
+        if (membershipSimulated || control.disabled) return;
+        closeSignalSheet();
+        originatingFeedIndex = feedIndex;
+        openInvite();
+        return;
+      }
+      if (role === "feed-open-signal") {
+        openSignalDetail();
+      }
+    });
   }
 
   document.addEventListener("keydown", (event) => {
@@ -4178,10 +4281,6 @@
     const action = feedNav.keyboardAction(event.key);
     if (!action) return;
     if (feedNav.isInteractiveFocusTarget(document.activeElement)) return;
-    if (feedNavLock.isLocked()) {
-      event.preventDefault();
-      return;
-    }
     const scenes = currentScenes();
     let intent = null;
     if (action === "next") intent = { type: "direction", value: "next" };
@@ -4201,14 +4300,6 @@
     ) {
       event.preventDefault();
     }
-  });
-
-  feedSeeToo.addEventListener("click", () => {
-    if (membershipSimulated || feedSeeToo.disabled) return;
-    closeSignalSheet();
-    originatingFeedIndex = feedIndex;
-    // Screen 06 stage 1: contextual invitation over originating signal.
-    openInvite();
   });
 
   inviteContinue.addEventListener("click", () => {
@@ -4234,10 +4325,6 @@
   endedReturn.addEventListener("click", () => {
     resetVisitorSession();
     go("entry");
-  });
-
-  feedOpenSignal.addEventListener("click", () => {
-    openSignalDetail();
   });
 
   accountContinue.addEventListener("click", () => {
