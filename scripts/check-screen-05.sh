@@ -50,11 +50,16 @@ require_contains "script.js" "FEED_SCENES"
 require_contains "script.js" 'go("feed")'
 
 echo "== Guardrails =="
-if grep -Eiq 'infinite scroll|IntersectionObserver|wheel\.|addEventListener\("wheel"|endless' index.html script.js; then
+# Discrete one-story wheel navigation is allowed; infinite/endless scroll is not.
+if grep -Eiq 'infinite scroll|IntersectionObserver|endless' index.html script.js; then
   echo "FAIL: infinite/endless scroll mechanics present"
   fail=1
 else
   echo "OK: no infinite scroll mechanics"
+fi
+if grep -q '"wheel"' script.js && ! grep -qF 'TownFeedNavigation' script.js; then
+  echo "FAIL: wheel listener must use discrete TownFeedNavigation"
+  fail=1
 fi
 
 if grep -Eiq 'followers|trending|dashboard|comment thread|bookmark' index.html script.js; then
