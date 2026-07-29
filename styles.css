@@ -924,8 +924,7 @@ body.page-feed {
 }
 
 .feed__chrome,
-.feed__actions,
-.feed__scene-nav {
+.feed__actions {
   touch-action: manipulation;
 }
 
@@ -990,8 +989,7 @@ body.page-feed {
 
 .feed__back:focus-visible,
 .feed__primary:focus-visible,
-.feed__secondary:focus-visible,
-.feed__nav:focus-visible {
+.feed__secondary:focus-visible {
   outline: 2px solid #e8772e;
   outline-offset: 3px;
 }
@@ -1604,8 +1602,7 @@ body.page-feed {
 }
 
 .feed__primary,
-.feed__secondary,
-.feed__nav {
+.feed__secondary {
   border: 0;
   font: inherit;
   cursor: pointer;
@@ -1666,34 +1663,6 @@ body.page-feed {
 
 .feed__secondary:hover {
   background: rgba(244, 239, 230, 0.18);
-}
-
-.feed__scene-nav {
-  display: flex;
-  gap: 0.65rem;
-  width: 100%;
-  margin-top: 0.15rem;
-}
-
-.feed__nav {
-  flex: 1;
-  min-height: 2.6rem;
-  padding: 0.55rem 0.85rem;
-  border-radius: 999px;
-  background: transparent;
-  color: rgba(244, 239, 230, 0.74);
-  border: 1px solid rgba(244, 239, 230, 0.24);
-  font-size: 0.88rem;
-}
-
-.feed__nav:hover:not(:disabled) {
-  color: #f7f3ec;
-  border-color: rgba(244, 239, 230, 0.42);
-}
-
-.feed__nav:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
 }
 
 @media (max-width: 720px) {

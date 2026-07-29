@@ -162,14 +162,15 @@ for fragment in (
     "Open signal",
     'id="feed-see-too"',
     'id="feed-open-signal"',
-    'id="feed-prev"',
-    'id="feed-next"',
     'id="signal-detail"',
     'id="detail-close"',
     'id="membership-invite"',
 ):
     if fragment not in html:
         fail(f"feed/signal-detail structure removed: {fragment}")
+for removed in ('id="feed-prev"', 'id="feed-next"', "feed__scene-nav"):
+    if removed in html:
+        fail(f"visible feed navigation control must remain removed: {removed}")
 
 print("OK: product-only routing, three-city scenes, and dormant screens verified")
 PY
