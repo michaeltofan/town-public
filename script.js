@@ -3346,7 +3346,7 @@
     throw makeApiError("failed");
   }
 
-  function isWebAuthnCancellation(err) {
+  function isPasskeyCeremonyCancelled(err) {
     const causeName = err && err.cause && err.cause.name;
     return (
       (err &&
@@ -4572,7 +4572,7 @@
       })
       .catch(function (err) {
         sessionAuthenticated = false;
-        if (isWebAuthnCancellation(err)) {
+        if (isPasskeyCeremonyCancelled(err)) {
           showEntryLoginStatus(copy.cancelled, "error");
           return;
         }
@@ -5008,7 +5008,7 @@
       })
       .catch(function (err) {
         sessionAuthenticated = false;
-        if (isWebAuthnCancellation(err)) {
+        if (isPasskeyCeremonyCancelled(err)) {
           showReadyError(copy.cancelled);
           return;
         }

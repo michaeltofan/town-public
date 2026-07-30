@@ -107,8 +107,8 @@ if "sessionAuthenticated = true" in catch_body:
     fail("failed/cancelled auth must not set authenticated state")
 if "showReadyError" not in catch_body:
     fail("readyContinue failures must show a bounded ready error")
-if "isWebAuthnCancellation" not in catch_body:
-    fail("readyContinue must map WebAuthn cancellation distinctly")
+if "isPasskeyCeremonyCancelled" not in catch_body:
+    fail("readyContinue must map passkey cancellation distinctly")
 
 # Duplicate-submit guard + control restore
 if "readyAuthSubmitting" not in ready_body:
