@@ -62,26 +62,38 @@ require_contains "script.js" "munich-signal-3"
 
 echo "== Visitor testimony camera fail-closed =="
 require_contains "index.html" "detail-add-testimony"
-require_contains "index.html" "detail-testimony-input"
 require_contains "script.js" "detailAddTestimony"
 require_contains "script.js" 'addTestimony: "Aggiungi testimonianza"'
 require_contains "script.js" 'addTestimony: "Zeugnis hinzufügen"'
 require_contains "script.js" 'addTestimony: "Adaugă mărturie"'
+require_contains "script.js" "beginInviteMembershipJourney"
+require_contains "script.js" 'go("membership")'
 
 python3 - <<'PY'
 from pathlib import Path
 import re
-import sys
 
 js = Path("script.js").read_text(encoding="utf-8")
 html = Path("index.html").read_text(encoding="utf-8")
 
 if 'id="detail-add-testimony"' not in html:
     raise SystemExit("FAIL: testimony CTA missing from index.html")
-if 'id="detail-testimony-input"' not in html:
-    raise SystemExit("FAIL: hidden testimony file input missing from index.html")
-if 'capture="environment"' not in html:
-    raise SystemExit("FAIL: testimony file input capture attribute missing")
+if 'id="membership-invite"' not in html:
+    raise SystemExit("FAIL: membership invitation missing from index.html")
+
+for forbidden in (
+    'id="detail-testimony-input"',
+    'capture="environment"',
+    'id="detail-testimony-preview"',
+    'id="detail-testimony-image"',
+    'id="detail-testimony-video"',
+    'id="detail-testimony-clear"',
+):
+    if forbidden in html:
+        raise SystemExit(f"FAIL: retired public capture primitive still present: {forbidden}")
+
+if not re.search(r'src="script\.js\?v=[^"]+"', html):
+    raise SystemExit("FAIL: public HTML must reference a cache-invalidating script.js URL")
 
 handler = re.search(
     r'detailAddTestimony\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
@@ -99,23 +111,50 @@ for fragment in (
     if fragment not in body:
         raise SystemExit(f"FAIL: testimony CTA handler missing '{fragment}'")
 
-if "detailTestimonyInput.click()" in body:
-    raise SystemExit("FAIL: testimony CTA handler still activates the file input")
-if "membershipSimulated" in body:
-    raise SystemExit("FAIL: testimony CTA handler must not consult membershipSimulated")
+for forbidden in (
+    "detailTestimonyInput.click()",
+    ".click()",
+    ".showPicker()",
+    "membershipSimulated",
+    "signalConfirmed",
+):
+    if forbidden in body:
+        raise SystemExit(f"FAIL: testimony CTA handler must not contain '{forbidden}'")
 
-# No production-reachable programmatic activation of the testimony file input.
+invite_continue = re.search(
+    r'inviteContinue\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
+    js,
+)
+if not invite_continue:
+    raise SystemExit("FAIL: inviteContinue handler not found")
+invite_body = invite_continue.group(1)
+if "beginInviteMembershipJourney()" not in invite_body:
+    raise SystemExit("FAIL: inviteContinue must begin the membership invitation journey")
+if 'go("membership")' not in invite_body:
+    raise SystemExit("FAIL: inviteContinue must transition to membership")
+if "membershipSimulated" in invite_body:
+    raise SystemExit("FAIL: inviteContinue must not consult membershipSimulated")
+if "signalConfirmed" in invite_body:
+    raise SystemExit("FAIL: inviteContinue must not mutate signal confirmation")
+
 for pattern in (
     r"detailTestimonyInput\.click\s*\(",
     r"detailTestimonyInput\.showPicker\s*\(",
+    r"\.showPicker\s*\(",
     r'getElementById\(\s*["\']detail-testimony-input["\']\s*\)\s*\.click\s*\(',
+    r'querySelector\(\s*["\'][^"\']*detail-testimony-input[^"\']*["\']\s*\)\s*\.click\s*\(',
 ):
     if re.search(pattern, js):
         raise SystemExit(
-            "FAIL: production code programmatically activates the testimony file input"
+            "FAIL: production code programmatically activates a testimony file input"
         )
 
-print("OK: testimony CTA uses membership invitation boundary; no public media capture unlock")
+if re.search(r'type\s*=\s*["\']file["\']', html) and "testimony" in html.lower():
+    # Broad belt-and-braces: no testimony-associated file input remains.
+    if "detail-testimony" in html:
+        raise SystemExit("FAIL: testimony-associated file input still present")
+
+print("OK: testimony CTA fail-closed; invite Continue enters membership; no public capture unlock")
 PY
 
 echo "== Guardrails =="

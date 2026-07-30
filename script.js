@@ -92,14 +92,6 @@
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
   const detailAddTestimony = document.getElementById("detail-add-testimony");
-  const detailTestimonyInput = document.getElementById("detail-testimony-input");
-  const detailTestimonyPreview = document.getElementById(
-    "detail-testimony-preview"
-  );
-  const detailTestimonyNote = document.getElementById("detail-testimony-note");
-  const detailTestimonyImage = document.getElementById("detail-testimony-image");
-  const detailTestimonyVideo = document.getElementById("detail-testimony-video");
-  const detailTestimonyClear = document.getElementById("detail-testimony-clear");
   const activeLabel = document.getElementById("active-label");
   const activeTitle = document.getElementById("active-title");
   const activeCommunity = document.getElementById("active-community");
@@ -336,12 +328,6 @@
     !detailDoneTitle ||
     !detailDoneNote ||
     !detailAddTestimony ||
-    !detailTestimonyInput ||
-    !detailTestimonyPreview ||
-    !detailTestimonyNote ||
-    !detailTestimonyImage ||
-    !detailTestimonyVideo ||
-    !detailTestimonyClear ||
     !activeLabel ||
     !activeTitle ||
     !activeCommunity ||
@@ -1604,7 +1590,9 @@
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Public product-only mode: visitors land on the existing feed only.
-  // Onboarding / membership / payment screens remain in the codebase but are unreachable.
+  // Onboarding / membership / payment screens remain in the codebase.
+  // Direct hash access stays blocked; the membership-invitation Continue
+  // path may open the existing approved membership/account-entry journey.
   const PRODUCT_ONLY_PUBLIC_MODE = true;
   const PRODUCT_ONLY_FEED_ROUTE = "feed";
   const PRODUCT_ONLY_CITY_ORDER = ["Milano", "Munich", "Arad"];
@@ -1628,6 +1616,17 @@
     payment: true,
     active: true,
   };
+  const INVITE_MEMBERSHIP_JOURNEY_ROUTES = {
+    membership: true,
+    ended: true,
+    account: true,
+    email: true,
+    code: true,
+    passkey: true,
+    ready: true,
+    payment: true,
+    active: true,
+  };
 
   function isProductOnlyPublicMode() {
     return PRODUCT_ONLY_PUBLIC_MODE === true;
@@ -1635,6 +1634,10 @@
 
   function isNonProductRoute(route) {
     return !!NON_PRODUCT_ROUTES[route];
+  }
+
+  function isInviteMembershipJourneyRoute(route) {
+    return !!INVITE_MEMBERSHIP_JOURNEY_ROUTES[route];
   }
 
   function productOnlyScenes() {
@@ -1674,6 +1677,22 @@
     return false;
   }
 
+  function isInviteMembershipJourneyActive() {
+    return inviteMembershipJourneyActive === true;
+  }
+
+  function beginInviteMembershipJourney() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex] || scenes[0] || null;
+    if (scene) syncProductOnlyCityFromScene(scene);
+    locationVerified = true;
+    inviteMembershipJourneyActive = true;
+  }
+
+  function endInviteMembershipJourney() {
+    inviteMembershipJourneyActive = false;
+  }
+
   let lastFocus = null;
   let lastAuthFocus = null;
   let authOpenedByTarget = null;
@@ -1700,10 +1719,7 @@
   let sessionAuthenticated = false;
   let loginSubmitting = false;
   let anonymousClientKey = null;
-
-  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
-  let demoTestimony = null;
-  let demoTestimonyFeedIndex = null;
+  let inviteMembershipJourneyActive = false;
 
   const titles = {
     entry: "TOWN — Entry",
@@ -1740,7 +1756,14 @@
     else if (raw.startsWith("active")) route = "active";
     else if (!raw) route = isProductOnlyPublicMode() ? PRODUCT_ONLY_FEED_ROUTE : "entry";
 
-    if (isProductOnlyPublicMode() && isNonProductRoute(route)) {
+    if (
+      isProductOnlyPublicMode() &&
+      isNonProductRoute(route) &&
+      !(
+        isInviteMembershipJourneyActive() &&
+        isInviteMembershipJourneyRoute(route)
+      )
+    ) {
       return PRODUCT_ONLY_FEED_ROUTE;
     }
     return route;
@@ -2538,8 +2561,6 @@
     detailUpdateLabel.textContent = copy.updateLabel;
     detailStatusLabel.textContent = copy.statusLabel;
     detailAddTestimony.textContent = copy.addTestimony;
-    detailTestimonyClear.textContent = copy.clearTestimony;
-    detailTestimonyNote.textContent = copy.demoTestimonyNote;
     syncFeedMemberState();
     document.documentElement.lang =
       activeLocale.lang === "en" ? "en" : activeLocale.lang;
@@ -3438,7 +3459,6 @@
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
     clearLiveScenes();
-    clearDemoTestimony();
     clearEntryLoginStatus();
     if (sessionAuthenticated) {
       showEntryLoginStatus(LOGIN_COPY[entryLang()].success, "success");
@@ -3561,8 +3581,51 @@
   }
 
   function go(route) {
-    if (isProductOnlyPublicMode()) {
+    const allowInviteJourney =
+      isProductOnlyPublicMode() &&
+      isInviteMembershipJourneyActive() &&
+      isInviteMembershipJourneyRoute(route);
+
+    if (isProductOnlyPublicMode() && !allowInviteJourney) {
+      endInviteMembershipJourney();
       route = PRODUCT_ONLY_FEED_ROUTE;
+      const target = "#/" + route;
+      if (window.location.hash !== target) {
+        window.location.hash = "/" + route;
+      }
+      showView(route);
+      return;
+    }
+
+    if (allowInviteJourney) {
+      if (
+        (route === "code" ||
+          route === "passkey" ||
+          route === "ready" ||
+          route === "payment" ||
+          route === "active") &&
+        !enteredEmail
+      ) {
+        route = "email";
+      }
+      if (
+        (route === "passkey" ||
+          route === "ready" ||
+          route === "payment" ||
+          route === "active") &&
+        !emailVerified
+      ) {
+        route = "code";
+      }
+      if (
+        (route === "ready" || route === "payment" || route === "active") &&
+        !passkeyRegistered
+      ) {
+        route = "passkey";
+      }
+      if (route === "active" && !membershipSimulated) {
+        route = "payment";
+      }
       const target = "#/" + route;
       if (window.location.hash !== target) {
         window.location.hash = "/" + route;
@@ -3658,7 +3721,6 @@
       locationOutsideBoundary = false;
       feedIndex = 0;
       clearLiveScenes();
-      clearDemoTestimony();
       renderCityOptions();
     } else {
       selectedCountry = nextCountry;
@@ -3688,61 +3750,9 @@
     syncFeedScrollLockFromOverlays();
   }
 
-  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
-  function clearDemoTestimony() {
-    if (demoTestimony && demoTestimony.objectUrl) {
-      URL.revokeObjectURL(demoTestimony.objectUrl);
-    }
-    demoTestimony = null;
-    demoTestimonyFeedIndex = null;
-    detailTestimonyInput.value = "";
-    detailTestimonyImage.removeAttribute("src");
-    detailTestimonyImage.hidden = true;
-    detailTestimonyVideo.removeAttribute("src");
-    detailTestimonyVideo.hidden = true;
-    if (typeof detailTestimonyVideo.load === "function") {
-      detailTestimonyVideo.load();
-    }
-    detailTestimonyPreview.hidden = true;
-  }
-
-  function renderDemoTestimony() {
-    if (
-      !demoTestimony ||
-      demoTestimonyFeedIndex === null ||
-      demoTestimonyFeedIndex !== feedIndex
-    ) {
-      if (demoTestimony && demoTestimonyFeedIndex !== feedIndex) {
-        clearDemoTestimony();
-      } else if (!demoTestimony) {
-        detailTestimonyPreview.hidden = true;
-        detailTestimonyImage.hidden = true;
-        detailTestimonyVideo.hidden = true;
-      }
-      return;
-    }
-
-    detailTestimonyPreview.hidden = false;
-    if (demoTestimony.kind === "video") {
-      detailTestimonyImage.hidden = true;
-      detailTestimonyImage.removeAttribute("src");
-      detailTestimonyVideo.hidden = false;
-      detailTestimonyVideo.src = demoTestimony.objectUrl;
-    } else {
-      detailTestimonyVideo.hidden = true;
-      detailTestimonyVideo.removeAttribute("src");
-      if (typeof detailTestimonyVideo.load === "function") {
-        detailTestimonyVideo.load();
-      }
-      detailTestimonyImage.hidden = false;
-      detailTestimonyImage.src = demoTestimony.objectUrl;
-    }
-  }
-
   function openSignalDetail() {
     applyFeedCopyChrome();
     populateSignalDetail();
-    renderDemoTestimony();
     signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
     syncFeedScrollLockFromOverlays();
@@ -3760,6 +3770,15 @@
 
   function render() {
     if (isProductOnlyPublicMode()) {
+      const route = parseRoute();
+      if (
+        isInviteMembershipJourneyActive() &&
+        isInviteMembershipJourneyRoute(route)
+      ) {
+        showView(route);
+        return;
+      }
+      endInviteMembershipJourney();
       if (ensureProductOnlyFeedHash()) {
         return;
       }
@@ -3915,34 +3934,11 @@
     openInvite();
   });
 
-  // Public visitors are routed to the membership invitation; the capture input remains for a future authenticated flow.
+  // Public testimony CTA: open membership invitation; never activate media capture.
   detailAddTestimony.addEventListener("click", () => {
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
-  });
-
-  detailTestimonyInput.addEventListener("change", () => {
-    const file =
-      detailTestimonyInput.files && detailTestimonyInput.files[0]
-        ? detailTestimonyInput.files[0]
-        : null;
-    if (!file) return;
-
-    const kind = file.type && file.type.indexOf("video/") === 0 ? "video" : "image";
-    if (demoTestimony && demoTestimony.objectUrl) {
-      URL.revokeObjectURL(demoTestimony.objectUrl);
-    }
-    demoTestimony = {
-      kind: kind,
-      objectUrl: URL.createObjectURL(file),
-    };
-    demoTestimonyFeedIndex = feedIndex;
-    renderDemoTestimony();
-  });
-
-  detailTestimonyClear.addEventListener("click", () => {
-    clearDemoTestimony();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -4310,7 +4306,11 @@
 
   inviteContinue.addEventListener("click", () => {
     closeInvite();
-    if (isProductOnlyPublicMode()) return;
+    if (isProductOnlyPublicMode()) {
+      beginInviteMembershipJourney();
+      go("membership");
+      return;
+    }
     go("membership");
   });
 
