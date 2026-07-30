@@ -1665,6 +1665,128 @@ body.page-feed {
   background: rgba(244, 239, 230, 0.18);
 }
 
+/* ——— City-discovery editorial story (after five public signals) ——— */
+
+.feed__panel--discovery {
+  background: #0a0a0a;
+}
+
+.discovery__media .discovery__image {
+  filter: brightness(0.42) saturate(0.78);
+}
+
+.discovery__veil {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.45) 32%,
+    rgba(0, 0, 0, 0.55) 58%,
+    rgba(0, 0, 0, 0.88) 100%
+  );
+}
+
+.discovery__chrome {
+  max-width: 40rem;
+}
+
+.discovery__brand {
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  letter-spacing: 0.18em;
+}
+
+.discovery__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 28rem;
+  padding: clamp(2rem, 6vh, 3.5rem) 0 clamp(1.5rem, 4vh, 2.25rem);
+}
+
+.discovery__headline {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  color: #fbf7f0;
+  max-width: 16ch;
+}
+
+.discovery__headline--second {
+  margin: 0 0 1.15rem;
+  font-size: clamp(1.65rem, 3.4vw, 2.35rem);
+  font-weight: 600;
+  color: #f7f3ec;
+  max-width: 18ch;
+}
+
+.discovery__support {
+  margin: 0;
+  max-width: 34ch;
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(244, 239, 230, 0.72);
+}
+
+.discovery__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: min(100%, 22rem);
+  padding-bottom: 0.25rem;
+}
+
+.discovery__actions .feed__primary {
+  border-radius: 0.2rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  background: #f4efe6;
+  color: #14110e;
+}
+
+.discovery__actions .feed__primary:hover {
+  background: #fffaf2;
+}
+
+.discovery__actions .feed__secondary {
+  border-radius: 0.2rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  background: transparent;
+  color: rgba(244, 239, 230, 0.82);
+  border: 1px solid rgba(244, 239, 230, 0.28);
+}
+
+.discovery__actions .feed__secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(244, 239, 230, 0.42);
+}
+
+@media (min-width: 960px) {
+  .feed__panel--discovery .discovery__veil {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.88) 0%,
+      rgba(0, 0, 0, 0.62) 42%,
+      rgba(0, 0, 0, 0.28) 72%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+
+  .discovery__chrome {
+    max-width: 36rem;
+    padding-left: clamp(2rem, 6vw, 4.5rem);
+  }
+
+  .discovery__body {
+    padding-top: 4rem;
+  }
+}
+
 @media (max-width: 720px) {
   .feed__chrome {
     max-width: none;

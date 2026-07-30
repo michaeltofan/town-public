@@ -50,6 +50,9 @@
   );
   const feedScroller = document.getElementById("feed-scroller");
   const feedPanelTemplate = document.getElementById("feed-panel-template");
+  const cityDiscoveryPanelTemplate = document.getElementById(
+    "city-discovery-panel-template"
+  );
   const feedLiveStatus = document.getElementById("feed-live-status");
   const appNav = document.getElementById("app-nav");
   const navHome = document.getElementById("nav-home");
@@ -306,6 +309,7 @@
     !locationOutsideContinue ||
     !feedScroller ||
     !feedPanelTemplate ||
+    !cityDiscoveryPanelTemplate ||
     !feedLiveStatus ||
     !appNav ||
     !navHome ||
@@ -1688,6 +1692,13 @@
     payment: true,
     active: true,
   };
+  // Narrow unlock for the editorial "Find my city" CTA: reuse existing
+  // country → city → location selection without auth/payment.
+  const CITY_DISCOVERY_JOURNEY_ROUTES = {
+    country: true,
+    city: true,
+    location: true,
+  };
 
   function isProductOnlyPublicMode() {
     return PRODUCT_ONLY_PUBLIC_MODE === true;
@@ -1699,6 +1710,10 @@
 
   function isInviteMembershipJourneyRoute(route) {
     return !!INVITE_MEMBERSHIP_JOURNEY_ROUTES[route];
+  }
+
+  function isCityDiscoveryJourneyRoute(route) {
+    return !!CITY_DISCOVERY_JOURNEY_ROUTES[route];
   }
 
   function productOnlyScenes() {
@@ -1742,6 +1757,10 @@
     return inviteMembershipJourneyActive === true;
   }
 
+  function isCityDiscoveryJourneyActive() {
+    return cityDiscoveryJourneyActive === true;
+  }
+
   function isMembershipRecoveryFlowActive() {
     return membershipRecoveryActive === true;
   }
@@ -1756,6 +1775,26 @@
 
   function endInviteMembershipJourney() {
     inviteMembershipJourneyActive = false;
+  }
+
+  function beginCityDiscoveryJourney() {
+    // Clear any product-only scene binding so browser language / current
+    // signal never silently selects country, city, or eligibility.
+    cityDiscoveryReturnFeedIndex = feedIndex;
+    selectedCountry = null;
+    selectedCity = null;
+    locationVerified = false;
+    locationOutsideBoundary = false;
+    countryInputs.forEach((input) => {
+      input.checked = false;
+    });
+    if (continueCountry) continueCountry.disabled = true;
+    endInviteMembershipJourney();
+    cityDiscoveryJourneyActive = true;
+  }
+
+  function endCityDiscoveryJourney() {
+    cityDiscoveryJourneyActive = false;
   }
 
   function beginMembershipRecoveryFlow() {
@@ -2057,6 +2096,8 @@
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
+  let cityDiscoveryJourneyActive = false;
+  let cityDiscoveryReturnFeedIndex = 0;
   // Authoritative membership from GET /v1/account/membership only.
   // null = not loaded / failed closed; never grant from URL or storage markers.
   let membershipSnapshot = null;
@@ -2105,6 +2146,10 @@
       !(
         isInviteMembershipJourneyActive() &&
         isInviteMembershipJourneyRoute(route)
+      ) &&
+      !(
+        isCityDiscoveryJourneyActive() &&
+        isCityDiscoveryJourneyRoute(route)
       )
     ) {
       return PRODUCT_ONLY_FEED_ROUTE;
@@ -2127,6 +2172,17 @@
   }
 
   function feedLocaleForScene(scene) {
+    const discovery = window.TownCityDiscovery;
+    if (discovery && discovery.isCityDiscoveryStory(scene)) {
+      const lang = scene.lang || "en";
+      return {
+        lang: lang,
+        copy: FEED_COPY.en,
+        cityId: null,
+        cityName: "",
+        discoveryCopy: scene.copy || discovery.editorialCopyForLanguage(lang),
+      };
+    }
     const cityId = cityIdFromScene(scene) || selectedCity;
     const lang = languageForCityId(cityId) || communityLanguage();
     const copy = FEED_COPY[lang] || FEED_COPY.it;
@@ -2146,12 +2202,38 @@
 
   function currentScenes() {
     if (isProductOnlyPublicMode()) {
-      return productOnlyScenes();
+      const base = productOnlyScenes();
+      const discovery = window.TownCityDiscovery;
+      if (!discovery) return base;
+      const preferred = resolveEditorialPreferredLanguages();
+      const lang = discovery.resolveEditorialLanguage(preferred);
+      return discovery.insertCityDiscoveryStory(
+        base,
+        discovery.createCityDiscoveryStory(lang),
+        discovery.CITY_DISCOVERY_INSERT_AFTER
+      );
     }
     if (!selectedCity) return [];
     const live = liveScenes[selectedCity];
     if (live && live.length >= 1) return live;
     return FEED_SCENES[selectedCity] || [];
+  }
+
+  function resolveEditorialPreferredLanguages() {
+    try {
+      const params = new URLSearchParams(window.location.search || "");
+      const reviewLang = params.get("townLang");
+      if (reviewLang) return [reviewLang];
+    } catch (err) {
+      /* ignore */
+    }
+    if (typeof navigator !== "undefined" && navigator.languages) {
+      return navigator.languages;
+    }
+    if (typeof navigator !== "undefined" && navigator.language) {
+      return [navigator.language];
+    }
+    return ["en"];
   }
 
   function formatObservedDate(observedOn, localeTag) {
@@ -2795,6 +2877,9 @@
   }
 
   function syncPanelMemberControls(panel, panelIndex, copy, cityName) {
+    if (panel && panel.getAttribute("data-story-kind") === "city-discovery") {
+      return;
+    }
     const visitorEl = feedRole("feed-visitor", panel);
     const seeToo = feedRole("feed-see-too", panel);
     const seeTooDone = feedRole("feed-see-too-done", panel);
@@ -2898,10 +2983,12 @@
   function applyFeedCopyChrome() {
     const scenes = currentScenes();
     const panels = getFeedPanels();
+    const discovery = window.TownCityDiscovery;
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
       const panelIndex = Number(panel.getAttribute("data-feed-index"));
       const scene = scenes[panelIndex];
+      if (discovery && discovery.isCityDiscoveryStory(scene)) continue;
       const locale = feedLocaleForScene(scene);
       const copy = locale.copy;
       const back = feedRole("feed-back", panel);
@@ -2913,7 +3000,13 @@
       if (openSignal) openSignal.textContent = copy.openSignal;
       if (community) community.textContent = locale.cityName;
     }
-    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
+    const activeScene = scenes[feedIndex];
+    if (discovery && discovery.isCityDiscoveryStory(activeScene)) {
+      document.documentElement.lang = activeScene.lang || "en";
+      syncFeedMemberState();
+      return;
+    }
+    const activeLocale = feedLocaleForScene(activeScene);
     const copy = activeLocale.copy;
     detailClose.textContent = copy.openSignalClose;
     detailWhyLabel.textContent = copy.whyLabel;
@@ -2927,11 +3020,14 @@
   }
 
   function populateSignalDetail() {
-    const lang = communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const discovery = window.TownCityDiscovery;
     const scenes = currentScenes();
     const scene = scenes[feedIndex];
     if (!scene) return;
+    if (discovery && discovery.isCityDiscoveryStory(scene)) return;
+
+    const lang = communityLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.it;
 
     const cityName = cityDisplayName(lang);
     detailImage.src = scene.image;
@@ -3047,7 +3143,55 @@
     }
   }
 
+  function buildCityDiscoveryPanel(scene, index, total) {
+    const fragment = cityDiscoveryPanelTemplate.content.cloneNode(true);
+    const panel = fragment.querySelector(".feed__panel");
+    panel.setAttribute("data-feed-index", String(index));
+    panel.setAttribute(
+      "aria-label",
+      "Story " + (index + 1) + " of " + total
+    );
+    const idNodes = panel.querySelectorAll("[id]");
+    for (let i = 0; i < idNodes.length; i++) {
+      const el = idNodes[i];
+      el.setAttribute("data-feed-role", el.id);
+      el.removeAttribute("id");
+    }
+
+    const discovery = window.TownCityDiscovery;
+    const copy =
+      (scene && scene.copy) ||
+      (discovery && discovery.editorialCopyForLanguage(scene && scene.lang)) ||
+      null;
+    const image = panel.querySelector(".discovery__image");
+    const headline1 = feedRole("discovery-headline-1", panel);
+    const headline2 = feedRole("discovery-headline-2", panel);
+    const support = feedRole("discovery-support", panel);
+    const primary = feedRole("discovery-find-city", panel);
+    const secondary = feedRole("discovery-continue", panel);
+    const pager = feedRole("discovery-pager", panel);
+
+    if (image && scene && scene.image) {
+      image.src = scene.image;
+      image.style.objectPosition = scene.focus || "50% 45%";
+      image.loading = index === 0 ? "eager" : "lazy";
+    }
+    if (copy) {
+      if (headline1) headline1.textContent = copy.headline1;
+      if (headline2) headline2.textContent = copy.headline2;
+      if (support) support.textContent = copy.support;
+      if (primary) primary.textContent = copy.primary;
+      if (secondary) secondary.textContent = copy.secondary;
+    }
+    if (pager) pager.textContent = index + 1 + " / " + total;
+    return panel;
+  }
+
   function buildFeedPanel(scene, index, total, copy, cityName) {
+    const discovery = window.TownCityDiscovery;
+    if (discovery && discovery.isCityDiscoveryStory(scene)) {
+      return buildCityDiscoveryPanel(scene, index, total);
+    }
     const fragment = feedPanelTemplate.content.cloneNode(true);
     const panel = fragment.querySelector(".feed__panel");
     panel.setAttribute("data-feed-index", String(index));
@@ -3100,7 +3244,9 @@
 
   function rebuildFeedPanels() {
     const scenes = currentScenes();
-    if (!feedScroller || !feedPanelTemplate) return;
+    if (!feedScroller || !feedPanelTemplate || !cityDiscoveryPanelTemplate) {
+      return;
+    }
     feedScroller.innerHTML = "";
     for (let i = 0; i < scenes.length; i++) {
       const scene = scenes[i];
@@ -4014,13 +4160,19 @@
       isProductOnlyPublicMode() &&
       isMembershipRecoveryFlowActive() &&
       (route === "payment" || route === "active");
+    const allowCityDiscoveryJourney =
+      isProductOnlyPublicMode() &&
+      isCityDiscoveryJourneyActive() &&
+      isCityDiscoveryJourneyRoute(route);
 
     if (
       isProductOnlyPublicMode() &&
       !allowInviteJourney &&
-      !allowRecoveryJourney
+      !allowRecoveryJourney &&
+      !allowCityDiscoveryJourney
     ) {
       endInviteMembershipJourney();
+      endCityDiscoveryJourney();
       route = PRODUCT_ONLY_FEED_ROUTE;
       const target = "#/" + route;
       if (window.location.hash !== target) {
@@ -4201,6 +4353,11 @@
   }
 
   function openSignalDetail() {
+    const discovery = window.TownCityDiscovery;
+    const scenes = currentScenes();
+    if (discovery && discovery.isCityDiscoveryStory(scenes[feedIndex])) {
+      return;
+    }
     applyFeedCopyChrome();
     populateSignalDetail();
     signalDetail.hidden = false;
@@ -4235,7 +4392,16 @@
         showView(route);
         return;
       }
+      if (
+        isCityDiscoveryJourneyActive() &&
+        isCityDiscoveryJourneyRoute(route)
+      ) {
+        if (route === "city") ensureCityOptions(true);
+        showView(route);
+        return;
+      }
       endInviteMembershipJourney();
+      endCityDiscoveryJourney();
       if (ensureProductOnlyFeedHash()) {
         return;
       }
@@ -4585,6 +4751,13 @@
   });
 
   countryBack.addEventListener("click", () => {
+    if (isCityDiscoveryJourneyActive()) {
+      const returnIndex = cityDiscoveryReturnFeedIndex;
+      endCityDiscoveryJourney();
+      feedIndex = returnIndex;
+      go("feed");
+      return;
+    }
     go("entry");
   });
 
@@ -4736,6 +4909,15 @@
         closeSignalSheet();
         if (isProductOnlyPublicMode()) return;
         go("location");
+        return;
+      }
+      if (role === "discovery-find-city") {
+        beginCityDiscoveryJourney();
+        go("country");
+        return;
+      }
+      if (role === "discovery-continue") {
+        navigateFeedByIntent({ type: "direction", value: "next" });
         return;
       }
       if (role === "feed-see-too") {
@@ -5099,6 +5281,18 @@
   window.addEventListener("hashchange", render);
   window.addEventListener("popstate", render);
   syncCountryContinue();
+  try {
+    const params = new URLSearchParams(window.location.search || "");
+    const story = params.get("townStory");
+    if (story) {
+      const n = Number(story);
+      if (Number.isFinite(n) && n >= 1) {
+        feedIndex = Math.max(0, Math.floor(n) - 1);
+      }
+    }
+  } catch (err) {
+    /* ignore review helpers */
+  }
   render();
   bootstrapAccountMembership();
 })();

@@ -511,6 +511,58 @@
             </div>
           </article>
         </template>
+        <template id="city-discovery-panel-template">
+          <article
+            class="feed__panel feed__panel--discovery"
+            data-story-kind="city-discovery"
+          >
+            <div class="feed__media discovery__media" aria-hidden="true">
+              <img
+                class="feed__image discovery__image"
+                src="assets/welcome-street.png"
+                alt=""
+                decoding="async"
+              />
+              <div class="feed__veil discovery__veil"></div>
+            </div>
+
+            <div class="feed__chrome discovery__chrome">
+              <header class="feed__top">
+                <div class="feed__top-left">
+                  <p class="feed__brand discovery__brand" aria-label="TOWN">
+                    TOWN
+                  </p>
+                </div>
+                <div class="feed__top-right">
+                  <p class="feed__pager" id="discovery-pager">6 / 10</p>
+                </div>
+              </header>
+
+              <div class="discovery__body">
+                <h1 class="discovery__headline" id="discovery-headline-1"></h1>
+                <h2 class="discovery__headline discovery__headline--second" id="discovery-headline-2"></h2>
+                <p class="discovery__support" id="discovery-support"></p>
+              </div>
+
+              <div class="discovery__actions">
+                <button
+                  type="button"
+                  class="feed__primary"
+                  id="discovery-find-city"
+                >
+                  Find my city
+                </button>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="discovery-continue"
+                >
+                  Continue exploring
+                </button>
+              </div>
+            </div>
+          </article>
+        </template>
         <p class="feed__live" id="feed-live-status" aria-live="polite"></p>
       </main>
 
@@ -1181,7 +1233,8 @@
       defer
     ></script>
     <script src="feed-navigation.js" defer></script>
+    <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
-    <script src="script.js?v=membership-recovery-1" defer></script>
+    <script src="script.js?v=city-discovery-1" defer></script>
   </body>
 </html>
