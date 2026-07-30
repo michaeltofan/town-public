@@ -104,17 +104,29 @@ if "requestCheckoutSession" in ready_body or "checkoutUrl" in ready_body:
     fail("readyContinue must not start Checkout; Activate membership remains separate")
 if "runPasskeyAuthenticationCeremony" not in ready_body:
     fail("readyContinue must authenticate before membership screen")
-if 'go("payment")' not in ready_body:
-    fail('authenticated readyContinue must still reach go("payment") membership screen')
+if 'go("commitment")' not in ready_body:
+    fail('authenticated readyContinue must reach go("commitment") before Checkout')
+if 'go("payment")' in ready_body:
+    fail("readyContinue must not skip commitment by going directly to payment")
 
 pay_start = js.find('paymentSimulateStart.addEventListener("click"')
-pay_back = js.find('paymentBack.addEventListener("click"')
-if pay_start < 0 or pay_back <= pay_start:
+pay_confirm = js.find('paymentSimulateConfirm.addEventListener("click"')
+if pay_start < 0:
     fail("missing paymentSimulateStart (Activate membership) handler")
-pay_body = js[pay_start:pay_back]
+# Handler may be followed by commitment helpers; bound by next payment* listener or commitmentCheckout
+pay_end = js.find('paymentSimulateConfirm.addEventListener("click"', pay_start + 1)
+if pay_end <= pay_start:
+    pay_end = js.find("commitmentCheckout.addEventListener", pay_start + 1)
+if pay_end <= pay_start:
+    fail("unable to isolate paymentSimulateStart handler")
+pay_body = js[pay_start:pay_end]
 if "requestCheckoutSession" not in pay_body:
     fail("Activate membership must still call requestCheckoutSession")
-print("OK: Checkout stays on Activate membership; Continue only authenticates then shows payment")
+if 'go("commitment")' not in js:
+    fail("commitment route must exist before Checkout")
+if "commitment-checkout" not in Path("index.html").read_text(encoding="utf-8"):
+    fail("commitment Checkout CTA missing from HTML")
+print("OK: Checkout remains gated; readyContinue authenticates then opens commitment")
 PY
 
 echo "== HTML smoke =="

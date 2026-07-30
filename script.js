@@ -9,6 +9,7 @@
   const viewCode = document.getElementById("view-code");
   const viewPasskey = document.getElementById("view-passkey");
   const viewReady = document.getElementById("view-ready");
+  const viewCommitment = document.getElementById("view-commitment");
   const viewPayment = document.getElementById("view-payment");
   const viewActive = document.getElementById("view-active");
   const learnMoreButton = document.getElementById("learn-more");
@@ -173,6 +174,66 @@
   const readyError = document.getElementById("ready-error");
   const readyContinue = document.getElementById("ready-continue");
   const readyBack = document.getElementById("ready-back");
+  const commitmentLabel = document.getElementById("commitment-label");
+  const commitmentTitle = document.getElementById("commitment-title");
+  const commitmentBody = document.getElementById("commitment-body");
+  const commitmentCountryFieldset = document.getElementById(
+    "commitment-country-fieldset"
+  );
+  const commitmentCountryLegend = document.getElementById(
+    "commitment-country-legend"
+  );
+  const commitmentCountryItalyLabel = document.getElementById(
+    "commitment-country-italy-label"
+  );
+  const commitmentCountryGermanyLabel = document.getElementById(
+    "commitment-country-germany-label"
+  );
+  const commitmentCountryRomaniaLabel = document.getElementById(
+    "commitment-country-romania-label"
+  );
+  const commitmentCityFieldset = document.getElementById(
+    "commitment-city-fieldset"
+  );
+  const commitmentCityLegend = document.getElementById(
+    "commitment-city-legend"
+  );
+  const commitmentCityOptions = document.getElementById(
+    "commitment-city-options"
+  );
+  const commitmentReview = document.getElementById("commitment-review");
+  const commitmentReviewLabel = document.getElementById(
+    "commitment-review-label"
+  );
+  const commitmentReviewCountry = document.getElementById(
+    "commitment-review-country"
+  );
+  const commitmentReviewCity = document.getElementById(
+    "commitment-review-city"
+  );
+  const commitmentReviewNote = document.getElementById(
+    "commitment-review-note"
+  );
+  const commitmentAcceptLabelWrap = document.getElementById(
+    "commitment-accept-label-wrap"
+  );
+  const commitmentAccept = document.getElementById("commitment-accept");
+  const commitmentAcceptText = document.getElementById(
+    "commitment-accept-text"
+  );
+  const commitmentAcceptRequired = document.getElementById(
+    "commitment-accept-required"
+  );
+  const commitmentError = document.getElementById("commitment-error");
+  const commitmentSavedStatus = document.getElementById(
+    "commitment-saved-status"
+  );
+  const commitmentCheckoutHint = document.getElementById(
+    "commitment-checkout-hint"
+  );
+  const commitmentConfirm = document.getElementById("commitment-confirm");
+  const commitmentCheckout = document.getElementById("commitment-checkout");
+  const commitmentBack = document.getElementById("commitment-back");
   const paymentIntro = document.getElementById("payment-intro");
   const paymentSuccess = document.getElementById("payment-success");
   const paymentLabel = document.getElementById("payment-label");
@@ -430,6 +491,33 @@
     !readyError ||
     !readyContinue ||
     !readyBack ||
+    !viewCommitment ||
+    !commitmentLabel ||
+    !commitmentTitle ||
+    !commitmentBody ||
+    !commitmentCountryFieldset ||
+    !commitmentCountryLegend ||
+    !commitmentCountryItalyLabel ||
+    !commitmentCountryGermanyLabel ||
+    !commitmentCountryRomaniaLabel ||
+    !commitmentCityFieldset ||
+    !commitmentCityLegend ||
+    !commitmentCityOptions ||
+    !commitmentReview ||
+    !commitmentReviewLabel ||
+    !commitmentReviewCountry ||
+    !commitmentReviewCity ||
+    !commitmentReviewNote ||
+    !commitmentAcceptLabelWrap ||
+    !commitmentAccept ||
+    !commitmentAcceptText ||
+    !commitmentAcceptRequired ||
+    !commitmentError ||
+    !commitmentSavedStatus ||
+    !commitmentCheckoutHint ||
+    !commitmentConfirm ||
+    !commitmentCheckout ||
+    !commitmentBack ||
     !paymentIntro ||
     !paymentSuccess ||
     !paymentLabel ||
@@ -1727,6 +1815,126 @@
     },
   };
 
+  const COMMITMENT_COPY = {
+    it: {
+      label: "SCELTA DELLA COMUNITÀ",
+      title: "Scegli la tua comunità TOWN.",
+      body:
+        "Seleziona personalmente il paese e la città. TOWN non verifica tecnicamente la tua posizione fisica o la residenza.",
+      countryLegend: "Scegli il paese",
+      cityLegend: "Scegli la città",
+      countryNames: {
+        Italy: "Italia",
+        Germany: "Germania",
+        Romania: "Romania",
+      },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      reviewLabel: "Rivedi la comunità selezionata",
+      reviewCountry: "Paese: {country}",
+      reviewCity: "Città: {city}",
+      reviewNote:
+        "La membership e la partecipazione civica saranno associate a questa comunità.",
+      acceptText:
+        "Confermo di aver selezionato personalmente il paese e la città corretti e accetto la responsabilità per l’accuratezza di questa dichiarazione.",
+      acceptRequired: "È richiesta l’accettazione esplicita della responsabilità.",
+      confirm: "Registra la dichiarazione",
+      saving: "Salvataggio in corso…",
+      saved: "Dichiarazione registrata per {city}, {country}.",
+      checkoutHint:
+        "Il pagamento annuale è disponibile solo dopo la conferma della comunità.",
+      checkoutCta: "Continua alla membership annuale — €12/anno",
+      back: "Indietro",
+      errorNetwork: "Non è stato possibile continuare. Riprova.",
+      errorUnauthenticated:
+        "Non hai effettuato l’accesso oppure la sessione è scaduta.",
+      errorValidation: "Controlla la selezione e l’accettazione, poi riprova.",
+      errorSave: "Non è stato possibile registrare la dichiarazione. Riprova.",
+      errorUnsupported: "Questa comunità non è disponibile.",
+      errorLocked:
+        "La comunità non può essere modificata mentre la membership è attiva.",
+    },
+    de: {
+      label: "GEMEINSCHAFTSWAHL",
+      title: "Wähle deine TOWN-Gemeinschaft.",
+      body:
+        "Wähle persönlich Land und Stadt. TOWN prüft deine physische Position oder deinen Wohnsitz nicht technisch.",
+      countryLegend: "Land wählen",
+      cityLegend: "Stadt wählen",
+      countryNames: {
+        Italy: "Italien",
+        Germany: "Deutschland",
+        Romania: "Rumänien",
+      },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      reviewLabel: "Ausgewählte Gemeinschaft prüfen",
+      reviewCountry: "Land: {country}",
+      reviewCity: "Stadt: {city}",
+      reviewNote:
+        "Mitgliedschaft und zivile Teilnahme werden dieser Gemeinschaft zugeordnet.",
+      acceptText:
+        "Ich bestätige, dass ich das richtige Land und die richtige Stadt persönlich ausgewählt habe und die Verantwortung für die Richtigkeit dieser Erklärung übernehme.",
+      acceptRequired:
+        "Eine ausdrückliche Annahme der Verantwortung ist erforderlich.",
+      confirm: "Erklärung speichern",
+      saving: "Wird gespeichert…",
+      saved: "Erklärung für {city}, {country} gespeichert.",
+      checkoutHint:
+        "Die jährliche Zahlung ist erst nach Bestätigung der Gemeinschaft verfügbar.",
+      checkoutCta: "Weiter zur jährlichen Mitgliedschaft — €12/Jahr",
+      back: "Zurück",
+      errorNetwork: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
+      errorUnauthenticated:
+        "Du bist nicht angemeldet oder die Sitzung ist abgelaufen.",
+      errorValidation:
+        "Prüfe Auswahl und Bestätigung und versuche es erneut.",
+      errorSave:
+        "Die Erklärung konnte nicht gespeichert werden. Bitte erneut versuchen.",
+      errorUnsupported: "Diese Gemeinschaft ist nicht verfügbar.",
+      errorLocked:
+        "Die Gemeinschaft kann nicht geändert werden, solange die Mitgliedschaft aktiv ist.",
+    },
+    ro: {
+      label: "ALEGEREA COMUNITĂȚII",
+      title: "Alege comunitatea ta TOWN.",
+      body:
+        "Selectează personal țara și orașul. TOWN nu verifică tehnic poziția ta fizică sau reședința.",
+      countryLegend: "Alege țara",
+      cityLegend: "Alege orașul",
+      countryNames: {
+        Italy: "Italia",
+        Germany: "Germania",
+        Romania: "România",
+      },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      reviewLabel: "Revizuiește comunitatea selectată",
+      reviewCountry: "Țară: {country}",
+      reviewCity: "Oraș: {city}",
+      reviewNote:
+        "Membership-ul și participarea civică vor fi asociate acestei comunități.",
+      acceptText:
+        "Confirm că am selectat personal țara și orașul corecte și îmi asum responsabilitatea pentru acuratețea acestei declarații.",
+      acceptRequired:
+        "Este necesară acceptarea explicită a responsabilității.",
+      confirm: "Înregistrează declarația",
+      saving: "Se salvează…",
+      saved: "Declarație înregistrată pentru {city}, {country}.",
+      checkoutHint:
+        "Plata anuală este disponibilă doar după confirmarea comunității.",
+      checkoutCta: "Continuă la membership-ul anual — 12 €/an",
+      back: "Înapoi",
+      errorNetwork: "Nu a fost posibil să continui. Încearcă din nou.",
+      errorUnauthenticated:
+        "Nu ești autentificat sau sesiunea a expirat.",
+      errorValidation:
+        "Verifică selecția și acceptarea, apoi încearcă din nou.",
+      errorSave:
+        "Nu a fost posibil să înregistrezi declarația. Încearcă din nou.",
+      errorUnsupported: "Această comunitate nu este disponibilă.",
+      errorLocked:
+        "Comunitatea nu poate fi schimbată cât timp membership-ul este activ.",
+    },
+  };
+
   // Returning-user passkey login (Screen 01). Does not use SetupGrant.
   // S01 chrome is English until a community is selected; en is the pre-selection default.
   const LOGIN_COPY = {
@@ -1786,6 +1994,7 @@
     code: true,
     passkey: true,
     ready: true,
+    commitment: true,
     payment: true,
     active: true,
   };
@@ -1797,6 +2006,7 @@
     code: true,
     passkey: true,
     ready: true,
+    commitment: true,
     payment: true,
     active: true,
   };
@@ -2137,10 +2347,20 @@
     fetchAuthenticationSession()
       .then(function () {
         sessionAuthenticated = true;
-        return fetchAccountMembership();
+        return Promise.all([
+          fetchAccountMembership(),
+          fetchCommunityCommitment().catch(function () {
+            return null;
+          }),
+        ]);
       })
-      .then(function (snapshot) {
+      .then(function (results) {
+        const snapshot = results[0];
+        const commitment = results[1];
         applyMembershipSnapshot(snapshot);
+        if (commitment) {
+          applyCommitmentSnapshot(commitment);
+        }
         if (pending) {
           if (
             membershipRecoveryApi &&
@@ -2168,6 +2388,7 @@
         // Fail closed on session/membership errors.
         if (!sessionAuthenticated) {
           membershipSnapshot = null;
+          commitmentSnapshot = null;
         }
         if (pending) {
           // Session cookie should exist after Checkout; still attempt recovery UX.
@@ -2200,6 +2421,13 @@
   let paymentCheckoutSubmitting = false;
   let signalConfirmed = false;
   let sessionAuthenticated = false;
+  let commitmentCountry = null;
+  let commitmentCity = null;
+  let commitmentAcceptanceChecked = false;
+  let commitmentSnapshot = null;
+  let commitmentSaving = false;
+  let commitmentCheckoutSubmitting = false;
+  const communityCommitmentApi = window.TownCommunityCommitment || null;
   let loginSubmitting = false;
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
@@ -2226,6 +2454,7 @@
     code: "TOWN — Verification code",
     passkey: "TOWN — Secure access",
     ready: "TOWN — Account ready",
+    commitment: "TOWN — Community commitment",
     payment: "TOWN — Membership payment",
     active: "TOWN — Membership active",
   };
@@ -2244,6 +2473,7 @@
     else if (raw.startsWith("code")) route = "code";
     else if (raw.startsWith("passkey")) route = "passkey";
     else if (raw.startsWith("ready")) route = "ready";
+    else if (raw.startsWith("commitment")) route = "commitment";
     else if (raw.startsWith("payment")) route = "payment";
     else if (raw.startsWith("active")) route = "active";
     else if (!raw) route = isProductOnlyPublicMode() ? PRODUCT_ONLY_FEED_ROUTE : "entry";
@@ -3829,7 +4059,339 @@
     if (status === 200 && data && data.checkoutUrl) {
       return data.checkoutUrl;
     }
+    if (status === 409) {
+      const code =
+        result.payload &&
+        result.payload.error &&
+        result.payload.error.code
+          ? result.payload.error.code
+          : "";
+      if (code === "COMMUNITY_COMMITMENT_REQUIRED") {
+        throw makeApiError("commitmentRequired");
+      }
+    }
     throw makeApiError(checkoutErrorKind(status));
+  }
+
+  function hasRecordedCommunityCommitment() {
+    return !!(
+      communityCommitmentApi &&
+      communityCommitmentApi.hasRecordedCommitment(commitmentSnapshot)
+    );
+  }
+
+  function clearCommitmentError() {
+    commitmentError.hidden = true;
+    commitmentError.textContent = "";
+  }
+
+  function showCommitmentError(message) {
+    commitmentError.hidden = false;
+    commitmentError.textContent = message;
+  }
+
+  function commitmentErrorMessage(kind) {
+    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    if (kind === "unauthenticated") return copy.errorUnauthenticated;
+    if (kind === "validation") return copy.errorValidation;
+    if (kind === "unsupported") return copy.errorUnsupported;
+    if (kind === "locked") return copy.errorLocked;
+    if (kind === "save") return copy.errorSave;
+    return copy.errorNetwork;
+  }
+
+  async function fetchCommunityCommitment() {
+    if (!communityCommitmentApi) {
+      throw makeApiError("failed");
+    }
+    const result = await getJsonWithCredentials(
+      API_BASE + "/v1/account/community-commitment"
+    );
+    if (result.response.status !== 200) {
+      throw makeApiError(
+        result.response.status === 401 ? "unauthenticated" : "failed"
+      );
+    }
+    const snapshot = communityCommitmentApi.deriveCommitmentSnapshot(
+      result.payload
+    );
+    if (!snapshot) {
+      throw makeApiError("failed");
+    }
+    return snapshot;
+  }
+
+  async function saveCommunityCommitment(slug) {
+    let result;
+    try {
+      result = await requestJson(API_BASE + "/v1/account/community-commitment", {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ community: slug, accepted: true }),
+        credentials: "include",
+      }).then(async function (response) {
+        let payload = null;
+        try {
+          payload = await response.json();
+        } catch (_err) {
+          payload = null;
+        }
+        return { response: response, payload: payload };
+      });
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    if (status === 200) {
+      const snapshot = communityCommitmentApi.deriveCommitmentSnapshot(
+        result.payload
+      );
+      if (!snapshot || !communityCommitmentApi.hasRecordedCommitment(snapshot)) {
+        throw makeApiError("save");
+      }
+      return snapshot;
+    }
+    if (status === 401) throw makeApiError("unauthenticated");
+    if (status === 404) throw makeApiError("unsupported");
+    if (status === 409) {
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      if (code === "COMMUNITY_COMMITMENT_LOCKED") {
+        throw makeApiError("locked");
+      }
+      throw makeApiError("save");
+    }
+    if (status === 400) throw makeApiError("validation");
+    throw makeApiError("save");
+  }
+
+  function restoreCommitmentSelectionFromSnapshot(snapshot) {
+    if (
+      !communityCommitmentApi ||
+      !communityCommitmentApi.hasRecordedCommitment(snapshot)
+    ) {
+      return;
+    }
+    commitmentCountry =
+      communityCommitmentApi.countryFromCommitment(snapshot);
+    commitmentCity = communityCommitmentApi.cityIdFromCommitment(snapshot);
+    commitmentAcceptanceChecked = true;
+  }
+
+  function applyCommitmentSnapshot(snapshot) {
+    commitmentSnapshot = snapshot;
+    if (
+      communityCommitmentApi &&
+      communityCommitmentApi.hasRecordedCommitment(snapshot)
+    ) {
+      restoreCommitmentSelectionFromSnapshot(snapshot);
+    }
+  }
+
+  function renderCommitmentCityOptions() {
+    commitmentCityOptions.innerHTML = "";
+    if (!commitmentCountry || !communityCommitmentApi) {
+      commitmentCityFieldset.disabled = true;
+      return;
+    }
+    const cities = communityCommitmentApi.citiesForCountry(commitmentCountry);
+    commitmentCityFieldset.disabled = cities.length === 0;
+    cities.forEach(function (city) {
+      const label = document.createElement("label");
+      label.className = "commitment__option";
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "commitment-city";
+      input.value = city.id;
+      input.checked = commitmentCity === city.id;
+      input.addEventListener("change", function () {
+        onCommitmentCityChange(city.id);
+      });
+      const span = document.createElement("span");
+      const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+      span.textContent = copy.cityNames[city.id] || city.id;
+      label.appendChild(input);
+      label.appendChild(span);
+      commitmentCityOptions.appendChild(label);
+    });
+  }
+
+  function invalidateCommitmentAcceptanceOnScreen() {
+    commitmentAcceptanceChecked = false;
+    commitmentAccept.checked = false;
+    commitmentSnapshot = null;
+    commitmentSavedStatus.hidden = true;
+    commitmentCheckout.hidden = true;
+    commitmentCheckout.disabled = true;
+  }
+
+  function onCommitmentCountryChange(country) {
+    const prevCountry = commitmentCountry;
+    const prevCity = commitmentCity;
+    commitmentCountry = country;
+    if (
+      !communityCommitmentApi ||
+      !communityCommitmentApi.isCityValidForCountry(country, commitmentCity)
+    ) {
+      commitmentCity = null;
+    }
+    if (
+      communityCommitmentApi &&
+      communityCommitmentApi.shouldInvalidateAcceptance(
+        prevCountry,
+        prevCity,
+        commitmentCountry,
+        commitmentCity
+      )
+    ) {
+      invalidateCommitmentAcceptanceOnScreen();
+    }
+    syncCommitmentUi();
+  }
+
+  function onCommitmentCityChange(cityId) {
+    const prevCountry = commitmentCountry;
+    const prevCity = commitmentCity;
+    commitmentCity = cityId;
+    if (
+      communityCommitmentApi &&
+      communityCommitmentApi.shouldInvalidateAcceptance(
+        prevCountry,
+        prevCity,
+        commitmentCountry,
+        commitmentCity
+      )
+    ) {
+      invalidateCommitmentAcceptanceOnScreen();
+    }
+    syncCommitmentUi();
+  }
+
+  function syncCommitmentUi() {
+    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    const recorded = hasRecordedCommunityCommitment();
+
+    Array.prototype.forEach.call(
+      document.querySelectorAll('input[name="commitment-country"]'),
+      function (input) {
+        input.checked = input.value === commitmentCountry;
+      }
+    );
+    renderCommitmentCityOptions();
+
+    const readyForReview = !!(commitmentCountry && commitmentCity);
+    commitmentReview.hidden = !readyForReview && !recorded;
+    commitmentAcceptLabelWrap.hidden = !readyForReview && !recorded;
+    if (readyForReview || recorded) {
+      const countryLabel =
+        copy.countryNames[commitmentCountry] || commitmentCountry || "";
+      const cityLabel = copy.cityNames[commitmentCity] || commitmentCity || "";
+      commitmentReviewCountry.textContent = copy.reviewCountry.replace(
+        "{country}",
+        countryLabel
+      );
+      commitmentReviewCity.textContent = copy.reviewCity.replace(
+        "{city}",
+        cityLabel
+      );
+      commitmentReviewNote.textContent = copy.reviewNote;
+    }
+
+    commitmentAccept.checked = commitmentAcceptanceChecked === true;
+    commitmentAcceptRequired.hidden = true;
+
+    const canConfirm =
+      readyForReview &&
+      commitmentAcceptanceChecked === true &&
+      !commitmentSaving &&
+      !recorded;
+    commitmentConfirm.disabled = !canConfirm;
+    commitmentConfirm.hidden = recorded;
+    commitmentConfirm.textContent = commitmentSaving
+      ? copy.saving
+      : copy.confirm;
+
+    commitmentCheckoutHint.hidden = recorded;
+    if (!recorded) {
+      commitmentCheckoutHint.hidden = false;
+      commitmentCheckoutHint.textContent = copy.checkoutHint;
+    }
+
+    if (recorded) {
+      const countryLabel =
+        copy.countryNames[commitmentCountry] || commitmentCountry || "";
+      const cityLabel = copy.cityNames[commitmentCity] || commitmentCity || "";
+      commitmentSavedStatus.hidden = false;
+      commitmentSavedStatus.textContent = copy.saved
+        .replace("{city}", cityLabel)
+        .replace("{country}", countryLabel);
+      commitmentCheckout.hidden = false;
+      commitmentCheckout.disabled =
+        commitmentCheckoutSubmitting || !hasRecordedCommunityCommitment();
+      commitmentCheckout.textContent = copy.checkoutCta;
+      commitmentCheckoutHint.hidden = true;
+      // Keep acceptance visible but checked for review of recorded state.
+      commitmentAccept.checked = true;
+      commitmentAccept.disabled = true;
+    } else {
+      commitmentSavedStatus.hidden = true;
+      commitmentCheckout.hidden = true;
+      commitmentCheckout.disabled = true;
+      commitmentAccept.disabled = false;
+    }
+
+    const editable =
+      !commitmentSnapshot || commitmentSnapshot.editable !== false;
+    commitmentCountryFieldset.disabled = !editable;
+    if (!editable) {
+      commitmentCityFieldset.disabled = true;
+    }
+
+    // Disable payment Attiva until commitment exists.
+    if (paymentSimulateStart) {
+      paymentSimulateStart.disabled =
+        paymentCheckoutSubmitting || !hasRecordedCommunityCommitment();
+    }
+  }
+
+  function applyCommitmentCopy() {
+    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    commitmentLabel.textContent = copy.label;
+    commitmentTitle.textContent = copy.title;
+    commitmentBody.textContent = copy.body;
+    commitmentCountryLegend.textContent = copy.countryLegend;
+    commitmentCityLegend.textContent = copy.cityLegend;
+    commitmentCountryItalyLabel.textContent = copy.countryNames.Italy;
+    commitmentCountryGermanyLabel.textContent = copy.countryNames.Germany;
+    commitmentCountryRomaniaLabel.textContent = copy.countryNames.Romania;
+    commitmentReviewLabel.textContent = copy.reviewLabel;
+    commitmentAcceptText.textContent = copy.acceptText;
+    commitmentAcceptRequired.textContent = copy.acceptRequired;
+    commitmentConfirm.textContent = copy.confirm;
+    commitmentCheckout.textContent = copy.checkoutCta;
+    commitmentBack.textContent = copy.back;
+    document.documentElement.lang = membershipLang();
+  }
+
+  function bootstrapCommunityCommitment() {
+    return fetchCommunityCommitment()
+      .then(function (snapshot) {
+        applyCommitmentSnapshot(snapshot);
+        if (viewCommitment && !viewCommitment.hidden) {
+          syncCommitmentUi();
+        }
+        return snapshot;
+      })
+      .catch(function () {
+        // Fail closed: no local manufacture of acceptance.
+        if (!sessionAuthenticated) {
+          commitmentSnapshot = null;
+        }
+        return null;
+      });
   }
 
   function clearPaymentError() {
@@ -4295,6 +4857,12 @@
     paymentCheckoutSubmitting = false;
     signalConfirmed = false;
     membershipSnapshot = null;
+    commitmentCountry = null;
+    commitmentCity = null;
+    commitmentAcceptanceChecked = false;
+    commitmentSnapshot = null;
+    commitmentSaving = false;
+    commitmentCheckoutSubmitting = false;
     endMembershipRecoveryFlow();
     loginSubmitting = false;
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
@@ -4354,6 +4922,7 @@
     viewCode.hidden = name !== "code";
     viewPasskey.hidden = name !== "passkey";
     viewReady.hidden = name !== "ready";
+    viewCommitment.hidden = name !== "commitment";
     viewPayment.hidden = name !== "payment";
     viewActive.hidden = name !== "active";
     document.title = titles[name] || titles.entry;
@@ -4368,6 +4937,7 @@
     document.body.classList.toggle("page-code", name === "code");
     document.body.classList.toggle("page-passkey", name === "passkey");
     document.body.classList.toggle("page-ready", name === "ready");
+    document.body.classList.toggle("page-commitment", name === "commitment");
     document.body.classList.toggle("page-payment", name === "payment");
     document.body.classList.toggle("page-active", name === "active");
 
@@ -4414,6 +4984,10 @@
     }
     if (name === "ready") {
       applyReadyCopy();
+    }
+    if (name === "commitment") {
+      applyCommitmentCopy();
+      syncCommitmentUi();
     }
     if (name === "payment") {
       applyPaymentCopy();
@@ -4468,6 +5042,7 @@
         (route === "code" ||
           route === "passkey" ||
           route === "ready" ||
+          route === "commitment" ||
           route === "payment" ||
           route === "active") &&
         !enteredEmail
@@ -4477,6 +5052,7 @@
       if (
         (route === "passkey" ||
           route === "ready" ||
+          route === "commitment" ||
           route === "payment" ||
           route === "active") &&
         !emailVerified
@@ -4484,10 +5060,20 @@
         route = "code";
       }
       if (
-        (route === "ready" || route === "payment" || route === "active") &&
+        (route === "ready" ||
+          route === "commitment" ||
+          route === "payment" ||
+          route === "active") &&
         !passkeyRegistered
       ) {
         route = "passkey";
+      }
+      if (
+        (route === "payment" || route === "active") &&
+        !hasRecordedCommunityCommitment() &&
+        !hasAuthoritativePaidMembership()
+      ) {
+        route = "commitment";
       }
       if (
         route === "active" &&
@@ -5007,6 +5593,16 @@
       .then(function () {
         sessionAuthenticated = true;
         showEntryLoginStatus(copy.success, "success");
+        return Promise.all([
+          fetchAccountMembership()
+            .then(function (snapshot) {
+              applyMembershipSnapshot(snapshot);
+            })
+            .catch(function () {
+              membershipSnapshot = null;
+            }),
+          bootstrapCommunityCommitment(),
+        ]);
       })
       .catch(function (err) {
         sessionAuthenticated = false;
@@ -5458,7 +6054,17 @@
         sessionAuthenticated = true;
         membershipSimulated = false;
         clearReadyError();
-        go("payment");
+        return bootstrapCommunityCommitment().then(function () {
+          if (hasRecordedCommunityCommitment()) {
+            go("commitment");
+            return;
+          }
+          // Public browsing selections must not silently bind commitment UI.
+          commitmentCountry = null;
+          commitmentCity = null;
+          commitmentAcceptanceChecked = false;
+          go("commitment");
+        });
       })
       .catch(function (err) {
         sessionAuthenticated = false;
@@ -5480,8 +6086,55 @@
     go("passkey");
   });
 
+  function startAuthenticatedCheckoutFromCommitment() {
+    if (commitmentCheckoutSubmitting) return;
+    if (!hasRecordedCommunityCommitment()) {
+      go("commitment");
+      syncCommitmentUi();
+      return;
+    }
+    clearCommitmentError();
+    commitmentCheckoutSubmitting = true;
+    commitmentCheckout.disabled = true;
+
+    fetchCommunityCommitment()
+      .then(function (snapshot) {
+        applyCommitmentSnapshot(snapshot);
+        if (!hasRecordedCommunityCommitment()) {
+          throw makeApiError("commitmentRequired");
+        }
+        return requestCheckoutSession();
+      })
+      .then(function (checkoutUrl) {
+        setCheckoutPendingMarker();
+        window.location = checkoutUrl;
+      })
+      .catch(function (err) {
+        const kind = err && err.kind ? err.kind : "network";
+        if (kind === "commitmentRequired") {
+          invalidateCommitmentAcceptanceOnScreen();
+          go("commitment");
+          showCommitmentError(
+            commitmentErrorMessage("validation")
+          );
+        } else {
+          showCommitmentError(
+            kind === "unauthenticated"
+              ? commitmentErrorMessage("unauthenticated")
+              : paymentErrorMessage(kind)
+          );
+        }
+        commitmentCheckoutSubmitting = false;
+        syncCommitmentUi();
+      });
+  }
+
   paymentSimulateStart.addEventListener("click", () => {
     if (paymentCheckoutSubmitting) return;
+    if (!hasRecordedCommunityCommitment()) {
+      go("commitment");
+      return;
+    }
     clearPaymentError();
     closePaymentNotice();
     paymentCheckoutSubmitting = true;
@@ -5495,6 +6148,11 @@
       })
       .catch(function (err) {
         const kind = err && err.kind ? err.kind : "network";
+        if (kind === "commitmentRequired") {
+          paymentCheckoutSubmitting = false;
+          go("commitment");
+          return;
+        }
         showPaymentError(paymentErrorMessage(kind));
         paymentCheckoutSubmitting = false;
         paymentSimulateStart.disabled = false;
@@ -5511,6 +6169,77 @@
   paymentBack.addEventListener("click", () => {
     closePaymentNotice();
     clearPaymentError();
+    go("commitment");
+  });
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll('input[name="commitment-country"]'),
+    function (input) {
+      input.addEventListener("change", function () {
+        if (!input.checked) return;
+        onCommitmentCountryChange(input.value);
+      });
+    }
+  );
+
+  commitmentAccept.addEventListener("change", function () {
+    commitmentAcceptanceChecked = commitmentAccept.checked === true;
+    clearCommitmentError();
+    syncCommitmentUi();
+  });
+
+  commitmentConfirm.addEventListener("click", function () {
+    if (commitmentSaving || commitmentConfirm.disabled) return;
+    clearCommitmentError();
+    if (
+      !commitmentCountry ||
+      !commitmentCity ||
+      !communityCommitmentApi ||
+      !communityCommitmentApi.isCityValidForCountry(
+        commitmentCountry,
+        commitmentCity
+      )
+    ) {
+      showCommitmentError(commitmentErrorMessage("validation"));
+      return;
+    }
+    if (!commitmentAcceptanceChecked) {
+      commitmentAcceptRequired.hidden = false;
+      showCommitmentError(commitmentErrorMessage("validation"));
+      return;
+    }
+    // City selection alone never counts; require explicit checkbox.
+    if (communityCommitmentApi.citySelectionCountsAsAcceptance()) {
+      showCommitmentError(commitmentErrorMessage("validation"));
+      return;
+    }
+    const slug = communityCommitmentApi.slugForCityId(commitmentCity);
+    if (!slug) {
+      showCommitmentError(commitmentErrorMessage("unsupported"));
+      return;
+    }
+    commitmentSaving = true;
+    syncCommitmentUi();
+    saveCommunityCommitment(slug)
+      .then(function (snapshot) {
+        applyCommitmentSnapshot(snapshot);
+        commitmentSaving = false;
+        syncCommitmentUi();
+      })
+      .catch(function (err) {
+        commitmentSaving = false;
+        const kind = err && err.kind ? err.kind : "save";
+        showCommitmentError(commitmentErrorMessage(kind));
+        syncCommitmentUi();
+      });
+  });
+
+  commitmentCheckout.addEventListener("click", function () {
+    startAuthenticatedCheckoutFromCommitment();
+  });
+
+  commitmentBack.addEventListener("click", function () {
+    clearCommitmentError();
     go("ready");
   });
 
@@ -5560,6 +6289,96 @@
       const n = Number(story);
       if (Number.isFinite(n) && n >= 1) {
         feedIndex = Math.max(0, Math.floor(n) - 1);
+      }
+    }
+    // Review-only UI fixtures for community commitment visual inspection.
+    // Never grants backend acceptance, membership, or Checkout authority.
+    const review = params.get("townReview");
+    if (review && typeof review === "string") {
+      beginInviteMembershipJourney();
+      enteredEmail = "review@towncivic.org";
+      emailVerified = true;
+      passkeyRegistered = true;
+      sessionAuthenticated = true;
+      if (review === "commitment-no-country") {
+        commitmentCountry = null;
+        commitmentCity = null;
+        commitmentAcceptanceChecked = false;
+        commitmentSnapshot = null;
+        go("commitment");
+      } else if (review === "commitment-country-only") {
+        commitmentCountry = "Italy";
+        commitmentCity = null;
+        commitmentAcceptanceChecked = false;
+        commitmentSnapshot = null;
+        go("commitment");
+      } else if (review === "commitment-city-no-accept") {
+        commitmentCountry = "Italy";
+        commitmentCity = "Milano";
+        commitmentAcceptanceChecked = false;
+        commitmentSnapshot = null;
+        go("commitment");
+      } else if (review === "commitment-accept-pending") {
+        commitmentCountry = "Italy";
+        commitmentCity = "Milano";
+        commitmentAcceptanceChecked = true;
+        commitmentSaving = true;
+        commitmentSnapshot = null;
+        go("commitment");
+      } else if (review === "commitment-rejected") {
+        commitmentCountry = "Italy";
+        commitmentCity = "Milano";
+        commitmentAcceptanceChecked = true;
+        commitmentSnapshot = null;
+        go("commitment");
+        showCommitmentError(commitmentErrorMessage("save"));
+      } else if (review === "commitment-recorded") {
+        commitmentCountry = "Italy";
+        commitmentCity = "Milano";
+        commitmentAcceptanceChecked = true;
+        commitmentSnapshot = {
+          status: "recorded",
+          accepted: true,
+          acceptedAt: "2026-07-30T12:00:00.000Z",
+          commitmentVersion: "community-commitment-v1",
+          editable: true,
+          community: {
+            slug: "milano-it",
+            displayName: "Milano",
+            cityName: "Milano",
+            countryCode: "IT",
+          },
+        };
+        go("commitment");
+      } else if (review === "commitment-no-acceptance-existing") {
+        commitmentCountry = null;
+        commitmentCity = null;
+        commitmentAcceptanceChecked = false;
+        commitmentSnapshot = {
+          status: "none",
+          accepted: false,
+          acceptedAt: null,
+          commitmentVersion: null,
+          editable: true,
+          community: null,
+        };
+        go("commitment");
+      } else if (review === "commitment-restored") {
+        commitmentSnapshot = {
+          status: "recorded",
+          accepted: true,
+          acceptedAt: "2026-07-30T12:00:00.000Z",
+          commitmentVersion: "community-commitment-v1",
+          editable: true,
+          community: {
+            slug: "munich-de",
+            displayName: "München",
+            cityName: "Munich",
+            countryCode: "DE",
+          },
+        };
+        restoreCommitmentSelectionFromSnapshot(commitmentSnapshot);
+        go("commitment");
       }
     }
   } catch (err) {

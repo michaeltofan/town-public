@@ -2924,9 +2924,84 @@ body.page-ended {
   display: none !important;
 }
 
+/* ——— Pre-Checkout community commitment ——— */
+
+.commitment__fieldset {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.commitment__fieldset[disabled] {
+  opacity: 0.45;
+}
+
+.commitment__legend {
+  margin: 0 0 0.65rem;
+  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.commitment__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.commitment__option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--body);
+  cursor: pointer;
+}
+
+.commitment__option input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--charcoal);
+}
+
+.commitment__review {
+  margin-top: 1.35rem;
+}
+
+.commitment__accept {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin: 1.25rem 0 0;
+  max-width: 42ch;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--body);
+  cursor: pointer;
+}
+
+.commitment__accept input {
+  margin-top: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  accent-color: var(--charcoal);
+}
+
+#view-commitment[hidden] {
+  display: none !important;
+}
+
 /* ——— Screen 12: Membership Payment Boundary Mock ——— */
 
-.page-payment {
+.page-payment,
+.page-commitment {
   overflow: auto;
 }
 
