@@ -86,6 +86,37 @@ else
   fail=1
 fi
 
+echo "== Checkout remains a separate Activate-membership action =="
+python3 - <<'PY'
+from pathlib import Path
+
+js = Path("script.js").read_text(encoding="utf-8")
+
+def fail(msg):
+    raise SystemExit("FAIL: " + msg)
+
+ready_start = js.find('readyContinue.addEventListener("click"')
+ready_back = js.find('readyBack.addEventListener("click"')
+if ready_start < 0 or ready_back <= ready_start:
+    fail("missing readyContinue handler")
+ready_body = js[ready_start:ready_back]
+if "requestCheckoutSession" in ready_body or "checkoutUrl" in ready_body:
+    fail("readyContinue must not start Checkout; Activate membership remains separate")
+if "runPasskeyAuthenticationCeremony" not in ready_body:
+    fail("readyContinue must authenticate before membership screen")
+if 'go("payment")' not in ready_body:
+    fail('authenticated readyContinue must still reach go("payment") membership screen')
+
+pay_start = js.find('paymentSimulateStart.addEventListener("click"')
+pay_back = js.find('paymentBack.addEventListener("click"')
+if pay_start < 0 or pay_back <= pay_start:
+    fail("missing paymentSimulateStart (Activate membership) handler")
+pay_body = js[pay_start:pay_back]
+if "requestCheckoutSession" not in pay_body:
+    fail("Activate membership must still call requestCheckoutSession")
+print("OK: Checkout stays on Activate membership; Continue only authenticates then shows payment")
+PY
+
 echo "== HTML smoke =="
 python3 - <<'PY'
 from html.parser import HTMLParser
