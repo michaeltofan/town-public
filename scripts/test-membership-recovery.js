@@ -196,7 +196,7 @@ assert(
   "cancelling counts as paid membership"
 );
 
-// --- 6. Inactive, expired, suspended, paid_pending_binding, malformed, failures fail closed ---
+// --- 6. Inactive, expired, suspended, paid_pending_binding, malformed fail closed ---
 ["inactive", "expired", "suspended", "paid_pending_binding"].forEach(
   function (status) {
     const snap = recovery.deriveMembershipSnapshot(
@@ -211,10 +211,86 @@ assert(
       status + " does not authorize member state even if canParticipate true"
     );
     assert(
-      recovery.isTerminalMembershipOutcome(snap) === true,
-      status + " is a terminal outcome for recovery polling"
+      recovery.enablesCivicParticipation(snap) === false,
+      status + " does not grant civic participation"
     );
   }
+);
+
+["inactive", "expired", "suspended"].forEach(function (status) {
+  const snap = recovery.deriveMembershipSnapshot(
+    membershipPayload(status, false)
+  );
+  assert(
+    recovery.isPreWebhookMembershipStatus(snap) === true,
+    status + " is a pre-webhook status during Checkout recovery"
+  );
+  assert(
+    recovery.isCheckoutRecoveryStopOutcome(snap) === false,
+    status + " must not stop pending Checkout recovery polling"
+  );
+  assert(
+    recovery.shouldStartCheckoutRecoveryPolling(true, snap) === true,
+    status + " with advisory marker starts bounded recovery polling"
+  );
+  assert(
+    recovery.shouldStartCheckoutRecoveryPolling(false, snap) === false,
+    status + " without marker does not start polling on normal load"
+  );
+});
+
+const pendingBinding = recovery.deriveMembershipSnapshot(
+  membershipPayload("paid_pending_binding", true)
+);
+assert(
+  recovery.isPaidPendingBinding(pendingBinding) === true,
+  "paid_pending_binding is recognized"
+);
+assert(
+  recovery.isCheckoutRecoveryStopOutcome(pendingBinding) === true,
+  "paid_pending_binding may stop recovery as authoritative non-participating"
+);
+assert(
+  recovery.enablesMemberAuthorizedState(pendingBinding) === false,
+  "paid_pending_binding is never treated as active member authorization"
+);
+assert(
+  recovery.enablesCivicParticipation(pendingBinding) === false,
+  "paid_pending_binding never grants civic participation"
+);
+assert(
+  recovery.shouldStartCheckoutRecoveryPolling(true, pendingBinding) === false,
+  "paid_pending_binding with marker does not keep polling"
+);
+
+assert(
+  recovery.isCheckoutRecoveryStopOutcome(
+    recovery.deriveMembershipSnapshot(membershipPayload("active", true))
+  ) === true,
+  "active stops Checkout recovery polling"
+);
+assert(
+  recovery.isCheckoutRecoveryStopOutcome(
+    recovery.deriveMembershipSnapshot(membershipPayload("cancelling", true))
+  ) === true,
+  "cancelling stops Checkout recovery polling"
+);
+
+assert(
+  recovery.shouldClearCheckoutPendingMarker("success") === true,
+  "marker clears on success boundary"
+);
+assert(
+  recovery.shouldClearCheckoutPendingMarker("timeout") === true,
+  "marker clears on timeout boundary"
+);
+assert(
+  recovery.shouldClearCheckoutPendingMarker("exit") === true,
+  "marker clears on exit/dismiss boundary"
+);
+assert(
+  recovery.shouldClearCheckoutPendingMarker("poll") === false,
+  "marker does not clear on intermediate poll"
 );
 
 assert(
@@ -257,11 +333,19 @@ function flushMicrotasks() {
   });
 }
 
-// --- 7/8. Webhook delay: bounded retries; stop after success, timeout, or exit ---
-function testPollerBoundedUntilActive() {
+function recoveryShouldStop(payload) {
+  const snap = recovery.deriveMembershipSnapshot(payload);
+  return recovery.isCheckoutRecoveryStopOutcome(snap);
+}
+
+// --- Realistic sequence: inactive → inactive → active continues then succeeds ---
+function testInactiveThenActiveContinuesAndSucceeds() {
   const clock = makeFakeClock();
+  const store = makeMemoryStorage();
+  recovery.setCheckoutPendingMarker(store);
   let polls = 0;
   let stoppedWith = null;
+  let lastSnap = null;
   const poller = recovery.createBoundedPoller({
     maxMs: 10000,
     intervalMs: 2000,
@@ -271,47 +355,68 @@ function testPollerBoundedUntilActive() {
     poll: function () {
       polls += 1;
       if (polls < 3) {
-        // Malformed / not-yet-ready → keep waiting
-        return { data: { membership: {}, access: {} } };
+        return membershipPayload("inactive", false);
       }
       return membershipPayload("active", true);
     },
-    shouldStop: function (payload) {
-      const snap = recovery.deriveMembershipSnapshot(payload);
-      return recovery.isTerminalMembershipOutcome(snap);
-    },
+    shouldStop: recoveryShouldStop,
     onStop: function (reason) {
       stoppedWith = reason;
+      if (reason === "success") {
+        assert(
+          recovery.shouldClearCheckoutPendingMarker("success") === true,
+          "success boundary may clear marker"
+        );
+        recovery.clearCheckoutPendingMarker(store);
+      }
     },
   });
   poller.start();
   return flushMicrotasks()
     .then(function () {
-      assertEqual(polls, 1, "poller runs first attempt immediately");
-      clock.advance(2000);
-      return flushMicrotasks();
-    })
-    .then(function () {
-      assertEqual(polls, 2, "poller retries after interval");
-      clock.advance(2000);
-      return flushMicrotasks();
-    })
-    .then(function () {
-      assertEqual(polls, 3, "poller retries again");
-      assertEqual(
-        stoppedWith,
-        "success",
-        "poller stops after authoritative terminal success"
+      assertEqual(polls, 1, "inactive→active: first poll runs immediately");
+      lastSnap = recovery.deriveMembershipSnapshot(
+        membershipPayload("inactive", false)
       );
-      assertEqual(clock.pendingCount(), 0, "no further timers after success");
-      const pollsAfterSuccess = polls;
+      assert(
+        recovery.isCheckoutRecoveryStopOutcome(lastSnap) === false,
+        "inactive does not stop recovery"
+      );
+      assert(
+        recovery.hasCheckoutPendingMarker(store) === true,
+        "marker remains while inactive polls continue"
+      );
+      assert(
+        recovery.enablesMemberAuthorizedState(lastSnap) === false,
+        "inactive remains fail-closed during recovery"
+      );
+      clock.advance(2000);
+      return flushMicrotasks();
+    })
+    .then(function () {
+      assertEqual(polls, 2, "inactive→active: second inactive poll continues");
+      clock.advance(2000);
+      return flushMicrotasks();
+    })
+    .then(function () {
+      assertEqual(polls, 3, "inactive→active: third poll reaches active");
+      assertEqual(stoppedWith, "success", "inactive→active then succeeds");
+      assertEqual(clock.pendingCount(), 0, "no timers after active success");
+      assert(
+        recovery.hasCheckoutPendingMarker(store) === false,
+        "marker cleared only after active success"
+      );
+      const pollsAfter = polls;
       clock.advance(20000);
-      assertEqual(polls, pollsAfterSuccess, "no infinite polling after success");
+      assertEqual(polls, pollsAfter, "no infinite polling after active");
     });
 }
 
-function testPollerTimeout() {
+// --- inactive until timeout: fail-closed + honest pending/manual-retry boundary ---
+function testInactiveUntilTimeoutRemainsFailClosed() {
   const clock = makeFakeClock();
+  const store = makeMemoryStorage();
+  recovery.setCheckoutPendingMarker(store);
   let polls = 0;
   let stoppedWith = null;
   const poller = recovery.createBoundedPoller({
@@ -322,15 +427,14 @@ function testPollerTimeout() {
     clearTimeout: clock.clearTimeout,
     poll: function () {
       polls += 1;
-      return { data: { membership: {}, access: {} } };
+      return membershipPayload("inactive", false);
     },
-    shouldStop: function (payload) {
-      return recovery.isTerminalMembershipOutcome(
-        recovery.deriveMembershipSnapshot(payload)
-      );
-    },
+    shouldStop: recoveryShouldStop,
     onStop: function (reason) {
       stoppedWith = reason;
+      if (reason === "timeout") {
+        recovery.clearCheckoutPendingMarker(store);
+      }
     },
   });
   poller.start();
@@ -348,16 +452,105 @@ function testPollerTimeout() {
       return flushMicrotasks();
     })
     .then(function () {
-      assertEqual(stoppedWith, "timeout", "poller stops at bounded timeout");
+      assertEqual(
+        stoppedWith,
+        "timeout",
+        "inactive until timeout reaches bounded timeout"
+      );
+      assert(
+        recovery.hasCheckoutPendingMarker(store) === false,
+        "marker cleared at timeout boundary for pending/manual-retry UI"
+      );
+      assert(
+        recovery.enablesMemberAuthorizedState(
+          recovery.deriveMembershipSnapshot(membershipPayload("inactive", false))
+        ) === false,
+        "inactive until timeout remains fail-closed"
+      );
       const pollsAtTimeout = polls;
       clock.advance(20000);
-      assertEqual(
-        polls,
-        pollsAtTimeout,
-        "timeout ends polling — no infinite loop"
-      );
+      assertEqual(polls, pollsAtTimeout, "timeout ends polling — no infinite loop");
       assert(pollsAtTimeout <= 4, "timeout uses a small bounded attempt count");
     });
+}
+
+// --- Normal load without marker: inactive applies once, no polling ---
+function testInactiveNormalLoadNoPolling() {
+  const snap = recovery.deriveMembershipSnapshot(
+    membershipPayload("inactive", false)
+  );
+  assert(
+    recovery.shouldStartCheckoutRecoveryPolling(false, snap) === false,
+    "inactive on normal load without marker starts no polling"
+  );
+  assert(
+    recovery.enablesMemberAuthorizedState(snap) === false,
+    "inactive on normal load grants no authorization"
+  );
+  assert(
+    recovery.enablesCivicParticipation(snap) === false,
+    "inactive on normal load grants no civic participation"
+  );
+  return Promise.resolve();
+}
+
+// --- expired/suspended also continue during recovery ---
+function testExpiredContinuesDuringRecovery() {
+  const clock = makeFakeClock();
+  let polls = 0;
+  let stoppedWith = null;
+  const poller = recovery.createBoundedPoller({
+    maxMs: 8000,
+    intervalMs: 2000,
+    now: clock.now,
+    setTimeout: clock.setTimeout,
+    clearTimeout: clock.clearTimeout,
+    poll: function () {
+      polls += 1;
+      if (polls === 1) return membershipPayload("expired", false);
+      if (polls === 2) return membershipPayload("suspended", false);
+      return membershipPayload("cancelling", true);
+    },
+    shouldStop: recoveryShouldStop,
+    onStop: function (reason) {
+      stoppedWith = reason;
+    },
+  });
+  poller.start();
+  return flushMicrotasks()
+    .then(function () {
+      assertEqual(polls, 1, "expired poll does not stop recovery");
+      clock.advance(2000);
+      return flushMicrotasks();
+    })
+    .then(function () {
+      assertEqual(polls, 2, "suspended poll does not stop recovery");
+      clock.advance(2000);
+      return flushMicrotasks();
+    })
+    .then(function () {
+      assertEqual(polls, 3, "cancelling stops recovery as paid outcome");
+      assertEqual(stoppedWith, "success", "cancelling is a recovery stop outcome");
+    });
+}
+
+function testPaidPendingBindingStopsWithNoParticipation() {
+  const snap = recovery.deriveMembershipSnapshot(
+    membershipPayload("paid_pending_binding", false)
+  );
+  assert(
+    recovery.isCheckoutRecoveryStopOutcome(snap) === true,
+    "paid_pending_binding stops polling as authoritative outcome"
+  );
+  assert(
+    recovery.isPaidMembership(snap) === false,
+    "paid_pending_binding is not silently treated as active/cancelling paid"
+  );
+  assert(
+    recovery.enablesCivicParticipation(snap) === false,
+    "paid_pending_binding never enables civic participation"
+  );
+  return Promise.resolve();
 }
 
 function testPollerExit() {
@@ -372,11 +565,9 @@ function testPollerExit() {
     clearTimeout: clock.clearTimeout,
     poll: function () {
       polls += 1;
-      return { data: { membership: {}, access: {} } };
+      return membershipPayload("inactive", false);
     },
-    shouldStop: function () {
-      return false;
-    },
+    shouldStop: recoveryShouldStop,
     onStop: function (reason) {
       stoppedWith = reason;
     },
@@ -406,13 +597,11 @@ function testNoOverlappingPolls() {
       started += 1;
       return new Promise(function (resolve) {
         resolvePoll = function () {
-          resolve({ data: { membership: {}, access: {} } });
+          resolve(membershipPayload("inactive", false));
         };
       });
     },
-    shouldStop: function () {
-      return false;
-    },
+    shouldStop: recoveryShouldStop,
   });
   poller.start();
   return flushMicrotasks()
@@ -465,8 +654,11 @@ assert(
   "direct navigation without backend payload cannot manufacture membership"
 );
 
-testPollerBoundedUntilActive()
-  .then(testPollerTimeout)
+testInactiveThenActiveContinuesAndSucceeds()
+  .then(testInactiveUntilTimeoutRemainsFailClosed)
+  .then(testInactiveNormalLoadNoPolling)
+  .then(testExpiredContinuesDuringRecovery)
+  .then(testPaidPendingBindingStopsWithNoParticipation)
   .then(testPollerExit)
   .then(testNoOverlappingPolls)
   .then(function () {

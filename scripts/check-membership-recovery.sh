@@ -47,8 +47,11 @@ require_contains "script.js" "startMembershipRecoveryPolling"
 require_contains "script.js" "manualMembershipRecoveryRetry"
 require_contains "script.js" "canTakeCivicAction"
 require_contains "membership-recovery.js" "town.checkoutPending"
-require_contains "membership-recovery.js" "createBoundedPoller"
-require_contains "membership-recovery.js" "deriveMembershipSnapshot"
+require_contains "membership-recovery.js" "isCheckoutRecoveryStopOutcome"
+require_contains "membership-recovery.js" "isPreWebhookMembershipStatus"
+require_contains "membership-recovery.js" "shouldStartCheckoutRecoveryPolling"
+require_contains "script.js" "isCheckoutRecoveryStopOutcome"
+require_contains "script.js" "shouldStartCheckoutRecoveryPolling"
 
 echo "== Guardrails =="
 # localStorage remains forbidden everywhere in the public surface.
@@ -109,11 +112,6 @@ if "signalConfirmed = true" in body:
 # Bootstrap must call authoritative membership endpoint.
 if "function bootstrapAccountMembership()" not in js:
     fail("missing bootstrapAccountMembership")
-boot = re.search(
-    r"function bootstrapAccountMembership\(\) \{([\s\S]*?)\n  function ",
-    js,
-)
-# bootstrap is near the end of early helpers; fall back to looser extract
 boot_fn = re.search(
     r"function bootstrapAccountMembership\(\) \{([\s\S]*?)\n  \}",
     js,
@@ -127,9 +125,26 @@ if "fetchAccountMembership()" not in boot_body:
     fail("bootstrap must call GET /v1/account/membership")
 if "hasCheckoutPendingMarker()" not in boot_body:
     fail("bootstrap must consider advisory pending marker")
+if "shouldStartCheckoutRecoveryPolling" not in boot_body:
+    fail("bootstrap must separate normal-load apply from recovery polling start")
 
 if 'API_BASE + "/v1/account/membership"' not in js:
     fail("production must call /v1/account/membership")
+
+# Pending recovery must not treat inactive as a stop outcome.
+start_poll = re.search(
+    r"function startMembershipRecoveryPolling\(\) \{([\s\S]*?)\n  \}",
+    js,
+)
+if not start_poll:
+    fail("missing startMembershipRecoveryPolling")
+if "isCheckoutRecoveryStopOutcome" not in start_poll.group(1):
+    fail("recovery poller must stop only on checkout recovery stop outcomes")
+if re.search(
+    r"shouldStop:\s*function[^{]*\{[^}]*isTerminalMembershipOutcome",
+    start_poll.group(1),
+):
+    fail("recovery poller must not use legacy terminal classification for inactive")
 
 # Production civic authorization must not read membershipSimulated.
 civic = re.search(
@@ -158,6 +173,16 @@ if not finish:
     fail("missing finishRecoveryWithSnapshot")
 if "membershipSimulated = true" in finish.group(1):
     fail("recovery must not set membershipSimulated")
+if "isPaidPendingBinding" not in finish.group(1):
+    fail("paid_pending_binding must receive honest non-participating finish UI")
+
+# Helper: inactive must not be a checkout recovery stop outcome.
+if "PRE_WEBHOOK_MEMBERSHIP_STATUSES" not in helper:
+    fail("helper must classify pre-webhook statuses separately")
+if "CHECKOUT_RECOVERY_STOP_STATUSES" not in helper:
+    fail("helper must classify checkout recovery stop outcomes separately")
+if "inactive: true" in helper.split("CHECKOUT_RECOVERY_STOP_STATUSES")[1].split("}")[0]:
+    fail("inactive must not be a checkout recovery stop status")
 
 # Marker helpers must never grant authorization.
 if "function markerGrantsAuthorization" not in helper:

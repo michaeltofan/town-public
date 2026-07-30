@@ -27,12 +27,19 @@
     cancelling: true,
   };
 
-  const TERMINAL_MEMBERSHIP_STATUSES = {
-    active: true,
-    cancelling: true,
+  // Pre-webhook / non-paid states that remain fail-closed on normal loads, but
+  // must NOT stop a pending Checkout recovery poll (they may precede invoice.paid).
+  const PRE_WEBHOOK_MEMBERSHIP_STATUSES = {
     inactive: true,
     expired: true,
     suspended: true,
+  };
+
+  // Authoritative outcomes that may end a pending Checkout recovery window.
+  // paid_pending_binding is terminal but never grants civic participation.
+  const CHECKOUT_RECOVERY_STOP_STATUSES = {
+    active: true,
+    cancelling: true,
     paid_pending_binding: true,
   };
 
@@ -118,12 +125,35 @@
     return !!(snapshot && snapshot.canParticipate === true);
   }
 
-  function isTerminalMembershipOutcome(snapshot) {
+  function isPreWebhookMembershipStatus(snapshot) {
     return !!(
       snapshot &&
       typeof snapshot.status === "string" &&
-      TERMINAL_MEMBERSHIP_STATUSES[snapshot.status]
+      PRE_WEBHOOK_MEMBERSHIP_STATUSES[snapshot.status]
     );
+  }
+
+  function isPaidPendingBinding(snapshot) {
+    return !!(snapshot && snapshot.status === "paid_pending_binding");
+  }
+
+  /**
+   * Stop conditions for a pending post-Checkout polling window only.
+   * inactive / expired / suspended must NOT stop polling before timeout —
+   * they may be the account's pre-webhook state.
+   */
+  function isCheckoutRecoveryStopOutcome(snapshot) {
+    return !!(
+      snapshot &&
+      typeof snapshot.status === "string" &&
+      CHECKOUT_RECOVERY_STOP_STATUSES[snapshot.status]
+    );
+  }
+
+  // Backward-compatible alias used by earlier recovery wiring/tests.
+  // Means "checkout recovery may stop", NOT "any known membership status".
+  function isTerminalMembershipOutcome(snapshot) {
+    return isCheckoutRecoveryStopOutcome(snapshot);
   }
 
   function enablesMemberAuthorizedState(snapshot) {
@@ -131,7 +161,31 @@
   }
 
   function enablesCivicParticipation(snapshot) {
-    return canParticipate(snapshot);
+    if (!snapshot) return false;
+    // paid_pending_binding is never active web participation.
+    if (isPaidPendingBinding(snapshot)) return false;
+    // Pre-webhook / non-paid states stay fail-closed for civic actions.
+    if (isPreWebhookMembershipStatus(snapshot)) return false;
+    return isPaidMembership(snapshot) && canParticipate(snapshot);
+  }
+
+  /**
+   * Normal authenticated loads (no Checkout marker): apply any derived snapshot
+   * once. Non-paid states fail closed and must not start recovery polling.
+   */
+  function shouldStartCheckoutRecoveryPolling(pendingMarker, snapshot) {
+    if (!pendingMarker) return false;
+    if (isCheckoutRecoveryStopOutcome(snapshot)) return false;
+    return true;
+  }
+
+  function shouldClearCheckoutPendingMarker(reason) {
+    return (
+      reason === "success" ||
+      reason === "timeout" ||
+      reason === "exit" ||
+      reason === "dismiss"
+    );
   }
 
   /**
@@ -246,9 +300,14 @@
     deriveMembershipSnapshot: deriveMembershipSnapshot,
     isPaidMembership: isPaidMembership,
     canParticipate: canParticipate,
+    isPreWebhookMembershipStatus: isPreWebhookMembershipStatus,
+    isPaidPendingBinding: isPaidPendingBinding,
+    isCheckoutRecoveryStopOutcome: isCheckoutRecoveryStopOutcome,
     isTerminalMembershipOutcome: isTerminalMembershipOutcome,
     enablesMemberAuthorizedState: enablesMemberAuthorizedState,
     enablesCivicParticipation: enablesCivicParticipation,
+    shouldStartCheckoutRecoveryPolling: shouldStartCheckoutRecoveryPolling,
+    shouldClearCheckoutPendingMarker: shouldClearCheckoutPendingMarker,
     createBoundedPoller: createBoundedPoller,
   };
 });

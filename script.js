@@ -1778,11 +1778,15 @@
     );
   }
 
-  // Civic participation: fail closed unless backend canParticipate is true.
-  // Prototype-only path (membershipSimulated) is not used for production auth.
+  // Civic participation: fail closed unless backend canParticipate is true
+  // and status is not paid_pending_binding. Prototype-only membershipSimulated
+  // is not used for production auth.
   function canTakeCivicAction() {
     if (!membershipRecoveryApi) return false;
-    return membershipRecoveryApi.canParticipate(membershipSnapshot) === true;
+    return (
+      membershipRecoveryApi.enablesCivicParticipation(membershipSnapshot) ===
+      true
+    );
   }
 
   function isMemberPresented() {
@@ -1895,13 +1899,19 @@
       endMembershipRecoveryFlow();
       return;
     }
-    if (membershipRecoveryApi.isPaidMembership(snapshot)) {
+    if (
+      membershipRecoveryApi.isPaidMembership(snapshot) ||
+      membershipRecoveryApi.isPaidPendingBinding(snapshot)
+    ) {
+      // Paid without participation, or paid_pending_binding: honest
+      // non-participating UI — never grant civic actions or silent feed return.
       beginMembershipRecoveryFlow();
       go("payment");
       showPaymentPaidNoParticipate();
       return;
     }
-    // Terminal non-paid outcomes: clear recovery UX, remain fail-closed.
+    // Non-stop / unexpected non-paid: remain fail-closed (should be rare after
+    // recovery-stop filtering; pre-webhook states continue polling instead).
     endMembershipRecoveryFlow();
     if (isProductOnlyPublicMode()) {
       endInviteMembershipJourney();
@@ -1927,12 +1937,14 @@
     membershipRecoveryPoller = membershipRecoveryApi.createBoundedPoller({
       poll: function () {
         return fetchAccountMembership().then(function (snapshot) {
+          // Apply for fail-closed UI, but pre-webhook non-paid states must not
+          // stop the bounded Checkout recovery window.
           applyMembershipSnapshot(snapshot);
           return snapshot;
         });
       },
       shouldStop: function (snapshot) {
-        return membershipRecoveryApi.isTerminalMembershipOutcome(snapshot);
+        return membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot);
       },
       onStop: function (reason) {
         membershipRecoveryPoller = null;
@@ -1957,11 +1969,11 @@
     fetchAccountMembership()
       .then(function (snapshot) {
         applyMembershipSnapshot(snapshot);
-        if (membershipRecoveryApi.isTerminalMembershipOutcome(snapshot)) {
+        if (membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot)) {
           finishRecoveryWithSnapshot(snapshot);
           return;
         }
-        // Still not terminal — restore pending + one more chance via poller.
+        // Still pre-webhook / non-stop — restore pending + bounded poller.
         setCheckoutPendingMarker();
         startMembershipRecoveryPolling();
       })
@@ -1983,15 +1995,25 @@
         if (pending) {
           if (
             membershipRecoveryApi &&
-            membershipRecoveryApi.isTerminalMembershipOutcome(snapshot)
+            membershipRecoveryApi.shouldStartCheckoutRecoveryPolling(
+              true,
+              snapshot
+            )
+          ) {
+            startMembershipRecoveryPolling();
+          } else if (
+            membershipRecoveryApi &&
+            membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot)
           ) {
             finishRecoveryWithSnapshot(snapshot);
           } else {
+            // Pending marker but unusable/malformed snapshot: keep trying.
             startMembershipRecoveryPolling();
           }
           return;
         }
-        // Normal authenticated load: apply authoritative state once (no marker).
+        // Normal authenticated load: apply authoritative state once (no marker,
+        // no recovery polling) — including inactive/expired/suspended.
       })
       .catch(function () {
         // Fail closed on session/membership errors.
