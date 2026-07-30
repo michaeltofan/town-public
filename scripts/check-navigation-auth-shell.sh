@@ -194,16 +194,91 @@ for route in (
     if f'go("{route}")' in block or f"go('{route}')" in block:
         fail(f"nav/auth must not expose dormant route {route}")
 
-# Auth controls make no API calls in this visual slice
-for fn_name, pattern in (
-    ("authContinue", r'authContinue\.addEventListener\("click",([\s\S]*?)\}\);'),
-    ("authPasskey", r'authPasskey\.addEventListener\("click",([\s\S]*?)\}\);'),
-    ("authPassword", r'authPassword\.addEventListener\("click",([\s\S]*?)\}\);'),
+# Mode-aware #auth-continue: Create+email may verify; Sign-in/phone stay inert.
+# Extract handlers by adjacent listener boundaries (nested }); breaks non-greedy).
+continue_start = js.find('authContinue.addEventListener("click"')
+passkey_start = js.find('authPasskey.addEventListener("click"')
+password_start = js.find('authPassword.addEventListener("click"')
+enter_start = js.find('enterButton.addEventListener("click"')
+if continue_start < 0 or passkey_start < 0 or password_start < 0 or enter_start < 0:
+    fail("missing authContinue / authPasskey / authPassword / enterButton handlers")
+if not (continue_start < passkey_start < password_start < enter_start):
+    fail("auth shell click handlers out of expected order")
+
+continue_body = js[continue_start:passkey_start]
+passkey_body = js[passkey_start:password_start]
+password_body = js[password_start:enter_start]
+
+if "preventDefault" not in continue_body:
+    fail("authContinue must preventDefault")
+
+phone_idx = continue_body.find('authChannel === "phone"')
+signin_idx = continue_body.find('authMode === "signin"')
+create_idx = continue_body.find('authMode === "create"')
+email_ch_idx = continue_body.find('authChannel === "email"')
+req_idx = continue_body.find("requestEmailVerification")
+store_idx = continue_body.find("emailVerificationId")
+go_code_idx = continue_body.find('go("code")')
+journey_idx = continue_body.find("beginInviteMembershipJourney")
+valid_idx = continue_body.find("isValidEmail")
+
+if phone_idx < 0:
+    fail("authContinue must inert-return when authChannel === phone")
+if signin_idx < 0:
+    fail("authContinue must inert-return when authMode === signin")
+if create_idx < 0 or email_ch_idx < 0:
+    fail("authContinue must gate success path on create + email")
+if req_idx < 0:
+    fail("Create + email must call requestEmailVerification")
+if store_idx < 0:
+    fail("Create + email must store verificationId on emailVerificationId")
+if go_code_idx < 0:
+    fail('Create + email success must navigate with go("code")')
+if journey_idx < 0:
+    fail("Create + email must activate invite membership journey allowlisting")
+if valid_idx < 0:
+    fail("Create + email must validate with isValidEmail")
+
+# Mode-aware ordering: phone and sign-in gates precede the API call;
+# create+email gate, validation, store, journey, and go("code") surround it.
+if not (phone_idx < req_idx and signin_idx < req_idx):
+    fail("Sign-in/phone inert returns must precede requestEmailVerification")
+if not (create_idx < req_idx and email_ch_idx < req_idx and valid_idx < req_idx):
+    fail("Create + email validation gate must precede requestEmailVerification")
+if not (req_idx < store_idx < journey_idx < go_code_idx):
+    fail(
+        "success path must store verificationId, allowlist journey, then go(code)"
+    )
+
+# Prove Sign-in / phone cannot reach the API: early return after each gate,
+# before requestEmailVerification.
+phone_gate = continue_body[phone_idx:req_idx]
+signin_gate = continue_body[signin_idx:req_idx]
+if not re.search(r'authChannel === "phone"[\s\S]*?return;', phone_gate):
+    fail("phone Continue must return early (no API)")
+if not re.search(r'authMode === "signin"[\s\S]*?return;', signin_gate):
+    fail("Sign-in Continue must return early (no requestEmailVerification)")
+# requestEmailVerification must sit inside the create+email branch only
+create_email_branch = continue_body[max(create_idx, email_ch_idx):]
+if "requestEmailVerification" not in create_email_branch:
+    fail("requestEmailVerification must be inside create + email branch")
+
+# Sign-in Continue must not start passkey/password auth in this slice
+for forbidden in (
+    "requestPasskey",
+    "startAuthentication",
+    "verifyPasskey",
+    "fetchAuthenticationSession",
+    "localStorage",
+    "sessionStorage",
 ):
-    m = re.search(pattern, js)
-    if not m:
-        fail(f"missing {fn_name} click handler")
-    body = m.group(1)
+    if forbidden in continue_body:
+        fail(f"authContinue must not start auth/session side paths (found {forbidden})")
+
+# Passkey and password auth-shell buttons remain unchanged and inert
+for fn_name, body in (("authPasskey", passkey_body), ("authPassword", password_body)):
+    if "preventDefault" not in body:
+        fail(f"{fn_name} should prevent default and remain inert")
     for forbidden in (
         "requestJson",
         "fetchJson",
@@ -219,8 +294,6 @@ for fn_name, pattern in (
     ):
         if forbidden in body:
             fail(f"{fn_name} must remain visual-only (found {forbidden})")
-    if "preventDefault" not in body:
-        fail(f"{fn_name} should prevent default and remain inert")
 
 # Dialog Escape / backdrop / focus restoration / focus containment
 if "event.key === \"Escape\"" not in js or "closeAuthWindow()" not in js:
@@ -280,7 +353,9 @@ pkg = Path("package.json")
 if pkg.exists():
     fail("do not add package.json / external dependency for this slice")
 
-print("OK: navigation rail/bar, shared auth window, and visual-only guards verified")
+print(
+    "OK: navigation rail/bar, shared auth window, and mode-aware Continue guards verified"
+)
 PY
 
 if [[ "$fail" -ne 0 ]]; then
