@@ -101,13 +101,25 @@ if 'route = isProductOnlyPublicMode() ? PRODUCT_ONLY_FEED_ROUTE : "entry"' not i
 if "isNonProductRoute(route)" not in js or "return PRODUCT_ONLY_FEED_ROUTE" not in js:
     fail("non-product routes must normalize to feed")
 
-# go() must short-circuit to feed in product-only mode.
+# go() must short-circuit to feed in product-only mode unless an approved journey is active.
 go_match = re.search(r"function go\(route\) \{([\s\S]*?)\n  function ", js)
 if not go_match:
     fail("could not locate go()")
 go_body = go_match.group(1)
 if "isProductOnlyPublicMode()" not in go_body or "PRODUCT_ONLY_FEED_ROUTE" not in go_body:
     fail("go() must force feed in product-only mode")
+if "allowCityDiscoveryJourney" not in go_body:
+    fail("go() must recognize the city-discovery journey unlock")
+if "allowInviteJourney" not in go_body:
+    fail("go() must preserve invite membership journey unlock")
+
+# Direct country/city hash access stays blocked until city-discovery journey begins.
+if "isCityDiscoveryJourneyActive()" not in js or "isCityDiscoveryJourneyRoute(route)" not in js:
+    fail("city-discovery journey gates must exist for country/city reuse")
+if "beginCityDiscoveryJourney" not in js:
+    fail("missing beginCityDiscoveryJourney()")
+if "CITY_DISCOVERY_JOURNEY_ROUTES" not in js:
+    fail("missing CITY_DISCOVERY_JOURNEY_ROUTES")
 
 # Feed remains usable without onboarding state.
 if "function currentScenes()" not in js or "productOnlyScenes()" not in js:
@@ -169,9 +181,11 @@ if "INVITE_MEMBERSHIP_JOURNEY_ROUTES" not in js:
 if "isInviteMembershipJourneyActive()" not in js:
     fail("missing invite membership journey gate")
 
-# Direct non-product hash routes remain protected unless the invite journey is active.
+# Direct non-product hash routes remain protected unless an approved journey is active.
 if "isInviteMembershipJourneyRoute(route)" not in js:
     fail("parseRoute/go must gate invite journey routes explicitly")
+if "isCityDiscoveryJourneyRoute(route)" not in js:
+    fail("parseRoute/go must gate city-discovery journey routes explicitly")
 
 # First paint should prefer feed, not entry.
 if re.search(r'<div id="view-entry"(?! hidden)', html):

@@ -50,6 +50,9 @@
   );
   const feedScroller = document.getElementById("feed-scroller");
   const feedPanelTemplate = document.getElementById("feed-panel-template");
+  const cityDiscoveryPanelTemplate = document.getElementById(
+    "city-discovery-panel-template"
+  );
   const feedLiveStatus = document.getElementById("feed-live-status");
   const appNav = document.getElementById("app-nav");
   const navHome = document.getElementById("nav-home");
@@ -77,6 +80,7 @@
   const detailCategory = document.getElementById("detail-category");
   const detailHeadline = document.getElementById("detail-headline");
   const detailMeta = document.getElementById("detail-meta");
+  const detailSourceLang = document.getElementById("detail-source-lang");
   const detailCivicStatus = document.getElementById("detail-civic-status");
   const detailDescription = document.getElementById("detail-description");
   const detailWhyLabel = document.getElementById("detail-why-label");
@@ -306,6 +310,7 @@
     !locationOutsideContinue ||
     !feedScroller ||
     !feedPanelTemplate ||
+    !cityDiscoveryPanelTemplate ||
     !feedLiveStatus ||
     !appNav ||
     !navHome ||
@@ -755,6 +760,19 @@
         Romania: "Country: Romania",
       },
     },
+    es: {
+      title: "Elige tu ciudad",
+      lead: "TOWN te conecta con una sola comunidad local verificada.",
+      cityLegend: "Ciudad",
+      back: "Atrás",
+      continue: "Continuar",
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+      context: {
+        Italy: "País: Italia",
+        Germany: "País: Alemania",
+        Romania: "País: Rumanía",
+      },
+    },
     it: {
       title: "Seleziona la tua città",
       lead: "TOWN ti collega a una sola comunità locale verificata.",
@@ -797,6 +815,62 @@
   };
 
   const LOCATION_COPY = {
+    en: {
+      back: "Back",
+      title: "Confirm your local community",
+      lead: "TOWN is local. Participation belongs to people connected to this community.",
+      privacy:
+        "This check runs on your device against the boundary of the city you selected. Your coordinates are neither sent nor stored.",
+      verify: "Verify location",
+      verifying: "Verifying…",
+      retry: "Try again",
+      statusLabel: "Confirmed",
+      successTitle: "Location verified for {city}",
+      successLead:
+        "Your local community is confirmed. The check happened on your device.",
+      continue: "Continue",
+      outsideLabel: "Notice",
+      outsideTitle: "You appear to be outside {city}",
+      outsideLead:
+        "You appear to be outside the boundary of {city}. Declaring an untrue location violates the Terms of Use. You can still continue.",
+      notAvailable:
+        "Location verification for {city} is not available yet.",
+      errorPermission:
+        "Location permission denied. Enable location and try again.",
+      errorUnavailable: "Location unavailable. Try again.",
+      errorTimeout: "Timed out while getting location. Try again.",
+      errorUnsupported:
+        "Location verification is not available in this context. Use a secure connection and try again.",
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
+    },
+    es: {
+      back: "Atrás",
+      title: "Confirma tu comunidad local",
+      lead: "TOWN es local. La participación pertenece a quienes están conectados a esta comunidad.",
+      privacy:
+        "Esta comprobación se ejecuta en tu dispositivo respecto al límite de la ciudad que seleccionaste. Tus coordenadas no se envían ni se almacenan.",
+      verify: "Verificar ubicación",
+      verifying: "Verificando…",
+      retry: "Reintentar",
+      statusLabel: "Confirmado",
+      successTitle: "Ubicación verificada para {city}",
+      successLead:
+        "Tu comunidad local está confirmada. La comprobación se realizó en tu dispositivo.",
+      continue: "Continuar",
+      outsideLabel: "Aviso",
+      outsideTitle: "Pareces estar fuera de {city}",
+      outsideLead:
+        "Pareces estar fuera del límite de {city}. Declarar una ubicación falsa incumple los Términos de uso. Aun así puedes continuar.",
+      notAvailable:
+        "La verificación de ubicación para {city} aún no está disponible.",
+      errorPermission:
+        "Permiso de ubicación denegado. Activa la ubicación e inténtalo de nuevo.",
+      errorUnavailable: "Ubicación no disponible. Inténtalo de nuevo.",
+      errorTimeout: "Se agotó el tiempo para obtener la ubicación. Inténtalo de nuevo.",
+      errorUnsupported:
+        "La verificación de ubicación no está disponible en este contexto. Usa una conexión segura e inténtalo de nuevo.",
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+    },
     it: {
       back: "Indietro",
       title: "Conferma la tua comunità locale",
@@ -894,6 +968,44 @@
   const boundaryCache = Object.create(null);
 
   const FEED_COPY = {
+    en: {
+      back: "Back",
+      visitor: "Visitor",
+      member: "Member · {city}",
+      seeThisToo: "I SEE THIS TOO",
+      doneTitle: "You see this too",
+      doneNote: "Confirmation recorded in the prototype",
+      openSignal: "Open signal",
+      openSignalClose: "Close",
+      whyLabel: "Why this matters here",
+      whoLabel: "Who is affected",
+      updateLabel: "Latest update",
+      statusLabel: "What this status means",
+      communityArea: "{city} · {area}",
+      addTestimony: "Add testimony",
+      clearTestimony: "Remove",
+      demoTestimonyNote: "Demo only — not uploaded, not saved",
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
+    },
+    es: {
+      back: "Atrás",
+      visitor: "Visitante",
+      member: "Miembro · {city}",
+      seeThisToo: "YO TAMBIÉN LO VEO",
+      doneTitle: "Tú también lo ves",
+      doneNote: "Confirmación registrada en el prototipo",
+      openSignal: "Abrir señal",
+      openSignalClose: "Cerrar",
+      whyLabel: "Por qué importa aquí",
+      whoLabel: "Quién está afectado",
+      updateLabel: "Última actualización",
+      statusLabel: "Qué significa este estado",
+      communityArea: "{city} · {area}",
+      addTestimony: "Añadir testimonio",
+      clearTestimony: "Eliminar",
+      demoTestimonyNote: "Solo demo — no se carga ni se guarda",
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+    },
     it: {
       back: "Indietro",
       visitor: "Visitatore",
@@ -1688,6 +1800,13 @@
     payment: true,
     active: true,
   };
+  // Narrow unlock for the editorial "Find my city" CTA: reuse existing
+  // country → city → location selection without auth/payment.
+  const CITY_DISCOVERY_JOURNEY_ROUTES = {
+    country: true,
+    city: true,
+    location: true,
+  };
 
   function isProductOnlyPublicMode() {
     return PRODUCT_ONLY_PUBLIC_MODE === true;
@@ -1699,6 +1818,10 @@
 
   function isInviteMembershipJourneyRoute(route) {
     return !!INVITE_MEMBERSHIP_JOURNEY_ROUTES[route];
+  }
+
+  function isCityDiscoveryJourneyRoute(route) {
+    return !!CITY_DISCOVERY_JOURNEY_ROUTES[route];
   }
 
   function productOnlyScenes() {
@@ -1742,6 +1865,10 @@
     return inviteMembershipJourneyActive === true;
   }
 
+  function isCityDiscoveryJourneyActive() {
+    return cityDiscoveryJourneyActive === true;
+  }
+
   function isMembershipRecoveryFlowActive() {
     return membershipRecoveryActive === true;
   }
@@ -1756,6 +1883,26 @@
 
   function endInviteMembershipJourney() {
     inviteMembershipJourneyActive = false;
+  }
+
+  function beginCityDiscoveryJourney() {
+    // Clear any product-only scene binding so browser language / current
+    // signal never silently selects country, city, or eligibility.
+    cityDiscoveryReturnFeedIndex = feedIndex;
+    selectedCountry = null;
+    selectedCity = null;
+    locationVerified = false;
+    locationOutsideBoundary = false;
+    countryInputs.forEach((input) => {
+      input.checked = false;
+    });
+    if (continueCountry) continueCountry.disabled = true;
+    endInviteMembershipJourney();
+    cityDiscoveryJourneyActive = true;
+  }
+
+  function endCityDiscoveryJourney() {
+    cityDiscoveryJourneyActive = false;
   }
 
   function beginMembershipRecoveryFlow() {
@@ -2057,6 +2204,8 @@
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
+  let cityDiscoveryJourneyActive = false;
+  let cityDiscoveryReturnFeedIndex = 0;
   // Authoritative membership from GET /v1/account/membership only.
   // null = not loaded / failed closed; never grant from URL or storage markers.
   let membershipSnapshot = null;
@@ -2105,6 +2254,10 @@
       !(
         isInviteMembershipJourneyActive() &&
         isInviteMembershipJourneyRoute(route)
+      ) &&
+      !(
+        isCityDiscoveryJourneyActive() &&
+        isCityDiscoveryJourneyRoute(route)
       )
     ) {
       return PRODUCT_ONLY_FEED_ROUTE;
@@ -2126,15 +2279,64 @@
     return null;
   }
 
+  function resolvePublicReadingLanguage() {
+    const i18n = window.TownPublicI18n;
+    const preferred = resolveEditorialPreferredLanguages();
+    if (i18n && typeof i18n.resolveReadingLanguage === "function") {
+      return i18n.resolveReadingLanguage(preferred);
+    }
+    const discovery = window.TownCityDiscovery;
+    if (discovery && typeof discovery.resolveEditorialLanguage === "function") {
+      return discovery.resolveEditorialLanguage(preferred);
+    }
+    return "en";
+  }
+
   function feedLocaleForScene(scene) {
-    const cityId = cityIdFromScene(scene) || selectedCity;
-    const lang = languageForCityId(cityId) || communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const readingLang = resolvePublicReadingLanguage();
+    const i18n = window.TownPublicI18n;
+    const discovery = window.TownCityDiscovery;
+    const chrome =
+      (i18n && i18n.feedChromeCopy(readingLang)) ||
+      FEED_COPY[readingLang] ||
+      FEED_COPY.en ||
+      FEED_COPY.it;
+
+    if (discovery && discovery.isCityDiscoveryStory(scene)) {
+      return {
+        lang: scene.lang || readingLang,
+        copy: chrome,
+        cityId: null,
+        cityName: "",
+        discoveryCopy: scene.copy || (discovery && discovery.editorialCopyForLanguage(readingLang)),
+        localizedScene: scene,
+        sourceLanguageLabel: "",
+      };
+    }
+
+    const signalCopy = window.TownSignalCopy;
+    const localizedScene =
+      signalCopy && typeof signalCopy.localizeSignal === "function"
+        ? signalCopy.localizeSignal(scene, readingLang, i18n)
+        : scene;
+    const cityId =
+      (localizedScene && localizedScene.cityId) ||
+      cityIdFromScene(scene) ||
+      selectedCity;
     const cityName =
-      (copy.cityNames && copy.cityNames[cityId]) ||
+      (chrome.cityNames && chrome.cityNames[cityId]) ||
       cityId ||
-      cityDisplayName(lang);
-    return { lang: lang, copy: copy, cityId: cityId, cityName: cityName };
+      cityDisplayName(readingLang);
+
+    return {
+      lang: readingLang,
+      copy: chrome,
+      cityId: cityId,
+      cityName: cityName,
+      localizedScene: localizedScene,
+      sourceLanguageLabel:
+        (localizedScene && localizedScene.sourceLanguageLabel) || "",
+    };
   }
 
   function cityDisplayName(lang) {
@@ -2146,12 +2348,38 @@
 
   function currentScenes() {
     if (isProductOnlyPublicMode()) {
-      return productOnlyScenes();
+      const base = productOnlyScenes();
+      const discovery = window.TownCityDiscovery;
+      if (!discovery) return base;
+      const preferred = resolveEditorialPreferredLanguages();
+      const lang = discovery.resolveEditorialLanguage(preferred);
+      return discovery.insertCityDiscoveryStory(
+        base,
+        discovery.createCityDiscoveryStory(lang),
+        discovery.CITY_DISCOVERY_INSERT_AFTER
+      );
     }
     if (!selectedCity) return [];
     const live = liveScenes[selectedCity];
     if (live && live.length >= 1) return live;
     return FEED_SCENES[selectedCity] || [];
+  }
+
+  function resolveEditorialPreferredLanguages() {
+    try {
+      const params = new URLSearchParams(window.location.search || "");
+      const reviewLang = params.get("townLang");
+      if (reviewLang) return [reviewLang];
+    } catch (err) {
+      /* ignore */
+    }
+    if (typeof navigator !== "undefined" && navigator.languages) {
+      return navigator.languages;
+    }
+    if (typeof navigator !== "undefined" && navigator.language) {
+      return [navigator.language];
+    }
+    return ["en"];
   }
 
   function formatObservedDate(observedOn, localeTag) {
@@ -2479,6 +2707,52 @@
     liveScenes.Arad = null;
   }
 
+
+  function applyCountryCopy() {
+    const i18n = window.TownPublicI18n;
+    const lang = resolvePublicReadingLanguage();
+    const copy = (i18n && i18n.countryCopy(lang)) || null;
+    if (!copy) return;
+    if (countryBack) countryBack.textContent = copy.back;
+    const title = document.querySelector("#view-country .country__title");
+    const lead = document.querySelector("#view-country .country__lead");
+    const legend = document.querySelector("#view-country .country__legend");
+    if (title) title.textContent = copy.title;
+    if (lead) lead.textContent = copy.lead;
+    if (legend) legend.textContent = copy.legend;
+    if (continueCountry) continueCountry.textContent = copy.continue;
+    const labels = document.querySelectorAll(
+      "#view-country .country__option-label"
+    );
+    const order = ["Italy", "Germany", "Romania"];
+    for (let i = 0; i < labels.length && i < order.length; i++) {
+      labels[i].textContent =
+        (copy.countries && copy.countries[order[i]]) || order[i];
+    }
+    document.documentElement.lang = lang === "en" ? "en" : lang;
+  }
+
+  function applyPublicNavCopy() {
+    const i18n = window.TownPublicI18n;
+    if (!i18n) return;
+    const lang = resolvePublicReadingLanguage();
+    const copy = i18n.feedChromeCopy(lang);
+    const map = [
+      [navHome, copy.navHome],
+      [navMembership, copy.navMembership],
+      [navChat, copy.navChat],
+      [navActivity, copy.navActivity],
+      [navProfile, copy.navProfile],
+    ];
+    for (let i = 0; i < map.length; i++) {
+      const btn = map[i][0];
+      const label = map[i][1];
+      if (!btn || !label) continue;
+      const el = btn.querySelector(".app-nav__label");
+      if (el) el.textContent = label;
+    }
+  }
+
   function applyCityCopy() {
     const lang = communityLanguage();
     const copy = CITY_COPY[lang];
@@ -2505,8 +2779,12 @@
   }
 
   function applyLocationCopy() {
-    const lang = communityLanguage();
-    const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
+    const lang =
+      isProductOnlyPublicMode() || isCityDiscoveryJourneyActive()
+        ? resolvePublicReadingLanguage()
+        : communityLanguage();
+    const copy =
+      LOCATION_COPY[lang] || LOCATION_COPY.en || LOCATION_COPY.it;
     const cityName = cityDisplayName(lang);
 
     locationBack.textContent = copy.back;
@@ -2795,6 +3073,9 @@
   }
 
   function syncPanelMemberControls(panel, panelIndex, copy, cityName) {
+    if (panel && panel.getAttribute("data-story-kind") === "city-discovery") {
+      return;
+    }
     const visitorEl = feedRole("feed-visitor", panel);
     const seeToo = feedRole("feed-see-too", panel);
     const seeTooDone = feedRole("feed-see-too-done", panel);
@@ -2844,6 +3125,7 @@
   function syncFeedMemberState() {
     const scenes = currentScenes();
     const panels = getFeedPanels();
+    const discovery = window.TownCityDiscovery;
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
       const panelIndex = Number(panel.getAttribute("data-feed-index"));
@@ -2857,8 +3139,14 @@
       );
     }
 
-    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
+    const activeScene = scenes[feedIndex];
+    if (discovery && discovery.isCityDiscoveryStory(activeScene)) {
+      return;
+    }
+
+    const activeLocale = feedLocaleForScene(activeScene);
     const copy = activeLocale.copy;
+    if (!copy) return;
     const cityName = activeLocale.cityName;
     const memberPresented = isMemberPresented();
     const civicOk = canTakeCivicAction();
@@ -2898,10 +3186,12 @@
   function applyFeedCopyChrome() {
     const scenes = currentScenes();
     const panels = getFeedPanels();
+    const discovery = window.TownCityDiscovery;
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
       const panelIndex = Number(panel.getAttribute("data-feed-index"));
       const scene = scenes[panelIndex];
+      if (discovery && discovery.isCityDiscoveryStory(scene)) continue;
       const locale = feedLocaleForScene(scene);
       const copy = locale.copy;
       const back = feedRole("feed-back", panel);
@@ -2913,8 +3203,20 @@
       if (openSignal) openSignal.textContent = copy.openSignal;
       if (community) community.textContent = locale.cityName;
     }
-    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
-    const copy = activeLocale.copy;
+    const activeScene = scenes[feedIndex];
+    const readingLang = resolvePublicReadingLanguage();
+    applyPublicNavCopy();
+    if (discovery && discovery.isCityDiscoveryStory(activeScene)) {
+      document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
+      syncFeedMemberState();
+      return;
+    }
+    const activeLocale = feedLocaleForScene(activeScene);
+    const copy = activeLocale.copy || FEED_COPY.en || FEED_COPY.it;
+    if (!copy) {
+      document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
+      return;
+    }
     detailClose.textContent = copy.openSignalClose;
     detailWhyLabel.textContent = copy.whyLabel;
     detailWhoLabel.textContent = copy.whoLabel;
@@ -2922,33 +3224,50 @@
     detailStatusLabel.textContent = copy.statusLabel;
     detailAddTestimony.textContent = copy.addTestimony;
     syncFeedMemberState();
-    document.documentElement.lang =
-      activeLocale.lang === "en" ? "en" : activeLocale.lang;
+    document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
   }
 
   function populateSignalDetail() {
-    const lang = communityLanguage();
-    const copy = FEED_COPY[lang] || FEED_COPY.it;
+    const discovery = window.TownCityDiscovery;
     const scenes = currentScenes();
     const scene = scenes[feedIndex];
     if (!scene) return;
+    if (discovery && discovery.isCityDiscoveryStory(scene)) return;
 
-    const cityName = cityDisplayName(lang);
-    detailImage.src = scene.image;
-    detailImage.style.objectPosition = scene.focus;
-    detailCommunity.textContent = copy.communityArea
+    const locale = feedLocaleForScene(scene);
+    const copy = locale.copy || FEED_COPY.it;
+    const view = locale.localizedScene || scene;
+    const cityName = locale.cityName || "";
+
+    detailImage.src = view.image || scene.image;
+    detailImage.style.objectPosition = view.focus || scene.focus;
+    detailCommunity.textContent = (copy.communityArea || "{city} · {area}")
       .replace("{city}", cityName)
-      .replace("{area}", scene.area);
-    detailCategory.textContent = scene.category;
-    detailHeadline.textContent = scene.headline;
+      .replace("{area}", view.area || "");
+    detailCategory.textContent = view.category || "";
+    detailHeadline.textContent = view.headline || "";
     detailMeta.textContent =
-      scene.observedDate + " · " + scene.authorName + " · " + scene.area;
-    detailCivicStatus.textContent = scene.civicStatus;
-    detailDescription.textContent = scene.description;
-    detailWhy.textContent = scene.whyMatters;
-    detailWho.textContent = scene.whoAffected;
-    detailUpdate.textContent = scene.latestUpdate;
-    detailStatusNote.textContent = scene.statusNote;
+      (view.observedDate || "") +
+      " · " +
+      (scene.authorName || "") +
+      " · " +
+      (view.area || "");
+    if (detailSourceLang) {
+      const label = locale.sourceLanguageLabel || "";
+      const showSource =
+        !!label &&
+        locale.lang &&
+        view.sourceLang &&
+        locale.lang !== view.sourceLang;
+      detailSourceLang.textContent = label;
+      detailSourceLang.hidden = !showSource;
+    }
+    detailCivicStatus.textContent = view.civicStatus || "";
+    detailDescription.textContent = view.description || "";
+    detailWhy.textContent = view.whyMatters || "";
+    detailWho.textContent = view.whoAffected || "";
+    detailUpdate.textContent = view.latestUpdate || "";
+    detailStatusNote.textContent = view.statusNote || "";
     syncFeedMemberState();
   }
 
@@ -2969,7 +3288,11 @@
       if (pager) pager.textContent = panelIndex + 1 + " / " + total;
     }
     if (feedLiveStatus) {
-      feedLiveStatus.textContent = "Story " + (index + 1) + " of " + total;
+      const lang = resolvePublicReadingLanguage();
+      feedLiveStatus.textContent =
+        (window.TownPublicI18n &&
+          window.TownPublicI18n.storyLabel(lang, index + 1, total)) ||
+        "Story " + (index + 1) + " of " + total;
     }
   }
 
@@ -3047,7 +3370,55 @@
     }
   }
 
+  function buildCityDiscoveryPanel(scene, index, total) {
+    const fragment = cityDiscoveryPanelTemplate.content.cloneNode(true);
+    const panel = fragment.querySelector(".feed__panel");
+    panel.setAttribute("data-feed-index", String(index));
+    panel.setAttribute(
+      "aria-label",
+      "Story " + (index + 1) + " of " + total
+    );
+    const idNodes = panel.querySelectorAll("[id]");
+    for (let i = 0; i < idNodes.length; i++) {
+      const el = idNodes[i];
+      el.setAttribute("data-feed-role", el.id);
+      el.removeAttribute("id");
+    }
+
+    const discovery = window.TownCityDiscovery;
+    const copy =
+      (scene && scene.copy) ||
+      (discovery && discovery.editorialCopyForLanguage(scene && scene.lang)) ||
+      null;
+    const image = panel.querySelector(".discovery__image");
+    const headline1 = feedRole("discovery-headline-1", panel);
+    const headline2 = feedRole("discovery-headline-2", panel);
+    const support = feedRole("discovery-support", panel);
+    const primary = feedRole("discovery-find-city", panel);
+    const secondary = feedRole("discovery-continue", panel);
+    const pager = feedRole("discovery-pager", panel);
+
+    if (image && scene && scene.image) {
+      image.src = scene.image;
+      image.style.objectPosition = scene.focus || "50% 45%";
+      image.loading = index === 0 ? "eager" : "lazy";
+    }
+    if (copy) {
+      if (headline1) headline1.textContent = copy.headline1;
+      if (headline2) headline2.textContent = copy.headline2;
+      if (support) support.textContent = copy.support;
+      if (primary) primary.textContent = copy.primary;
+      if (secondary) secondary.textContent = copy.secondary;
+    }
+    if (pager) pager.textContent = index + 1 + " / " + total;
+    return panel;
+  }
+
   function buildFeedPanel(scene, index, total, copy, cityName) {
+    const discovery = window.TownCityDiscovery;
+    if (discovery && discovery.isCityDiscoveryStory(scene)) {
+      return buildCityDiscoveryPanel(scene, index, total);
+    }
     const fragment = feedPanelTemplate.content.cloneNode(true);
     const panel = fragment.querySelector(".feed__panel");
     panel.setAttribute("data-feed-index", String(index));
@@ -3074,33 +3445,57 @@
     const seeToo = feedRole("feed-see-too", panel);
     const openSignal = feedRole("feed-open-signal", panel);
 
+    const locale = feedLocaleForScene(scene);
+    const view = locale.localizedScene || scene;
+    const chrome = locale.copy || copy;
+    const cityLabel = locale.cityName || cityName;
+
     if (image) {
-      image.src = scene.image;
-      image.style.objectPosition = scene.focus || "50% 50%";
+      image.src = view.image || scene.image;
+      image.style.objectPosition = view.focus || scene.focus || "50% 50%";
       image.loading = index === 0 ? "eager" : "lazy";
     }
-    if (category) category.textContent = scene.category;
-    if (headline) headline.textContent = scene.headline;
-    if (area) area.textContent = scene.area;
-    if (summary) summary.textContent = scene.summary;
+    if (category) category.textContent = view.category || "";
+    if (headline) headline.textContent = view.headline || "";
+    if (area) area.textContent = view.area || "";
+    if (summary) summary.textContent = view.summary || "";
     if (meta) {
       meta.textContent =
-        scene.authorName +
+        (scene.authorName || "") +
         " · " +
-        (scene.observedDate || scene.observedTime);
+        (view.observedDate || scene.observedDate || scene.observedTime);
     }
-    if (community) community.textContent = cityName;
+    const sourceLangEl = feedRole("feed-source-lang", panel);
+    if (sourceLangEl) {
+      const label = locale.sourceLanguageLabel || "";
+      const showSource =
+        !!label &&
+        locale.lang &&
+        view.sourceLang &&
+        locale.lang !== view.sourceLang;
+      sourceLangEl.textContent = label;
+      sourceLangEl.hidden = !showSource;
+    }
+    if (community) community.textContent = cityLabel;
     if (pager) pager.textContent = index + 1 + " / " + total;
-    if (back) back.textContent = copy.back;
-    if (seeToo) seeToo.textContent = copy.seeThisToo;
-    if (openSignal) openSignal.textContent = copy.openSignal;
-    syncPanelMemberControls(panel, index, copy, cityName);
+    panel.setAttribute(
+      "aria-label",
+      (window.TownPublicI18n &&
+        window.TownPublicI18n.storyLabel(locale.lang, index + 1, total)) ||
+        "Story " + (index + 1) + " of " + total
+    );
+    if (back) back.textContent = chrome.back;
+    if (seeToo) seeToo.textContent = chrome.seeThisToo;
+    if (openSignal) openSignal.textContent = chrome.openSignal;
+    syncPanelMemberControls(panel, index, chrome, cityLabel);
     return panel;
   }
 
   function rebuildFeedPanels() {
     const scenes = currentScenes();
-    if (!feedScroller || !feedPanelTemplate) return;
+    if (!feedScroller || !feedPanelTemplate || !cityDiscoveryPanelTemplate) {
+      return;
+    }
     feedScroller.innerHTML = "";
     for (let i = 0; i < scenes.length; i++) {
       const scene = scenes[i];
@@ -3133,17 +3528,33 @@
         : feedNav.programmaticScrollBehavior(prefersFeedReducedMotion());
     feedProgrammaticScroll = true;
     setActiveFeedIndex(next);
-    panel.scrollIntoView({
-      block: "start",
-      inline: "nearest",
-      behavior: behavior,
-    });
+    if (behavior === "auto") {
+      // Deterministic alignment for deep-links / first paint. scrollIntoView
+      // alone can lose the target before snap layout settles.
+      feedScroller.scrollTop = panel.offsetTop || next * (feedScroller.clientHeight || 0);
+      panel.scrollIntoView({
+        block: "start",
+        inline: "nearest",
+        behavior: "auto",
+      });
+    } else {
+      panel.scrollIntoView({
+        block: "start",
+        inline: "nearest",
+        behavior: behavior,
+      });
+    }
     window.setTimeout(
       function () {
+        if (behavior === "auto" && panel && feedScroller) {
+          feedScroller.scrollTop =
+            panel.offsetTop || next * (feedScroller.clientHeight || 0);
+          setActiveFeedIndex(next, { skipMemberSync: false });
+        }
         feedProgrammaticScroll = false;
         syncActiveIndexFromScroll();
       },
-      behavior === "smooth" ? 420 : 40
+      behavior === "smooth" ? 420 : 80
     );
     return true;
   }
@@ -3442,7 +3853,12 @@
   }
 
   function applyInviteCopy() {
-    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const i18n = window.TownPublicI18n;
+    const lang = resolvePublicReadingLanguage();
+    const copy =
+      (i18n && i18n.publicInviteCopy(lang)) ||
+      MEMBERSHIP_COPY[membershipLang()] ||
+      MEMBERSHIP_COPY.it;
     inviteTitle.textContent = copy.inviteTitle;
     inviteBody.textContent = copy.inviteBody;
     inviteBodySecond.textContent = copy.inviteBodySecond;
@@ -3967,12 +4383,14 @@
     if (name === "entry") {
       applyEntryLoginCopy();
     }
+    if (name === "country") applyCountryCopy();
     if (name === "city") applyCityCopy();
     if (name === "location") {
       applyLocationCopy();
       syncLocationState();
     }
     if (name === "feed") {
+      applyPublicNavCopy();
       applyFeedCopyChrome();
       renderFeedScene();
     }
@@ -4014,13 +4432,19 @@
       isProductOnlyPublicMode() &&
       isMembershipRecoveryFlowActive() &&
       (route === "payment" || route === "active");
+    const allowCityDiscoveryJourney =
+      isProductOnlyPublicMode() &&
+      isCityDiscoveryJourneyActive() &&
+      isCityDiscoveryJourneyRoute(route);
 
     if (
       isProductOnlyPublicMode() &&
       !allowInviteJourney &&
-      !allowRecoveryJourney
+      !allowRecoveryJourney &&
+      !allowCityDiscoveryJourney
     ) {
       endInviteMembershipJourney();
+      endCityDiscoveryJourney();
       route = PRODUCT_ONLY_FEED_ROUTE;
       const target = "#/" + route;
       if (window.location.hash !== target) {
@@ -4201,6 +4625,11 @@
   }
 
   function openSignalDetail() {
+    const discovery = window.TownCityDiscovery;
+    const scenes = currentScenes();
+    if (discovery && discovery.isCityDiscoveryStory(scenes[feedIndex])) {
+      return;
+    }
     applyFeedCopyChrome();
     populateSignalDetail();
     signalDetail.hidden = false;
@@ -4235,7 +4664,16 @@
         showView(route);
         return;
       }
+      if (
+        isCityDiscoveryJourneyActive() &&
+        isCityDiscoveryJourneyRoute(route)
+      ) {
+        if (route === "city") ensureCityOptions(true);
+        showView(route);
+        return;
+      }
       endInviteMembershipJourney();
+      endCityDiscoveryJourney();
       if (ensureProductOnlyFeedHash()) {
         return;
       }
@@ -4585,6 +5023,13 @@
   });
 
   countryBack.addEventListener("click", () => {
+    if (isCityDiscoveryJourneyActive()) {
+      const returnIndex = cityDiscoveryReturnFeedIndex;
+      endCityDiscoveryJourney();
+      feedIndex = returnIndex;
+      go("feed");
+      return;
+    }
     go("entry");
   });
 
@@ -4736,6 +5181,15 @@
         closeSignalSheet();
         if (isProductOnlyPublicMode()) return;
         go("location");
+        return;
+      }
+      if (role === "discovery-find-city") {
+        beginCityDiscoveryJourney();
+        go("country");
+        return;
+      }
+      if (role === "discovery-continue") {
+        navigateFeedByIntent({ type: "direction", value: "next" });
         return;
       }
       if (role === "feed-see-too") {
@@ -5099,6 +5553,18 @@
   window.addEventListener("hashchange", render);
   window.addEventListener("popstate", render);
   syncCountryContinue();
+  try {
+    const params = new URLSearchParams(window.location.search || "");
+    const story = params.get("townStory");
+    if (story) {
+      const n = Number(story);
+      if (Number.isFinite(n) && n >= 1) {
+        feedIndex = Math.max(0, Math.floor(n) - 1);
+      }
+    }
+  } catch (err) {
+    /* ignore review helpers */
+  }
   render();
   bootstrapAccountMembership();
 })();
