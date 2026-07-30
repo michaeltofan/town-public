@@ -60,6 +60,64 @@ require_contains "script.js" "munich-signal-1"
 require_contains "script.js" "munich-signal-2"
 require_contains "script.js" "munich-signal-3"
 
+echo "== Visitor testimony camera fail-closed =="
+require_contains "index.html" "detail-add-testimony"
+require_contains "index.html" "detail-testimony-input"
+require_contains "script.js" "detailAddTestimony"
+require_contains "script.js" 'addTestimony: "Aggiungi testimonianza"'
+require_contains "script.js" 'addTestimony: "Zeugnis hinzufügen"'
+require_contains "script.js" 'addTestimony: "Adaugă mărturie"'
+
+python3 - <<'PY'
+from pathlib import Path
+import re
+import sys
+
+js = Path("script.js").read_text(encoding="utf-8")
+html = Path("index.html").read_text(encoding="utf-8")
+
+if 'id="detail-add-testimony"' not in html:
+    raise SystemExit("FAIL: testimony CTA missing from index.html")
+if 'id="detail-testimony-input"' not in html:
+    raise SystemExit("FAIL: hidden testimony file input missing from index.html")
+if 'capture="environment"' not in html:
+    raise SystemExit("FAIL: testimony file input capture attribute missing")
+
+handler = re.search(
+    r'detailAddTestimony\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
+    js,
+)
+if not handler:
+    raise SystemExit("FAIL: detailAddTestimony click handler not found")
+body = handler.group(1)
+
+for fragment in (
+    "originatingFeedIndex = feedIndex",
+    "closeSignalDetail()",
+    "openInvite()",
+):
+    if fragment not in body:
+        raise SystemExit(f"FAIL: testimony CTA handler missing '{fragment}'")
+
+if "detailTestimonyInput.click()" in body:
+    raise SystemExit("FAIL: testimony CTA handler still activates the file input")
+if "membershipSimulated" in body:
+    raise SystemExit("FAIL: testimony CTA handler must not consult membershipSimulated")
+
+# No production-reachable programmatic activation of the testimony file input.
+for pattern in (
+    r"detailTestimonyInput\.click\s*\(",
+    r"detailTestimonyInput\.showPicker\s*\(",
+    r'getElementById\(\s*["\']detail-testimony-input["\']\s*\)\s*\.click\s*\(',
+):
+    if re.search(pattern, js):
+        raise SystemExit(
+            "FAIL: production code programmatically activates the testimony file input"
+        )
+
+print("OK: testimony CTA uses membership invitation boundary; no public media capture unlock")
+PY
+
 echo "== Guardrails =="
 if grep -Eiq 'fetch\(|XMLHttpRequest|localStorage|sessionStorage|WebAuthn|navigator\.credentials|checkout\.stripe|sk_live|pk_live|dashboard|followers|trending|comment thread|confetti' index.html script.js; then
   echo "FAIL: forbidden backend/social/celebration pattern present"

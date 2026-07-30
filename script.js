@@ -3915,9 +3915,11 @@
     openInvite();
   });
 
-  // DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure.
+  // Public visitors are routed to the membership invitation; the capture input remains for a future authenticated flow.
   detailAddTestimony.addEventListener("click", () => {
-    detailTestimonyInput.click();
+    originatingFeedIndex = feedIndex;
+    closeSignalDetail();
+    openInvite();
   });
 
   detailTestimonyInput.addEventListener("change", () => {
