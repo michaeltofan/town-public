@@ -127,7 +127,7 @@ if 'role === "feed-open-signal"' not in js or "openSignalDetail()" not in js:
 if 'id="signal-detail"' not in html:
     fail("signal-detail markup missing")
 
-# Feed controls cannot expose non-product full-screen views.
+# Feed controls cannot expose non-product full-screen views via back navigation.
 feed_back = re.search(
     r'role === "feed-back"\) \{([\s\S]*?)return;\n\s*\}',
     js,
@@ -145,10 +145,33 @@ invite_not_now = re.search(
     r'inviteNotNow\.addEventListener\("click", \(\) => \{([\s\S]*?)\}\);',
     js,
 )
-if not invite_continue or "isProductOnlyPublicMode()" not in invite_continue.group(1):
-    fail("invite continue must not expose membership view in product-only mode")
+if not invite_continue:
+    fail("missing inviteContinue handler")
+invite_continue_body = invite_continue.group(1)
+if "beginInviteMembershipJourney()" not in invite_continue_body:
+    fail("invite continue must begin the approved membership invitation journey")
+if "go(\"membership\")" not in invite_continue_body:
+    fail("invite continue must enter existing membership screen")
+if "membershipSimulated" in invite_continue_body:
+    fail("invite continue must not consult membershipSimulated")
+if "signalConfirmed" in invite_continue_body:
+    fail("invite continue must not confirm or mutate the signal")
+if re.search(r"isProductOnlyPublicMode\(\)\s*return", invite_continue_body):
+    fail("invite continue must not silently no-op in product-only mode")
+
 if not invite_not_now or "isProductOnlyPublicMode()" not in invite_not_now.group(1):
-    fail("invite not-now must not expose ended view in product-only mode")
+    fail("invite not-now must keep existing product-only visitor exit behaviour")
+
+if "function beginInviteMembershipJourney()" not in js:
+    fail("missing beginInviteMembershipJourney()")
+if "INVITE_MEMBERSHIP_JOURNEY_ROUTES" not in js:
+    fail("missing INVITE_MEMBERSHIP_JOURNEY_ROUTES")
+if "isInviteMembershipJourneyActive()" not in js:
+    fail("missing invite membership journey gate")
+
+# Direct non-product hash routes remain protected unless the invite journey is active.
+if "isInviteMembershipJourneyRoute(route)" not in js:
+    fail("parseRoute/go must gate invite journey routes explicitly")
 
 # First paint should prefer feed, not entry.
 if re.search(r'<div id="view-entry"(?! hidden)', html):
@@ -165,6 +188,7 @@ for fragment in (
     'id="signal-detail"',
     'id="detail-close"',
     'id="membership-invite"',
+    'id="detail-add-testimony"',
 ):
     if fragment not in html:
         fail(f"feed/signal-detail structure removed: {fragment}")
@@ -172,7 +196,20 @@ for removed in ('id="feed-prev"', 'id="feed-next"', "feed__scene-nav"):
     if removed in html:
         fail(f"visible feed navigation control must remain removed: {removed}")
 
-print("OK: product-only routing, three-city scenes, and dormant screens verified")
+# Public surface must not expose the retired testimony capture demo.
+for forbidden in (
+    'id="detail-testimony-input"',
+    'capture="environment"',
+    'id="detail-testimony-preview"',
+):
+    if forbidden in html:
+        fail(f"retired public testimony capture primitive still present: {forbidden}")
+
+# Cache-invalidating script reference required for deployed handler updates.
+if not re.search(r'src="script\.js\?v=[^"]+"', html):
+    fail("index.html must reference a cache-invalidating script.js URL")
+
+print("OK: product-only routing, invite membership journey, and dormant screens verified")
 PY
 
 if [[ "$fail" -ne 0 ]]; then
