@@ -2175,9 +2175,13 @@
     const discovery = window.TownCityDiscovery;
     if (discovery && discovery.isCityDiscoveryStory(scene)) {
       const lang = scene.lang || "en";
+      // Editorial copy lives on scene.copy. FEED_COPY has no `en` key — only
+      // it/de/ro — so reuse an existing feed chrome catalog for detail/visitor
+      // fallbacks without inventing English feed strings.
+      const chromeCopy = FEED_COPY.it || FEED_COPY.de || FEED_COPY.ro;
       return {
         lang: lang,
-        copy: FEED_COPY.en,
+        copy: chromeCopy,
         cityId: null,
         cityName: "",
         discoveryCopy: scene.copy || discovery.editorialCopyForLanguage(lang),
@@ -2929,6 +2933,7 @@
   function syncFeedMemberState() {
     const scenes = currentScenes();
     const panels = getFeedPanels();
+    const discovery = window.TownCityDiscovery;
     for (let i = 0; i < panels.length; i++) {
       const panel = panels[i];
       const panelIndex = Number(panel.getAttribute("data-feed-index"));
@@ -2942,8 +2947,14 @@
       );
     }
 
-    const activeLocale = feedLocaleForScene(scenes[feedIndex]);
+    const activeScene = scenes[feedIndex];
+    if (discovery && discovery.isCityDiscoveryStory(activeScene)) {
+      return;
+    }
+
+    const activeLocale = feedLocaleForScene(activeScene);
     const copy = activeLocale.copy;
+    if (!copy) return;
     const cityName = activeLocale.cityName;
     const memberPresented = isMemberPresented();
     const civicOk = canTakeCivicAction();

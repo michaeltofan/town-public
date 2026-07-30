@@ -137,6 +137,12 @@ if 'id="signal-detail"' not in html:
 if "resolveEditorialLanguage" in js and "fetch(" in discovery:
     fail("city-discovery module must not fetch")
 
+# Editorial feed chrome must not assume a non-existent FEED_COPY.en catalog.
+if "copy: FEED_COPY.en" in js or "FEED_COPY.en," in js:
+    fail("discovery locale must not read missing FEED_COPY.en")
+if "isCityDiscoveryStory(activeScene)" not in js:
+    fail("syncFeedMemberState must skip signal-detail chrome on editorial story")
+
 print("OK: city-discovery sequence, journey unlock, and boundaries verified")
 PY
 
