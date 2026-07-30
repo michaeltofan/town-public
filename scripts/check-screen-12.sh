@@ -51,17 +51,23 @@ require_contains "script.js" "postJsonWithCredentials"
 require_contains "script.js" "checkoutUrl"
 require_contains "script.js" 'go("payment")'
 require_contains "script.js" 'go("active")'
+require_contains "script.js" "/v1/account/membership"
+require_contains "script.js" "setCheckoutPendingMarker"
+require_contains "index.html" "membership-recovery.js"
+require_contains "index.html" "payment-confirming"
 
 echo "== Guardrails =="
-# Card forms, secrets, storage, and hosted Stripe Checkout URL literals remain forbidden.
+# Card forms, secrets, and hosted Stripe Checkout URL literals remain forbidden.
 # Intended billing uses POST /v1/billing/checkout-session via postJsonWithCredentials
 # (requestJson / window.fetch.bind) and redirects to the returned checkoutUrl —
 # do not treat that API field name as the forbidden checkout.stripe pattern.
+# sessionStorage is forbidden in script.js/index.html; the advisory checkout-pending
+# marker lives only in membership-recovery.js (see check-membership-recovery.sh).
 if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
   echo "FAIL: forbidden payment/checkout pattern present"
   fail=1
 else
-  echo "OK: no payment form, hosted Stripe checkout URL, or storage patterns"
+  echo "OK: no payment form, hosted Stripe checkout URL, or storage patterns in index/script"
 fi
 if grep -Eiq '<input[^>]+(card|billing|cvv|cvc)' index.html; then
   echo "FAIL: card/billing inputs present"

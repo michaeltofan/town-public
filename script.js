@@ -197,6 +197,25 @@
   const paymentSuccessBody = document.getElementById("payment-success-body");
   const paymentSuccessNote = document.getElementById("payment-success-note");
   const paymentContinue = document.getElementById("payment-continue");
+  const paymentConfirming = document.getElementById("payment-confirming");
+  const paymentConfirmingLabel = document.getElementById(
+    "payment-confirming-label"
+  );
+  const paymentConfirmingTitle = document.getElementById(
+    "payment-confirming-title"
+  );
+  const paymentConfirmingBody = document.getElementById(
+    "payment-confirming-body"
+  );
+  const paymentConfirmingStatus = document.getElementById(
+    "payment-confirming-status"
+  );
+  const paymentConfirmingRetry = document.getElementById(
+    "payment-confirming-retry"
+  );
+  const paymentConfirmingDismiss = document.getElementById(
+    "payment-confirming-dismiss"
+  );
   const paymentNotice = document.getElementById("payment-notice");
   const paymentNoticeTitle = document.getElementById("payment-notice-title");
   const paymentNoticeBody = document.getElementById("payment-notice-body");
@@ -427,6 +446,13 @@
     !paymentSuccessBody ||
     !paymentSuccessNote ||
     !paymentContinue ||
+    !paymentConfirming ||
+    !paymentConfirmingLabel ||
+    !paymentConfirmingTitle ||
+    !paymentConfirmingBody ||
+    !paymentConfirmingStatus ||
+    !paymentConfirmingRetry ||
+    !paymentConfirmingDismiss ||
     !paymentNotice ||
     !paymentNoticeTitle ||
     !paymentNoticeBody ||
@@ -1416,6 +1442,17 @@
       errorCheckoutFailed:
         "Non è stato possibile avviare il checkout. Riprova.",
       errorNetwork: "Non è stato possibile continuare. Riprova.",
+      confirmingLabel: "CONFERMA MEMBERSHIP",
+      confirmingTitle: "Conferma della membership in corso.",
+      confirmingBody:
+        "Stiamo verificando l’attivazione con TOWN. Questo può richiedere alcuni secondi dopo il pagamento.",
+      confirmingStatus: "Conferma in corso…",
+      confirmingPending:
+        "La conferma è ancora in corso. Il pagamento non è indicato come non riuscito — riprova tra poco.",
+      confirmingRetry: "Riprova",
+      confirmingDismiss: "Torna al feed",
+      paidNoParticipateStatus:
+        "Membership pagata — partecipazione non ancora disponibile.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1460,6 +1497,17 @@
         "Der Checkout konnte nicht gestartet werden. Bitte versuche es erneut.",
       errorNetwork:
         "Fortsetzen nicht möglich. Bitte erneut versuchen.",
+      confirmingLabel: "MITGLIEDSCHAFT BESTÄTIGEN",
+      confirmingTitle: "Mitgliedschaft wird bestätigt.",
+      confirmingBody:
+        "Wir prüfen die Aktivierung bei TOWN. Das kann nach der Zahlung einige Sekunden dauern.",
+      confirmingStatus: "Bestätigung läuft…",
+      confirmingPending:
+        "Die Bestätigung läuft noch. Die Zahlung gilt nicht als fehlgeschlagen — bitte versuche es gleich erneut.",
+      confirmingRetry: "Erneut versuchen",
+      confirmingDismiss: "Zurück zum Feed",
+      paidNoParticipateStatus:
+        "Bezahlte Mitgliedschaft — Teilnahme noch nicht verfügbar.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1502,6 +1550,17 @@
       errorCheckoutFailed:
         "Nu a fost posibil să pornești checkout-ul. Încearcă din nou.",
       errorNetwork: "Nu a fost posibil să continui. Încearcă din nou.",
+      confirmingLabel: "CONFIRMARE MEMBERSHIP",
+      confirmingTitle: "Confirmarea membership-ului este în curs.",
+      confirmingBody:
+        "Verificăm activarea cu TOWN. Acest lucru poate dura câteva secunde după plată.",
+      confirmingStatus: "Confirmare în curs…",
+      confirmingPending:
+        "Confirmarea este încă în curs. Plata nu este indicată ca eșuată — încearcă din nou în curând.",
+      confirmingRetry: "Încearcă din nou",
+      confirmingDismiss: "Înapoi la feed",
+      paidNoParticipateStatus:
+        "Membership plătit — participarea nu este încă disponibilă.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1681,6 +1740,10 @@
     return inviteMembershipJourneyActive === true;
   }
 
+  function isMembershipRecoveryFlowActive() {
+    return membershipRecoveryActive === true;
+  }
+
   function beginInviteMembershipJourney() {
     const scenes = currentScenes();
     const scene = scenes[feedIndex] || scenes[0] || null;
@@ -1691,6 +1754,277 @@
 
   function endInviteMembershipJourney() {
     inviteMembershipJourneyActive = false;
+  }
+
+  function beginMembershipRecoveryFlow() {
+    membershipRecoveryActive = true;
+    if (isProductOnlyPublicMode()) {
+      beginInviteMembershipJourney();
+    }
+  }
+
+  function endMembershipRecoveryFlow() {
+    membershipRecoveryActive = false;
+    membershipRecoveryManual = false;
+    stopMembershipRecoveryPolling("exit");
+  }
+
+  const membershipRecoveryApi = window.TownMembershipRecovery || null;
+
+  function hasAuthoritativePaidMembership() {
+    return !!(
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isPaidMembership(membershipSnapshot)
+    );
+  }
+
+  // Civic participation: fail closed unless backend canParticipate is true
+  // and status is not paid_pending_binding. Prototype-only membershipSimulated
+  // is not used for production auth.
+  function canTakeCivicAction() {
+    if (!membershipRecoveryApi) return false;
+    return (
+      membershipRecoveryApi.enablesCivicParticipation(membershipSnapshot) ===
+      true
+    );
+  }
+
+  function isMemberPresented() {
+    if (hasAuthoritativePaidMembership()) return true;
+    // Legacy prototype simulate path only when no authoritative snapshot exists.
+    return membershipSnapshot === null && membershipSimulated === true;
+  }
+
+  function setCheckoutPendingMarker() {
+    if (!membershipRecoveryApi) return false;
+    return membershipRecoveryApi.setCheckoutPendingMarker();
+  }
+
+  function clearCheckoutPendingMarker() {
+    if (!membershipRecoveryApi) return false;
+    return membershipRecoveryApi.clearCheckoutPendingMarker();
+  }
+
+  function hasCheckoutPendingMarker() {
+    if (!membershipRecoveryApi) return false;
+    return membershipRecoveryApi.hasCheckoutPendingMarker();
+  }
+
+  function applyMembershipSnapshot(snapshot) {
+    membershipSnapshot = snapshot;
+    syncFeedMemberState();
+  }
+
+  function stopMembershipRecoveryPolling(reason) {
+    if (membershipRecoveryPoller) {
+      const poller = membershipRecoveryPoller;
+      membershipRecoveryPoller = null;
+      if (!poller.isStopped()) poller.stop();
+    }
+    return reason;
+  }
+
+  async function fetchAccountMembership() {
+    const result = await getJsonWithCredentials(
+      API_BASE + "/v1/account/membership"
+    );
+    const status = result.response.status;
+    if (status !== 200) {
+      throw makeApiError("failed");
+    }
+    if (!membershipRecoveryApi) {
+      throw makeApiError("failed");
+    }
+    const snapshot = membershipRecoveryApi.deriveMembershipSnapshot(
+      result.payload
+    );
+    if (!snapshot) {
+      throw makeApiError("failed");
+    }
+    return snapshot;
+  }
+
+  function showPaymentConfirming(mode) {
+    const copy = PAYMENT_COPY[membershipLang()];
+    paymentIntro.hidden = true;
+    paymentSuccess.hidden = true;
+    paymentConfirming.hidden = false;
+    paymentConfirmingLabel.textContent = copy.confirmingLabel;
+    paymentConfirmingTitle.textContent = copy.confirmingTitle;
+    paymentConfirmingBody.textContent = copy.confirmingBody;
+    paymentConfirmingDismiss.textContent = copy.confirmingDismiss;
+    paymentConfirmingRetry.textContent = copy.confirmingRetry;
+    if (mode === "pending") {
+      paymentConfirmingStatus.textContent = copy.confirmingPending;
+      paymentConfirmingRetry.hidden = false;
+      paymentConfirmingRetry.disabled = false;
+    } else {
+      paymentConfirmingStatus.textContent = copy.confirmingStatus;
+      paymentConfirmingRetry.hidden = true;
+    }
+  }
+
+  function showPaymentPaidNoParticipate() {
+    const copy = PAYMENT_COPY[membershipLang()];
+    paymentIntro.hidden = true;
+    paymentSuccess.hidden = true;
+    paymentConfirming.hidden = false;
+    paymentConfirmingLabel.textContent = copy.confirmingLabel;
+    paymentConfirmingTitle.textContent = copy.confirmingTitle;
+    paymentConfirmingBody.textContent = copy.paidNoParticipateStatus;
+    paymentConfirmingStatus.textContent = copy.paidNoParticipateStatus;
+    paymentConfirmingRetry.hidden = true;
+    paymentConfirmingDismiss.textContent = copy.confirmingDismiss;
+  }
+
+  function enterRecoveryPaymentView() {
+    beginMembershipRecoveryFlow();
+    go("payment");
+    showPaymentConfirming("confirming");
+  }
+
+  function finishRecoveryWithSnapshot(snapshot) {
+    applyMembershipSnapshot(snapshot);
+    clearCheckoutPendingMarker();
+    stopMembershipRecoveryPolling("success");
+    if (!membershipRecoveryApi) {
+      endMembershipRecoveryFlow();
+      return;
+    }
+    if (membershipRecoveryApi.enablesMemberAuthorizedState(snapshot)) {
+      // Paid + canParticipate: show existing active confirmation without
+      // setting membershipSimulated (not a production authorization path).
+      beginMembershipRecoveryFlow();
+      go("active");
+      endMembershipRecoveryFlow();
+      return;
+    }
+    if (
+      membershipRecoveryApi.isPaidMembership(snapshot) ||
+      membershipRecoveryApi.isPaidPendingBinding(snapshot)
+    ) {
+      // Paid without participation, or paid_pending_binding: honest
+      // non-participating UI — never grant civic actions or silent feed return.
+      beginMembershipRecoveryFlow();
+      go("payment");
+      showPaymentPaidNoParticipate();
+      return;
+    }
+    // Non-stop / unexpected non-paid: remain fail-closed (should be rare after
+    // recovery-stop filtering; pre-webhook states continue polling instead).
+    endMembershipRecoveryFlow();
+    if (isProductOnlyPublicMode()) {
+      endInviteMembershipJourney();
+      go("feed");
+    }
+  }
+
+  function onMembershipRecoveryTimeout() {
+    clearCheckoutPendingMarker();
+    membershipRecoveryManual = true;
+    beginMembershipRecoveryFlow();
+    go("payment");
+    showPaymentConfirming("pending");
+  }
+
+  function startMembershipRecoveryPolling() {
+    if (!membershipRecoveryApi) return;
+    if (membershipRecoveryPoller && !membershipRecoveryPoller.isStopped()) {
+      return;
+    }
+    beginMembershipRecoveryFlow();
+    enterRecoveryPaymentView();
+    membershipRecoveryPoller = membershipRecoveryApi.createBoundedPoller({
+      poll: function () {
+        return fetchAccountMembership().then(function (snapshot) {
+          // Apply for fail-closed UI, but pre-webhook non-paid states must not
+          // stop the bounded Checkout recovery window.
+          applyMembershipSnapshot(snapshot);
+          return snapshot;
+        });
+      },
+      shouldStop: function (snapshot) {
+        return membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot);
+      },
+      onStop: function (reason) {
+        membershipRecoveryPoller = null;
+        if (reason === "success") {
+          finishRecoveryWithSnapshot(membershipSnapshot);
+          return;
+        }
+        if (reason === "timeout") {
+          onMembershipRecoveryTimeout();
+          return;
+        }
+        // exit — user dismissed or flow ended
+      },
+    });
+    membershipRecoveryPoller.start();
+  }
+
+  function manualMembershipRecoveryRetry() {
+    if (paymentConfirmingRetry.disabled) return;
+    paymentConfirmingRetry.disabled = true;
+    showPaymentConfirming("confirming");
+    fetchAccountMembership()
+      .then(function (snapshot) {
+        applyMembershipSnapshot(snapshot);
+        if (membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot)) {
+          finishRecoveryWithSnapshot(snapshot);
+          return;
+        }
+        // Still pre-webhook / non-stop — restore pending + bounded poller.
+        setCheckoutPendingMarker();
+        startMembershipRecoveryPolling();
+      })
+      .catch(function () {
+        showPaymentConfirming("pending");
+        paymentConfirmingRetry.disabled = false;
+      });
+  }
+
+  function bootstrapAccountMembership() {
+    const pending = hasCheckoutPendingMarker();
+    fetchAuthenticationSession()
+      .then(function () {
+        sessionAuthenticated = true;
+        return fetchAccountMembership();
+      })
+      .then(function (snapshot) {
+        applyMembershipSnapshot(snapshot);
+        if (pending) {
+          if (
+            membershipRecoveryApi &&
+            membershipRecoveryApi.shouldStartCheckoutRecoveryPolling(
+              true,
+              snapshot
+            )
+          ) {
+            startMembershipRecoveryPolling();
+          } else if (
+            membershipRecoveryApi &&
+            membershipRecoveryApi.isCheckoutRecoveryStopOutcome(snapshot)
+          ) {
+            finishRecoveryWithSnapshot(snapshot);
+          } else {
+            // Pending marker but unusable/malformed snapshot: keep trying.
+            startMembershipRecoveryPolling();
+          }
+          return;
+        }
+        // Normal authenticated load: apply authoritative state once (no marker,
+        // no recovery polling) — including inactive/expired/suspended.
+      })
+      .catch(function () {
+        // Fail closed on session/membership errors.
+        if (!sessionAuthenticated) {
+          membershipSnapshot = null;
+        }
+        if (pending) {
+          // Session cookie should exist after Checkout; still attempt recovery UX.
+          startMembershipRecoveryPolling();
+        }
+      });
   }
 
   let lastFocus = null;
@@ -1720,6 +2054,12 @@
   let loginSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
+  // Authoritative membership from GET /v1/account/membership only.
+  // null = not loaded / failed closed; never grant from URL or storage markers.
+  let membershipSnapshot = null;
+  let membershipRecoveryActive = false;
+  let membershipRecoveryPoller = null;
+  let membershipRecoveryManual = false;
 
   const titles = {
     entry: "TOWN — Entry",
@@ -2457,15 +2797,24 @@
     const seeTooDone = feedRole("feed-see-too-done", panel);
     const doneTitle = feedRole("feed-done-title", panel);
     const doneNote = feedRole("feed-done-note", panel);
+    const memberPresented = isMemberPresented();
+    const civicOk = canTakeCivicAction();
     const onOrigin =
-      signalConfirmed &&
-      membershipSimulated &&
-      panelIndex === originatingFeedIndex;
+      signalConfirmed && civicOk && panelIndex === originatingFeedIndex;
 
     if (visitorEl) {
-      visitorEl.textContent = membershipSimulated
-        ? copy.member.replace("{city}", cityName)
-        : copy.visitor;
+      if (
+        hasAuthoritativePaidMembership() &&
+        !civicOk &&
+        PAYMENT_COPY[membershipLang()]
+      ) {
+        visitorEl.textContent =
+          PAYMENT_COPY[membershipLang()].paidNoParticipateStatus;
+      } else {
+        visitorEl.textContent = memberPresented
+          ? copy.member.replace("{city}", cityName)
+          : copy.visitor;
+      }
     }
     if (doneTitle) doneTitle.textContent = copy.doneTitle;
     if (doneNote) doneNote.textContent = copy.doneNote;
@@ -2476,7 +2825,8 @@
       seeToo.hidden = true;
       seeToo.disabled = true;
       seeTooDone.hidden = false;
-    } else if (membershipSimulated) {
+    } else if (memberPresented) {
+      // Paid member (or prototype): no visitor CTA; civic actions require canParticipate.
       seeToo.hidden = true;
       seeToo.disabled = true;
       seeTooDone.hidden = true;
@@ -2507,7 +2857,16 @@
     const activeLocale = feedLocaleForScene(scenes[feedIndex]);
     const copy = activeLocale.copy;
     const cityName = activeLocale.cityName;
-    if (membershipSimulated) {
+    const memberPresented = isMemberPresented();
+    const civicOk = canTakeCivicAction();
+    if (
+      hasAuthoritativePaidMembership() &&
+      !civicOk &&
+      PAYMENT_COPY[membershipLang()]
+    ) {
+      detailUserStatus.textContent =
+        PAYMENT_COPY[membershipLang()].paidNoParticipateStatus;
+    } else if (memberPresented) {
       detailUserStatus.textContent = copy.member.replace("{city}", cityName);
     } else {
       detailUserStatus.textContent = copy.visitor;
@@ -2517,14 +2876,12 @@
     detailSeeToo.textContent = copy.seeThisToo;
 
     const onOrigin =
-      signalConfirmed &&
-      membershipSimulated &&
-      feedIndex === originatingFeedIndex;
+      signalConfirmed && civicOk && feedIndex === originatingFeedIndex;
     if (onOrigin) {
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = false;
-    } else if (membershipSimulated) {
+    } else if (memberPresented) {
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = true;
@@ -3274,11 +3631,13 @@
   function showPaymentIntro() {
     paymentIntro.hidden = false;
     paymentSuccess.hidden = true;
+    paymentConfirming.hidden = true;
   }
 
   function showPaymentSuccess() {
     paymentIntro.hidden = true;
     paymentSuccess.hidden = false;
+    paymentConfirming.hidden = true;
   }
 
   function applyPaymentCopy() {
@@ -3308,8 +3667,20 @@
     paymentSuccessBody.textContent = copy.successBody;
     paymentSuccessNote.textContent = copy.successNote;
     paymentContinue.textContent = copy.continue;
-    if (membershipSimulated) {
-      showPaymentSuccess();
+    if (!paymentConfirming.hidden) {
+      // Preserve confirming / pending / paid-no-participate recovery UI.
+      return;
+    }
+    if (membershipSimulated || hasAuthoritativePaidMembership()) {
+      if (
+        hasAuthoritativePaidMembership() &&
+        !canTakeCivicAction() &&
+        membershipRecoveryApi
+      ) {
+        showPaymentPaidNoParticipate();
+      } else {
+        showPaymentSuccess();
+      }
     } else {
       showPaymentIntro();
     }
@@ -3455,6 +3826,8 @@
     membershipSimulated = false;
     paymentCheckoutSubmitting = false;
     signalConfirmed = false;
+    membershipSnapshot = null;
+    endMembershipRecoveryFlow();
     loginSubmitting = false;
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
@@ -3585,10 +3958,27 @@
       isProductOnlyPublicMode() &&
       isInviteMembershipJourneyActive() &&
       isInviteMembershipJourneyRoute(route);
+    const allowRecoveryJourney =
+      isProductOnlyPublicMode() &&
+      isMembershipRecoveryFlowActive() &&
+      (route === "payment" || route === "active");
 
-    if (isProductOnlyPublicMode() && !allowInviteJourney) {
+    if (
+      isProductOnlyPublicMode() &&
+      !allowInviteJourney &&
+      !allowRecoveryJourney
+    ) {
       endInviteMembershipJourney();
       route = PRODUCT_ONLY_FEED_ROUTE;
+      const target = "#/" + route;
+      if (window.location.hash !== target) {
+        window.location.hash = "/" + route;
+      }
+      showView(route);
+      return;
+    }
+
+    if (allowRecoveryJourney) {
       const target = "#/" + route;
       if (window.location.hash !== target) {
         window.location.hash = "/" + route;
@@ -3623,7 +4013,11 @@
       ) {
         route = "passkey";
       }
-      if (route === "active" && !membershipSimulated) {
+      if (
+        route === "active" &&
+        !membershipSimulated &&
+        !hasAuthoritativePaidMembership()
+      ) {
         route = "payment";
       }
       const target = "#/" + route;
@@ -3691,7 +4085,11 @@
     ) {
       route = "passkey";
     }
-    if (route === "active" && !membershipSimulated) {
+    if (
+      route === "active" &&
+      !membershipSimulated &&
+      !hasAuthoritativePaidMembership()
+    ) {
       route = "payment";
     }
 
@@ -3771,6 +4169,13 @@
   function render() {
     if (isProductOnlyPublicMode()) {
       const route = parseRoute();
+      if (
+        isMembershipRecoveryFlowActive() &&
+        (route === "payment" || route === "active")
+      ) {
+        showView(route);
+        return;
+      }
       if (
         isInviteMembershipJourneyActive() &&
         isInviteMembershipJourneyRoute(route)
@@ -3928,7 +4333,7 @@
   });
 
   detailSeeToo.addEventListener("click", () => {
-    if (membershipSimulated || detailSeeToo.disabled) return;
+    if (isMemberPresented() || detailSeeToo.disabled) return;
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
@@ -4265,7 +4670,7 @@
         return;
       }
       if (role === "feed-see-too") {
-        if (membershipSimulated || control.disabled) return;
+        if (isMemberPresented() || control.disabled) return;
         closeSignalSheet();
         originatingFeedIndex = feedIndex;
         openInvite();
@@ -4535,6 +4940,8 @@
 
     requestCheckoutSession()
       .then(function (checkoutUrl) {
+        // Advisory only — never authorization. Survives same-tab Checkout return.
+        setCheckoutPendingMarker();
         window.location = checkoutUrl;
       })
       .catch(function (err) {
@@ -4562,9 +4969,30 @@
     go("active");
   });
 
+  paymentConfirmingRetry.addEventListener("click", () => {
+    manualMembershipRecoveryRetry();
+  });
+
+  paymentConfirmingDismiss.addEventListener("click", () => {
+    clearCheckoutPendingMarker();
+    endMembershipRecoveryFlow();
+    if (isProductOnlyPublicMode()) {
+      endInviteMembershipJourney();
+      go("feed");
+      return;
+    }
+    go("ready");
+  });
+
   activeReturn.addEventListener("click", () => {
     feedIndex = originatingFeedIndex;
-    signalConfirmed = true;
+    // Prototype signal-confirmation only when civic participation is allowed.
+    if (canTakeCivicAction() || (membershipSnapshot === null && membershipSimulated)) {
+      signalConfirmed = true;
+    }
+    if (isProductOnlyPublicMode()) {
+      endInviteMembershipJourney();
+    }
     go("feed");
   });
 
@@ -4577,4 +5005,5 @@
   window.addEventListener("popstate", render);
   syncCountryContinue();
   render();
+  bootstrapAccountMembership();
 })();

@@ -2888,7 +2888,8 @@ body.page-ended {
 
 #view-payment[hidden],
 #payment-intro[hidden],
-#payment-success[hidden] {
+#payment-success[hidden],
+#payment-confirming[hidden] {
   display: none !important;
 }
 

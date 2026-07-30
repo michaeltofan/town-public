@@ -1104,6 +1104,32 @@
             </button>
           </div>
         </div>
+
+        <!-- Post-Checkout recovery: honest confirming / pending states only. -->
+        <div class="payment__frame" id="payment-confirming" hidden>
+          <p class="payment__brand" aria-label="TOWN">TOWN</p>
+          <p class="payment__label" id="payment-confirming-label"></p>
+          <h1 class="payment__title" id="payment-confirming-title"></h1>
+          <p class="payment__lead" id="payment-confirming-body"></p>
+          <p class="payment__status" id="payment-confirming-status"></p>
+          <div class="payment__actions">
+            <button
+              type="button"
+              class="btn btn--primary"
+              id="payment-confirming-retry"
+              hidden
+            >
+              Retry
+            </button>
+            <button
+              type="button"
+              class="btn btn--secondary"
+              id="payment-confirming-dismiss"
+            >
+              Back
+            </button>
+          </div>
+        </div>
       </main>
 
       <div
@@ -1154,6 +1180,7 @@
       defer
     ></script>
     <script src="feed-navigation.js" defer></script>
-    <script src="script.js?v=invite-boundary-1" defer></script>
+    <script src="membership-recovery.js" defer></script>
+    <script src="script.js?v=membership-recovery-1" defer></script>
   </body>
 </html>
