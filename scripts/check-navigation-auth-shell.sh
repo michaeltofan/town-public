@@ -340,6 +340,20 @@ for scene in (
 if "const PRODUCT_ONLY_PUBLIC_MODE = true" not in js:
     fail("product-only mode must remain enabled")
 
+# Returning-user Members Login remains wired; inert auth-shell Sign-in Continue stays inert.
+entry_start = js.find('entrySignIn.addEventListener("click"')
+country_back = js.find('countryBack.addEventListener("click"')
+if entry_start < 0 or country_back < 0:
+    fail("missing entrySignIn (Members Login) handler")
+entry_body = js[entry_start:country_back]
+if "runPasskeyAuthenticationCeremony" not in entry_body:
+    fail("Members Login must reuse runPasskeyAuthenticationCeremony")
+if "fetchAuthenticationSession" in entry_body and "runPasskeyAuthenticationCeremony" not in entry_body:
+    fail("Members Login must not fork a parallel auth sequence")
+# authContinue Sign-in mode remains inert (already checked above); reinforce boundary
+if "runPasskeyAuthenticationCeremony" in continue_body:
+    fail("auth-shell Sign-in Continue must remain inert (no passkey ceremony)")
+
 # Responsive: desktop rail vs mobile bottom, same breakpoint family
 if "@media (min-width: 721px)" not in css:
     fail("desktop rail breakpoint missing")

@@ -166,6 +166,7 @@
   const readyInactive = document.getElementById("ready-inactive");
   const readyMembership = document.getElementById("ready-membership");
   const readyPaymentNote = document.getElementById("ready-payment-note");
+  const readyError = document.getElementById("ready-error");
   const readyContinue = document.getElementById("ready-continue");
   const readyBack = document.getElementById("ready-back");
   const paymentIntro = document.getElementById("payment-intro");
@@ -421,6 +422,7 @@
     !readyInactive ||
     !readyMembership ||
     !readyPaymentNote ||
+    !readyError ||
     !readyContinue ||
     !readyBack ||
     !paymentIntro ||
@@ -2052,6 +2054,7 @@
   let signalConfirmed = false;
   let sessionAuthenticated = false;
   let loginSubmitting = false;
+  let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
   // Authoritative membership from GET /v1/account/membership only.
@@ -3343,6 +3346,54 @@
     throw makeApiError("failed");
   }
 
+  function isWebAuthnCancellation(err) {
+    const causeName = err && err.cause && err.cause.name;
+    return (
+      (err &&
+        (err.name === "NotAllowedError" ||
+          err.name === "AbortError" ||
+          err.code === "ERROR_CEREMONY_ABORTED")) ||
+      causeName === "NotAllowedError" ||
+      causeName === "AbortError" ||
+      (err &&
+        err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
+        causeName === "NotAllowedError")
+    );
+  }
+
+  function runPasskeyAuthenticationCeremony() {
+    const swaBrowser = window["Simple" + "Web" + "Authn" + "Browser"];
+    const startAuthentication = swaBrowser && swaBrowser.startAuthentication;
+    if (typeof startAuthentication !== "function") {
+      return Promise.reject(makeApiError("failed"));
+    }
+    return requestPasskeyAuthenticationOptions()
+      .then(function (ceremony) {
+        return startAuthentication({ optionsJSON: ceremony.options }).then(
+          function (assertion) {
+            return verifyPasskeyAuthentication(
+              ceremony.authenticationCeremonyId,
+              assertion
+            );
+          }
+        );
+      })
+      .then(function () {
+        // AUTHENTICATED alone is not enough — confirm cookie session works.
+        return fetchAuthenticationSession();
+      });
+  }
+
+  function clearReadyError() {
+    readyError.hidden = true;
+    readyError.textContent = "";
+  }
+
+  function showReadyError(message) {
+    readyError.hidden = false;
+    readyError.textContent = message;
+  }
+
   function checkoutErrorKind(status) {
     if (status === 401) return "unauthenticated";
     if (status === 409) return "alreadyMember";
@@ -3608,6 +3659,7 @@
     readyMembership.textContent = copy.membership;
     readyPaymentNote.textContent = copy.paymentNote;
     readyContinue.textContent = copy.continue;
+    readyContinue.disabled = readyAuthSubmitting;
     readyBack.textContent = copy.back;
     document.documentElement.lang = membershipLang();
   }
@@ -4509,49 +4561,18 @@
     const copy = LOGIN_COPY[entryLang()];
     clearEntryLoginStatus();
 
-    const swaBrowser = window["Simple" + "Web" + "Authn" + "Browser"];
-    const startAuthentication = swaBrowser && swaBrowser.startAuthentication;
-    if (typeof startAuthentication !== "function") {
-      showEntryLoginStatus(copy.failed, "error");
-      return;
-    }
-
     loginSubmitting = true;
     entrySignIn.disabled = true;
     showEntryLoginStatus(copy.working, "success");
 
-    requestPasskeyAuthenticationOptions()
-      .then(function (ceremony) {
-        return startAuthentication({ optionsJSON: ceremony.options }).then(
-          function (assertion) {
-            return verifyPasskeyAuthentication(
-              ceremony.authenticationCeremonyId,
-              assertion
-            );
-          }
-        );
-      })
-      .then(function () {
-        return fetchAuthenticationSession();
-      })
+    runPasskeyAuthenticationCeremony()
       .then(function () {
         sessionAuthenticated = true;
         showEntryLoginStatus(copy.success, "success");
       })
       .catch(function (err) {
         sessionAuthenticated = false;
-        const causeName = err && err.cause && err.cause.name;
-        const cancelled =
-          (err &&
-            (err.name === "NotAllowedError" ||
-              err.name === "AbortError" ||
-              err.code === "ERROR_CEREMONY_ABORTED")) ||
-          causeName === "NotAllowedError" ||
-          causeName === "AbortError" ||
-          (err &&
-            err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
-            causeName === "NotAllowedError");
-        if (cancelled) {
+        if (isWebAuthnCancellation(err)) {
           showEntryLoginStatus(copy.cancelled, "error");
           return;
         }
@@ -4970,11 +4991,37 @@
   });
 
   readyContinue.addEventListener("click", () => {
-    membershipSimulated = false;
-    go("payment");
+    if (readyAuthSubmitting) return;
+    const copy = LOGIN_COPY[membershipLang()];
+    clearReadyError();
+
+    readyAuthSubmitting = true;
+    readyContinue.disabled = true;
+
+    runPasskeyAuthenticationCeremony()
+      .then(function () {
+        // Session probe already confirmed authenticated before this runs.
+        sessionAuthenticated = true;
+        membershipSimulated = false;
+        clearReadyError();
+        go("payment");
+      })
+      .catch(function (err) {
+        sessionAuthenticated = false;
+        if (isWebAuthnCancellation(err)) {
+          showReadyError(copy.cancelled);
+          return;
+        }
+        showReadyError(copy.failed);
+      })
+      .finally(function () {
+        readyAuthSubmitting = false;
+        readyContinue.disabled = false;
+      });
   });
 
   readyBack.addEventListener("click", () => {
+    clearReadyError();
     // Return to Screen 10 success state after a completed registration.
     go("passkey");
   });
