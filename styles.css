@@ -1077,6 +1077,20 @@ body.page-feed {
   color: rgba(244, 239, 230, 0.7);
 }
 
+.feed__source-lang,
+.signal-detail__source-lang {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: rgba(244, 239, 230, 0.52);
+}
+
+.feed__source-lang[hidden],
+.signal-detail__source-lang[hidden] {
+  display: none !important;
+}
+
 .feed__actions {
   display: flex;
   flex-direction: column;

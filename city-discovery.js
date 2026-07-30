@@ -64,7 +64,17 @@
    * Normalize a locale tag to a lowercase language subtag.
    * Returns null when the tag cannot be parsed safely.
    */
+  function sharedPublicI18n() {
+    return typeof globalThis !== "undefined" && globalThis.TownPublicI18n
+      ? globalThis.TownPublicI18n
+      : null;
+  }
+
   function normalizeLanguageTag(tag) {
+    const shared = sharedPublicI18n();
+    if (shared && typeof shared.normalizeLanguageTag === "function") {
+      return shared.normalizeLanguageTag(tag);
+    }
     if (tag == null) return null;
     const raw = String(tag).trim();
     if (!raw) return null;
@@ -76,10 +86,14 @@
   }
 
   /**
-   * Resolve editorial copy language from browser language preferences only.
-   * Never infers city, country, eligibility, or membership.
+   * Resolve reading language from browser preferences only.
+   * Shared with TownPublicI18n when present — never infers city/country.
    */
   function resolveEditorialLanguage(preferredLanguages) {
+    const shared = sharedPublicI18n();
+    if (shared && typeof shared.resolveReadingLanguage === "function") {
+      return shared.resolveReadingLanguage(preferredLanguages);
+    }
     let list = preferredLanguages;
     if (list == null) list = [];
     if (typeof list === "string") list = [list];
