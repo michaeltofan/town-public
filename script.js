@@ -4438,10 +4438,58 @@
     authIdentityInput.focus();
   });
 
-  // Visual-review only: Continue / passkey / password must not call APIs,
-  // navigate, simulate success, or write session state.
+  // Mode-aware Continue: only Create account + Email may start email
+  // verification. Sign-in, phone, passkey, and password remain inert here.
   authContinue.addEventListener("click", (event) => {
     event.preventDefault();
+
+    if (authChannel === "phone") {
+      return;
+    }
+
+    if (authMode === "signin") {
+      return;
+    }
+
+    if (authMode === "create" && authChannel === "email") {
+      const value = (authIdentityInput.value || "").trim();
+      if (!isValidEmail(value) || emailSubmitting) {
+        if (value && !isValidEmail(value)) {
+          const copy = EMAIL_COPY[membershipLang()];
+          authIdentityInput.setCustomValidity(copy.invalid);
+          authIdentityInput.reportValidity();
+        }
+        return;
+      }
+
+      authIdentityInput.setCustomValidity("");
+      enteredEmail = value;
+      emailSubmitting = true;
+      authContinue.disabled = true;
+
+      requestEmailVerification(value)
+        .then(function (verificationId) {
+          emailVerificationId = verificationId;
+          codeInput.value = "";
+          codeError.hidden = true;
+          codeError.textContent = "";
+          beginInviteMembershipJourney();
+          go("code");
+        })
+        .catch(function (err) {
+          const copy = EMAIL_COPY[membershipLang()];
+          if (err && err.kind === "rateLimited") {
+            authIdentityInput.setCustomValidity(copy.rateLimited);
+          } else {
+            authIdentityInput.setCustomValidity(copy.failed);
+          }
+          authIdentityInput.reportValidity();
+        })
+        .finally(function () {
+          emailSubmitting = false;
+          authContinue.disabled = false;
+        });
+    }
   });
 
   authPasskey.addEventListener("click", (event) => {
