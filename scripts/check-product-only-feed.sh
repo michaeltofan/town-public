@@ -202,7 +202,8 @@ for fragment in (
     'id="signal-detail"',
     'id="detail-close"',
     'id="membership-invite"',
-    'id="detail-add-testimony"',
+    'id="detail-session-contribute"',
+    'id="detail-session"',
 ):
     if fragment not in html:
         fail(f"feed/signal-detail structure removed: {fragment}")

@@ -117,7 +117,7 @@ assert(
 
 const detailSeeToo = sliceHandler(
   'detailSeeToo.addEventListener("click"',
-  'detailAddTestimony.addEventListener("click"'
+  'detailSessionContribute.addEventListener("click"'
 );
 assert(
   detailSeeToo.includes("activateSeeTooAction"),

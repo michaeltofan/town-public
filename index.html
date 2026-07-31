@@ -752,6 +752,24 @@
               <h2 class="signal-detail__label" id="detail-status-label"></h2>
               <p class="signal-detail__text" id="detail-status-note"></p>
             </section>
+
+            <!-- Paying members: civic discussion session toward a local solution — not chat. -->
+            <section
+              class="signal-detail__section signal-detail__session"
+              id="detail-session"
+              aria-labelledby="detail-session-label"
+            >
+              <h2 class="signal-detail__label" id="detail-session-label"></h2>
+              <p class="signal-detail__text" id="detail-session-body"></p>
+              <p
+                class="signal-detail__session-empty"
+                id="detail-session-empty"
+              ></p>
+              <ul
+                class="signal-detail__session-list"
+                id="detail-session-list"
+              ></ul>
+            </section>
           </div>
 
           <div class="signal-detail__actions">
@@ -762,11 +780,15 @@
               <p class="feed__done-title" id="detail-done-title"></p>
               <p class="feed__done-note" id="detail-done-note"></p>
             </div>
-            <!-- Visitors: membership invite. Members with canParticipate: demo local capture (PR #19). -->
-            <button type="button" class="feed__secondary" id="detail-add-testimony">
-              Add testimony
+            <!-- Visitors → membership invite. Participating members → discussion session compose. -->
+            <button
+              type="button"
+              class="feed__secondary"
+              id="detail-session-contribute"
+            >
+              Open a discussion session
             </button>
-            <!-- DEMO ONLY — in-session preview for participating members; not uploaded, not persisted. -->
+            <!-- DEMO ONLY — optional media for a session contribution; not uploaded. -->
             <input
               type="file"
               id="detail-testimony-input"
@@ -775,34 +797,82 @@
               hidden
             />
             <div
-              class="signal-detail__demo-testimony"
-              id="detail-testimony-preview"
+              class="signal-detail__session-compose"
+              id="detail-session-compose"
               hidden
             >
               <p
-                class="signal-detail__demo-testimony-note"
-                id="detail-testimony-note"
+                class="signal-detail__session-compose-title"
+                id="detail-session-compose-title"
               ></p>
-              <img
-                class="signal-detail__demo-testimony-media"
-                id="detail-testimony-image"
-                alt=""
+              <p
+                class="signal-detail__session-compose-guide"
+                id="detail-session-compose-guide"
+              ></p>
+              <textarea
+                class="signal-detail__session-input"
+                id="detail-session-input"
+                maxlength="480"
+                rows="4"
+                aria-label="Contribution"
+              ></textarea>
+              <div class="signal-detail__session-compose-actions">
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-session-attach"
+                >
+                  Attach photo or video
+                </button>
+                <button
+                  type="button"
+                  class="feed__primary"
+                  id="detail-session-publish"
+                >
+                  Publish contribution
+                </button>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-session-cancel"
+                >
+                  Cancel
+                </button>
+              </div>
+              <p
+                class="signal-detail__session-demo-note"
+                id="detail-session-demo-note"
+              ></p>
+              <div
+                class="signal-detail__demo-testimony"
+                id="detail-testimony-preview"
                 hidden
-              />
-              <video
-                class="signal-detail__demo-testimony-media"
-                id="detail-testimony-video"
-                controls
-                playsinline
-                hidden
-              ></video>
-              <button
-                type="button"
-                class="feed__secondary"
-                id="detail-testimony-clear"
               >
-                Remove
-              </button>
+                <p
+                  class="signal-detail__demo-testimony-note"
+                  id="detail-testimony-note"
+                ></p>
+                <img
+                  class="signal-detail__demo-testimony-media"
+                  id="detail-testimony-image"
+                  alt=""
+                  hidden
+                />
+                <video
+                  class="signal-detail__demo-testimony-media"
+                  id="detail-testimony-video"
+                  controls
+                  playsinline
+                  hidden
+                ></video>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-testimony-clear"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1401,6 +1471,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=member-capture-canparticipate-1" defer></script>
+    <script src="script.js?v=signal-discussion-session-1" defer></script>
   </body>
 </html>

@@ -111,7 +111,27 @@
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
-  const detailAddTestimony = document.getElementById("detail-add-testimony");
+  const detailSessionLabel = document.getElementById("detail-session-label");
+  const detailSessionBody = document.getElementById("detail-session-body");
+  const detailSessionEmpty = document.getElementById("detail-session-empty");
+  const detailSessionList = document.getElementById("detail-session-list");
+  const detailSessionContribute = document.getElementById(
+    "detail-session-contribute"
+  );
+  const detailSessionCompose = document.getElementById("detail-session-compose");
+  const detailSessionComposeTitle = document.getElementById(
+    "detail-session-compose-title"
+  );
+  const detailSessionComposeGuide = document.getElementById(
+    "detail-session-compose-guide"
+  );
+  const detailSessionInput = document.getElementById("detail-session-input");
+  const detailSessionAttach = document.getElementById("detail-session-attach");
+  const detailSessionPublish = document.getElementById("detail-session-publish");
+  const detailSessionCancel = document.getElementById("detail-session-cancel");
+  const detailSessionDemoNote = document.getElementById(
+    "detail-session-demo-note"
+  );
   const detailTestimonyInput = document.getElementById("detail-testimony-input");
   const detailTestimonyPreview = document.getElementById(
     "detail-testimony-preview"
@@ -451,7 +471,19 @@
     !detailSeeTooDone ||
     !detailDoneTitle ||
     !detailDoneNote ||
-    !detailAddTestimony ||
+    !detailSessionLabel ||
+    !detailSessionBody ||
+    !detailSessionEmpty ||
+    !detailSessionList ||
+    !detailSessionContribute ||
+    !detailSessionCompose ||
+    !detailSessionComposeTitle ||
+    !detailSessionComposeGuide ||
+    !detailSessionInput ||
+    !detailSessionAttach ||
+    !detailSessionPublish ||
+    !detailSessionCancel ||
+    !detailSessionDemoNote ||
     !detailTestimonyInput ||
     !detailTestimonyPreview ||
     !detailTestimonyNote ||
@@ -1118,9 +1150,26 @@
       updateLabel: "Latest update",
       statusLabel: "What this status means",
       communityArea: "{city} · {area}",
-      addTestimony: "Add testimony",
-      clearTestimony: "Remove",
-      demoTestimonyNote: "Demo only — not uploaded, not saved",
+      clearTestimony: "Remove media",
+      demoTestimonyNote: "Attached for this contribution — not uploaded",
+      sessionLabel: "Session toward a solution",
+      sessionBody:
+        "This is not a chat. Paying members open a focused discussion on this signal — to turn what is seen into a local movement toward a solution.",
+      sessionEmpty:
+        "No session yet. The first contribution opens the discussion for this signal.",
+      sessionOpen: "Open a discussion session",
+      sessionContribute: "Add your contribution",
+      sessionComposeTitle: "Contribute to this signal",
+      sessionComposeGuide:
+        "Share a concrete observation, a local proposal, or a next step. Write to move the community toward a solution — not for empty talk.",
+      sessionAttach: "Attach photo or video",
+      sessionPublish: "Publish contribution",
+      sessionCancel: "Cancel",
+      sessionDemoNote:
+        "Demo on this device for now — not saved to the TOWN server yet.",
+      sessionNeedText:
+        "Write at least a short, concrete contribution before publishing.",
+      sessionYou: "You",
       cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
     },
     es: {
@@ -1137,9 +1186,26 @@
       updateLabel: "Última actualización",
       statusLabel: "Qué significa este estado",
       communityArea: "{city} · {area}",
-      addTestimony: "Añadir testimonio",
-      clearTestimony: "Eliminar",
-      demoTestimonyNote: "Solo demo — no se carga ni se guarda",
+      clearTestimony: "Quitar medio",
+      demoTestimonyNote: "Adjunto a esta contribución — no se carga",
+      sessionLabel: "Sesión hacia una solución",
+      sessionBody:
+        "Esto no es un chat. Los miembros de pago abren una discusión centrada en esta señal — para convertir lo visto en un movimiento local hacia una solución.",
+      sessionEmpty:
+        "Aún no hay sesión. La primera contribución abre la discusión de esta señal.",
+      sessionOpen: "Abrir una sesión de discusión",
+      sessionContribute: "Añadir tu contribución",
+      sessionComposeTitle: "Contribuir a esta señal",
+      sessionComposeGuide:
+        "Comparte una observación concreta, una propuesta local o un siguiente paso. Escribe para mover a la comunidad hacia una solución — no para hablar en vacío.",
+      sessionAttach: "Adjuntar foto o vídeo",
+      sessionPublish: "Publicar contribución",
+      sessionCancel: "Cancelar",
+      sessionDemoNote:
+        "Demo en este dispositivo por ahora — aún no se guarda en el servidor TOWN.",
+      sessionNeedText:
+        "Escribe al menos una contribución breve y concreta antes de publicar.",
+      sessionYou: "Tú",
       cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
     },
     it: {
@@ -1156,9 +1222,26 @@
       updateLabel: "Ultimo aggiornamento",
       statusLabel: "Cosa significa questo stato",
       communityArea: "{city} · {area}",
-      addTestimony: "Aggiungi testimonianza",
-      clearTestimony: "Rimuovi",
-      demoTestimonyNote: "Solo demo — non caricata, non salvata",
+      clearTestimony: "Rimuovi media",
+      demoTestimonyNote: "Allegato a questo contributo — non caricato",
+      sessionLabel: "Sessione verso una soluzione",
+      sessionBody:
+        "Non è una chat. I membri paganti aprono una discussione focalizzata su questo segnale — per trasformare ciò che si vede in un movimento locale verso una soluzione.",
+      sessionEmpty:
+        "Nessuna sessione ancora. Il primo contributo apre la discussione su questo segnale.",
+      sessionOpen: "Apri una sessione di discussione",
+      sessionContribute: "Aggiungi il tuo contributo",
+      sessionComposeTitle: "Contribuisci a questo segnale",
+      sessionComposeGuide:
+        "Condividi un’osservazione concreta, una proposta locale o un passo successivo. Scrivi per avvicinare la comunità a una soluzione — non per parlare a vuoto.",
+      sessionAttach: "Allega foto o video",
+      sessionPublish: "Pubblica il contributo",
+      sessionCancel: "Annulla",
+      sessionDemoNote:
+        "Demo su questo dispositivo per ora — non ancora salvata sul server TOWN.",
+      sessionNeedText:
+        "Scrivi almeno un contributo breve e concreto prima di pubblicare.",
+      sessionYou: "Tu",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1175,9 +1258,26 @@
       updateLabel: "Letzte Aktualisierung",
       statusLabel: "Was dieser Status bedeutet",
       communityArea: "{city} · {area}",
-      addTestimony: "Zeugnis hinzufügen",
-      clearTestimony: "Entfernen",
-      demoTestimonyNote: "Nur Demo — nicht hochgeladen, nicht gespeichert",
+      clearTestimony: "Medium entfernen",
+      demoTestimonyNote: "Für diesen Beitrag angehängt — nicht hochgeladen",
+      sessionLabel: "Sitzung auf dem Weg zur Lösung",
+      sessionBody:
+        "Das ist kein Chat. Zahlende Mitglieder eröffnen eine fokussierte Diskussion zu diesem Signal — damit aus dem Gesehenen eine lokale Bewegung zur Lösung wird.",
+      sessionEmpty:
+        "Noch keine Sitzung. Der erste Beitrag eröffnet die Diskussion zu diesem Signal.",
+      sessionOpen: "Diskussionssitzung eröffnen",
+      sessionContribute: "Deinen Beitrag hinzufügen",
+      sessionComposeTitle: "Zu diesem Signal beitragen",
+      sessionComposeGuide:
+        "Teile eine konkrete Beobachtung, einen lokalen Vorschlag oder einen nächsten Schritt. Schreibe, um die Gemeinschaft einer Lösung näherzubringen — nicht für leeres Gerede.",
+      sessionAttach: "Foto oder Video anhängen",
+      sessionPublish: "Beitrag veröffentlichen",
+      sessionCancel: "Abbrechen",
+      sessionDemoNote:
+        "Vorerst Demo auf diesem Gerät — noch nicht auf dem TOWN-Server gespeichert.",
+      sessionNeedText:
+        "Schreibe mindestens einen kurzen, konkreten Beitrag vor dem Veröffentlichen.",
+      sessionYou: "Du",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1194,9 +1294,26 @@
       updateLabel: "Ultima actualizare",
       statusLabel: "Ce înseamnă această stare",
       communityArea: "{city} · {area}",
-      addTestimony: "Adaugă mărturie",
-      clearTestimony: "Elimină",
-      demoTestimonyNote: "Doar demo — nu este încărcată, nu este salvată",
+      clearTestimony: "Elimină media",
+      demoTestimonyNote: "Atașat acestei contribuții — nu este încărcat",
+      sessionLabel: "Sesiune către o soluție",
+      sessionBody:
+        "Nu este un chat. Membrii care plătesc deschid o discuție concentrată pe acest semnal — ca ceea ce se vede să devină o mișcare locală către o soluție.",
+      sessionEmpty:
+        "Nicio sesiune încă. Prima contribuție deschide discuția pe acest semnal.",
+      sessionOpen: "Deschide o sesiune de discuții",
+      sessionContribute: "Adaugă contribuția ta",
+      sessionComposeTitle: "Contribuie la acest semnal",
+      sessionComposeGuide:
+        "Spune o observație concretă, o propunere locală sau un pas următor. Scrie ca să muți comunitatea spre o soluție — nu pentru vorbă goală.",
+      sessionAttach: "Atașează foto sau video",
+      sessionPublish: "Publică contribuția",
+      sessionCancel: "Anulează",
+      sessionDemoNote:
+        "Demo pe acest dispozitiv deocamdată — încă nu e salvată pe serverul TOWN.",
+      sessionNeedText:
+        "Scrie cel puțin o contribuție scurtă și concretă înainte de publicare.",
+      sessionYou: "Tu",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1228,7 +1345,7 @@
       ],
       rightsTitle: "Con una membership attiva puoi:",
       rights:
-        "Confermare segnali, pubblicare, commentare e partecipare alle decisioni della comunità.",
+        "Confermare segnali, aprire sessioni di discussione verso una soluzione e partecipare alle decisioni della comunità.",
       endedTitle:
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
@@ -1261,7 +1378,7 @@
       ],
       rightsTitle: "Mit einer aktiven Mitgliedschaft kannst du:",
       rights:
-        "Signale bestätigen, Beiträge veröffentlichen, kommentieren und an Entscheidungen der Gemeinschaft teilnehmen.",
+        "Signale bestätigen, Diskussionssitzungen auf dem Weg zur Lösung eröffnen und an Entscheidungen der Gemeinschaft teilnehmen.",
       endedTitle:
         "TOWN ist für Menschen, die bereit sind, sich an ihrer Gemeinschaft zu beteiligen.",
       endedBody:
@@ -1295,7 +1412,7 @@
       ],
       rightsTitle: "Cu un membership activ poți:",
       rights:
-        "Confirma semnale, publica, comenta și participa la deciziile comunității.",
+        "Confirma semnale, deschide sesiuni de discuții către o soluție și participa la deciziile comunității.",
       endedTitle:
         "TOWN este pentru cei gata să participe în comunitatea lor.",
       endedBody: "Poți reveni când ești pregătit să faci parte din ea.",
@@ -2662,9 +2779,11 @@
   let membershipSimulated = false;
   let paymentCheckoutSubmitting = false;
   let signalConfirmed = false;
-  // DEMO ONLY — client-side preview for canParticipate members; not uploaded.
+  // DEMO ONLY — optional media for a session contribution; not uploaded.
   let demoTestimony = null;
   let demoTestimonyFeedIndex = null;
+  // DEMO ONLY — in-browser discussion contributions per signal; not persisted.
+  const signalSessionContributions = Object.create(null);
   let sessionAuthenticated = false;
   let commitmentCountry = null;
   let commitmentCity = null;
@@ -3726,13 +3845,7 @@
     detailWhoLabel.textContent = copy.whoLabel;
     detailUpdateLabel.textContent = copy.updateLabel;
     detailStatusLabel.textContent = copy.statusLabel;
-    detailAddTestimony.textContent = copy.addTestimony;
-    if (detailTestimonyClear && copy.clearTestimony) {
-      detailTestimonyClear.textContent = copy.clearTestimony;
-    }
-    if (detailTestimonyNote && copy.demoTestimonyNote) {
-      detailTestimonyNote.textContent = copy.demoTestimonyNote;
-    }
+    applySignalSessionCopy(currentFeedCopy());
     syncFeedMemberState();
     document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
   }
@@ -3778,6 +3891,8 @@
     detailWho.textContent = view.whoAffected || "";
     detailUpdate.textContent = view.latestUpdate || "";
     detailStatusNote.textContent = view.statusNote || "";
+    closeSessionCompose({ keepDraft: false });
+    renderSignalSession();
     syncFeedMemberState();
   }
 
@@ -5711,9 +5826,177 @@
 
   function closeSignalDetail() {
     if (signalDetail.hidden) return;
+    closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
+  }
+
+  function signalSessionKey() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (scene && scene.id) return String(scene.id);
+    return String(selectedCity || "city") + ":" + String(feedIndex);
+  }
+
+  function currentFeedCopy() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    const locale = feedLocaleForScene(scene);
+    const lang = (locale && locale.lang) || resolvePublicReadingLanguage();
+    const fallback = FEED_COPY[lang] || FEED_COPY.en || FEED_COPY.it;
+    // Merge so session strings in FEED_COPY fill gaps from public-i18n chrome.
+    return Object.assign({}, fallback, locale.copy || {});
+  }
+
+  function applySignalSessionCopy(copy) {
+    if (!copy) return;
+    detailSessionLabel.textContent = copy.sessionLabel || "";
+    detailSessionBody.textContent = copy.sessionBody || "";
+    detailSessionEmpty.textContent = copy.sessionEmpty || "";
+    detailSessionComposeTitle.textContent = copy.sessionComposeTitle || "";
+    detailSessionComposeGuide.textContent = copy.sessionComposeGuide || "";
+    detailSessionAttach.textContent = copy.sessionAttach || "";
+    detailSessionPublish.textContent = copy.sessionPublish || "";
+    detailSessionCancel.textContent = copy.sessionCancel || "";
+    detailSessionDemoNote.textContent = copy.sessionDemoNote || "";
+    detailSessionInput.setAttribute(
+      "aria-label",
+      copy.sessionComposeTitle || "Contribution"
+    );
+    if (detailTestimonyClear && copy.clearTestimony) {
+      detailTestimonyClear.textContent = copy.clearTestimony;
+    }
+    if (detailTestimonyNote && copy.demoTestimonyNote) {
+      detailTestimonyNote.textContent = copy.demoTestimonyNote;
+    }
+    syncSessionContributeLabel(copy);
+  }
+
+  function syncSessionContributeLabel(copy) {
+    const feedCopy = copy || currentFeedCopy();
+    const entries = signalSessionContributions[signalSessionKey()] || [];
+    detailSessionContribute.textContent =
+      entries.length > 0
+        ? feedCopy.sessionContribute || feedCopy.sessionOpen
+        : feedCopy.sessionOpen || feedCopy.sessionContribute;
+  }
+
+  function renderSignalSession() {
+    const copy = currentFeedCopy();
+    applySignalSessionCopy(copy);
+    const key = signalSessionKey();
+    const entries = signalSessionContributions[key] || [];
+    detailSessionList.textContent = "";
+    detailSessionEmpty.hidden = entries.length > 0;
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i];
+      const li = document.createElement("li");
+      li.className = "signal-detail__session-item";
+      const meta = document.createElement("p");
+      meta.className = "signal-detail__session-meta";
+      meta.textContent = entry.author || copy.sessionYou || "Member";
+      const body = document.createElement("p");
+      body.className = "signal-detail__session-text";
+      body.textContent = entry.text || "";
+      li.appendChild(meta);
+      li.appendChild(body);
+      if (entry.media && entry.media.objectUrl) {
+        if (entry.media.kind === "video") {
+          const video = document.createElement("video");
+          video.className = "signal-detail__demo-testimony-media";
+          video.controls = true;
+          video.playsInline = true;
+          video.src = entry.media.objectUrl;
+          li.appendChild(video);
+        } else {
+          const img = document.createElement("img");
+          img.className = "signal-detail__demo-testimony-media";
+          img.alt = "";
+          img.src = entry.media.objectUrl;
+          li.appendChild(img);
+        }
+      }
+      detailSessionList.appendChild(li);
+    }
+  }
+
+  function openSessionCompose() {
+    const copy = currentFeedCopy();
+    applySignalSessionCopy(copy);
+    detailSessionCompose.hidden = false;
+    detailSessionContribute.hidden = true;
+    detailSessionInput.focus();
+  }
+
+  function closeSessionCompose(options) {
+    const keepDraft = !!(options && options.keepDraft);
+    detailSessionCompose.hidden = true;
+    detailSessionContribute.hidden = false;
+    if (!keepDraft) {
+      detailSessionInput.value = "";
+      detailSessionInput.setCustomValidity("");
+      if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
+        clearDemoTestimony();
+      }
+    }
+    syncSessionContributeLabel();
+  }
+
+  function publishSessionContribution() {
+    const copy = currentFeedCopy();
+    const text = (detailSessionInput.value || "").trim();
+    if (text.length < 12) {
+      detailSessionInput.setCustomValidity(
+        copy.sessionNeedText || "Write a concrete contribution."
+      );
+      detailSessionInput.reportValidity();
+      return;
+    }
+    detailSessionInput.setCustomValidity("");
+    if (!canTakeCivicAction()) {
+      originatingFeedIndex = feedIndex;
+      closeSignalDetail();
+      openInvite();
+      return;
+    }
+
+    const key = signalSessionKey();
+    const author =
+      profileDisplayName(accountEmail || enteredEmail) ||
+      copy.sessionYou ||
+      "Member";
+    const entry = {
+      id: "local-" + String(Date.now()),
+      text: text,
+      author: author,
+      createdAt: Date.now(),
+      media: null,
+    };
+    if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
+      // Transfer object URL ownership into the contribution (do not revoke).
+      entry.media = {
+        kind: demoTestimony.kind,
+        objectUrl: demoTestimony.objectUrl,
+      };
+      demoTestimony = null;
+      demoTestimonyFeedIndex = null;
+      detailTestimonyInput.value = "";
+      detailTestimonyImage.removeAttribute("src");
+      detailTestimonyImage.hidden = true;
+      detailTestimonyVideo.removeAttribute("src");
+      detailTestimonyVideo.hidden = true;
+      if (typeof detailTestimonyVideo.load === "function") {
+        detailTestimonyVideo.load();
+      }
+      detailTestimonyPreview.hidden = true;
+    }
+    if (!signalSessionContributions[key]) {
+      signalSessionContributions[key] = [];
+    }
+    signalSessionContributions[key].push(entry);
+    closeSessionCompose({ keepDraft: false });
+    renderSignalSession();
   }
 
   // DEMO ONLY — client-side preview for participating members; not uploaded.
@@ -5984,17 +6267,35 @@
     activateSeeTooAction({ closeDetail: true });
   });
 
-  // Testimony CTA:
-  // - participating member (canParticipate): restored demo photo/video capture
-  // - everyone else: membership invitation boundary (unchanged visitor path)
-  detailAddTestimony.addEventListener("click", () => {
+  // Discussion session CTA:
+  // - participating member (canParticipate): compose a solution-oriented contribution
+  // - everyone else: membership invitation boundary
+  detailSessionContribute.addEventListener("click", () => {
     if (canTakeCivicAction()) {
-      openMemberDemoTestimonyCapture();
+      openSessionCompose();
       return;
     }
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
+  });
+
+  detailSessionAttach.addEventListener("click", () => {
+    if (!canTakeCivicAction()) {
+      originatingFeedIndex = feedIndex;
+      closeSignalDetail();
+      openInvite();
+      return;
+    }
+    openMemberDemoTestimonyCapture();
+  });
+
+  detailSessionPublish.addEventListener("click", () => {
+    publishSessionContribution();
+  });
+
+  detailSessionCancel.addEventListener("click", () => {
+    closeSessionCompose({ keepDraft: false });
   });
 
   detailTestimonyInput.addEventListener("change", () => {
@@ -6018,6 +6319,9 @@
       objectUrl: URL.createObjectURL(file),
     };
     demoTestimonyFeedIndex = feedIndex;
+    if (detailSessionCompose.hidden) {
+      openSessionCompose();
+    }
     renderDemoTestimony();
   });
 
@@ -6039,6 +6343,10 @@
       }
       if (!signalDetail.hidden) {
         event.preventDefault();
+        if (!detailSessionCompose.hidden) {
+          closeSessionCompose({ keepDraft: false });
+          return;
+        }
         closeSignalDetail();
         return;
       }
