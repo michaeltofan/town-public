@@ -353,12 +353,37 @@ if "closeAuthWindow" not in post_body:
     fail("successful Sign-in must close the auth window")
 if "hasAuthoritativePaidMembership" not in post_body:
     fail("post-auth routing must consult authoritative membership")
+if "restorePendingSeeTooAfterSignIn" not in post_body:
+    fail("post-auth routing must consult pending see-too continuity")
 if "beginInviteMembershipJourney" not in post_body:
-    fail("authenticated non-members must enter the membership journey")
+    fail("authenticated non-members without pending see-too must enter the membership journey")
 if 'go("commitment")' not in post_body:
-    fail("authenticated non-members must continue to commitment")
+    fail("authenticated non-members without pending see-too must continue to commitment")
 if "requestCheckoutSession" in post_body or "checkoutUrl" in post_body:
     fail("public Sign-in must not initiate Checkout")
+
+# Pending see-too continuity helpers (I SEE THIS TOO → Sign-in → same signal)
+for helper in (
+    "capturePendingSeeTooContext",
+    "clearPendingSeeTooContext",
+    "restorePendingSeeTooAfterSignIn",
+    "resolvePendingSeeTooFeedIndex",
+):
+    if f"function {helper}" not in js:
+        fail(f"missing {helper}")
+restore = re.search(
+    r"function restorePendingSeeTooAfterSignIn\(\)\s*\{([\s\S]*?)\n  \}",
+    js,
+)
+if not restore:
+    fail("missing restorePendingSeeTooAfterSignIn body")
+restore_body = restore.group(1)
+if 'go("feed")' not in restore_body or "openInvite()" not in restore_body:
+    fail("pending see-too restore must return to feed and open membership invite")
+if "clearPendingSeeTooContext" not in restore_body:
+    fail("pending see-too restore must consume context")
+if "signalConfirmed = true" in restore_body:
+    fail("pending see-too restore must not auto-confirm the signal")
 
 # Returning authenticated accounts may reach commitment without Create-account flags
 go_fn = re.search(r"function go\(route\)\s*\{([\s\S]*?)\n  \}", js)

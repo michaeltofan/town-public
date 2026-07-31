@@ -120,9 +120,13 @@ assert(
   "routes from authoritative membership"
 );
 assert(
+  post.includes("restorePendingSeeTooAfterSignIn"),
+  "pending see-too continuity is consulted before default non-member routing"
+);
+assert(
   post.includes("beginInviteMembershipJourney") &&
     post.includes('go("commitment")'),
-  "non-members continue into membership journey"
+  "non-members without pending see-too continue into membership journey"
 );
 assert(
   !post.includes("requestCheckoutSession") && !post.includes("checkoutUrl"),

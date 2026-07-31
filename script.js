@@ -2095,6 +2095,85 @@
     inviteMembershipJourneyActive = false;
   }
 
+  function clearPendingSeeTooContext() {
+    pendingSeeTooContext = null;
+  }
+
+  function capturePendingSeeTooContext() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    const discovery = window.TownCityDiscovery;
+    if (
+      !scene ||
+      !scene.id ||
+      (discovery && discovery.isCityDiscoveryStory(scene))
+    ) {
+      clearPendingSeeTooContext();
+      return null;
+    }
+    const communityId = cityIdFromScene(scene);
+    pendingSeeTooContext = {
+      action: "see-too",
+      signalId: scene.id,
+      communityId: communityId || null,
+      feedIndex: feedIndex,
+    };
+    return pendingSeeTooContext;
+  }
+
+  function resolvePendingSeeTooFeedIndex(context) {
+    if (!context || context.action !== "see-too" || !context.signalId) {
+      return -1;
+    }
+    const scenes = currentScenes();
+    for (let i = 0; i < scenes.length; i++) {
+      const scene = scenes[i];
+      if (!scene || scene.id !== context.signalId) continue;
+      if (
+        context.communityId &&
+        cityIdFromScene(scene) &&
+        cityIdFromScene(scene) !== context.communityId
+      ) {
+        continue;
+      }
+      return i;
+    }
+    // Feed index is only an aid when the same signal id still sits there.
+    if (
+      typeof context.feedIndex === "number" &&
+      context.feedIndex >= 0 &&
+      context.feedIndex < scenes.length
+    ) {
+      const aid = scenes[context.feedIndex];
+      if (aid && aid.id === context.signalId) return context.feedIndex;
+    }
+    return -1;
+  }
+
+  // Restores the originating signal and opens the existing membership invite.
+  // Consumes pending context on success or when the context is invalid.
+  function restorePendingSeeTooAfterSignIn() {
+    const context = pendingSeeTooContext;
+    if (!context || context.action !== "see-too") {
+      return false;
+    }
+    const index = resolvePendingSeeTooFeedIndex(context);
+    if (index < 0) {
+      clearPendingSeeTooContext();
+      return false;
+    }
+    clearPendingSeeTooContext();
+    endInviteMembershipJourney();
+    endCityDiscoveryJourney();
+    feedIndex = index;
+    originatingFeedIndex = index;
+    const scenes = currentScenes();
+    if (scenes[index]) syncProductOnlyCityFromScene(scenes[index]);
+    go("feed");
+    openInvite();
+    return true;
+  }
+
   function beginCityDiscoveryJourney() {
     // Clear any product-only scene binding so browser language / current
     // signal never silently selects country, city, or eligibility.
@@ -2408,6 +2487,9 @@
   let locationOutsideBoundary = false;
   let feedIndex = 0;
   let originatingFeedIndex = 0;
+  // Explicit pending context for the public "I SEE THIS TOO" → Sign-in return.
+  // signalId is the stable scene identity; feedIndex is only a rendering aid.
+  let pendingSeeTooContext = null;
   let enteredEmail = "";
   let emailVerificationId = null;
   let setupGrant = null;
@@ -3942,7 +4024,13 @@
     closeAuthWindow();
     if (hasAuthoritativePaidMembership()) {
       // Paid member: remain on the public feed with authoritative member UI.
+      clearPendingSeeTooContext();
       syncFeedMemberState();
+      return;
+    }
+    // Pending "I SEE THIS TOO": return to the originating signal, then the
+    // existing membership invite boundary. Unrelated Sign-ins keep commitment.
+    if (restorePendingSeeTooAfterSignIn()) {
       return;
     }
     // Authenticated non-member: continue the membership journey at commitment.
@@ -4945,6 +5033,7 @@
     clearAuthWindowStatus();
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
+    clearPendingSeeTooContext();
     clearLiveScenes();
     clearEntryLoginStatus();
     if (sessionAuthenticated) {
@@ -5496,6 +5585,7 @@
   detailSeeToo.addEventListener("click", () => {
     if (isMemberPresented() || detailSeeToo.disabled) return;
     originatingFeedIndex = feedIndex;
+    capturePendingSeeTooContext();
     closeSignalDetail();
     openInvite();
   });
@@ -5877,6 +5967,7 @@
         if (isMemberPresented() || control.disabled) return;
         closeSignalSheet();
         originatingFeedIndex = feedIndex;
+        capturePendingSeeTooContext();
         openInvite();
         return;
       }
@@ -5914,6 +6005,8 @@
   });
 
   inviteContinue.addEventListener("click", () => {
+    // Choosing the membership journey abandons pending Sign-in return context.
+    clearPendingSeeTooContext();
     closeInvite();
     if (isProductOnlyPublicMode()) {
       beginInviteMembershipJourney();
@@ -5924,6 +6017,7 @@
   });
 
   inviteNotNow.addEventListener("click", () => {
+    clearPendingSeeTooContext();
     closeInvite();
     if (isProductOnlyPublicMode()) return;
     go("ended");
