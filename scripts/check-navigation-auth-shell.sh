@@ -158,13 +158,16 @@ for fragment in (
     'handleProtectedNav(navMembership, "membership")',
     'handleProtectedNav(navChat, "chat")',
     'handleProtectedNav(navActivity, "activity")',
-    'handleProtectedNav(navProfile, "profile")',
+    "handleProfileNav()",
     "handleHomeNav()",
     "closeAuthWindow()",
     "openAuthWindow(",
+    "openProfilePanel()",
 ):
     if fragment not in js:
         fail(f"missing nav/auth wiring: {fragment}")
+if 'handleProtectedNav(navProfile, "profile")' in js:
+    fail("PROFILE must use handleProfileNav, not always-open auth")
 
 # HOME / ACASĂ returns to the first public feed page; must not open auth or dormant routes
 home_handler = re.search(
