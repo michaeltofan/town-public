@@ -157,17 +157,24 @@ if "Sign in with password" in auth_html:
 for fragment in (
     'handleProtectedNav(navMembership, "membership")',
     'handleProtectedNav(navChat, "chat")',
-    'handleProtectedNav(navActivity, "activity")',
+    "handleActivityNav()",
     "handleProfileNav()",
     "handleHomeNav()",
     "closeAuthWindow()",
     "openAuthWindow(",
     "openProfilePanel()",
+    "openActivityPanel()",
 ):
     if fragment not in js:
         fail(f"missing nav/auth wiring: {fragment}")
 if 'handleProtectedNav(navProfile, "profile")' in js:
     fail("PROFILE must use handleProfileNav, not always-open auth")
+if 'handleProtectedNav(navActivity, "activity")' in js:
+    fail("ACTIVITY must use handleActivityNav, not always-open auth")
+if "/v1/account/activity" not in js:
+    fail("ACTIVITY must load from GET /v1/account/activity")
+if 'id="activity-panel"' not in html:
+    fail("ACTIVITY panel markup missing")
 
 # HOME / ACASĂ returns to the first public feed page; must not open auth or dormant routes
 home_handler = re.search(

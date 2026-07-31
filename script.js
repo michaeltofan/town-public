@@ -60,6 +60,16 @@
   const navMembership = document.getElementById("nav-membership");
   const navChat = document.getElementById("nav-chat");
   const navActivity = document.getElementById("nav-activity");
+  const activityPanel = document.getElementById("activity-panel");
+  const activityDim = document.getElementById("activity-dim");
+  const activityClose = document.getElementById("activity-close");
+  const activityLabel = document.getElementById("activity-label");
+  const activityTitle = document.getElementById("activity-title");
+  const activityLead = document.getElementById("activity-lead");
+  const activityStatus = document.getElementById("activity-status");
+  const activityEmpty = document.getElementById("activity-empty");
+  const activityList = document.getElementById("activity-list");
+  const activityFeed = document.getElementById("activity-feed");
   const navProfile = document.getElementById("nav-profile");
   const authWindow = document.getElementById("auth-window");
   const authWindowDim = document.getElementById("auth-window-dim");
@@ -489,6 +499,16 @@
     !navMembership ||
     !navChat ||
     !navActivity ||
+    !activityPanel ||
+    !activityDim ||
+    !activityClose ||
+    !activityLabel ||
+    !activityTitle ||
+    !activityLead ||
+    !activityStatus ||
+    !activityEmpty ||
+    !activityList ||
+    !activityFeed ||
     !navProfile ||
     !authWindow ||
     !authWindowDim ||
@@ -4056,6 +4076,7 @@
       !signalDetail.hidden ||
       !authWindow.hidden ||
       !profilePanel.hidden ||
+      !activityPanel.hidden ||
       !signalCreate.hidden ||
       !ownerModeration.hidden ||
       (termsSheet && !termsSheet.hidden) ||
@@ -4770,6 +4791,12 @@
       // PROFILE nav Sign-in: land on Profile V1, not commitment.
       syncFeedMemberState();
       openProfilePanel();
+      return;
+    }
+    if (openedFor === "activity") {
+      // ACTIVITY nav Sign-in: land on Activity from backend truth.
+      syncFeedMemberState();
+      openActivityPanel();
       return;
     }
     if (hasAuthoritativePaidMembership()) {
@@ -5682,41 +5709,54 @@
       "Moderation";
 
     profileActivityList.innerHTML = "";
-    const scenes = currentScenes();
-    let listed = 0;
-    for (let i = 0; i < scenes.length; i++) {
-      const scene = scenes[i];
-      if (!scene || !scene.id) continue;
-      if (!getSignalConfirmationState(i).confirmed) continue;
-      if (listed === 0) profileActivityEmpty.hidden = true;
-      const li = document.createElement("li");
-      li.className = "profile-panel__activity-item";
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "profile-panel__activity-item-btn";
-      btn.setAttribute("data-profile-signal-index", String(i));
-      const date = document.createElement("span");
-      date.className = "profile-panel__activity-date";
-      date.textContent = copy.activityConfirmed;
-      const headline = document.createElement("span");
-      headline.className = "profile-panel__activity-headline";
-      const locale = feedLocaleForScene(scene);
-      headline.textContent =
-        (locale.localizedScene && locale.localizedScene.headline) ||
-        scene.headline ||
-        scene.id;
-      btn.appendChild(date);
-      btn.appendChild(headline);
-      li.appendChild(btn);
-      profileActivityList.appendChild(li);
-      listed += 1;
+    profileActivityEmpty.hidden = true;
+    // Profile confirmations come from GET /v1/account/activity — not browser-only state.
+    refreshProfileActivityFromBackend(copy);
+    document.documentElement.lang =
+      profileLang() === "en" ? "en" : profileLang();
+  }
+
+  async function refreshProfileActivityFromBackend(copy) {
+    profileActivityList.innerHTML = "";
+    if (!sessionAuthenticated) {
+      profileActivityEmpty.hidden = false;
+      profileActivityEmpty.textContent = copy.activityEmpty;
+      return;
     }
-    if (listed === 0) {
+    try {
+      const items = await fetchAccountActivity();
+      const confirmations = items.filter(function (item) {
+        return item && item.kind === "confirmation" && item.signal && item.signal.id;
+      });
+      if (!confirmations.length) {
+        profileActivityEmpty.hidden = false;
+        profileActivityEmpty.textContent = copy.activityEmpty;
+        return;
+      }
+      profileActivityEmpty.hidden = true;
+      for (let i = 0; i < confirmations.length; i++) {
+        const item = confirmations[i];
+        const li = document.createElement("li");
+        li.className = "profile-panel__activity-item";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "profile-panel__activity-item-btn";
+        btn.setAttribute("data-profile-signal-id", item.signal.id);
+        const date = document.createElement("span");
+        date.className = "profile-panel__activity-date";
+        date.textContent = copy.activityConfirmed;
+        const headline = document.createElement("span");
+        headline.className = "profile-panel__activity-headline";
+        headline.textContent = item.signal.headline || item.signal.slug || "";
+        btn.appendChild(date);
+        btn.appendChild(headline);
+        li.appendChild(btn);
+        profileActivityList.appendChild(li);
+      }
+    } catch (_err) {
       profileActivityEmpty.hidden = false;
       profileActivityEmpty.textContent = copy.activityEmpty;
     }
-    document.documentElement.lang =
-      profileLang() === "en" ? "en" : profileLang();
   }
 
   function openProfilePanel() {
@@ -5725,6 +5765,7 @@
     closeInvite();
     closeSignalDetail();
     closeOwnerModeration();
+    closeActivityPanel();
     populateProfilePanel();
     profilePanel.hidden = false;
     setAuthFeedInert(true);
@@ -5741,6 +5782,291 @@
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
     setNavActive(navHome);
+  }
+
+  const ACTIVITY_COPY = {
+    en: {
+      label: "Activity",
+      title: "Your civic activity",
+      lead:
+        "Confirmations, published contributions, and updates on signals you participate in — from TOWN, not examples.",
+      empty:
+        "No civic activity yet. Confirm a signal or publish a contribution in your community.",
+      loading: "Loading your activity…",
+      error: "Could not load activity. Try again.",
+      close: "Close",
+      feedCta: "Back to feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "You confirmed this signal",
+        contribution: "You published a contribution",
+        signal_published: "You published a civic signal",
+        signal_evolution: "Signal update",
+      },
+      intents: {
+        observation: "Observation",
+        proposal: "Proposal",
+        next_step: "Next step",
+      },
+    },
+    it: {
+      label: "Attività",
+      title: "La tua attività civica",
+      lead:
+        "Conferme, contributi pubblicati e aggiornamenti sui segnali a cui partecipi — da TOWN, non esempi.",
+      empty:
+        "Nessuna attività civica ancora. Conferma un segnale o pubblica un contributo nella tua comunità.",
+      loading: "Caricamento attività…",
+      error: "Impossibile caricare l’attività. Riprova.",
+      close: "Chiudi",
+      feedCta: "Torna al feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Hai confermato questo segnale",
+        contribution: "Hai pubblicato un contributo",
+        signal_published: "Hai pubblicato un segnale civico",
+        signal_evolution: "Aggiornamento del segnale",
+      },
+      intents: {
+        observation: "Osservazione",
+        proposal: "Proposta",
+        next_step: "Prossimo passo",
+      },
+    },
+    de: {
+      label: "Aktivität",
+      title: "Deine zivile Aktivität",
+      lead:
+        "Bestätigungen, veröffentlichte Beiträge und Updates zu Signalen, an denen du teilnimmst — von TOWN, keine Beispiele.",
+      empty:
+        "Noch keine zivile Aktivität. Bestätige ein Signal oder veröffentliche einen Beitrag in deiner Gemeinschaft.",
+      loading: "Aktivität wird geladen…",
+      error: "Aktivität konnte nicht geladen werden. Bitte erneut versuchen.",
+      close: "Schließen",
+      feedCta: "Zurück zum Feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Du hast dieses Signal bestätigt",
+        contribution: "Du hast einen Beitrag veröffentlicht",
+        signal_published: "Du hast ein ziviles Signal veröffentlicht",
+        signal_evolution: "Signal-Update",
+      },
+      intents: {
+        observation: "Beobachtung",
+        proposal: "Vorschlag",
+        next_step: "Nächster Schritt",
+      },
+    },
+    ro: {
+      label: "Activitate",
+      title: "Activitatea ta civică",
+      lead:
+        "Confirmări, contribuții publicate și evoluția semnalelor la care participi — din TOWN, nu exemple.",
+      empty:
+        "Nicio activitate civică încă. Confirmă un semnal sau publică o contribuție în comunitatea ta.",
+      loading: "Se încarcă activitatea…",
+      error: "Nu s-a putut încărca activitatea. Încearcă din nou.",
+      close: "Închide",
+      feedCta: "Înapoi la feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Ai confirmat acest semnal",
+        contribution: "Ai publicat o contribuție",
+        signal_published: "Ai publicat un semnal civic",
+        signal_evolution: "Actualizare semnal",
+      },
+      intents: {
+        observation: "Observație",
+        proposal: "Propunere",
+        next_step: "Următorul pas",
+      },
+    },
+  };
+
+  let activityItemsCache = [];
+  let activityLoading = false;
+
+  function activityCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return ACTIVITY_COPY[lang] || ACTIVITY_COPY.en;
+  }
+
+  function formatActivityWhen(iso) {
+    if (!iso || typeof iso !== "string") return "";
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "";
+    try {
+      return date.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch (_err) {
+      return iso.slice(0, 10);
+    }
+  }
+
+  function activityItemDetail(item, copy) {
+    if (!item || !item.kind) return "";
+    if (item.kind === "contribution" && item.contribution) {
+      const intentKey = item.contribution.intent;
+      const intentLabel =
+        (copy.intents && copy.intents[intentKey]) || intentKey || "";
+      const text = String(item.contribution.text || "").trim();
+      const clipped = text.length > 140 ? text.slice(0, 137) + "…" : text;
+      return intentLabel ? intentLabel + " · " + clipped : clipped;
+    }
+    if (item.kind === "signal_evolution" && item.evolution) {
+      const latest = String(item.evolution.latestUpdate || "").trim();
+      const status = String(item.evolution.statusLabel || "").trim();
+      if (latest) return latest;
+      return status;
+    }
+    const community =
+      item.signal && item.signal.community && item.signal.community.displayName;
+    return community || "";
+  }
+
+  function renderActivityItems(items) {
+    const copy = activityCopy();
+    activityList.innerHTML = "";
+    activityItemsCache = Array.isArray(items) ? items : [];
+    if (!activityItemsCache.length) {
+      activityEmpty.hidden = false;
+      activityEmpty.textContent = copy.empty;
+      return;
+    }
+    activityEmpty.hidden = true;
+    for (let i = 0; i < activityItemsCache.length; i++) {
+      const item = activityItemsCache[i];
+      if (!item || !item.signal || !item.signal.id) continue;
+      const li = document.createElement("li");
+      li.className = "activity-panel__item";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "activity-panel__item-btn";
+      btn.setAttribute("data-activity-signal-id", item.signal.id);
+      const kind = document.createElement("span");
+      kind.className = "activity-panel__item-kind";
+      kind.textContent =
+        (copy.kinds && copy.kinds[item.kind]) || item.kind || "";
+      const headline = document.createElement("span");
+      headline.className = "activity-panel__item-headline";
+      headline.textContent = item.signal.headline || item.signal.slug || "";
+      const detailText = activityItemDetail(item, copy);
+      btn.appendChild(kind);
+      btn.appendChild(headline);
+      if (detailText) {
+        const detail = document.createElement("span");
+        detail.className = "activity-panel__item-detail";
+        detail.textContent = detailText;
+        btn.appendChild(detail);
+      }
+      const when = formatActivityWhen(item.occurredAt);
+      if (when) {
+        const whenEl = document.createElement("span");
+        whenEl.className = "activity-panel__item-when";
+        whenEl.textContent = when;
+        btn.appendChild(whenEl);
+      }
+      li.appendChild(btn);
+      activityList.appendChild(li);
+    }
+  }
+
+  async function fetchAccountActivity() {
+    const result = await getJsonWithCredentials(API_BASE + "/v1/account/activity");
+    if (result.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const items =
+      result.payload &&
+      result.payload.data &&
+      Array.isArray(result.payload.data.items)
+        ? result.payload.data.items
+        : null;
+    if (!items) {
+      throw makeApiError("failed");
+    }
+    return items;
+  }
+
+  async function refreshActivityPanel() {
+    const copy = activityCopy();
+    if (activityLoading) return;
+    activityLoading = true;
+    activityStatus.hidden = false;
+    activityStatus.textContent = copy.loading;
+    activityEmpty.hidden = true;
+    activityList.innerHTML = "";
+    try {
+      const items = await fetchAccountActivity();
+      activityStatus.hidden = true;
+      activityStatus.textContent = "";
+      renderActivityItems(items);
+    } catch (_err) {
+      activityStatus.hidden = false;
+      activityStatus.textContent = copy.error;
+      activityEmpty.hidden = true;
+      activityList.innerHTML = "";
+      activityItemsCache = [];
+    } finally {
+      activityLoading = false;
+    }
+  }
+
+  function applyActivityCopy() {
+    const copy = activityCopy();
+    activityLabel.textContent = copy.label;
+    activityTitle.textContent = copy.title;
+    activityLead.textContent = copy.lead;
+    activityClose.textContent = copy.close;
+    activityFeed.textContent = copy.feedCta;
+  }
+
+  function openActivityPanel() {
+    if (!sessionAuthenticated) return;
+    closeAuthWindow();
+    closeInvite();
+    closeSignalDetail();
+    closeOwnerModeration();
+    closeProfilePanel();
+    applyActivityCopy();
+    activityPanel.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navActivity);
+    activityClose.focus();
+    refreshActivityPanel();
+  }
+
+  function closeActivityPanel() {
+    if (!activityPanel || activityPanel.hidden) return;
+    activityPanel.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+    if (profilePanel.hidden) {
+      setNavActive(navHome);
+    }
+  }
+
+  function openActivitySignal(signalId) {
+    if (!signalId) return;
+    closeActivityPanel();
+    const scenes = currentScenes();
+    let index = -1;
+    for (let i = 0; i < scenes.length; i++) {
+      if (scenes[i] && scenes[i].id === signalId) {
+        index = i;
+        break;
+      }
+    }
+    if (index >= 0 && isFeedSurfaceActive()) {
+      scrollFeedToIndex(index, { behavior: "auto" });
+      openSignalDetail();
+    }
   }
 
   function isPasskeyCeremonyCancelled(err) {
@@ -6595,6 +6921,7 @@
     closeInvite();
     closeSignalDetail();
     closeProfilePanel();
+    closeActivityPanel();
     setNavActive(navHome);
     if (isFeedSurfaceActive()) {
       scrollFeedToIndex(0, { behavior: "auto" });
@@ -6607,6 +6934,14 @@
       return;
     }
     openAuthWindow(navProfile, "profile");
+  }
+
+  function handleActivityNav() {
+    if (sessionAuthenticated) {
+      openActivityPanel();
+      return;
+    }
+    openAuthWindow(navActivity, "activity");
   }
 
   function resetVisitorSession() {
@@ -7823,6 +8158,16 @@
         closeSignalCreate();
         return;
       }
+      if (!ownerModeration.hidden) {
+        event.preventDefault();
+        closeOwnerModeration();
+        return;
+      }
+      if (!activityPanel.hidden) {
+        event.preventDefault();
+        closeActivityPanel();
+        return;
+      }
       if (!profilePanel.hidden) {
         event.preventDefault();
         closeProfilePanel();
@@ -7885,7 +8230,28 @@
   });
 
   navActivity.addEventListener("click", () => {
-    handleProtectedNav(navActivity, "activity");
+    handleActivityNav();
+  });
+
+  activityClose.addEventListener("click", () => {
+    closeActivityPanel();
+  });
+  activityDim.addEventListener("click", () => {
+    closeActivityPanel();
+  });
+  activityFeed.addEventListener("click", () => {
+    closeActivityPanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
+    }
+  });
+  activityList.addEventListener("click", (event) => {
+    let target = event.target;
+    if (target && target.nodeType === 3) target = target.parentElement;
+    if (!target || !target.closest) return;
+    const btn = target.closest("[data-activity-signal-id]");
+    if (!btn) return;
+    openActivitySignal(btn.getAttribute("data-activity-signal-id"));
   });
 
   navProfile.addEventListener("click", () => {
@@ -7998,14 +8364,11 @@
     let target = event.target;
     if (target && target.nodeType === 3) target = target.parentElement;
     if (!target || !target.closest) return;
-    const btn = target.closest("[data-profile-signal-index]");
+    const btn = target.closest("[data-profile-signal-id]");
     if (!btn) return;
-    const index = Number(btn.getAttribute("data-profile-signal-index"));
-    if (Number.isNaN(index)) return;
+    const signalId = btn.getAttribute("data-profile-signal-id");
     closeProfilePanel();
-    if (isFeedSurfaceActive()) {
-      scrollFeedToIndex(index, { behavior: "auto" });
-    }
+    openActivitySignal(signalId);
   });
 
   authWindowClose.addEventListener("click", () => {

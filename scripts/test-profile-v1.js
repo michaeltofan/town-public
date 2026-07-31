@@ -74,8 +74,8 @@ assert(
   "profile uses membership + community truth"
 );
 assert(
-  body.includes("signalConfirmed") && body.includes("originatingFeedIndex"),
-  "profile activity uses real confirmation state"
+  body.includes("refreshProfileActivityFromBackend"),
+  "profile activity loads confirmations from backend activity"
 );
 assert(
   !body.includes("subscribers") && !body.includes("Substack"),

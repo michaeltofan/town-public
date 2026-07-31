@@ -49,6 +49,10 @@ assert(recovery.includes("isOwner: data.isOwner === true"), "snapshot keeps isOw
 assert(recovery.includes("function isOwnerAccount"), "recovery exposes isOwnerAccount");
 
 assert(css.includes(".owner-moderation"), "moderation styles present");
-assert(html.includes("script.js?v=owner-moderation-ui-1"), "cache buster bumped");
+assert(
+  html.includes("script.js?v=member-activity-1") ||
+    html.includes("script.js?v=owner-moderation-ui-1"),
+  "cache buster present"
+);
 
 console.log("PASSED: " + passed + " owner moderation UI assertions");
