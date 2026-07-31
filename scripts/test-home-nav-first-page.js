@@ -42,7 +42,8 @@ assert(home.includes("isFeedSurfaceActive()"), "only scrolls when feed is active
 assert(!home.includes("openAuthWindow"), "does not open auth window");
 assert(!/\bgo\s*\(/.test(home), "does not route away via go()");
 assert(
-  home.includes('navHome.classList.add("is-active")'),
+  home.includes("setNavActive(navHome)") ||
+    home.includes('navHome.classList.add("is-active")'),
   "keeps HOME as the active nav item"
 );
 

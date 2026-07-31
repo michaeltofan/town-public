@@ -894,6 +894,64 @@
           </div>
         </div>
       </div>
+
+      <!-- Profile V1: registered-account civic identity (overlay on public feed) -->
+      <div
+        class="profile-panel"
+        id="profile-panel"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-title"
+      >
+        <div class="profile-panel__dim" id="profile-dim" aria-hidden="true"></div>
+        <div class="profile-panel__sheet" role="document">
+          <button
+            type="button"
+            class="profile-panel__close"
+            id="profile-close"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <div class="profile-panel__inner">
+            <p class="profile-panel__brand" aria-label="TOWN">TOWN</p>
+            <p class="profile-panel__label" id="profile-label"></p>
+            <div class="profile-panel__identity">
+              <div class="profile-panel__avatar" id="profile-avatar" aria-hidden="true">
+                T
+              </div>
+              <div class="profile-panel__who">
+                <h2 class="profile-panel__title" id="profile-title"></h2>
+                <p class="profile-panel__handle" id="profile-handle"></p>
+              </div>
+            </div>
+            <p class="profile-panel__bio" id="profile-bio"></p>
+            <div class="profile-panel__meta">
+              <p class="profile-panel__meta-item" id="profile-community"></p>
+              <p class="profile-panel__meta-item" id="profile-membership"></p>
+            </div>
+            <section class="profile-panel__activity" aria-labelledby="profile-activity-title">
+              <h3 class="profile-panel__activity-title" id="profile-activity-title"></h3>
+              <p class="profile-panel__activity-empty" id="profile-activity-empty" hidden></p>
+              <ul class="profile-panel__activity-list" id="profile-activity-list"></ul>
+            </section>
+            <div class="profile-panel__actions">
+              <button type="button" class="btn btn--primary" id="profile-feed">
+                Back to feed
+              </button>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                id="profile-membership-cta"
+                hidden
+              >
+                Continue membership
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Screen 06 stage 2: membership details -->
@@ -1305,6 +1363,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=home-nav-first-page-1" defer></script>
+    <script src="script.js?v=profile-v1-1" defer></script>
   </body>
 </html>

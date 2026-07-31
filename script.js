@@ -73,6 +73,21 @@
   const authContinue = document.getElementById("auth-continue");
   const authPasskey = document.getElementById("auth-passkey");
   const authWindowStatus = document.getElementById("auth-window-status");
+  const profilePanel = document.getElementById("profile-panel");
+  const profileDim = document.getElementById("profile-dim");
+  const profileClose = document.getElementById("profile-close");
+  const profileLabel = document.getElementById("profile-label");
+  const profileAvatar = document.getElementById("profile-avatar");
+  const profileTitle = document.getElementById("profile-title");
+  const profileHandle = document.getElementById("profile-handle");
+  const profileBio = document.getElementById("profile-bio");
+  const profileCommunity = document.getElementById("profile-community");
+  const profileMembership = document.getElementById("profile-membership");
+  const profileActivityTitle = document.getElementById("profile-activity-title");
+  const profileActivityEmpty = document.getElementById("profile-activity-empty");
+  const profileActivityList = document.getElementById("profile-activity-list");
+  const profileFeed = document.getElementById("profile-feed");
+  const profileMembershipCta = document.getElementById("profile-membership-cta");
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -391,6 +406,21 @@
     !authContinue ||
     !authPasskey ||
     !authWindowStatus ||
+    !profilePanel ||
+    !profileDim ||
+    !profileClose ||
+    !profileLabel ||
+    !profileAvatar ||
+    !profileTitle ||
+    !profileHandle ||
+    !profileBio ||
+    !profileCommunity ||
+    !profileMembership ||
+    !profileActivityTitle ||
+    !profileActivityEmpty ||
+    !profileActivityList ||
+    !profileFeed ||
+    !profileMembershipCta ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -1968,6 +1998,106 @@
     },
   };
 
+  // Profile V1 — registered civic identity. No invented blog/social fields.
+  const PROFILE_COPY = {
+    en: {
+      label: "Your profile",
+      close: "Close",
+      defaultName: "TOWN neighbour",
+      handleFallback: "Registered account",
+      bioRegistered:
+        "Registered on TOWN. Local civic participation opens with active membership.",
+      bioMember:
+        "Active local member. You can confirm signals in your community.",
+      bioPaidPending:
+        "Membership recorded. Local participation is not available yet.",
+      communityNone: "Community: not chosen yet",
+      communityLine: "Community: {community}",
+      membershipNone: "Membership: not active",
+      membershipPaid: "Membership: active",
+      membershipPending: "Membership: paid — participation pending",
+      membershipOther: "Membership: {status}",
+      activityTitle: "Civic activity",
+      activityEmpty:
+        "No confirmations yet. Open a local signal and tap I SEE THIS TOO when you are ready.",
+      activityConfirmed: "You see this too",
+      feedCta: "Back to feed",
+      membershipCta: "Continue membership",
+    },
+    it: {
+      label: "Il tuo profilo",
+      close: "Chiudi",
+      defaultName: "Vicino TOWN",
+      handleFallback: "Account registrato",
+      bioRegistered:
+        "Registrato su TOWN. La partecipazione civica locale si apre con l’iscrizione attiva.",
+      bioMember:
+        "Membro locale attivo. Puoi confermare i segnali nella tua comunità.",
+      bioPaidPending:
+        "Iscrizione registrata. La partecipazione locale non è ancora disponibile.",
+      communityNone: "Comunità: non ancora scelta",
+      communityLine: "Comunità: {community}",
+      membershipNone: "Iscrizione: non attiva",
+      membershipPaid: "Iscrizione: attiva",
+      membershipPending: "Iscrizione: pagata — partecipazione in attesa",
+      membershipOther: "Iscrizione: {status}",
+      activityTitle: "Attività civica",
+      activityEmpty:
+        "Nessuna conferma ancora. Apri un segnale locale e tocca LO VEDO ANCH’IO quando sei pronto.",
+      activityConfirmed: "Lo vedi anche tu",
+      feedCta: "Torna al feed",
+      membershipCta: "Continua l’iscrizione",
+    },
+    de: {
+      label: "Dein Profil",
+      close: "Schließen",
+      defaultName: "TOWN-Nachbar",
+      handleFallback: "Registriertes Konto",
+      bioRegistered:
+        "Bei TOWN registriert. Lokale Mitwirkung öffnet sich mit aktiver Mitgliedschaft.",
+      bioMember:
+        "Aktives lokales Mitglied. Du kannst Signale in deiner Gemeinde bestätigen.",
+      bioPaidPending:
+        "Mitgliedschaft erfasst. Lokale Mitwirkung ist noch nicht verfügbar.",
+      communityNone: "Gemeinde: noch nicht gewählt",
+      communityLine: "Gemeinde: {community}",
+      membershipNone: "Mitgliedschaft: nicht aktiv",
+      membershipPaid: "Mitgliedschaft: aktiv",
+      membershipPending: "Mitgliedschaft: bezahlt — Mitwirkung ausstehend",
+      membershipOther: "Mitgliedschaft: {status}",
+      activityTitle: "Bürgerliche Aktivität",
+      activityEmpty:
+        "Noch keine Bestätigungen. Öffne ein lokales Signal und tippe ICH SEHE DAS AUCH, wenn du bereit bist.",
+      activityConfirmed: "Du siehst das auch",
+      feedCta: "Zurück zum Feed",
+      membershipCta: "Mitgliedschaft fortsetzen",
+    },
+    ro: {
+      label: "Profilul tău",
+      close: "Închide",
+      defaultName: "Vecin TOWN",
+      handleFallback: "Cont înregistrat",
+      bioRegistered:
+        "Înregistrat pe TOWN. Participarea civică locală se deschide cu membership activ.",
+      bioMember:
+        "Membru local activ. Poți confirma semnale în comunitatea ta.",
+      bioPaidPending:
+        "Membership înregistrat. Participarea locală nu este încă disponibilă.",
+      communityNone: "Comunitate: încă nealeasă",
+      communityLine: "Comunitate: {community}",
+      membershipNone: "Membership: inactiv",
+      membershipPaid: "Membership: activ",
+      membershipPending: "Membership: plătit — participare în așteptare",
+      membershipOther: "Membership: {status}",
+      activityTitle: "Activitate civică",
+      activityEmpty:
+        "Nicio confirmare încă. Deschide un semnal local și apasă VĂD ȘI EU ASTA când ești gata.",
+      activityConfirmed: "Vezi și tu",
+      feedCta: "Înapoi la feed",
+      membershipCta: "Continuă membership-ul",
+    },
+  };
+
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Public product-only mode: visitors land on the existing feed only.
@@ -2435,6 +2565,8 @@
   let feedIndex = 0;
   let originatingFeedIndex = 0;
   let enteredEmail = "";
+  // Best-effort account email for Profile V1 (create-account or session payload).
+  let accountEmail = "";
   let emailVerificationId = null;
   let setupGrant = null;
   let setupGrantExpiresAt = null;
@@ -3296,9 +3428,44 @@
       !membershipInvite.hidden ||
       !signalDetail.hidden ||
       !authWindow.hidden ||
+      !profilePanel.hidden ||
       (termsSheet && !termsSheet.hidden) ||
       (sheet && !sheet.hidden)
     );
+  }
+
+  function noteAccountEmail(value) {
+    if (typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (EMAIL_PATTERN.test(trimmed)) accountEmail = trimmed;
+  }
+
+  function profileDisplayName(email) {
+    if (!email) return "";
+    const local = email.split("@")[0] || "";
+    const cleaned = local.replace(/[._-]+/g, " ").trim();
+    if (!cleaned) return "";
+    return cleaned
+      .split(/\s+/)
+      .map(function (part) {
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      })
+      .join(" ");
+  }
+
+  function profileLang() {
+    const lang = resolvePublicReadingLanguage();
+    return PROFILE_COPY[lang] ? lang : "en";
+  }
+
+  function setNavActive(button) {
+    [navHome, navMembership, navChat, navActivity, navProfile].forEach((btn) => {
+      if (!btn) return;
+      const active = btn === button;
+      btn.classList.toggle("is-active", active);
+      if (active) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
   }
 
   function isFeedSurfaceActive() {
@@ -3958,7 +4125,14 @@
   // Post-auth destination for the public Sign-in window. Membership and
   // community-commitment state must already be refreshed from the backend.
   function continueAfterPublicPasskeySignIn() {
+    const openedFor = authOpenedByTarget;
     closeAuthWindow();
+    if (openedFor === "profile") {
+      // PROFILE nav Sign-in: land on Profile V1, not commitment.
+      syncFeedMemberState();
+      openProfilePanel();
+      return;
+    }
     if (hasAuthoritativePaidMembership()) {
       // Paid member: remain on the public feed with authoritative member UI.
       syncFeedMemberState();
@@ -4075,9 +4249,128 @@
     const status = result.response.status;
     const data = result.payload && result.payload.data;
     if (status === 200 && data && data.authenticated === true) {
+      if (data.email) noteAccountEmail(data.email);
       return data;
     }
     throw makeApiError("failed");
+  }
+
+  function populateProfilePanel() {
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    const email = accountEmail || enteredEmail || "";
+    const displayName = profileDisplayName(email) || copy.defaultName;
+    const paid = hasAuthoritativePaidMembership();
+    const civicOk = canTakeCivicAction();
+    const paidPending =
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot);
+    let bio = copy.bioRegistered;
+    if (civicOk || (paid && !paidPending)) bio = copy.bioMember;
+    else if (paidPending || (paid && !civicOk)) bio = copy.bioPaidPending;
+
+    let membershipLine = copy.membershipNone;
+    if (civicOk || (paid && !paidPending)) membershipLine = copy.membershipPaid;
+    else if (paidPending) membershipLine = copy.membershipPending;
+    else if (
+      membershipSnapshot &&
+      typeof membershipSnapshot.status === "string" &&
+      membershipSnapshot.status
+    ) {
+      membershipLine = copy.membershipOther.replace(
+        "{status}",
+        membershipSnapshot.status
+      );
+    }
+
+    let communityName = "";
+    if (
+      commitmentSnapshot &&
+      commitmentSnapshot.community &&
+      (commitmentSnapshot.community.displayName ||
+        commitmentSnapshot.community.cityName)
+    ) {
+      communityName =
+        commitmentSnapshot.community.displayName ||
+        commitmentSnapshot.community.cityName;
+    } else if (selectedCity) {
+      communityName = selectedCity;
+    }
+
+    profileLabel.textContent = copy.label;
+    profileClose.textContent = copy.close;
+    profileTitle.textContent = displayName;
+    profileHandle.textContent = email || copy.handleFallback;
+    profileAvatar.textContent = (displayName.charAt(0) || "T").toUpperCase();
+    profileBio.textContent = bio;
+    profileCommunity.textContent = communityName
+      ? copy.communityLine.replace("{community}", communityName)
+      : copy.communityNone;
+    profileMembership.textContent = membershipLine;
+    profileActivityTitle.textContent = copy.activityTitle;
+    profileFeed.textContent = copy.feedCta;
+    profileMembershipCta.textContent = copy.membershipCta;
+    // Paid accounts do not need the membership-continue CTA on Profile V1.
+    profileMembershipCta.hidden = paid;
+
+    profileActivityList.innerHTML = "";
+    const scenes = currentScenes();
+    const originScene =
+      signalConfirmed &&
+      originatingFeedIndex >= 0 &&
+      originatingFeedIndex < scenes.length
+        ? scenes[originatingFeedIndex]
+        : null;
+    if (originScene && originScene.id) {
+      profileActivityEmpty.hidden = true;
+      const li = document.createElement("li");
+      li.className = "profile-panel__activity-item";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "profile-panel__activity-item-btn";
+      btn.setAttribute("data-profile-signal-index", String(originatingFeedIndex));
+      const date = document.createElement("span");
+      date.className = "profile-panel__activity-date";
+      date.textContent = copy.activityConfirmed;
+      const headline = document.createElement("span");
+      headline.className = "profile-panel__activity-headline";
+      const locale = feedLocaleForScene(originScene);
+      headline.textContent =
+        (locale.localizedScene && locale.localizedScene.headline) ||
+        originScene.headline ||
+        originScene.id;
+      btn.appendChild(date);
+      btn.appendChild(headline);
+      li.appendChild(btn);
+      profileActivityList.appendChild(li);
+    } else {
+      profileActivityEmpty.hidden = false;
+      profileActivityEmpty.textContent = copy.activityEmpty;
+    }
+    document.documentElement.lang =
+      profileLang() === "en" ? "en" : profileLang();
+  }
+
+  function openProfilePanel() {
+    if (!sessionAuthenticated) return;
+    closeAuthWindow();
+    closeInvite();
+    closeSignalDetail();
+    populateProfilePanel();
+    profilePanel.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navProfile);
+    profileClose.focus();
+  }
+
+  function closeProfilePanel() {
+    if (profilePanel.hidden) return;
+    profilePanel.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navHome);
   }
 
   function isPasskeyCeremonyCancelled(err) {
@@ -4849,6 +5142,9 @@
     if (feedMain) feedMain.inert = isInert;
     if (signalDetail) signalDetail.inert = isInert;
     if (membershipInvite) membershipInvite.inert = isInert;
+    if (profilePanel && authWindow && !authWindow.hidden) {
+      profilePanel.inert = isInert;
+    }
   }
 
   function syncAuthModeUi() {
@@ -4886,6 +5182,7 @@
     // Close competing overlays before presenting the shared auth window.
     closeInvite();
     closeSignalDetail();
+    closeProfilePanel();
 
     authOpenedByTarget = navTarget || null;
     lastAuthFocus = openerEl || document.activeElement;
@@ -4927,15 +5224,19 @@
     // Public HOME / ACASĂ: return to the first feed page (first signal).
     closeInvite();
     closeSignalDetail();
-    navHome.classList.add("is-active");
-    navHome.setAttribute("aria-current", "page");
-    [navMembership, navChat, navActivity, navProfile].forEach((btn) => {
-      btn.classList.remove("is-active");
-      btn.removeAttribute("aria-current");
-    });
+    closeProfilePanel();
+    setNavActive(navHome);
     if (isFeedSurfaceActive()) {
       scrollFeedToIndex(0, { behavior: "auto" });
     }
+  }
+
+  function handleProfileNav() {
+    if (sessionAuthenticated) {
+      openProfilePanel();
+      return;
+    }
+    openAuthWindow(navProfile, "profile");
   }
 
   function resetVisitorSession() {
@@ -4945,6 +5246,7 @@
     locationOutsideBoundary = false;
     feedIndex = 0;
     enteredEmail = "";
+    accountEmail = "";
     emailVerificationId = null;
     setupGrant = null;
     setupGrantExpiresAt = null;
@@ -5047,6 +5349,7 @@
       closeInvite();
       closeSignalDetail();
       closeAuthWindow();
+      closeProfilePanel();
     }
     if (name !== "payment") {
       closePaymentNotice();
@@ -5536,6 +5839,11 @@
         closeAuthWindow();
         return;
       }
+      if (!profilePanel.hidden) {
+        event.preventDefault();
+        closeProfilePanel();
+        return;
+      }
       if (!signalDetail.hidden) {
         event.preventDefault();
         closeSignalDetail();
@@ -5593,7 +5901,42 @@
   });
 
   navProfile.addEventListener("click", () => {
-    handleProtectedNav(navProfile, "profile");
+    handleProfileNav();
+  });
+
+  profileClose.addEventListener("click", () => {
+    closeProfilePanel();
+  });
+
+  profileDim.addEventListener("click", () => {
+    closeProfilePanel();
+  });
+
+  profileFeed.addEventListener("click", () => {
+    closeProfilePanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
+    }
+  });
+
+  profileMembershipCta.addEventListener("click", () => {
+    closeProfilePanel();
+    beginInviteMembershipJourney();
+    go("commitment");
+  });
+
+  profileActivityList.addEventListener("click", (event) => {
+    let target = event.target;
+    if (target && target.nodeType === 3) target = target.parentElement;
+    if (!target || !target.closest) return;
+    const btn = target.closest("[data-profile-signal-index]");
+    if (!btn) return;
+    const index = Number(btn.getAttribute("data-profile-signal-index"));
+    if (Number.isNaN(index)) return;
+    closeProfilePanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(index, { behavior: "auto" });
+    }
   });
 
   authWindowClose.addEventListener("click", () => {
@@ -5650,6 +5993,7 @@
 
       authIdentityInput.setCustomValidity("");
       enteredEmail = value;
+      noteAccountEmail(value);
       emailSubmitting = true;
       authContinue.disabled = true;
 
@@ -5981,6 +6325,7 @@
       return;
     }
     enteredEmail = value;
+    noteAccountEmail(value);
     emailSubmitting = true;
     emailContinue.disabled = true;
     emailError.hidden = true;
@@ -6011,6 +6356,7 @@
 
   emailBack.addEventListener("click", () => {
     enteredEmail = (emailInput.value || "").trim();
+    noteAccountEmail(enteredEmail);
     go("account");
   });
 
