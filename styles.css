@@ -2521,7 +2521,7 @@ body.page-feed {
   }
 }
 
-/* DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure. */
+/* Compose-time media preview; published media is loaded from the authenticated API proxy. */
 .signal-detail__demo-testimony {
   width: 100%;
   display: flex;

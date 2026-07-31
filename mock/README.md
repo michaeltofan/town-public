@@ -18,4 +18,4 @@ Then visit:
 - http://localhost:4173/mock/member-signal-detail.html
 - http://localhost:4173/mock/member-testimony-capture.html
 
-Live product capture for participating members is wired in `index.html` / `script.js` behind `canTakeCivicAction()` (demo in-session preview only; not uploaded).
+Live product capture for participating members is wired in `index.html` / `script.js` behind `canTakeCivicAction()`; on publish, media is uploaded via `POST .../discussion-session/media` into private object storage.

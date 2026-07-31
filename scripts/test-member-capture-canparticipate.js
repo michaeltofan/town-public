@@ -1,5 +1,5 @@
 /**
- * Optional session media attach + mock archive still gated by canParticipate.
+ * Optional session media attach gated by canParticipate; uploads via discussion-session/media.
  */
 "use strict";
 
@@ -43,7 +43,10 @@ assert(
 );
 
 assert(html.includes('id="detail-testimony-input"'), "file input restored");
-assert(html.includes('accept="image/*,video/*"'), "accepts photo and video");
+assert(
+  html.includes('accept="image/jpeg,image/png,image/webp,video/mp4"'),
+  "accepts allowed photo and video types"
+);
 assert(html.includes('id="detail-testimony-preview"'), "preview restored");
 assert(
   html.includes('id="detail-session-attach"'),
@@ -71,8 +74,16 @@ assert(
 assert(body.includes("openInvite()"), "non-participating path keeps invite");
 
 assert(
-  !/\/v1\/.+testimony|FormData\(|uploadTestimony/.test(js),
-  "demo capture does not upload"
+  js.includes("function uploadSignalDiscussionMedia"),
+  "secure media upload helper present"
+);
+assert(
+  js.includes("/discussion-session/media"),
+  "discussion media upload path wired"
+);
+assert(
+  !/\/v1\/.+testimony|FormData\(|uploadTestimony|multipart\/form-data/.test(js),
+  "capture does not use testimony/multipart upload paths"
 );
 
 if (failed > 0) {

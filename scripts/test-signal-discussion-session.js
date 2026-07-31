@@ -69,6 +69,18 @@ assert(
   "contribution publish path wired"
 );
 assert(js.includes("intent: intent"), "publish body includes intent");
+assert(
+  js.includes("function uploadSignalDiscussionMedia"),
+  "media upload helper present"
+);
+assert(
+  js.includes("/discussion-session/media"),
+  "media upload path wired"
+);
+assert(
+  js.includes("body.mediaUploadId = mediaUploadId"),
+  "contribution publish can attach mediaUploadId"
+);
 assert(js.includes("signalId: detail.id"), "scene keeps API signal UUID");
 
 const handler = js.match(
@@ -101,8 +113,8 @@ assert(
 
 assert(
   !/\/v1\/[^"'`\s]*(comment|testimony)/.test(js) &&
-    !/uploadTestimony|multipart\/form-data/.test(js),
-  "no comment/testimony upload wiring"
+    !/uploadTestimony|multipart\/form-data|FormData\(/.test(js),
+  "no comment/testimony or multipart upload wiring"
 );
 
 assert(css.includes("signal-detail__session"), "session styles present");

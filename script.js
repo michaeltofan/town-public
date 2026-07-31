@@ -1173,7 +1173,7 @@
       statusLabel: "What this status means",
       communityArea: "{city} · {area}",
       clearTestimony: "Remove media",
-      demoTestimonyNote: "Attached for this contribution — not uploaded",
+      demoTestimonyNote: "Attached — uploads securely when you publish",
       sessionLabel: "Session toward a solution",
       sessionBody:
         "This is not a chat. Paying members open a focused discussion on this signal — to turn what is seen into a local movement toward a solution.",
@@ -1220,7 +1220,7 @@
       statusLabel: "Qué significa este estado",
       communityArea: "{city} · {area}",
       clearTestimony: "Quitar medio",
-      demoTestimonyNote: "Adjunto a esta contribución — no se carga",
+      demoTestimonyNote: "Adjunto — se carga de forma segura al publicar",
       sessionLabel: "Sesión hacia una solución",
       sessionBody:
         "Esto no es un chat. Los miembros de pago abren una discusión centrada en esta señal — para convertir lo visto en un movimiento local hacia una solución.",
@@ -1267,7 +1267,7 @@
       statusLabel: "Cosa significa questo stato",
       communityArea: "{city} · {area}",
       clearTestimony: "Rimuovi media",
-      demoTestimonyNote: "Allegato a questo contributo — non caricato",
+      demoTestimonyNote: "Allegato — viene caricato in sicurezza alla pubblicazione",
       sessionLabel: "Sessione verso una soluzione",
       sessionBody:
         "Non è una chat. I membri paganti aprono una discussione focalizzata su questo segnale — per trasformare ciò che si vede in un movimento locale verso una soluzione.",
@@ -1314,7 +1314,7 @@
       statusLabel: "Was dieser Status bedeutet",
       communityArea: "{city} · {area}",
       clearTestimony: "Medium entfernen",
-      demoTestimonyNote: "Für diesen Beitrag angehängt — nicht hochgeladen",
+      demoTestimonyNote: "Angehängt — wird beim Veröffentlichen sicher hochgeladen",
       sessionLabel: "Sitzung auf dem Weg zur Lösung",
       sessionBody:
         "Das ist kein Chat. Zahlende Mitglieder eröffnen eine fokussierte Diskussion zu diesem Signal — damit aus dem Gesehenen eine lokale Bewegung zur Lösung wird.",
@@ -1361,7 +1361,7 @@
       statusLabel: "Ce înseamnă această stare",
       communityArea: "{city} · {area}",
       clearTestimony: "Elimină media",
-      demoTestimonyNote: "Atașat acestei contribuții — nu este încărcat",
+      demoTestimonyNote: "Atașat — se încarcă în siguranță la publicare",
       sessionLabel: "Sesiune către o soluție",
       sessionBody:
         "Nu este un chat. Membrii care plătesc deschid o discuție concentrată pe acest semnal — ca ceea ce se vede să devină o mișcare locală către o soluție.",
@@ -3026,9 +3026,17 @@
   // Keyed by signal UUID / scene id: { confirmed, confirmationCount }.
   const signalConfirmationState = Object.create(null);
   let seeTooConfirmSubmitting = false;
-  // DEMO ONLY — optional media for a session contribution; not uploaded.
+  // Optional pending media for the compose surface (local preview until publish).
+  // On publish, bytes are uploaded to town-api private object storage.
   let demoTestimony = null;
   let demoTestimonyFeedIndex = null;
+  const sessionMediaObjectUrls = [];
+  const ALLOWED_CONTRIBUTION_MEDIA_TYPES = {
+    "image/jpeg": "image",
+    "image/png": "image",
+    "image/webp": "image",
+    "video/mp4": "video",
+  };
   // Cache of discussion-session GET/POST responses keyed by scene/API id.
   const signalSessionCache = Object.create(null);
   let sessionPublishSubmitting = false;
@@ -3383,6 +3391,25 @@
     const response = await requestJson(url, {
       method: "GET",
       headers: { Accept: "application/json" },
+      credentials: "include",
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  async function postBinaryWithCredentials(url, body, contentType) {
+    const response = await requestJson(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": contentType,
+      },
+      body: body,
       credentials: "include",
     });
     let payload = null;
@@ -6268,14 +6295,82 @@
     );
   }
 
-  async function publishSignalDiscussionContribution(signalId, text, intent) {
+  async function uploadSignalDiscussionMedia(signalId, file, contentType) {
+    return postBinaryWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session/media",
+      file,
+      contentType
+    );
+  }
+
+  async function publishSignalDiscussionContribution(
+    signalId,
+    text,
+    intent,
+    mediaUploadId
+  ) {
+    const body = { text: text, intent: intent };
+    if (mediaUploadId) {
+      body.mediaUploadId = mediaUploadId;
+    }
     return postJsonWithCredentials(
       API_BASE +
         "/v1/signals/" +
         encodeURIComponent(signalId) +
         "/discussion-session/contributions",
-      { text: text, intent: intent }
+      body
     );
+  }
+
+  function revokeSessionMediaObjectUrls() {
+    while (sessionMediaObjectUrls.length > 0) {
+      const url = sessionMediaObjectUrls.pop();
+      try {
+        URL.revokeObjectURL(url);
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+  }
+
+  function appendContributionMedia(li, media) {
+    if (!media || !media.url || !li) return;
+    const kind = media.kind === "video" ? "video" : "image";
+    const el = document.createElement(kind === "video" ? "video" : "img");
+    el.className = "signal-detail__demo-testimony-media";
+    el.hidden = true;
+    if (kind === "video") {
+      el.controls = true;
+      el.setAttribute("playsinline", "");
+    } else {
+      el.alt = "";
+    }
+    li.appendChild(el);
+    const absolute =
+      String(media.url).indexOf("http") === 0
+        ? media.url
+        : API_BASE + media.url;
+    requestJson(absolute, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(function (response) {
+        if (!response.ok) return null;
+        return response.blob();
+      })
+      .then(function (blob) {
+        if (!blob || !li.isConnected) return;
+        const objectUrl = URL.createObjectURL(blob);
+        sessionMediaObjectUrls.push(objectUrl);
+        el.src = objectUrl;
+        el.hidden = false;
+      })
+      .catch(function () {
+        /* leave media hidden on fetch failure */
+      });
   }
 
   async function loadSignalDiscussionSession() {
@@ -6354,6 +6449,7 @@
     applySignalSessionCopy(copy);
     const key = signalSessionKey();
     const entries = sessionCacheEntries(key);
+    revokeSessionMediaObjectUrls();
     detailSessionList.textContent = "";
     detailSessionEmpty.hidden = entries.length > 0;
     for (let i = 0; i < entries.length; i++) {
@@ -6377,6 +6473,9 @@
       body.textContent = entry.text || "";
       li.appendChild(meta);
       li.appendChild(body);
+      if (entry.media && entry.media.url) {
+        appendContributionMedia(li, entry.media);
+      }
       detailSessionList.appendChild(li);
     }
   }
@@ -6448,18 +6547,49 @@
       return;
     }
 
-    // Optional media stays DEMO-only and is never uploaded with the contribution.
-    if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
-      clearDemoTestimony();
-    }
-
     sessionPublishSubmitting = true;
     detailSessionPublish.disabled = true;
     try {
+      let mediaUploadId = null;
+      if (
+        demoTestimony &&
+        demoTestimony.file &&
+        demoTestimonyFeedIndex === feedIndex
+      ) {
+        const uploadResult = await uploadSignalDiscussionMedia(
+          apiId,
+          demoTestimony.file,
+          demoTestimony.contentType
+        );
+        if (
+          !(
+            uploadResult.response &&
+            uploadResult.response.status === 201 &&
+            uploadResult.payload &&
+            uploadResult.payload.data &&
+            uploadResult.payload.data.mediaUploadId
+          )
+        ) {
+          signalSessionCache[key] = {
+            source: signalSessionCache[key] && signalSessionCache[key].source,
+            session:
+              signalSessionCache[key] && signalSessionCache[key].session
+                ? signalSessionCache[key].session
+                : null,
+            contributions: sessionCacheEntries(key),
+            note: "publish_failed",
+          };
+          renderSignalSession();
+          return;
+        }
+        mediaUploadId = uploadResult.payload.data.mediaUploadId;
+      }
+
       const result = await publishSignalDiscussionContribution(
         apiId,
         text,
-        intent
+        intent,
+        mediaUploadId
       );
       if (
         result.response &&
@@ -6467,6 +6597,7 @@
         result.payload &&
         result.payload.data
       ) {
+        clearDemoTestimony();
         applySessionApiPayload(key, result.payload.data, null);
         closeSessionCompose({ keepDraft: false });
         renderSignalSession();
@@ -6499,7 +6630,7 @@
     }
   }
 
-  // DEMO ONLY — client-side preview for participating members; not uploaded.
+  // Local compose preview until publish uploads bytes to private object storage.
   function clearDemoTestimony() {
     if (demoTestimony && demoTestimony.objectUrl) {
       URL.revokeObjectURL(demoTestimony.objectUrl);
@@ -6809,14 +6940,23 @@
         : null;
     if (!file) return;
 
-    const kind =
-      file.type && file.type.indexOf("video/") === 0 ? "video" : "image";
+    const kind = ALLOWED_CONTRIBUTION_MEDIA_TYPES[file.type];
+    if (!kind) {
+      detailTestimonyInput.value = "";
+      detailSessionDemoNote.textContent =
+        (currentFeedCopy() && currentFeedCopy().sessionNeedText) ||
+        "Use JPEG, PNG, WebP, or MP4.";
+      detailSessionDemoNote.hidden = !detailSessionDemoNote.textContent;
+      return;
+    }
     if (demoTestimony && demoTestimony.objectUrl) {
       URL.revokeObjectURL(demoTestimony.objectUrl);
     }
     demoTestimony = {
       kind: kind,
       objectUrl: URL.createObjectURL(file),
+      file: file,
+      contentType: file.type,
     };
     demoTestimonyFeedIndex = feedIndex;
     if (detailSessionCompose.hidden) {
