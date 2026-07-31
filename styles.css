@@ -2312,6 +2312,155 @@ body.page-feed {
   width: 100%;
 }
 
+/* Civic discussion session on a signal — solution-oriented, not chat. */
+.signal-detail__session {
+  animation: town-session-in 0.55s ease both;
+}
+
+.signal-detail__session-empty {
+  margin: 0.85rem 0 0;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  line-height: 1.55;
+  color: rgba(244, 239, 230, 0.72);
+}
+
+.signal-detail__session-empty[hidden] {
+  display: none !important;
+}
+
+.signal-detail__session-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.signal-detail__session-list:empty {
+  display: none;
+}
+
+.signal-detail__session-item {
+  margin: 0;
+  padding: 0 0 0 0.85rem;
+  border-left: 2px solid rgba(232, 119, 46, 0.55);
+  animation: town-session-item-in 0.45s ease both;
+}
+
+.signal-detail__session-meta {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__session-text {
+  margin: 0;
+  font-size: clamp(1.12rem, 1.5vw, 1.26rem);
+  line-height: 1.6;
+  color: #f4efe6;
+}
+
+.signal-detail__session-item .signal-detail__demo-testimony-media {
+  margin-top: 0.7rem;
+}
+
+.signal-detail__session-compose {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.7rem;
+  margin-top: 0.35rem;
+  animation: town-session-in 0.4s ease both;
+}
+
+.signal-detail__session-compose[hidden] {
+  display: none !important;
+}
+
+.signal-detail__session-compose-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #faf6ef;
+}
+
+.signal-detail__session-compose-guide {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(244, 239, 230, 0.78);
+}
+
+.signal-detail__session-input {
+  width: 100%;
+  min-height: 6.5rem;
+  resize: vertical;
+  border: 1px solid rgba(244, 239, 230, 0.28);
+  border-radius: 0.2rem;
+  background: rgba(0, 0, 0, 0.28);
+  color: #f7f3ec;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  padding: 0.75rem 0.85rem;
+}
+
+.signal-detail__session-input:focus {
+  outline: 2px solid #e8772e;
+  outline-offset: 2px;
+  border-color: rgba(232, 119, 46, 0.7);
+}
+
+.signal-detail__session-compose-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.signal-detail__session-demo-note {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: rgba(244, 239, 230, 0.58);
+}
+
+@keyframes town-session-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes town-session-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-detail__session,
+  .signal-detail__session-item,
+  .signal-detail__session-compose {
+    animation: none;
+  }
+}
+
 /* DEMO ONLY — client-side preview, not uploaded, not persisted, not real product infrastructure. */
 .signal-detail__demo-testimony {
   width: 100%;

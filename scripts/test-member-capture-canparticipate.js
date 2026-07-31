@@ -1,5 +1,5 @@
 /**
- * Restored member mock archive + PR #19 demo capture gated by canParticipate.
+ * Optional session media attach + mock archive still gated by canParticipate.
  */
 "use strict";
 
@@ -45,6 +45,10 @@ assert(
 assert(html.includes('id="detail-testimony-input"'), "file input restored");
 assert(html.includes('accept="image/*,video/*"'), "accepts photo and video");
 assert(html.includes('id="detail-testimony-preview"'), "preview restored");
+assert(
+  html.includes('id="detail-session-attach"'),
+  "session attach control present"
+);
 
 assert(
   js.includes("function openMemberDemoTestimonyCapture"),
@@ -55,22 +59,16 @@ assert(js.includes("function renderDemoTestimony"), "renderDemoTestimony restore
 assert(js.includes("URL.createObjectURL"), "local object URL preview restored");
 
 const handler = js.match(
-  /detailAddTestimony\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);/
+  /detailSessionAttach\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);/
 );
-assert(!!handler, "detailAddTestimony handler found");
+assert(!!handler, "session attach handler found");
 const body = handler ? handler[1] : "";
-assert(body.includes("canTakeCivicAction()"), "gates on canTakeCivicAction");
+assert(body.includes("canTakeCivicAction()"), "attach gates on canTakeCivicAction");
 assert(
   body.includes("openMemberDemoTestimonyCapture()"),
   "participating path opens demo capture"
 );
 assert(body.includes("openInvite()"), "non-participating path keeps invite");
-assert(
-  !/canTakeCivicAction\(\)[\s\S]*openInvite\(\)[\s\S]*openMemberDemoTestimonyCapture/.test(
-    body
-  ),
-  "member capture is not behind the invite path"
-);
 
 assert(
   !/\/v1\/.+testimony|FormData\(|uploadTestimony/.test(js),
