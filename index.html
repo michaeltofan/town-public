@@ -1104,6 +1104,45 @@
           </div>
         </div>
       </div>
+
+      <!-- Member Activity — backend truth only (confirmations, contributions, evolution) -->
+      <div
+        class="activity-panel"
+        id="activity-panel"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="activity-title"
+      >
+        <div class="activity-panel__dim" id="activity-dim" aria-hidden="true"></div>
+        <div class="activity-panel__sheet" role="document">
+          <button
+            type="button"
+            class="activity-panel__close"
+            id="activity-close"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <div class="activity-panel__inner">
+            <p class="activity-panel__brand" aria-label="TOWN">TOWN</p>
+            <p class="activity-panel__label" id="activity-label">Activity</p>
+            <h2 class="activity-panel__title" id="activity-title">Your civic activity</h2>
+            <p class="activity-panel__lead" id="activity-lead">
+              Confirmations, published contributions, and updates on signals you
+              participate in — from TOWN, not examples.
+            </p>
+            <p class="activity-panel__status" id="activity-status" role="status" hidden></p>
+            <p class="activity-panel__empty" id="activity-empty" hidden></p>
+            <ul class="activity-panel__list" id="activity-list"></ul>
+            <div class="activity-panel__actions">
+              <button type="button" class="btn btn--primary" id="activity-feed">
+                Back to feed
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Owner moderation — wires existing hide/unhide and ban/unban tools only -->
@@ -1651,6 +1690,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=owner-moderation-ui-1" defer></script>
+    <script src="script.js?v=member-activity-1" defer></script>
   </body>
 </html>
