@@ -1,0 +1,232 @@
+/* Mock-only: member Signal Detail V1 exploration.
+   Extends approved signal-detail tokens; does not alter styles.css. */
+
+/* Full-page presentation of the fixed detail surface */
+body.mock-member-detail {
+  background: #0a0807;
+  overflow: hidden;
+}
+
+body.mock-member-detail .signal-detail {
+  position: fixed;
+  inset: 0;
+}
+
+/* Slightly wider action for the longer member CTA */
+body.mock-member-detail .signal-detail__actions {
+  max-width: 26rem;
+}
+
+body.mock-member-detail .signal-detail__actions .feed__primary {
+  white-space: normal;
+  line-height: 1.35;
+  padding-top: 0.95rem;
+  padding-bottom: 0.95rem;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  body.mock-member-detail .signal-detail__actions {
+    max-width: none;
+  }
+}
+
+/* ——— Member testimonies ——— */
+
+.mock-testimonies {
+  margin-top: 0.35rem;
+  margin-bottom: 0.25rem;
+  max-width: none;
+  padding-top: 0.35rem;
+  border-top: 1px solid rgba(244, 239, 230, 0.14);
+}
+
+.mock-testimonies__fact {
+  margin: 0 0 1.35rem;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  color: rgba(244, 239, 230, 0.74);
+}
+
+.mock-testimonies__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.45rem;
+}
+
+.mock-testimony {
+  margin: 0;
+  max-width: 40ch;
+}
+
+.mock-testimony__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.mock-testimony__thumb {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.35rem;
+  object-fit: cover;
+  background: rgba(244, 239, 230, 0.08);
+}
+
+.mock-testimony__identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mock-testimony__name {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #f7f3ec;
+}
+
+.mock-testimony__date {
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.mock-testimony__body {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.4vw, 1.14rem);
+  line-height: 1.68;
+  color: #f4efe6;
+}
+
+/* Video testimony still — quiet play affordance, no player */
+.mock-testimony__video {
+  position: relative;
+  display: block;
+  margin: 0.85rem 0 0;
+  width: 100%;
+  max-width: 22rem;
+  aspect-ratio: 16 / 10;
+  border-radius: 0.35rem;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.mock-testimony__video-still {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 58% 40%;
+  display: block;
+}
+
+.mock-testimony__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mock-testimony__play-glyph {
+  width: 2.65rem;
+  height: 2.65rem;
+  color: #f7f3ec;
+  opacity: 0.92;
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.45));
+}
+
+.mock-testimony__duration {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.45rem;
+  margin: 0;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: #f7f3ec;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 0.2rem;
+}
+
+/* Desktop / web: more presence for testimonies + CTA (mobile unchanged) */
+@media (min-width: 960px) {
+  .mock-testimonies {
+    margin-top: 1.35rem;
+    padding-top: 1.55rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .mock-testimonies .signal-detail__label {
+    margin-bottom: 0.7rem;
+  }
+
+  .mock-testimonies__fact {
+    margin: 0 0 1.75rem;
+    font-size: 1.08rem;
+    line-height: 1.55;
+  }
+
+  .mock-testimonies__list {
+    gap: 1.95rem;
+  }
+
+  .mock-testimony {
+    max-width: 52ch;
+  }
+
+  .mock-testimony__header {
+    gap: 0.9rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .mock-testimony__body {
+    font-size: 1.28rem;
+    line-height: 1.78;
+  }
+
+  .mock-testimony__video {
+    margin-top: 1.1rem;
+    max-width: 28rem;
+  }
+
+  .mock-testimony__play-glyph {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  body.mock-member-detail .signal-detail__actions {
+    max-width: 30rem;
+    gap: 0.75rem;
+    padding-top: 0.65rem;
+  }
+
+  body.mock-member-detail .signal-detail__actions .feed__primary {
+    min-height: 3.55rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.045em;
+    padding: 1.05rem 1.5rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 720px) {
+  .mock-testimony {
+    max-width: none;
+  }
+
+  .mock-testimony__video {
+    max-width: none;
+  }
+}
+

@@ -762,10 +762,48 @@
               <p class="feed__done-title" id="detail-done-title"></p>
               <p class="feed__done-note" id="detail-done-note"></p>
             </div>
-            <!-- Public visitors: CTA opens membership invitation; no capture input on the public surface. -->
+            <!-- Visitors: membership invite. Members with canParticipate: demo local capture (PR #19). -->
             <button type="button" class="feed__secondary" id="detail-add-testimony">
               Add testimony
             </button>
+            <!-- DEMO ONLY — in-session preview for participating members; not uploaded, not persisted. -->
+            <input
+              type="file"
+              id="detail-testimony-input"
+              accept="image/*,video/*"
+              capture="environment"
+              hidden
+            />
+            <div
+              class="signal-detail__demo-testimony"
+              id="detail-testimony-preview"
+              hidden
+            >
+              <p
+                class="signal-detail__demo-testimony-note"
+                id="detail-testimony-note"
+              ></p>
+              <img
+                class="signal-detail__demo-testimony-media"
+                id="detail-testimony-image"
+                alt=""
+                hidden
+              />
+              <video
+                class="signal-detail__demo-testimony-media"
+                id="detail-testimony-video"
+                controls
+                playsinline
+                hidden
+              ></video>
+              <button
+                type="button"
+                class="feed__secondary"
+                id="detail-testimony-clear"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1363,6 +1401,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=profile-v1-1" defer></script>
+    <script src="script.js?v=member-capture-canparticipate-1" defer></script>
   </body>
 </html>

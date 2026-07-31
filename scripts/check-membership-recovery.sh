@@ -190,7 +190,7 @@ if "function markerGrantsAuthorization" not in helper:
 if "return false" not in helper.split("function markerGrantsAuthorization")[1].split("function ")[0]:
     fail("markerGrantsAuthorization must return false")
 
-# Visitor testimony behavior from PRs #37/#38 must remain intact.
+# Testimony: visitors keep membership invite; participating members use demo capture.
 testimony = re.search(
     r'detailAddTestimony\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
     js,
@@ -198,14 +198,18 @@ testimony = re.search(
 if not testimony:
     fail("missing detailAddTestimony handler")
 tbody = testimony.group(1)
+if "canTakeCivicAction()" not in tbody:
+    fail("testimony CTA must gate on canTakeCivicAction")
+if "openMemberDemoTestimonyCapture()" not in tbody:
+    fail("participating members must reach restored demo capture")
 for fragment in (
     "originatingFeedIndex = feedIndex",
     "closeSignalDetail()",
     "openInvite()",
 ):
     if fragment not in tbody:
-        fail(f"testimony CTA missing '{fragment}'")
-for forbidden in ("membershipSimulated", "signalConfirmed", ".click()", ".showPicker()"):
+        fail(f"non-participating testimony path missing '{fragment}'")
+for forbidden in ("membershipSimulated", "signalConfirmed"):
     if forbidden in tbody:
         fail(f"testimony CTA must not contain '{forbidden}'")
 
