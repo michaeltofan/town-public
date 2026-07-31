@@ -22,7 +22,7 @@ function assert(cond, message) {
 assert(html.includes('id="activity-panel"'), "activity panel present");
 assert(html.includes('id="activity-list"'), "activity list present");
 assert(html.includes('id="nav-activity"'), "activity nav present");
-assert(/script\.js\?v=[^"]+/.test(html), "cache buster present");
+assert(html.includes("script.js?v=member-activity-1"), "cache buster bumped");
 
 assert(js.includes("function handleActivityNav"), "activity nav handler");
 assert(js.includes("function openActivityPanel"), "open helper");
