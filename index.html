@@ -795,7 +795,7 @@
         </div>
       </div>
 
-      <!-- Shared authentication window (visual review only — no API calls) -->
+      <!-- Shared authentication window: Create account + passkey Sign in -->
       <div
         class="auth-window"
         id="auth-window"
@@ -867,6 +867,14 @@
               spellcheck="false"
             />
 
+            <p
+              class="auth-window__status"
+              id="auth-window-status"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></p>
+
             <div class="auth-window__actions">
               <button
                 type="button"
@@ -881,13 +889,6 @@
                 id="auth-passkey"
               >
                 Sign in with passkey
-              </button>
-              <button
-                type="button"
-                class="btn btn--secondary"
-                id="auth-password"
-              >
-                Sign in with password
               </button>
             </div>
           </div>
@@ -1304,6 +1305,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=community-commitment-1" defer></script>
+    <script src="script.js?v=public-signin-passkey-1" defer></script>
   </body>
 </html>
