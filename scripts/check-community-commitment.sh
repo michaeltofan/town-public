@@ -48,6 +48,9 @@ require_contains "script.js" "checkoutCta"
 require_contains "script.js" "Continua alla membership annuale"
 require_contains "community-commitment.js" "citySelectionCountsAsAcceptance"
 require_contains "community-commitment.js" "localStateGrantsCommitment"
+require_contains "script.js" "intentionally ignored — no UI simulation, no authority"
+require_file "review/commitment-visual-harness.html"
+require_file "review/commitment-visual-harness.js"
 
 echo "== Guardrails =="
 if grep -Eiq 'geolocation|getCurrentPosition|navigator\.geolocation' community-commitment.js; then

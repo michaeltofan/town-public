@@ -6291,98 +6291,13 @@
         feedIndex = Math.max(0, Math.floor(n) - 1);
       }
     }
-    // Review-only UI fixtures for community commitment visual inspection.
-    // Never grants backend acceptance, membership, or Checkout authority.
-    const review = params.get("townReview");
-    if (review && typeof review === "string") {
-      beginInviteMembershipJourney();
-      enteredEmail = "review@towncivic.org";
-      emailVerified = true;
-      passkeyRegistered = true;
-      sessionAuthenticated = true;
-      if (review === "commitment-no-country") {
-        commitmentCountry = null;
-        commitmentCity = null;
-        commitmentAcceptanceChecked = false;
-        commitmentSnapshot = null;
-        go("commitment");
-      } else if (review === "commitment-country-only") {
-        commitmentCountry = "Italy";
-        commitmentCity = null;
-        commitmentAcceptanceChecked = false;
-        commitmentSnapshot = null;
-        go("commitment");
-      } else if (review === "commitment-city-no-accept") {
-        commitmentCountry = "Italy";
-        commitmentCity = "Milano";
-        commitmentAcceptanceChecked = false;
-        commitmentSnapshot = null;
-        go("commitment");
-      } else if (review === "commitment-accept-pending") {
-        commitmentCountry = "Italy";
-        commitmentCity = "Milano";
-        commitmentAcceptanceChecked = true;
-        commitmentSaving = true;
-        commitmentSnapshot = null;
-        go("commitment");
-      } else if (review === "commitment-rejected") {
-        commitmentCountry = "Italy";
-        commitmentCity = "Milano";
-        commitmentAcceptanceChecked = true;
-        commitmentSnapshot = null;
-        go("commitment");
-        showCommitmentError(commitmentErrorMessage("save"));
-      } else if (review === "commitment-recorded") {
-        commitmentCountry = "Italy";
-        commitmentCity = "Milano";
-        commitmentAcceptanceChecked = true;
-        commitmentSnapshot = {
-          status: "recorded",
-          accepted: true,
-          acceptedAt: "2026-07-30T12:00:00.000Z",
-          commitmentVersion: "community-commitment-v1",
-          editable: true,
-          community: {
-            slug: "milano-it",
-            displayName: "Milano",
-            cityName: "Milano",
-            countryCode: "IT",
-          },
-        };
-        go("commitment");
-      } else if (review === "commitment-no-acceptance-existing") {
-        commitmentCountry = null;
-        commitmentCity = null;
-        commitmentAcceptanceChecked = false;
-        commitmentSnapshot = {
-          status: "none",
-          accepted: false,
-          acceptedAt: null,
-          commitmentVersion: null,
-          editable: true,
-          community: null,
-        };
-        go("commitment");
-      } else if (review === "commitment-restored") {
-        commitmentSnapshot = {
-          status: "recorded",
-          accepted: true,
-          acceptedAt: "2026-07-30T12:00:00.000Z",
-          commitmentVersion: "community-commitment-v1",
-          editable: true,
-          community: {
-            slug: "munich-de",
-            displayName: "München",
-            cityName: "Munich",
-            countryCode: "DE",
-          },
-        };
-        restoreCommitmentSelectionFromSnapshot(commitmentSnapshot);
-        go("commitment");
-      }
+    // Visual-review fixtures for community commitment live only in
+    // review/commitment-visual-harness.html. The normal product ignores townReview.
+    if (params.get("townReview")) {
+      /* intentionally ignored — no UI simulation, no authority */
     }
   } catch (err) {
-    /* ignore review helpers */
+    /* ignore URL helpers */
   }
   render();
   bootstrapAccountMembership();
