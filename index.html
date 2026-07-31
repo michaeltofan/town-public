@@ -1086,6 +1086,9 @@
               <button type="button" class="btn btn--primary" id="profile-create-signal" hidden>
                 Publish a civic signal
               </button>
+              <button type="button" class="btn btn--secondary" id="profile-moderation" hidden>
+                Moderation
+              </button>
               <button type="button" class="btn btn--primary" id="profile-feed">
                 Back to feed
               </button>
@@ -1100,6 +1103,58 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Owner moderation — wires existing hide/unhide and ban/unban tools only -->
+    <div
+      class="owner-moderation"
+      id="owner-moderation"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="owner-moderation-title"
+    >
+      <div class="owner-moderation__dim" id="owner-moderation-dim" aria-hidden="true"></div>
+      <div class="owner-moderation__sheet" role="document">
+        <button type="button" class="owner-moderation__close" id="owner-moderation-close">
+          Close
+        </button>
+        <p class="owner-moderation__brand" aria-label="TOWN">TOWN</p>
+        <h2 class="owner-moderation__title" id="owner-moderation-title">
+          Owner moderation
+        </h2>
+        <p class="owner-moderation__lead" id="owner-moderation-lead">
+          Hide or unhide signals, and ban or unban accounts. These are the existing
+          owner tools — no approval queue and no report flow.
+        </p>
+        <label class="owner-moderation__label" for="owner-moderation-reason">
+          Reason
+        </label>
+        <select
+          class="owner-moderation__select"
+          id="owner-moderation-reason"
+        ></select>
+        <p class="owner-moderation__status" id="owner-moderation-status" role="status" hidden></p>
+        <p class="owner-moderation__error" id="owner-moderation-error" role="alert" hidden></p>
+        <section class="owner-moderation__section" aria-labelledby="owner-moderation-signals-title">
+          <h3 class="owner-moderation__section-title" id="owner-moderation-signals-title">
+            Community signals
+          </h3>
+          <p class="owner-moderation__empty" id="owner-moderation-signals-empty" hidden>
+            No signals in this community.
+          </p>
+          <ul class="owner-moderation__list" id="owner-moderation-signals-list"></ul>
+        </section>
+        <section class="owner-moderation__section" aria-labelledby="owner-moderation-accounts-title">
+          <h3 class="owner-moderation__section-title" id="owner-moderation-accounts-title">
+            Suspended accounts
+          </h3>
+          <p class="owner-moderation__empty" id="owner-moderation-accounts-empty" hidden>
+            No suspended accounts.
+          </p>
+          <ul class="owner-moderation__list" id="owner-moderation-accounts-list"></ul>
+        </section>
       </div>
     </div>
 
@@ -1596,6 +1651,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=member-signal-create-1" defer></script>
+    <script src="script.js?v=owner-moderation-ui-1" defer></script>
   </body>
 </html>

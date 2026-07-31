@@ -88,7 +88,34 @@
   const profileActivityList = document.getElementById("profile-activity-list");
   const profileFeed = document.getElementById("profile-feed");
   const profileCreateSignal = document.getElementById("profile-create-signal");
+  const profileModeration = document.getElementById("profile-moderation");
   const profileMembershipCta = document.getElementById("profile-membership-cta");
+  const ownerModeration = document.getElementById("owner-moderation");
+  const ownerModerationDim = document.getElementById("owner-moderation-dim");
+  const ownerModerationClose = document.getElementById("owner-moderation-close");
+  const ownerModerationTitle = document.getElementById("owner-moderation-title");
+  const ownerModerationLead = document.getElementById("owner-moderation-lead");
+  const ownerModerationReason = document.getElementById("owner-moderation-reason");
+  const ownerModerationStatus = document.getElementById("owner-moderation-status");
+  const ownerModerationError = document.getElementById("owner-moderation-error");
+  const ownerModerationSignalsTitle = document.getElementById(
+    "owner-moderation-signals-title"
+  );
+  const ownerModerationSignalsEmpty = document.getElementById(
+    "owner-moderation-signals-empty"
+  );
+  const ownerModerationSignalsList = document.getElementById(
+    "owner-moderation-signals-list"
+  );
+  const ownerModerationAccountsTitle = document.getElementById(
+    "owner-moderation-accounts-title"
+  );
+  const ownerModerationAccountsEmpty = document.getElementById(
+    "owner-moderation-accounts-empty"
+  );
+  const ownerModerationAccountsList = document.getElementById(
+    "owner-moderation-accounts-list"
+  );
   const signalCreate = document.getElementById("signal-create");
   const signalCreateDim = document.getElementById("signal-create-dim");
   const signalCreateClose = document.getElementById("signal-create-close");
@@ -490,7 +517,22 @@
     !profileActivityList ||
     !profileFeed ||
     !profileCreateSignal ||
+    !profileModeration ||
     !profileMembershipCta ||
+    !ownerModeration ||
+    !ownerModerationDim ||
+    !ownerModerationClose ||
+    !ownerModerationTitle ||
+    !ownerModerationLead ||
+    !ownerModerationReason ||
+    !ownerModerationStatus ||
+    !ownerModerationError ||
+    !ownerModerationSignalsTitle ||
+    !ownerModerationSignalsEmpty ||
+    !ownerModerationSignalsList ||
+    !ownerModerationAccountsTitle ||
+    !ownerModerationAccountsEmpty ||
+    !ownerModerationAccountsList ||
     !signalCreate ||
     !signalCreateDim ||
     !signalCreateClose ||
@@ -2600,6 +2642,15 @@
     );
   }
 
+  // Owner moderation UI gate: accounts.is_owner from membership self-read only.
+  // Distinct from staging participate-preview localStorage unlock.
+  function canUseOwnerModeration() {
+    return !!(
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isOwnerAccount(membershipSnapshot)
+    );
+  }
+
   function isMemberPresented() {
     if (hasAuthoritativePaidMembership()) return true;
     // Legacy prototype simulate path only when no authoritative snapshot exists.
@@ -4005,6 +4056,8 @@
       !signalDetail.hidden ||
       !authWindow.hidden ||
       !profilePanel.hidden ||
+      !signalCreate.hidden ||
+      !ownerModeration.hidden ||
       (termsSheet && !termsSheet.hidden) ||
       (sheet && !sheet.hidden)
     );
@@ -5136,6 +5189,431 @@
     }
   }
 
+  const OWNER_MODERATION_REASONS = [
+    "immoral",
+    "abusive",
+    "spam",
+    "off_topic",
+    "illegal",
+    "other",
+  ];
+
+  const OWNER_MODERATION_COPY = {
+    en: {
+      profileCta: "Moderation",
+      title: "Owner moderation",
+      lead:
+        "Hide or unhide signals, and ban or unban accounts. These are the existing owner tools — no approval queue and no report flow.",
+      reasonLabel: "Reason",
+      signalsTitle: "Community signals",
+      signalsEmpty: "No signals in this community.",
+      accountsTitle: "Suspended accounts",
+      accountsEmpty: "No suspended accounts.",
+      hide: "Hide",
+      unhide: "Unhide",
+      ban: "Ban author",
+      unban: "Unban",
+      hidden: "Hidden",
+      visible: "Visible",
+      close: "Close",
+      statusHidden: "Signal hidden.",
+      statusUnhidden: "Signal visible again.",
+      statusBanned: "Account banned.",
+      statusUnbanned: "Account unbanned.",
+      errorGeneric: "Moderation action failed. Try again.",
+      errorOwner: "Owner moderation is available only for owner accounts.",
+      errorCommunity: "Choose your community before moderating.",
+      metaAuthor: "Author: {name}",
+      metaAccount: "Account: {id}",
+      metaSuspended: "Suspended: {when}",
+      reasons: {
+        immoral: "Immoral",
+        abusive: "Abusive",
+        spam: "Spam",
+        off_topic: "Off topic",
+        illegal: "Illegal",
+        other: "Other",
+      },
+    },
+    it: {
+      profileCta: "Moderazione",
+      title: "Moderazione owner",
+      lead:
+        "Nascondi o ripristina segnali, e banna o sbanna account. Solo gli strumenti owner già esistenti — nessuna coda di approvazione e nessun report.",
+      reasonLabel: "Motivo",
+      signalsTitle: "Segnali della comunità",
+      signalsEmpty: "Nessun segnale in questa comunità.",
+      accountsTitle: "Account sospesi",
+      accountsEmpty: "Nessun account sospeso.",
+      hide: "Nascondi",
+      unhide: "Ripristina",
+      ban: "Banna autore",
+      unban: "Sbanna",
+      hidden: "Nascosto",
+      visible: "Visibile",
+      close: "Chiudi",
+      statusHidden: "Segnale nascosto.",
+      statusUnhidden: "Segnale di nuovo visibile.",
+      statusBanned: "Account bannato.",
+      statusUnbanned: "Account sbannato.",
+      errorGeneric: "Azione di moderazione non riuscita. Riprova.",
+      errorOwner: "La moderazione è disponibile solo per gli account owner.",
+      errorCommunity: "Scegli la tua comunità prima di moderare.",
+      metaAuthor: "Autore: {name}",
+      metaAccount: "Account: {id}",
+      metaSuspended: "Sospeso: {when}",
+      reasons: {
+        immoral: "Immoral",
+        abusive: "Abusivo",
+        spam: "Spam",
+        off_topic: "Fuori tema",
+        illegal: "Illegale",
+        other: "Altro",
+      },
+    },
+    de: {
+      profileCta: "Moderation",
+      title: "Owner-Moderation",
+      lead:
+        "Signale verstecken oder wieder zeigen, Konten sperren oder entsperren. Nur die bestehenden Owner-Werkzeuge — keine Freigabe-Warteschlange und kein Report-Flow.",
+      reasonLabel: "Grund",
+      signalsTitle: "Gemeinschaftssignale",
+      signalsEmpty: "Keine Signale in dieser Gemeinschaft.",
+      accountsTitle: "Gesperrte Konten",
+      accountsEmpty: "Keine gesperrten Konten.",
+      hide: "Verstecken",
+      unhide: "Wieder zeigen",
+      ban: "Autor sperren",
+      unban: "Entsperren",
+      hidden: "Versteckt",
+      visible: "Sichtbar",
+      close: "Schließen",
+      statusHidden: "Signal versteckt.",
+      statusUnhidden: "Signal wieder sichtbar.",
+      statusBanned: "Konto gesperrt.",
+      statusUnbanned: "Konto entsperrt.",
+      errorGeneric: "Moderation fehlgeschlagen. Bitte erneut versuchen.",
+      errorOwner: "Moderation ist nur für Owner-Konten verfügbar.",
+      errorCommunity: "Wähle zuerst deine Gemeinschaft.",
+      metaAuthor: "Autor: {name}",
+      metaAccount: "Konto: {id}",
+      metaSuspended: "Gesperrt: {when}",
+      reasons: {
+        immoral: "Unmoralisch",
+        abusive: "Missbräuchlich",
+        spam: "Spam",
+        off_topic: "Themaverfehlt",
+        illegal: "Illegal",
+        other: "Sonstiges",
+      },
+    },
+    ro: {
+      profileCta: "Moderare",
+      title: "Moderare owner",
+      lead:
+        "Ascunde sau reașază semnale și banează sau debanează conturi. Doar instrumentele owner deja existente — fără coadă de aprobare și fără report.",
+      reasonLabel: "Motiv",
+      signalsTitle: "Semnale din comunitate",
+      signalsEmpty: "Niciun semnal în această comunitate.",
+      accountsTitle: "Conturi suspendate",
+      accountsEmpty: "Niciun cont suspendat.",
+      hide: "Ascunde",
+      unhide: "Reașază",
+      ban: "Banează autorul",
+      unban: "Debanează",
+      hidden: "Ascuns",
+      visible: "Vizibil",
+      close: "Închide",
+      statusHidden: "Semnal ascuns.",
+      statusUnhidden: "Semnal din nou vizibil.",
+      statusBanned: "Cont banat.",
+      statusUnbanned: "Cont debanat.",
+      errorGeneric: "Acțiunea de moderare a eșuat. Încearcă din nou.",
+      errorOwner: "Moderarea este disponibilă doar pentru conturile owner.",
+      errorCommunity: "Alege comunitatea înainte de moderare.",
+      metaAuthor: "Autor: {name}",
+      metaAccount: "Cont: {id}",
+      metaSuspended: "Suspendat: {when}",
+      reasons: {
+        immoral: "Imoral",
+        abusive: "Abuziv",
+        spam: "Spam",
+        off_topic: "În afara subiectului",
+        illegal: "Ilegal",
+        other: "Altul",
+      },
+    },
+  };
+
+  let ownerModerationBusy = false;
+
+  function ownerModerationCopy() {
+    return (
+      OWNER_MODERATION_COPY[membershipLang()] || OWNER_MODERATION_COPY.en
+    );
+  }
+
+  function selectedModerationReason() {
+    const value = String(ownerModerationReason.value || "");
+    if (OWNER_MODERATION_REASONS.indexOf(value) !== -1) return value;
+    return "other";
+  }
+
+  function fillOwnerModerationReasons() {
+    const copy = ownerModerationCopy();
+    ownerModerationReason.innerHTML = "";
+    for (let i = 0; i < OWNER_MODERATION_REASONS.length; i++) {
+      const reason = OWNER_MODERATION_REASONS[i];
+      const option = document.createElement("option");
+      option.value = reason;
+      option.textContent =
+        (copy.reasons && copy.reasons[reason]) || reason;
+      ownerModerationReason.appendChild(option);
+    }
+  }
+
+  function setOwnerModerationMessage(kind, text) {
+    if (kind === "status") {
+      ownerModerationError.hidden = true;
+      ownerModerationError.textContent = "";
+      ownerModerationStatus.textContent = text || "";
+      ownerModerationStatus.hidden = !text;
+      return;
+    }
+    ownerModerationStatus.hidden = true;
+    ownerModerationStatus.textContent = "";
+    ownerModerationError.textContent = text || "";
+    ownerModerationError.hidden = !text;
+  }
+
+  function applyOwnerModerationCopy() {
+    const copy = ownerModerationCopy();
+    ownerModerationTitle.textContent = copy.title;
+    ownerModerationLead.textContent = copy.lead;
+    ownerModerationClose.textContent = copy.close;
+    ownerModerationSignalsTitle.textContent = copy.signalsTitle;
+    ownerModerationAccountsTitle.textContent = copy.accountsTitle;
+    fillOwnerModerationReasons();
+  }
+
+  function renderOwnerModerationSignals(signals) {
+    const copy = ownerModerationCopy();
+    ownerModerationSignalsList.innerHTML = "";
+    if (!signals || !signals.length) {
+      ownerModerationSignalsEmpty.hidden = false;
+      ownerModerationSignalsEmpty.textContent = copy.signalsEmpty;
+      return;
+    }
+    ownerModerationSignalsEmpty.hidden = true;
+    for (let i = 0; i < signals.length; i++) {
+      const row = signals[i];
+      const li = document.createElement("li");
+      li.className = "owner-moderation__item";
+      const title = document.createElement("p");
+      title.className = "owner-moderation__item-title";
+      title.textContent = row.headline || row.slug || row.id;
+      const meta = document.createElement("p");
+      meta.className = "owner-moderation__item-meta";
+      meta.textContent =
+        (row.hidden ? copy.hidden : copy.visible) +
+        " · " +
+        copy.metaAuthor.replace("{name}", row.authorDisplayName || "—") +
+        (row.hiddenReason ? " · " + row.hiddenReason : "");
+      const actions = document.createElement("div");
+      actions.className = "owner-moderation__item-actions";
+      if (row.hidden) {
+        const unhideBtn = document.createElement("button");
+        unhideBtn.type = "button";
+        unhideBtn.className = "btn btn--primary";
+        unhideBtn.textContent = copy.unhide;
+        unhideBtn.setAttribute("data-owner-unhide", row.id);
+        actions.appendChild(unhideBtn);
+      } else {
+        const hideBtn = document.createElement("button");
+        hideBtn.type = "button";
+        hideBtn.className = "btn btn--primary";
+        hideBtn.textContent = copy.hide;
+        hideBtn.setAttribute("data-owner-hide", row.id);
+        actions.appendChild(hideBtn);
+      }
+      if (row.authorAccountId) {
+        const banBtn = document.createElement("button");
+        banBtn.type = "button";
+        banBtn.className = "btn btn--secondary";
+        banBtn.textContent = copy.ban;
+        banBtn.setAttribute("data-owner-ban", row.authorAccountId);
+        actions.appendChild(banBtn);
+      }
+      li.appendChild(title);
+      li.appendChild(meta);
+      li.appendChild(actions);
+      ownerModerationSignalsList.appendChild(li);
+    }
+  }
+
+  function renderOwnerModerationAccounts(accounts) {
+    const copy = ownerModerationCopy();
+    ownerModerationAccountsList.innerHTML = "";
+    if (!accounts || !accounts.length) {
+      ownerModerationAccountsEmpty.hidden = false;
+      ownerModerationAccountsEmpty.textContent = copy.accountsEmpty;
+      return;
+    }
+    ownerModerationAccountsEmpty.hidden = true;
+    for (let i = 0; i < accounts.length; i++) {
+      const row = accounts[i];
+      const li = document.createElement("li");
+      li.className = "owner-moderation__item";
+      const title = document.createElement("p");
+      title.className = "owner-moderation__item-title";
+      title.textContent = row.email || row.accountId;
+      const meta = document.createElement("p");
+      meta.className = "owner-moderation__item-meta";
+      meta.textContent =
+        copy.metaAccount.replace("{id}", row.accountId) +
+        " · " +
+        copy.metaSuspended.replace("{when}", row.suspendedAt || "—");
+      const actions = document.createElement("div");
+      actions.className = "owner-moderation__item-actions";
+      const unbanBtn = document.createElement("button");
+      unbanBtn.type = "button";
+      unbanBtn.className = "btn btn--primary";
+      unbanBtn.textContent = copy.unban;
+      unbanBtn.setAttribute("data-owner-unban", row.accountId);
+      actions.appendChild(unbanBtn);
+      li.appendChild(title);
+      li.appendChild(meta);
+      li.appendChild(actions);
+      ownerModerationAccountsList.appendChild(li);
+    }
+  }
+
+  async function refreshOwnerModerationLists() {
+    const copy = ownerModerationCopy();
+    const slug = currentCommunitySlug();
+    if (!slug) {
+      setOwnerModerationMessage("error", copy.errorCommunity);
+      renderOwnerModerationSignals([]);
+      renderOwnerModerationAccounts([]);
+      return;
+    }
+    const signalsResult = await getJsonWithCredentials(
+      API_BASE +
+        "/v1/communities/" +
+        encodeURIComponent(slug) +
+        "/moderation/signals"
+    );
+    if (signalsResult.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const accountsResult = await getJsonWithCredentials(
+      API_BASE + "/v1/moderation/accounts/suspended"
+    );
+    if (accountsResult.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const signals =
+      (signalsResult.payload &&
+        signalsResult.payload.data &&
+        signalsResult.payload.data.signals) ||
+      [];
+    const accounts =
+      (accountsResult.payload &&
+        accountsResult.payload.data &&
+        accountsResult.payload.data.accounts) ||
+      [];
+    renderOwnerModerationSignals(signals);
+    renderOwnerModerationAccounts(accounts);
+  }
+
+  async function openOwnerModeration() {
+    const copy = ownerModerationCopy();
+    if (!canUseOwnerModeration()) {
+      setOwnerModerationMessage("error", copy.errorOwner);
+      return;
+    }
+    closeProfilePanel();
+    applyOwnerModerationCopy();
+    setOwnerModerationMessage("status", "");
+    ownerModeration.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    ownerModerationClose.focus();
+    try {
+      await refreshOwnerModerationLists();
+    } catch (_err) {
+      setOwnerModerationMessage("error", copy.errorGeneric);
+    }
+  }
+
+  function closeOwnerModeration() {
+    ownerModeration.hidden = true;
+    setOwnerModerationMessage("status", "");
+    syncFeedScrollLockFromOverlays();
+    if (
+      !profilePanel ||
+      profilePanel.hidden
+    ) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  async function runOwnerModerationAction(kind, id) {
+    if (ownerModerationBusy || !id) return;
+    const copy = ownerModerationCopy();
+    if (!canUseOwnerModeration()) {
+      setOwnerModerationMessage("error", copy.errorOwner);
+      return;
+    }
+    ownerModerationBusy = true;
+    setOwnerModerationMessage("status", "");
+    try {
+      let result = null;
+      let okMessage = copy.errorGeneric;
+      if (kind === "hide") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/signals/" + encodeURIComponent(id) + "/hide",
+          { reason: selectedModerationReason() }
+        );
+        okMessage = copy.statusHidden;
+      } else if (kind === "unhide") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/signals/" + encodeURIComponent(id) + "/unhide",
+          {}
+        );
+        okMessage = copy.statusUnhidden;
+      } else if (kind === "ban") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/accounts/" + encodeURIComponent(id) + "/ban",
+          { reason: selectedModerationReason() }
+        );
+        okMessage = copy.statusBanned;
+      } else if (kind === "unban") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/accounts/" + encodeURIComponent(id) + "/unban",
+          {}
+        );
+        okMessage = copy.statusUnbanned;
+      }
+      if (!result || result.response.status !== 200) {
+        setOwnerModerationMessage("error", copy.errorGeneric);
+        return;
+      }
+      setOwnerModerationMessage("status", okMessage);
+      await refreshOwnerModerationLists();
+      if (kind === "hide" || kind === "unhide") {
+        clearLiveScenes();
+        await loadLiveScenesForCity(selectedCity);
+        rebuildFeedPanels();
+        renderFeedScene();
+      }
+    } catch (_err) {
+      setOwnerModerationMessage("error", copy.errorGeneric);
+    } finally {
+      ownerModerationBusy = false;
+    }
+  }
+
   function populateProfilePanel() {
     const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
     const email = accountEmail || enteredEmail || "";
@@ -5197,6 +5675,11 @@
       (SIGNAL_CREATE_COPY[membershipLang()] &&
         SIGNAL_CREATE_COPY[membershipLang()].profileCta) ||
       "Publish a civic signal";
+    profileModeration.hidden = !canUseOwnerModeration();
+    profileModeration.textContent =
+      (OWNER_MODERATION_COPY[membershipLang()] &&
+        OWNER_MODERATION_COPY[membershipLang()].profileCta) ||
+      "Moderation";
 
     profileActivityList.innerHTML = "";
     const scenes = currentScenes();
@@ -5241,6 +5724,7 @@
     closeAuthWindow();
     closeInvite();
     closeSignalDetail();
+    closeOwnerModeration();
     populateProfilePanel();
     profilePanel.hidden = false;
     setAuthFeedInert(true);
@@ -7431,6 +7915,43 @@
 
   profileCreateSignal.addEventListener("click", () => {
     openSignalCreate();
+  });
+
+  profileModeration.addEventListener("click", () => {
+    openOwnerModeration();
+  });
+
+  ownerModerationClose.addEventListener("click", () => {
+    closeOwnerModeration();
+  });
+  ownerModerationDim.addEventListener("click", () => {
+    closeOwnerModeration();
+  });
+  ownerModerationSignalsList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.getAttribute) return;
+    const hideId = target.getAttribute("data-owner-hide");
+    if (hideId) {
+      runOwnerModerationAction("hide", hideId);
+      return;
+    }
+    const unhideId = target.getAttribute("data-owner-unhide");
+    if (unhideId) {
+      runOwnerModerationAction("unhide", unhideId);
+      return;
+    }
+    const banId = target.getAttribute("data-owner-ban");
+    if (banId) {
+      runOwnerModerationAction("ban", banId);
+    }
+  });
+  ownerModerationAccountsList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.getAttribute) return;
+    const unbanId = target.getAttribute("data-owner-unban");
+    if (unbanId) {
+      runOwnerModerationAction("unban", unbanId);
+    }
   });
 
   signalCreateClose.addEventListener("click", () => {
