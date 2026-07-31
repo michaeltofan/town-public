@@ -4939,6 +4939,13 @@
   }
 
   function currentCommunitySlug() {
+    if (
+      commitmentSnapshot &&
+      commitmentSnapshot.community &&
+      commitmentSnapshot.community.slug
+    ) {
+      return String(commitmentSnapshot.community.slug);
+    }
     const city =
       (commitmentSnapshot &&
         commitmentSnapshot.community &&
