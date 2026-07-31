@@ -87,7 +87,34 @@
   const profileActivityEmpty = document.getElementById("profile-activity-empty");
   const profileActivityList = document.getElementById("profile-activity-list");
   const profileFeed = document.getElementById("profile-feed");
+  const profileCreateSignal = document.getElementById("profile-create-signal");
   const profileMembershipCta = document.getElementById("profile-membership-cta");
+  const signalCreate = document.getElementById("signal-create");
+  const signalCreateDim = document.getElementById("signal-create-dim");
+  const signalCreateClose = document.getElementById("signal-create-close");
+  const signalCreateTitle = document.getElementById("signal-create-title");
+  const signalCreateLead = document.getElementById("signal-create-lead");
+  const signalCreateForm = document.getElementById("signal-create-form");
+  const signalCreateTitleInput = document.getElementById(
+    "signal-create-title-input"
+  );
+  const signalCreateDescription = document.getElementById(
+    "signal-create-description"
+  );
+  const signalCreateCategory = document.getElementById("signal-create-category");
+  const signalCreateRealName = document.getElementById("signal-create-real-name");
+  const signalCreatePhoto = document.getElementById("signal-create-photo");
+  const signalCreatePreview = document.getElementById("signal-create-preview");
+  const signalCreatePreviewImage = document.getElementById(
+    "signal-create-preview-image"
+  );
+  const signalCreateAccept = document.getElementById("signal-create-accept");
+  const signalCreateAcceptText = document.getElementById(
+    "signal-create-accept-text"
+  );
+  const signalCreateError = document.getElementById("signal-create-error");
+  const signalCreateSubmit = document.getElementById("signal-create-submit");
+  const signalCreateCancel = document.getElementById("signal-create-cancel");
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -462,7 +489,26 @@
     !profileActivityEmpty ||
     !profileActivityList ||
     !profileFeed ||
+    !profileCreateSignal ||
     !profileMembershipCta ||
+    !signalCreate ||
+    !signalCreateDim ||
+    !signalCreateClose ||
+    !signalCreateTitle ||
+    !signalCreateLead ||
+    !signalCreateForm ||
+    !signalCreateTitleInput ||
+    !signalCreateDescription ||
+    !signalCreateCategory ||
+    !signalCreateRealName ||
+    !signalCreatePhoto ||
+    !signalCreatePreview ||
+    !signalCreatePreviewImage ||
+    !signalCreateAccept ||
+    !signalCreateAcceptText ||
+    !signalCreateError ||
+    !signalCreateSubmit ||
+    !signalCreateCancel ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -3260,6 +3306,18 @@
     return fallback;
   }
 
+  function resolveSignalDetailImage(detail, cityId) {
+    if (
+      detail &&
+      detail.imageMedia &&
+      detail.imageMedia.url &&
+      String(detail.imageMedia.url).indexOf("/v1/signals/") === 0
+    ) {
+      return API_BASE + detail.imageMedia.url;
+    }
+    return resolveSceneImage(detail && detail.imageKey, cityId);
+  }
+
   function mapSignalDetailToScene(detail, cityId) {
     const localeTag =
       detail.locale ||
@@ -3293,7 +3351,7 @@
       area: detail.area || "",
       headline: detail.headline || "",
       summary: detail.summary || "",
-      image: resolveSceneImage(detail.imageKey, cityId),
+      image: resolveSignalDetailImage(detail, cityId),
       focus: focusX + "% " + focusY + "%",
       civicStatus: detail.statusLabel || "",
       description: detail.description || "",
@@ -4783,6 +4841,294 @@
     throw makeApiError("failed");
   }
 
+  const SIGNAL_CREATE_CATEGORIES = {
+    Milano: ["SPAZIO PUBBLICO", "ILLUMINAZIONE", "LAVORI PUBBLICI"],
+    Munich: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Arad: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+  };
+
+  const SIGNAL_CREATE_COPY = {
+    it: {
+      profileCta: "Pubblica un segnale civico",
+      title: "Pubblica un segnale civico",
+      lead:
+        "Pubblica con il tuo nome reale nella tua comunità. Hai già accettato la responsabilità personale come membro TOWN — confermala di nuovo per questa pubblicazione.",
+      titleLabel: "Titolo",
+      descriptionLabel: "Descrizione",
+      categoryLabel: "Categoria",
+      realNameLabel: "Nome reale",
+      photoLabel: "Fotografia",
+      acceptText:
+        "Pubblico con il mio nome reale e accetto la responsabilità personale per questo segnale, secondo le regole di membership TOWN che ho già accettato.",
+      submit: "Pubblica segnale",
+      cancel: "Annulla",
+      close: "Chiudi",
+      errorGeneric: "Non è stato possibile pubblicare. Riprova.",
+      errorPhoto: "Scegli una foto JPEG, PNG o WebP.",
+      errorAccept: "Conferma la responsabilità personale per pubblicare.",
+      errorName: "Usa il tuo nome e cognome reali, non un username.",
+    },
+    de: {
+      profileCta: "Ziviles Signal veröffentlichen",
+      title: "Ziviles Signal veröffentlichen",
+      lead:
+        "Veröffentliche unter deinem echten Namen in deiner Gemeinschaft. Du hast die persönliche Verantwortung als TOWN-Mitglied bereits akzeptiert — bestätige sie erneut für diese Veröffentlichung.",
+      titleLabel: "Titel",
+      descriptionLabel: "Beschreibung",
+      categoryLabel: "Kategorie",
+      realNameLabel: "Echter Name",
+      photoLabel: "Foto",
+      acceptText:
+        "Ich veröffentliche unter meinem echten Namen und übernehme die persönliche Verantwortung für dieses Signal gemäß den TOWN-Mitgliedschaftsregeln, die ich bereits akzeptiert habe.",
+      submit: "Signal veröffentlichen",
+      cancel: "Abbrechen",
+      close: "Schließen",
+      errorGeneric: "Veröffentlichen nicht möglich. Bitte erneut versuchen.",
+      errorPhoto: "Wähle ein JPEG-, PNG- oder WebP-Foto.",
+      errorAccept: "Bestätige die persönliche Verantwortung zum Veröffentlichen.",
+      errorName: "Verwende deinen echten Vor- und Nachnamen, keinen Benutzernamen.",
+    },
+    ro: {
+      profileCta: "Publică un semnal civic",
+      title: "Publică un semnal civic",
+      lead:
+        "Publică sub numele tău real în comunitatea ta. Ai acceptat deja responsabilitatea personală ca membru TOWN — confirm-o din nou pentru această publicare.",
+      titleLabel: "Titlu",
+      descriptionLabel: "Descriere",
+      categoryLabel: "Categorie",
+      realNameLabel: "Nume real",
+      photoLabel: "Fotografie",
+      acceptText:
+        "Public sub numele meu real și îmi asum responsabilitatea personală pentru acest semnal, conform regulilor de membru TOWN pe care le-am acceptat deja.",
+      submit: "Publică semnalul",
+      cancel: "Anulează",
+      close: "Închide",
+      errorGeneric: "Nu a fost posibil să publici. Încearcă din nou.",
+      errorPhoto: "Alege o fotografie JPEG, PNG sau WebP.",
+      errorAccept: "Confirmă responsabilitatea personală pentru a publica.",
+      errorName: "Folosește numele și prenumele reale, nu un username.",
+    },
+    en: {
+      profileCta: "Publish a civic signal",
+      title: "Publish a civic signal",
+      lead:
+        "Publish under your real name in your community. You already accepted personal responsibility as a TOWN member — confirm it again for this publication.",
+      titleLabel: "Title",
+      descriptionLabel: "Description",
+      categoryLabel: "Category",
+      realNameLabel: "Real name",
+      photoLabel: "Photo",
+      acceptText:
+        "I publish under my real name and accept personal responsibility for this signal, under the TOWN membership rules I already accepted.",
+      submit: "Publish signal",
+      cancel: "Cancel",
+      close: "Close",
+      errorGeneric: "Could not publish. Try again.",
+      errorPhoto: "Choose a JPEG, PNG, or WebP photo.",
+      errorAccept: "Confirm personal responsibility to publish.",
+      errorName: "Use your real given and family name, not a username.",
+    },
+  };
+
+  let signalCreatePhotoFile = null;
+  let signalCreatePhotoObjectUrl = null;
+  let signalCreateSubmitting = false;
+
+  function signalCreateCopy() {
+    return SIGNAL_CREATE_COPY[membershipLang()] || SIGNAL_CREATE_COPY.en;
+  }
+
+  function currentCommunitySlug() {
+    const city =
+      (commitmentSnapshot &&
+        commitmentSnapshot.community &&
+        (commitmentSnapshot.community.cityName ||
+          commitmentSnapshot.community.displayName)) ||
+      selectedCity ||
+      "";
+    if (CITY_API_SLUG[city]) return CITY_API_SLUG[city];
+    if (city === "München") return CITY_API_SLUG.Munich;
+    return CITY_API_SLUG[selectedCity] || null;
+  }
+
+  function fillSignalCreateCategories() {
+    const city = selectedCity || "Milano";
+    const categories =
+      SIGNAL_CREATE_CATEGORIES[city] || SIGNAL_CREATE_CATEGORIES.Milano;
+    signalCreateCategory.innerHTML = "";
+    for (let i = 0; i < categories.length; i++) {
+      const option = document.createElement("option");
+      option.value = categories[i];
+      option.textContent = categories[i];
+      signalCreateCategory.appendChild(option);
+    }
+  }
+
+  function clearSignalCreatePhotoPreview() {
+    if (signalCreatePhotoObjectUrl) {
+      try {
+        URL.revokeObjectURL(signalCreatePhotoObjectUrl);
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+    signalCreatePhotoObjectUrl = null;
+    signalCreatePhotoFile = null;
+    signalCreatePreviewImage.removeAttribute("src");
+    signalCreatePreview.hidden = true;
+    signalCreatePhoto.value = "";
+  }
+
+  function applySignalCreateCopy() {
+    const copy = signalCreateCopy();
+    signalCreateTitle.textContent = copy.title;
+    signalCreateLead.textContent = copy.lead;
+    signalCreateClose.textContent = copy.close;
+    signalCreateAcceptText.textContent = copy.acceptText;
+    signalCreateSubmit.textContent = copy.submit;
+    signalCreateCancel.textContent = copy.cancel;
+    document.getElementById("signal-create-title-label").textContent =
+      copy.titleLabel;
+    document.getElementById("signal-create-description-label").textContent =
+      copy.descriptionLabel;
+    document.getElementById("signal-create-category-label").textContent =
+      copy.categoryLabel;
+    document.getElementById("signal-create-real-name-label").textContent =
+      copy.realNameLabel;
+    document.getElementById("signal-create-photo-label").textContent =
+      copy.photoLabel;
+  }
+
+  function openSignalCreate() {
+    if (!canTakeCivicAction()) {
+      openInvite();
+      return;
+    }
+    if (!currentCommunitySlug()) {
+      go("commitment");
+      return;
+    }
+    closeProfilePanel();
+    closeSignalDetail();
+    applySignalCreateCopy();
+    fillSignalCreateCategories();
+    signalCreateError.hidden = true;
+    signalCreateError.textContent = "";
+    signalCreateAccept.checked = false;
+    signalCreate.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    signalCreateTitleInput.focus();
+  }
+
+  function closeSignalCreate() {
+    if (signalCreate.hidden) return;
+    signalCreate.hidden = true;
+    clearSignalCreatePhotoPreview();
+    signalCreateForm.reset();
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+  }
+
+  async function publishMemberSignal(event) {
+    if (event) event.preventDefault();
+    if (signalCreateSubmitting) return;
+    const copy = signalCreateCopy();
+    const slug = currentCommunitySlug();
+    if (!slug || !canTakeCivicAction()) {
+      signalCreateError.textContent = copy.errorGeneric;
+      signalCreateError.hidden = false;
+      return;
+    }
+    if (!signalCreateAccept.checked) {
+      signalCreateError.textContent = copy.errorAccept;
+      signalCreateError.hidden = false;
+      return;
+    }
+    const realName = (signalCreateRealName.value || "").trim();
+    if (!realName || realName.indexOf(" ") < 0 || realName.charAt(0) === "@") {
+      signalCreateError.textContent = copy.errorName;
+      signalCreateError.hidden = false;
+      return;
+    }
+    const file = signalCreatePhotoFile;
+    if (
+      !file ||
+      (file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/webp")
+    ) {
+      signalCreateError.textContent = copy.errorPhoto;
+      signalCreateError.hidden = false;
+      return;
+    }
+
+    signalCreateSubmitting = true;
+    signalCreateSubmit.disabled = true;
+    signalCreateError.hidden = true;
+    try {
+      const upload = await postBinaryWithCredentials(
+        API_BASE +
+          "/v1/communities/" +
+          encodeURIComponent(slug) +
+          "/signals/media",
+        file,
+        file.type
+      );
+      if (
+        !(
+          upload.response &&
+          upload.response.status === 201 &&
+          upload.payload &&
+          upload.payload.data &&
+          upload.payload.data.mediaUploadId
+        )
+      ) {
+        signalCreateError.textContent = copy.errorGeneric;
+        signalCreateError.hidden = false;
+        return;
+      }
+      const created = await postJsonWithCredentials(
+        API_BASE +
+          "/v1/communities/" +
+          encodeURIComponent(slug) +
+          "/signals",
+        {
+          title: (signalCreateTitleInput.value || "").trim(),
+          description: (signalCreateDescription.value || "").trim(),
+          category: signalCreateCategory.value,
+          realName: realName,
+          acceptedResponsibility: true,
+          mediaUploadId: upload.payload.data.mediaUploadId,
+        }
+      );
+      if (
+        !(
+          created.response &&
+          created.response.status === 201 &&
+          created.payload &&
+          created.payload.data &&
+          created.payload.data.id
+        )
+      ) {
+        signalCreateError.textContent = copy.errorGeneric;
+        signalCreateError.hidden = false;
+        return;
+      }
+      closeSignalCreate();
+      clearLiveScenes();
+      await loadLiveScenesForCity(selectedCity);
+      rebuildFeedPanels();
+      renderFeedScene();
+    } catch (_err) {
+      signalCreateError.textContent = copy.errorGeneric;
+      signalCreateError.hidden = false;
+    } finally {
+      signalCreateSubmitting = false;
+      signalCreateSubmit.disabled = false;
+    }
+  }
+
   function populateProfilePanel() {
     const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
     const email = accountEmail || enteredEmail || "";
@@ -4839,6 +5185,11 @@
     profileMembershipCta.textContent = copy.membershipCta;
     // Paid accounts do not need the membership-continue CTA on Profile V1.
     profileMembershipCta.hidden = paid;
+    profileCreateSignal.hidden = !canTakeCivicAction();
+    profileCreateSignal.textContent =
+      (SIGNAL_CREATE_COPY[membershipLang()] &&
+        SIGNAL_CREATE_COPY[membershipLang()].profileCta) ||
+      "Publish a civic signal";
 
     profileActivityList.innerHTML = "";
     const scenes = currentScenes();
@@ -6976,6 +7327,11 @@
         closeAuthWindow();
         return;
       }
+      if (!signalCreate.hidden) {
+        event.preventDefault();
+        closeSignalCreate();
+        return;
+      }
       if (!profilePanel.hidden) {
         event.preventDefault();
         closeProfilePanel();
@@ -7064,6 +7420,50 @@
     closeProfilePanel();
     beginInviteMembershipJourney();
     go("commitment");
+  });
+
+  profileCreateSignal.addEventListener("click", () => {
+    openSignalCreate();
+  });
+
+  signalCreateClose.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateCancel.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateDim.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateForm.addEventListener("submit", (event) => {
+    publishMemberSignal(event);
+  });
+  signalCreatePhoto.addEventListener("change", () => {
+    const file =
+      signalCreatePhoto.files && signalCreatePhoto.files[0]
+        ? signalCreatePhoto.files[0]
+        : null;
+    if (!file) {
+      clearSignalCreatePhotoPreview();
+      return;
+    }
+    if (
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/webp"
+    ) {
+      clearSignalCreatePhotoPreview();
+      signalCreateError.textContent = signalCreateCopy().errorPhoto;
+      signalCreateError.hidden = false;
+      return;
+    }
+    if (signalCreatePhotoObjectUrl) {
+      URL.revokeObjectURL(signalCreatePhotoObjectUrl);
+    }
+    signalCreatePhotoFile = file;
+    signalCreatePhotoObjectUrl = URL.createObjectURL(file);
+    signalCreatePreviewImage.src = signalCreatePhotoObjectUrl;
+    signalCreatePreview.hidden = false;
   });
 
   profileActivityList.addEventListener("click", (event) => {
