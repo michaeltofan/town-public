@@ -68,7 +68,7 @@ for required in (
     'id="detail-session-compose"',
     'id="detail-session-input"',
     'id="detail-testimony-input"',
-    'accept="image/*,video/*"',
+    'accept="image/jpeg,image/png,image/webp,video/mp4"',
     'id="detail-testimony-preview"',
 ):
     if required not in html:
@@ -108,13 +108,17 @@ if "detailTestimonyInput.click()" not in helper_body and "showPicker" not in hel
     raise SystemExit("FAIL: member capture helper must open the file picker")
 
 if re.search(r"/v1/.+testimony|/v1/.+comments?\b|FormData\(|uploadTestimony|multipart/form-data", js):
-    raise SystemExit("FAIL: session must not upload media or wire comment APIs")
+    raise SystemExit("FAIL: session must not use testimony/comment or multipart upload APIs")
 if "/discussion-session" not in js:
     raise SystemExit("FAIL: discussion-session API helpers must be wired")
 if "fetchSignalDiscussionSession" not in js or "publishSignalDiscussionContribution" not in js:
     raise SystemExit("FAIL: missing discussion-session fetch/publish helpers")
+if "uploadSignalDiscussionMedia" not in js or "/discussion-session/media" not in js:
+    raise SystemExit("FAIL: missing secure discussion media upload helper")
 if "sessionUnavailable" not in js or "sessionLocalOnly" not in js:
     raise SystemExit("FAIL: honest session fallback copy missing")
+if "not uploaded" in js:
+    raise SystemExit("FAIL: media attach copy still claims files are not uploaded")
 
 invite_continue = re.search(
     r'inviteContinue\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
