@@ -1476,6 +1476,23 @@ body.page-feed {
   box-shadow: 0 0 0 3px rgba(92, 74, 58, 0.16);
 }
 
+.auth-window__status {
+  margin: 0.9rem 0 0;
+  min-height: 1.35em;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.auth-window__status.is-success {
+  color: var(--body);
+}
+
+.auth-window__status.is-error {
+  color: var(--body);
+}
+
 .auth-window__actions {
   display: flex;
   flex-direction: column;

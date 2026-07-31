@@ -72,7 +72,7 @@
   const authIdentityInput = document.getElementById("auth-identity-input");
   const authContinue = document.getElementById("auth-continue");
   const authPasskey = document.getElementById("auth-passkey");
-  const authPassword = document.getElementById("auth-password");
+  const authWindowStatus = document.getElementById("auth-window-status");
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -390,7 +390,7 @@
     !authIdentityInput ||
     !authContinue ||
     !authPasskey ||
-    !authPassword ||
+    !authWindowStatus ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -2429,6 +2429,7 @@
   let commitmentCheckoutSubmitting = false;
   const communityCommitmentApi = window.TownCommunityCommitment || null;
   let loginSubmitting = false;
+  let authSignInSubmitting = false;
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
@@ -3922,6 +3923,79 @@
     entryLoginStatus.classList.toggle("is-error", kind === "error");
   }
 
+  function clearAuthWindowStatus() {
+    authWindowStatus.hidden = true;
+    authWindowStatus.textContent = "";
+    authWindowStatus.classList.remove("is-success", "is-error");
+  }
+
+  function showAuthWindowStatus(message, kind) {
+    authWindowStatus.hidden = false;
+    authWindowStatus.textContent = message;
+    authWindowStatus.classList.toggle("is-success", kind === "success");
+    authWindowStatus.classList.toggle("is-error", kind === "error");
+  }
+
+  // Post-auth destination for the public Sign-in window. Membership and
+  // community-commitment state must already be refreshed from the backend.
+  function continueAfterPublicPasskeySignIn() {
+    closeAuthWindow();
+    if (hasAuthoritativePaidMembership()) {
+      // Paid member: remain on the public feed with authoritative member UI.
+      syncFeedMemberState();
+      return;
+    }
+    // Authenticated non-member: continue the membership journey at commitment.
+    beginInviteMembershipJourney();
+    go("commitment");
+  }
+
+  // Canonical public Sign-in path — reuses runPasskeyAuthenticationCeremony.
+  // Does not invent password auth or manufacture session state locally.
+  function startPublicAuthWindowPasskeySignIn() {
+    if (authSignInSubmitting) return;
+    // Auth-window chrome is English; keep status copy aligned with that shell.
+    const copy = LOGIN_COPY.en;
+    clearAuthWindowStatus();
+
+    authSignInSubmitting = true;
+    authPasskey.disabled = true;
+    authContinue.disabled = true;
+    showAuthWindowStatus(copy.working, "success");
+
+    runPasskeyAuthenticationCeremony()
+      .then(function () {
+        // Session probe inside the ceremony confirmed authenticated:true.
+        sessionAuthenticated = true;
+        showAuthWindowStatus(copy.success, "success");
+        return Promise.all([
+          fetchAccountMembership()
+            .then(function (snapshot) {
+              applyMembershipSnapshot(snapshot);
+            })
+            .catch(function () {
+              membershipSnapshot = null;
+            }),
+          bootstrapCommunityCommitment(),
+        ]).then(function () {
+          continueAfterPublicPasskeySignIn();
+        });
+      })
+      .catch(function (err) {
+        sessionAuthenticated = false;
+        if (isPasskeyCeremonyCancelled(err)) {
+          showAuthWindowStatus(copy.cancelled, "error");
+          return;
+        }
+        showAuthWindowStatus(copy.failed, "error");
+      })
+      .finally(function () {
+        authSignInSubmitting = false;
+        authPasskey.disabled = false;
+        authContinue.disabled = false;
+      });
+  }
+
   function applyEntryLoginCopy() {
     const copy = LOGIN_COPY[entryLang()];
     entrySignIn.textContent = copy.signIn;
@@ -4799,6 +4873,8 @@
     authMode = "signin";
     authChannel = "email";
     authIdentityInput.value = "";
+    authIdentityInput.setCustomValidity("");
+    clearAuthWindowStatus();
     syncAuthModeUi();
     syncAuthChannelUi();
 
@@ -4865,6 +4941,8 @@
     commitmentCheckoutSubmitting = false;
     endMembershipRecoveryFlow();
     loginSubmitting = false;
+    authSignInSubmitting = false;
+    clearAuthWindowStatus();
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
     clearLiveScenes();
@@ -5038,6 +5116,10 @@
     }
 
     if (allowInviteJourney) {
+      // Returning-user passkey Sign-in establishes a backend session without
+      // replaying Create-account local flags. Authenticated sessions may reach
+      // commitment/payment; unauthenticated Create-account still gates.
+      const authAccountReady = sessionAuthenticated === true;
       if (
         (route === "code" ||
           route === "passkey" ||
@@ -5045,7 +5127,8 @@
           route === "commitment" ||
           route === "payment" ||
           route === "active") &&
-        !enteredEmail
+        !enteredEmail &&
+        !authAccountReady
       ) {
         route = "email";
       }
@@ -5055,7 +5138,8 @@
           route === "commitment" ||
           route === "payment" ||
           route === "active") &&
-        !emailVerified
+        !emailVerified &&
+        !authAccountReady
       ) {
         route = "code";
       }
@@ -5064,7 +5148,8 @@
           route === "commitment" ||
           route === "payment" ||
           route === "active") &&
-        !passkeyRegistered
+        !passkeyRegistered &&
+        !authAccountReady
       ) {
         route = "passkey";
       }
@@ -5514,8 +5599,10 @@
     authIdentityInput.focus();
   });
 
-  // Mode-aware Continue: only Create account + Email may start email
-  // verification. Sign-in, phone, passkey, and password remain inert here.
+  // Mode-aware Continue:
+  // - Create account + Email → request email verification (unchanged).
+  // - Sign-in → canonical passkey authentication (not a silent no-op).
+  // - Phone remains unavailable (no phone auth system).
   authContinue.addEventListener("click", (event) => {
     event.preventDefault();
 
@@ -5524,6 +5611,7 @@
     }
 
     if (authMode === "signin") {
+      startPublicAuthWindowPasskeySignIn();
       return;
     }
 
@@ -5570,10 +5658,7 @@
 
   authPasskey.addEventListener("click", (event) => {
     event.preventDefault();
-  });
-
-  authPassword.addEventListener("click", (event) => {
-    event.preventDefault();
+    startPublicAuthWindowPasskeySignIn();
   });
 
   enterButton.addEventListener("click", () => {
