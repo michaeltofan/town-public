@@ -4924,13 +4924,18 @@
 
   function handleHomeNav() {
     closeAuthWindow();
-    // HOME remains the active public surface; no route change.
+    // Public HOME / ACASĂ: return to the first feed page (first signal).
+    closeInvite();
+    closeSignalDetail();
     navHome.classList.add("is-active");
     navHome.setAttribute("aria-current", "page");
     [navMembership, navChat, navActivity, navProfile].forEach((btn) => {
       btn.classList.remove("is-active");
       btn.removeAttribute("aria-current");
     });
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(0, { behavior: "auto" });
+    }
   }
 
   function resetVisitorSession() {
