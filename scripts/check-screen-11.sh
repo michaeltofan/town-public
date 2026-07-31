@@ -44,6 +44,7 @@ require_contains "script.js" "READY_COPY"
 require_contains "script.js" "Il tuo account TOWN è pronto."
 require_contains "script.js" "Dein TOWN-Konto ist bereit."
 require_contains "script.js" 'go("ready")'
+require_contains "script.js" 'go("commitment")'
 require_contains "script.js" 'go("payment")'
 require_contains "script.js" "runPasskeyAuthenticationCeremony"
 require_contains "script.js" "fetchAuthenticationSession"
@@ -87,22 +88,25 @@ if "requestCheckoutSession" in ready_body or "checkoutUrl" in ready_body:
 if "localStorage" in ready_body or "sessionStorage" in ready_body:
     fail("readyContinue must not persist tokens in browser storage")
 
-# Success path: ceremony → set sessionAuthenticated → go(payment)
+# Success path: ceremony → set sessionAuthenticated → go(commitment)
+# Membership V1 inserts community commitment before Checkout/payment.
 ceremony_idx = ready_body.find("runPasskeyAuthenticationCeremony")
 auth_flag_idx = ready_body.find("sessionAuthenticated = true")
-go_payment_idx = ready_body.find('go("payment")')
-if ceremony_idx < 0 or auth_flag_idx < 0 or go_payment_idx < 0:
-    fail("readyContinue success path must auth, set sessionAuthenticated, then go(payment)")
-if not (ceremony_idx < auth_flag_idx < go_payment_idx):
-    fail("readyContinue must navigate to payment only after authenticated session confirmation")
+go_commitment_idx = ready_body.find('go("commitment")')
+if ceremony_idx < 0 or auth_flag_idx < 0 or go_commitment_idx < 0:
+    fail("readyContinue success path must auth, set sessionAuthenticated, then go(commitment)")
+if not (ceremony_idx < auth_flag_idx < go_commitment_idx):
+    fail("readyContinue must navigate to commitment only after authenticated session confirmation")
+if 'go("payment")' in ready_body:
+    fail("readyContinue must not skip commitment by going directly to payment")
 
 # Failure / cancellation must not navigate
 catch_idx = ready_body.find(".catch")
 if catch_idx < 0:
     fail("readyContinue must handle auth failure/cancellation")
 catch_body = ready_body[catch_idx:]
-if 'go("payment")' in catch_body:
-    fail("failed/cancelled auth must not navigate to payment")
+if 'go("payment")' in catch_body or 'go("commitment")' in catch_body:
+    fail("failed/cancelled auth must not navigate to commitment/payment")
 if "sessionAuthenticated = true" in catch_body:
     fail("failed/cancelled auth must not set authenticated state")
 if "showReadyError" not in catch_body:

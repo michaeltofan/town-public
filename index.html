@@ -1118,6 +1118,70 @@
       </main>
     </div>
 
+    <!-- Pre-Checkout: community choice + personal responsibility -->
+    <div id="view-commitment" hidden>
+      <main class="payment" aria-label="Community commitment">
+        <div class="payment__frame" id="commitment-frame">
+          <p class="payment__brand" aria-label="TOWN">TOWN</p>
+          <p class="payment__label" id="commitment-label"></p>
+          <h1 class="payment__title" id="commitment-title"></h1>
+          <p class="payment__lead" id="commitment-body"></p>
+
+          <fieldset class="commitment__fieldset" id="commitment-country-fieldset">
+            <legend class="commitment__legend" id="commitment-country-legend"></legend>
+            <div class="commitment__options" id="commitment-country-options">
+              <label class="commitment__option">
+                <input type="radio" name="commitment-country" value="Italy" id="commitment-country-italy" />
+                <span id="commitment-country-italy-label">Italy</span>
+              </label>
+              <label class="commitment__option">
+                <input type="radio" name="commitment-country" value="Germany" id="commitment-country-germany" />
+                <span id="commitment-country-germany-label">Germany</span>
+              </label>
+              <label class="commitment__option">
+                <input type="radio" name="commitment-country" value="Romania" id="commitment-country-romania" />
+                <span id="commitment-country-romania-label">Romania</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="commitment__fieldset" id="commitment-city-fieldset" disabled>
+            <legend class="commitment__legend" id="commitment-city-legend"></legend>
+            <div class="commitment__options" id="commitment-city-options"></div>
+          </fieldset>
+
+          <div class="commitment__review" id="commitment-review" hidden>
+            <h2 class="payment__label" id="commitment-review-label"></h2>
+            <p class="payment__status" id="commitment-review-country"></p>
+            <p class="payment__status" id="commitment-review-city"></p>
+            <p class="payment__note" id="commitment-review-note"></p>
+          </div>
+
+          <label class="commitment__accept" id="commitment-accept-label-wrap" hidden>
+            <input type="checkbox" id="commitment-accept" />
+            <span id="commitment-accept-text"></span>
+          </label>
+          <p class="payment__note" id="commitment-accept-required" hidden></p>
+
+          <p class="payment__error" id="commitment-error" hidden></p>
+          <p class="payment__status" id="commitment-saved-status" hidden></p>
+          <p class="payment__note" id="commitment-checkout-hint" hidden></p>
+
+          <div class="payment__actions">
+            <button type="button" class="btn btn--primary" id="commitment-confirm" disabled>
+              Confirm
+            </button>
+            <button type="button" class="btn btn--primary" id="commitment-checkout" hidden disabled>
+              Continue to annual membership
+            </button>
+            <button type="button" class="btn btn--secondary" id="commitment-back">
+              Back
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
     <!-- Screen 12: Membership Payment Boundary Mock -->
     <div id="view-payment" hidden>
       <main class="payment" aria-label="Membership payment boundary">
@@ -1239,6 +1303,7 @@
     <script src="signal-copy.js" defer></script>
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
-    <script src="script.js?v=public-feed-i18n-1" defer></script>
+    <script src="community-commitment.js" defer></script>
+    <script src="script.js?v=community-commitment-1" defer></script>
   </body>
 </html>
