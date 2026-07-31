@@ -50,8 +50,7 @@ assert(recovery.includes("function isOwnerAccount"), "recovery exposes isOwnerAc
 
 assert(css.includes(".owner-moderation"), "moderation styles present");
 assert(
-  html.includes("script.js?v=member-activity-1") ||
-    html.includes("script.js?v=owner-moderation-ui-1"),
+  /script\.js\?v=[^"]+/.test(html),
   "cache buster present"
 );
 
