@@ -1,6 +1,6 @@
 /**
  * Focused regression: I SEE THIS TOO stays active for visitor, registered,
- * and paying-member presentations (unless already confirmed on origin).
+ * and paying-member presentations (unless already confirmed on that signal).
  */
 "use strict";
 
@@ -9,6 +9,7 @@ const path = require("path");
 
 const root = path.join(__dirname, "..");
 const js = fs.readFileSync(path.join(root, "script.js"), "utf8");
+const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 
 let passed = 0;
 let failed = 0;
@@ -35,7 +36,7 @@ const panelMatch = js.match(
 );
 assert(!!panelMatch, "syncPanelMemberControls body readable");
 const panel = panelMatch ? panelMatch[1] : "";
-assert(panel.includes("onOrigin"), "feed panel still supports confirmed done-state");
+assert(panel.includes("onConfirmed"), "feed panel still supports confirmed done-state");
 assert(
   !/else if\s*\(\s*memberPresented\s*\)\s*\{[\s\S]*?seeToo\.hidden\s*=\s*true/.test(
     panel
@@ -47,14 +48,18 @@ assert(
     panel.includes("seeToo.disabled = false"),
   "feed panel keeps see-too visible and enabled when not confirmed"
 );
+assert(
+  panel.includes("feed-confirm-count") || panel.includes("confirmCountEl"),
+  "feed panel wires confirmation count label"
+);
 
 const detailGateIdx = js.indexOf(
-  "const onOrigin =\n      signalConfirmed && civicOk && feedIndex === originatingFeedIndex;"
+  "applyConfirmCountLabel(\n      detailConfirmCount,"
 );
 assert(detailGateIdx >= 0, "signal-detail see-too gate located");
-const detailGate = js.slice(detailGateIdx, detailGateIdx + 450);
+const detailGate = js.slice(detailGateIdx, detailGateIdx + 550);
 assert(
-  detailGate.includes("if (onOrigin)") &&
+  detailGate.includes("if (onConfirmed)") &&
     detailGate.includes("detailSeeToo.hidden = false") &&
     !detailGate.includes("else if (memberPresented)"),
   "signal detail does not hide see-too solely because member is presented"
@@ -69,8 +74,24 @@ assert(
   "canConfirmSeeTooAction helper exists"
 );
 assert(
-  js.includes("function activateSeeTooAction"),
+  js.includes("async function activateSeeTooAction"),
   "activateSeeTooAction helper exists"
+);
+assert(
+  js.includes("function putJsonWithCredentials"),
+  "credentialed PUT helper exists"
+);
+assert(
+  js.includes("/confirmation"),
+  "confirmation API path wired"
+);
+assert(
+  js.includes("signalConfirmationState"),
+  "per-signal confirmation state store present"
+);
+assert(
+  js.includes("refreshViewerSignalConfirmations"),
+  "refresh helper restores confirmations after reload"
 );
 
 const confirmMatch = js.match(
@@ -84,14 +105,14 @@ assert(
 );
 
 const activateMatch = js.match(
-  /function activateSeeTooAction\(options\)\s*\{([\s\S]*?)\n  \}/
+  /async function activateSeeTooAction\(options\)\s*\{([\s\S]*?)\n  \}/
 );
 assert(!!activateMatch, "activateSeeTooAction body readable");
 const activate = activateMatch ? activateMatch[1] : "";
 assert(
   activate.includes("canConfirmSeeTooAction") &&
-    activate.includes("signalConfirmed = true"),
-  "eligible members confirm see-too without inventing membership"
+    activate.includes("putJsonWithCredentials"),
+  "eligible members persist see-too via confirmation PUT"
 );
 assert(
   activate.includes("openInvite()"),
@@ -100,6 +121,13 @@ assert(
 assert(
   !activate.includes("membershipSimulated = true"),
   "activation does not auto-activate membership"
+);
+
+assert(html.includes('id="feed-confirm-count"'), "feed count element present");
+assert(html.includes('id="detail-confirm-count"'), "detail count element present");
+assert(
+  js.includes('doneNote: "Confirmation saved on TOWN"'),
+  "done note no longer claims prototype-only persistence"
 );
 
 const feedSeeToo = sliceHandler(
