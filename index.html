@@ -809,6 +809,42 @@
                 class="signal-detail__session-compose-guide"
                 id="detail-session-compose-guide"
               ></p>
+              <fieldset
+                class="signal-detail__session-intent"
+                id="detail-session-intent"
+              >
+                <legend
+                  class="signal-detail__session-intent-legend"
+                  id="detail-session-intent-legend"
+                ></legend>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="observation"
+                    id="detail-session-intent-observation"
+                  />
+                  <span id="detail-session-intent-observation-label"></span>
+                </label>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="proposal"
+                    id="detail-session-intent-proposal"
+                  />
+                  <span id="detail-session-intent-proposal-label"></span>
+                </label>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="next_step"
+                    id="detail-session-intent-next-step"
+                  />
+                  <span id="detail-session-intent-next-step-label"></span>
+                </label>
+              </fieldset>
               <textarea
                 class="signal-detail__session-input"
                 id="detail-session-input"
@@ -1471,6 +1507,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=signal-discussion-session-1" defer></script>
+    <script src="script.js?v=signal-discussion-session-api-1" defer></script>
   </body>
 </html>

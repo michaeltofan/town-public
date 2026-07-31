@@ -35,6 +35,14 @@ assert(
 );
 assert(html.includes('id="detail-session-input"'), "session textarea present");
 assert(
+  html.includes('id="detail-session-intent"'),
+  "intent fieldset present"
+);
+assert(
+  html.includes('name="session-intent"'),
+  "intent radio inputs present"
+);
+assert(
   !html.includes('id="detail-add-testimony"'),
   "old testimony-only CTA removed"
 );
@@ -46,10 +54,22 @@ assert(
 assert(js.includes("function publishSessionContribution"), "publish helper");
 assert(js.includes("function openSessionCompose"), "compose open helper");
 assert(js.includes("function renderSignalSession"), "session render helper");
+assert(js.includes("function loadSignalDiscussionSession"), "session load helper");
 assert(
-  js.includes("signalSessionContributions"),
-  "in-browser session store present"
+  js.includes("function fetchSignalDiscussionSession"),
+  "GET discussion-session helper"
 );
+assert(
+  js.includes("function publishSignalDiscussionContribution"),
+  "POST contribution helper"
+);
+assert(js.includes("signalSessionCache"), "session response cache present");
+assert(
+  js.includes("/discussion-session/contributions"),
+  "contribution publish path wired"
+);
+assert(js.includes("intent: intent"), "publish body includes intent");
+assert(js.includes("signalId: detail.id"), "scene keeps API signal UUID");
 
 const handler = js.match(
   /detailSessionContribute\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);/
@@ -69,19 +89,24 @@ assert(
   "RO solution framing"
 );
 assert(
-  js.includes('sessionBody:') &&
+  js.includes("sessionBody:") &&
     js.includes("not a chat") &&
     /sessionBody:[\s\S]*?not a chat/i.test(js),
   "explicitly not framed as chat"
 );
+assert(
+  js.includes("sessionUnavailable:") && js.includes("sessionLocalOnly:"),
+  "honest fallback copy present"
+);
 
 assert(
-  !/\/v1\/[^"'`\s]*(comment|discussion|testimony)/.test(js) &&
+  !/\/v1\/[^"'`\s]*(comment|testimony)/.test(js) &&
     !/uploadTestimony|multipart\/form-data/.test(js),
-  "no discussion upload/API wiring yet"
+  "no comment/testimony upload wiring"
 );
 
 assert(css.includes("signal-detail__session"), "session styles present");
+assert(css.includes("signal-detail__session-intent"), "intent styles present");
 assert(css.includes("town-session-in"), "session enter motion present");
 
 if (failed > 0) {

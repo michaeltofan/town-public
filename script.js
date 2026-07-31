@@ -126,6 +126,19 @@
     "detail-session-compose-guide"
   );
   const detailSessionInput = document.getElementById("detail-session-input");
+  const detailSessionIntent = document.getElementById("detail-session-intent");
+  const detailSessionIntentLegend = document.getElementById(
+    "detail-session-intent-legend"
+  );
+  const detailSessionIntentObservationLabel = document.getElementById(
+    "detail-session-intent-observation-label"
+  );
+  const detailSessionIntentProposalLabel = document.getElementById(
+    "detail-session-intent-proposal-label"
+  );
+  const detailSessionIntentNextStepLabel = document.getElementById(
+    "detail-session-intent-next-step-label"
+  );
   const detailSessionAttach = document.getElementById("detail-session-attach");
   const detailSessionPublish = document.getElementById("detail-session-publish");
   const detailSessionCancel = document.getElementById("detail-session-cancel");
@@ -480,6 +493,11 @@
     !detailSessionComposeTitle ||
     !detailSessionComposeGuide ||
     !detailSessionInput ||
+    !detailSessionIntent ||
+    !detailSessionIntentLegend ||
+    !detailSessionIntentObservationLabel ||
+    !detailSessionIntentProposalLabel ||
+    !detailSessionIntentNextStepLabel ||
     !detailSessionAttach ||
     !detailSessionPublish ||
     !detailSessionCancel ||
@@ -1165,8 +1183,17 @@
       sessionAttach: "Attach photo or video",
       sessionPublish: "Publish contribution",
       sessionCancel: "Cancel",
-      sessionDemoNote:
-        "Demo on this device for now — not saved to the TOWN server yet.",
+      sessionIntentLegend: "What kind of contribution is this?",
+      sessionIntentObservation: "Observation",
+      sessionIntentProposal: "Proposal",
+      sessionIntentNextStep: "Next step",
+      sessionNeedIntent: "Choose observation, proposal, or next step.",
+      sessionUnavailable:
+        "Couldn't reach TOWN for this session — try again later.",
+      sessionLocalOnly:
+        "This preview signal has no server session yet.",
+      sessionPublishFailed:
+        "Couldn't publish this contribution — try again.",
       sessionNeedText:
         "Write at least a short, concrete contribution before publishing.",
       sessionYou: "You",
@@ -1201,8 +1228,17 @@
       sessionAttach: "Adjuntar foto o vídeo",
       sessionPublish: "Publicar contribución",
       sessionCancel: "Cancelar",
-      sessionDemoNote:
-        "Demo en este dispositivo por ahora — aún no se guarda en el servidor TOWN.",
+      sessionIntentLegend: "¿Qué tipo de contribución es?",
+      sessionIntentObservation: "Observación",
+      sessionIntentProposal: "Propuesta",
+      sessionIntentNextStep: "Siguiente paso",
+      sessionNeedIntent: "Elige observación, propuesta o siguiente paso.",
+      sessionUnavailable:
+        "No se pudo contactar a TOWN para esta sesión — inténtalo de nuevo.",
+      sessionLocalOnly:
+        "Esta señal de vista previa aún no tiene sesión en el servidor.",
+      sessionPublishFailed:
+        "No se pudo publicar esta contribución — inténtalo de nuevo.",
       sessionNeedText:
         "Escribe al menos una contribución breve y concreta antes de publicar.",
       sessionYou: "Tú",
@@ -1237,8 +1273,17 @@
       sessionAttach: "Allega foto o video",
       sessionPublish: "Pubblica il contributo",
       sessionCancel: "Annulla",
-      sessionDemoNote:
-        "Demo su questo dispositivo per ora — non ancora salvata sul server TOWN.",
+      sessionIntentLegend: "Che tipo di contributo è?",
+      sessionIntentObservation: "Osservazione",
+      sessionIntentProposal: "Proposta",
+      sessionIntentNextStep: "Prossimo passo",
+      sessionNeedIntent: "Scegli osservazione, proposta o prossimo passo.",
+      sessionUnavailable:
+        "Impossibile raggiungere TOWN per questa sessione — riprova più tardi.",
+      sessionLocalOnly:
+        "Questo segnale di anteprima non ha ancora una sessione sul server.",
+      sessionPublishFailed:
+        "Impossibile pubblicare questo contributo — riprova.",
       sessionNeedText:
         "Scrivi almeno un contributo breve e concreto prima di pubblicare.",
       sessionYou: "Tu",
@@ -1273,8 +1318,17 @@
       sessionAttach: "Foto oder Video anhängen",
       sessionPublish: "Beitrag veröffentlichen",
       sessionCancel: "Abbrechen",
-      sessionDemoNote:
-        "Vorerst Demo auf diesem Gerät — noch nicht auf dem TOWN-Server gespeichert.",
+      sessionIntentLegend: "Welche Art von Beitrag ist das?",
+      sessionIntentObservation: "Beobachtung",
+      sessionIntentProposal: "Vorschlag",
+      sessionIntentNextStep: "Nächster Schritt",
+      sessionNeedIntent: "Wähle Beobachtung, Vorschlag oder nächsten Schritt.",
+      sessionUnavailable:
+        "TOWN ist für diese Sitzung nicht erreichbar — später erneut versuchen.",
+      sessionLocalOnly:
+        "Dieses Vorschau-Signal hat noch keine Serversitzung.",
+      sessionPublishFailed:
+        "Dieser Beitrag konnte nicht veröffentlicht werden — erneut versuchen.",
       sessionNeedText:
         "Schreibe mindestens einen kurzen, konkreten Beitrag vor dem Veröffentlichen.",
       sessionYou: "Du",
@@ -1309,8 +1363,17 @@
       sessionAttach: "Atașează foto sau video",
       sessionPublish: "Publică contribuția",
       sessionCancel: "Anulează",
-      sessionDemoNote:
-        "Demo pe acest dispozitiv deocamdată — încă nu e salvată pe serverul TOWN.",
+      sessionIntentLegend: "Ce fel de contribuție este?",
+      sessionIntentObservation: "Observație",
+      sessionIntentProposal: "Propunere",
+      sessionIntentNextStep: "Pas următor",
+      sessionNeedIntent: "Alege observație, propunere sau pas următor.",
+      sessionUnavailable:
+        "Nu am putut contacta TOWN pentru această sesiune — încearcă din nou.",
+      sessionLocalOnly:
+        "Acest semnal de previzualizare nu are încă sesiune pe server.",
+      sessionPublishFailed:
+        "Nu am putut publica această contribuție — încearcă din nou.",
       sessionNeedText:
         "Scrie cel puțin o contribuție scurtă și concretă înainte de publicare.",
       sessionYou: "Tu",
@@ -2782,8 +2845,10 @@
   // DEMO ONLY — optional media for a session contribution; not uploaded.
   let demoTestimony = null;
   let demoTestimonyFeedIndex = null;
-  // DEMO ONLY — in-browser discussion contributions per signal; not persisted.
-  const signalSessionContributions = Object.create(null);
+  // Cache of discussion-session GET/POST responses keyed by scene/API id.
+  const signalSessionCache = Object.create(null);
+  let sessionPublishSubmitting = false;
+  let sessionLoadToken = 0;
   let sessionAuthenticated = false;
   let commitmentCountry = null;
   let commitmentCity = null;
@@ -3027,6 +3092,8 @@
 
     return {
       id: detail.slug || detail.id,
+      // Canonical UUID for discussion-session and other signal-scoped APIs.
+      signalId: detail.id || "",
       category: detail.category || "",
       authorName: detail.authorDisplayName || "",
       observedTime: observedLabel,
@@ -3893,6 +3960,7 @@
     detailStatusNote.textContent = view.statusNote || "";
     closeSessionCompose({ keepDraft: false });
     renderSignalSession();
+    loadSignalDiscussionSession();
     syncFeedMemberState();
   }
 
@@ -5833,10 +5901,61 @@
   }
 
   function signalSessionKey() {
+    const apiId = currentSignalApiId();
+    if (apiId) return apiId;
     const scenes = currentScenes();
     const scene = scenes[feedIndex];
     if (scene && scene.id) return String(scene.id);
     return String(selectedCity || "city") + ":" + String(feedIndex);
+  }
+
+  function isSignalApiId(value) {
+    return (
+      typeof value === "string" &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        value
+      )
+    );
+  }
+
+  function currentSignalApiId() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (!scene) return null;
+    if (isSignalApiId(scene.signalId)) return String(scene.signalId);
+    if (isSignalApiId(scene.id)) return String(scene.id);
+    return null;
+  }
+
+  function sessionCacheEntries(key) {
+    const cached = signalSessionCache[key];
+    if (!cached || !Array.isArray(cached.contributions)) return [];
+    return cached.contributions;
+  }
+
+  function intentLabel(copy, intent) {
+    if (intent === "proposal") return copy.sessionIntentProposal || "Proposal";
+    if (intent === "next_step") return copy.sessionIntentNextStep || "Next step";
+    if (intent === "observation") {
+      return copy.sessionIntentObservation || "Observation";
+    }
+    return "";
+  }
+
+  function selectedSessionIntent() {
+    const checked = detailSessionIntent.querySelector(
+      'input[name="session-intent"]:checked'
+    );
+    return checked && checked.value ? String(checked.value) : "";
+  }
+
+  function clearSessionIntentSelection() {
+    const inputs = detailSessionIntent.querySelectorAll(
+      'input[name="session-intent"]'
+    );
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].checked = false;
+    }
   }
 
   function currentFeedCopy() {
@@ -5849,6 +5968,20 @@
     return Object.assign({}, fallback, locale.copy || {});
   }
 
+  function sessionStatusNoteText(copy, cached) {
+    if (!cached) return "";
+    if (cached.note === "unavailable") {
+      return copy.sessionUnavailable || "";
+    }
+    if (cached.note === "local") {
+      return copy.sessionLocalOnly || "";
+    }
+    if (cached.note === "publish_failed") {
+      return copy.sessionPublishFailed || "";
+    }
+    return "";
+  }
+
   function applySignalSessionCopy(copy) {
     if (!copy) return;
     detailSessionLabel.textContent = copy.sessionLabel || "";
@@ -5856,10 +5989,19 @@
     detailSessionEmpty.textContent = copy.sessionEmpty || "";
     detailSessionComposeTitle.textContent = copy.sessionComposeTitle || "";
     detailSessionComposeGuide.textContent = copy.sessionComposeGuide || "";
+    detailSessionIntentLegend.textContent = copy.sessionIntentLegend || "";
+    detailSessionIntentObservationLabel.textContent =
+      copy.sessionIntentObservation || "";
+    detailSessionIntentProposalLabel.textContent =
+      copy.sessionIntentProposal || "";
+    detailSessionIntentNextStepLabel.textContent =
+      copy.sessionIntentNextStep || "";
     detailSessionAttach.textContent = copy.sessionAttach || "";
     detailSessionPublish.textContent = copy.sessionPublish || "";
     detailSessionCancel.textContent = copy.sessionCancel || "";
-    detailSessionDemoNote.textContent = copy.sessionDemoNote || "";
+    const note = sessionStatusNoteText(copy, signalSessionCache[signalSessionKey()]);
+    detailSessionDemoNote.textContent = note;
+    detailSessionDemoNote.hidden = !note;
     detailSessionInput.setAttribute(
       "aria-label",
       copy.sessionComposeTitle || "Contribution"
@@ -5875,18 +6017,118 @@
 
   function syncSessionContributeLabel(copy) {
     const feedCopy = copy || currentFeedCopy();
-    const entries = signalSessionContributions[signalSessionKey()] || [];
+    const entries = sessionCacheEntries(signalSessionKey());
     detailSessionContribute.textContent =
       entries.length > 0
         ? feedCopy.sessionContribute || feedCopy.sessionOpen
         : feedCopy.sessionOpen || feedCopy.sessionContribute;
   }
 
+  function applySessionApiPayload(key, data, note) {
+    signalSessionCache[key] = {
+      source: "api",
+      session: data && data.session ? data.session : null,
+      contributions:
+        data && Array.isArray(data.contributions) ? data.contributions : [],
+      note: note || null,
+    };
+  }
+
+  async function fetchSignalDiscussionSession(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session"
+    );
+  }
+
+  async function publishSignalDiscussionContribution(signalId, text, intent) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session/contributions",
+      { text: text, intent: intent }
+    );
+  }
+
+  async function loadSignalDiscussionSession() {
+    const key = signalSessionKey();
+    const apiId = currentSignalApiId();
+    const loadToken = ++sessionLoadToken;
+
+    if (!apiId) {
+      signalSessionCache[key] = {
+        source: "local",
+        session: null,
+        contributions: [],
+        note: "local",
+      };
+      renderSignalSession();
+      return;
+    }
+
+    if (!canTakeCivicAction()) {
+      // API requires participant access; keep empty without pretending local demo.
+      signalSessionCache[key] = {
+        source: "gated",
+        session: null,
+        contributions: [],
+        note: null,
+      };
+      renderSignalSession();
+      return;
+    }
+
+    const previous = signalSessionCache[key];
+    signalSessionCache[key] = {
+      source: previous && previous.source === "api" ? "api" : "loading",
+      session: previous && previous.session ? previous.session : null,
+      contributions: sessionCacheEntries(key),
+      note: null,
+    };
+    renderSignalSession();
+
+    try {
+      const result = await fetchSignalDiscussionSession(apiId);
+      if (loadToken !== sessionLoadToken || currentSignalApiId() !== apiId) {
+        return;
+      }
+      if (
+        result.response &&
+        result.response.ok &&
+        result.payload &&
+        result.payload.data
+      ) {
+        applySessionApiPayload(key, result.payload.data, null);
+      } else {
+        signalSessionCache[key] = {
+          source: "error",
+          session: null,
+          contributions: [],
+          note: "unavailable",
+        };
+      }
+    } catch (_err) {
+      if (loadToken !== sessionLoadToken || currentSignalApiId() !== apiId) {
+        return;
+      }
+      signalSessionCache[key] = {
+        source: "error",
+        session: null,
+        contributions: [],
+        note: "unavailable",
+      };
+    }
+    renderSignalSession();
+  }
+
   function renderSignalSession() {
     const copy = currentFeedCopy();
     applySignalSessionCopy(copy);
     const key = signalSessionKey();
-    const entries = signalSessionContributions[key] || [];
+    const entries = sessionCacheEntries(key);
     detailSessionList.textContent = "";
     detailSessionEmpty.hidden = entries.length > 0;
     for (let i = 0; i < entries.length; i++) {
@@ -5895,28 +6137,21 @@
       li.className = "signal-detail__session-item";
       const meta = document.createElement("p");
       meta.className = "signal-detail__session-meta";
-      meta.textContent = entry.author || copy.sessionYou || "Member";
+      const author =
+        entry.authorDisplayName || entry.author || copy.sessionYou || "Member";
+      meta.textContent = author;
+      const intentText = intentLabel(copy, entry.intent);
+      if (intentText) {
+        const badge = document.createElement("span");
+        badge.className = "signal-detail__session-intent-badge";
+        badge.textContent = intentText;
+        meta.appendChild(badge);
+      }
       const body = document.createElement("p");
       body.className = "signal-detail__session-text";
       body.textContent = entry.text || "";
       li.appendChild(meta);
       li.appendChild(body);
-      if (entry.media && entry.media.objectUrl) {
-        if (entry.media.kind === "video") {
-          const video = document.createElement("video");
-          video.className = "signal-detail__demo-testimony-media";
-          video.controls = true;
-          video.playsInline = true;
-          video.src = entry.media.objectUrl;
-          li.appendChild(video);
-        } else {
-          const img = document.createElement("img");
-          img.className = "signal-detail__demo-testimony-media";
-          img.alt = "";
-          img.src = entry.media.objectUrl;
-          li.appendChild(img);
-        }
-      }
       detailSessionList.appendChild(li);
     }
   }
@@ -5936,6 +6171,7 @@
     if (!keepDraft) {
       detailSessionInput.value = "";
       detailSessionInput.setCustomValidity("");
+      clearSessionIntentSelection();
       if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
         clearDemoTestimony();
       }
@@ -5943,8 +6179,9 @@
     syncSessionContributeLabel();
   }
 
-  function publishSessionContribution() {
+  async function publishSessionContribution() {
     const copy = currentFeedCopy();
+    if (sessionPublishSubmitting) return;
     const text = (detailSessionInput.value || "").trim();
     if (text.length < 12) {
       detailSessionInput.setCustomValidity(
@@ -5954,6 +6191,18 @@
       return;
     }
     detailSessionInput.setCustomValidity("");
+
+    const intent = selectedSessionIntent();
+    if (
+      intent !== "observation" &&
+      intent !== "proposal" &&
+      intent !== "next_step"
+    ) {
+      detailSessionDemoNote.textContent = copy.sessionNeedIntent || "";
+      detailSessionDemoNote.hidden = !detailSessionDemoNote.textContent;
+      return;
+    }
+
     if (!canTakeCivicAction()) {
       originatingFeedIndex = feedIndex;
       closeSignalDetail();
@@ -5961,42 +6210,68 @@
       return;
     }
 
+    const apiId = currentSignalApiId();
     const key = signalSessionKey();
-    const author =
-      profileDisplayName(accountEmail || enteredEmail) ||
-      copy.sessionYou ||
-      "Member";
-    const entry = {
-      id: "local-" + String(Date.now()),
-      text: text,
-      author: author,
-      createdAt: Date.now(),
-      media: null,
-    };
-    if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
-      // Transfer object URL ownership into the contribution (do not revoke).
-      entry.media = {
-        kind: demoTestimony.kind,
-        objectUrl: demoTestimony.objectUrl,
+    if (!apiId) {
+      signalSessionCache[key] = {
+        source: "local",
+        session: null,
+        contributions: sessionCacheEntries(key),
+        note: "local",
       };
-      demoTestimony = null;
-      demoTestimonyFeedIndex = null;
-      detailTestimonyInput.value = "";
-      detailTestimonyImage.removeAttribute("src");
-      detailTestimonyImage.hidden = true;
-      detailTestimonyVideo.removeAttribute("src");
-      detailTestimonyVideo.hidden = true;
-      if (typeof detailTestimonyVideo.load === "function") {
-        detailTestimonyVideo.load();
+      renderSignalSession();
+      return;
+    }
+
+    // Optional media stays DEMO-only and is never uploaded with the contribution.
+    if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
+      clearDemoTestimony();
+    }
+
+    sessionPublishSubmitting = true;
+    detailSessionPublish.disabled = true;
+    try {
+      const result = await publishSignalDiscussionContribution(
+        apiId,
+        text,
+        intent
+      );
+      if (
+        result.response &&
+        (result.response.status === 201 || result.response.status === 200) &&
+        result.payload &&
+        result.payload.data
+      ) {
+        applySessionApiPayload(key, result.payload.data, null);
+        closeSessionCompose({ keepDraft: false });
+        renderSignalSession();
+        return;
       }
-      detailTestimonyPreview.hidden = true;
+      signalSessionCache[key] = {
+        source: signalSessionCache[key] && signalSessionCache[key].source,
+        session:
+          signalSessionCache[key] && signalSessionCache[key].session
+            ? signalSessionCache[key].session
+            : null,
+        contributions: sessionCacheEntries(key),
+        note: "publish_failed",
+      };
+      renderSignalSession();
+    } catch (_err) {
+      signalSessionCache[key] = {
+        source: signalSessionCache[key] && signalSessionCache[key].source,
+        session:
+          signalSessionCache[key] && signalSessionCache[key].session
+            ? signalSessionCache[key].session
+            : null,
+        contributions: sessionCacheEntries(key),
+        note: "unavailable",
+      };
+      renderSignalSession();
+    } finally {
+      sessionPublishSubmitting = false;
+      detailSessionPublish.disabled = false;
     }
-    if (!signalSessionContributions[key]) {
-      signalSessionContributions[key] = [];
-    }
-    signalSessionContributions[key].push(entry);
-    closeSessionCompose({ keepDraft: false });
-    renderSignalSession();
   }
 
   // DEMO ONLY — client-side preview for participating members; not uploaded.

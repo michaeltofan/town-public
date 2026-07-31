@@ -107,8 +107,14 @@ helper_body = helper.group(1)
 if "detailTestimonyInput.click()" not in helper_body and "showPicker" not in helper_body:
     raise SystemExit("FAIL: member capture helper must open the file picker")
 
-if re.search(r"/v1/.+testimony|/v1/.+comment|/v1/.+discussion|FormData\(|uploadTestimony|multipart/form-data", js):
-    raise SystemExit("FAIL: demo session must not upload contributions")
+if re.search(r"/v1/.+testimony|/v1/.+comments?\b|FormData\(|uploadTestimony|multipart/form-data", js):
+    raise SystemExit("FAIL: session must not upload media or wire comment APIs")
+if "/discussion-session" not in js:
+    raise SystemExit("FAIL: discussion-session API helpers must be wired")
+if "fetchSignalDiscussionSession" not in js or "publishSignalDiscussionContribution" not in js:
+    raise SystemExit("FAIL: missing discussion-session fetch/publish helpers")
+if "sessionUnavailable" not in js or "sessionLocalOnly" not in js:
+    raise SystemExit("FAIL: honest session fallback copy missing")
 
 invite_continue = re.search(
     r'inviteContinue\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
