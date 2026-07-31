@@ -112,6 +112,14 @@
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
   const detailAddTestimony = document.getElementById("detail-add-testimony");
+  const detailTestimonyInput = document.getElementById("detail-testimony-input");
+  const detailTestimonyPreview = document.getElementById(
+    "detail-testimony-preview"
+  );
+  const detailTestimonyNote = document.getElementById("detail-testimony-note");
+  const detailTestimonyImage = document.getElementById("detail-testimony-image");
+  const detailTestimonyVideo = document.getElementById("detail-testimony-video");
+  const detailTestimonyClear = document.getElementById("detail-testimony-clear");
   const activeLabel = document.getElementById("active-label");
   const activeTitle = document.getElementById("active-title");
   const activeCommunity = document.getElementById("active-community");
@@ -444,6 +452,12 @@
     !detailDoneTitle ||
     !detailDoneNote ||
     !detailAddTestimony ||
+    !detailTestimonyInput ||
+    !detailTestimonyPreview ||
+    !detailTestimonyNote ||
+    !detailTestimonyImage ||
+    !detailTestimonyVideo ||
+    !detailTestimonyClear ||
     !activeLabel ||
     !activeTitle ||
     !activeCommunity ||
@@ -2578,6 +2592,9 @@
   let membershipSimulated = false;
   let paymentCheckoutSubmitting = false;
   let signalConfirmed = false;
+  // DEMO ONLY — client-side preview for canParticipate members; not uploaded.
+  let demoTestimony = null;
+  let demoTestimonyFeedIndex = null;
   let sessionAuthenticated = false;
   let commitmentCountry = null;
   let commitmentCity = null;
@@ -3640,6 +3657,12 @@
     detailUpdateLabel.textContent = copy.updateLabel;
     detailStatusLabel.textContent = copy.statusLabel;
     detailAddTestimony.textContent = copy.addTestimony;
+    if (detailTestimonyClear && copy.clearTestimony) {
+      detailTestimonyClear.textContent = copy.clearTestimony;
+    }
+    if (detailTestimonyNote && copy.demoTestimonyNote) {
+      detailTestimonyNote.textContent = copy.demoTestimonyNote;
+    }
     syncFeedMemberState();
     document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
   }
@@ -5272,6 +5295,7 @@
     // Keep sessionAuthenticated if cookie may still be valid; clear only UI busy state.
     originatingFeedIndex = 0;
     clearLiveScenes();
+    clearDemoTestimony();
     clearEntryLoginStatus();
     if (sessionAuthenticated) {
       showEntryLoginStatus(LOGIN_COPY[entryLang()].success, "success");
@@ -5622,6 +5646,70 @@
     syncFeedScrollLockFromOverlays();
   }
 
+  // DEMO ONLY — client-side preview for participating members; not uploaded.
+  function clearDemoTestimony() {
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = null;
+    demoTestimonyFeedIndex = null;
+    detailTestimonyInput.value = "";
+    detailTestimonyImage.removeAttribute("src");
+    detailTestimonyImage.hidden = true;
+    detailTestimonyVideo.removeAttribute("src");
+    detailTestimonyVideo.hidden = true;
+    if (typeof detailTestimonyVideo.load === "function") {
+      detailTestimonyVideo.load();
+    }
+    detailTestimonyPreview.hidden = true;
+  }
+
+  function renderDemoTestimony() {
+    if (
+      !demoTestimony ||
+      demoTestimonyFeedIndex === null ||
+      demoTestimonyFeedIndex !== feedIndex
+    ) {
+      if (demoTestimony && demoTestimonyFeedIndex !== feedIndex) {
+        clearDemoTestimony();
+      } else if (!demoTestimony) {
+        detailTestimonyPreview.hidden = true;
+        detailTestimonyImage.hidden = true;
+        detailTestimonyVideo.hidden = true;
+      }
+      return;
+    }
+
+    detailTestimonyPreview.hidden = false;
+    if (demoTestimony.kind === "video") {
+      detailTestimonyImage.hidden = true;
+      detailTestimonyImage.removeAttribute("src");
+      detailTestimonyVideo.hidden = false;
+      detailTestimonyVideo.src = demoTestimony.objectUrl;
+    } else {
+      detailTestimonyVideo.hidden = true;
+      detailTestimonyVideo.removeAttribute("src");
+      if (typeof detailTestimonyVideo.load === "function") {
+        detailTestimonyVideo.load();
+      }
+      detailTestimonyImage.hidden = false;
+      detailTestimonyImage.src = demoTestimony.objectUrl;
+    }
+  }
+
+  function openMemberDemoTestimonyCapture() {
+    // Restored PR #19 picker — only for canParticipate members.
+    if (typeof detailTestimonyInput.showPicker === "function") {
+      try {
+        detailTestimonyInput.showPicker();
+        return;
+      } catch (_err) {
+        /* fall through to click() */
+      }
+    }
+    detailTestimonyInput.click();
+  }
+
   function openSignalDetail() {
     const discovery = window.TownCityDiscovery;
     const scenes = currentScenes();
@@ -5630,6 +5718,7 @@
     }
     applyFeedCopyChrome();
     populateSignalDetail();
+    renderDemoTestimony();
     signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
     syncFeedScrollLockFromOverlays();
@@ -5825,11 +5914,45 @@
     activateSeeTooAction({ closeDetail: true });
   });
 
-  // Public testimony CTA: open membership invitation; never activate media capture.
+  // Testimony CTA:
+  // - participating member (canParticipate): restored demo photo/video capture
+  // - everyone else: membership invitation boundary (unchanged visitor path)
   detailAddTestimony.addEventListener("click", () => {
+    if (canTakeCivicAction()) {
+      openMemberDemoTestimonyCapture();
+      return;
+    }
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
+  });
+
+  detailTestimonyInput.addEventListener("change", () => {
+    if (!canTakeCivicAction()) {
+      detailTestimonyInput.value = "";
+      return;
+    }
+    const file =
+      detailTestimonyInput.files && detailTestimonyInput.files[0]
+        ? detailTestimonyInput.files[0]
+        : null;
+    if (!file) return;
+
+    const kind =
+      file.type && file.type.indexOf("video/") === 0 ? "video" : "image";
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = {
+      kind: kind,
+      objectUrl: URL.createObjectURL(file),
+    };
+    demoTestimonyFeedIndex = feedIndex;
+    renderDemoTestimony();
+  });
+
+  detailTestimonyClear.addEventListener("click", () => {
+    clearDemoTestimony();
   });
 
   document.addEventListener("keydown", (event) => {
