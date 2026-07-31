@@ -2154,6 +2154,32 @@
     return membershipSnapshot === null && membershipSimulated === true;
   }
 
+  // Eligible to complete "I SEE THIS TOO" as a civic confirmation.
+  // Matches the active-return prototype gate: backend canParticipate, or the
+  // legacy simulate path when no authoritative snapshot exists.
+  function canConfirmSeeTooAction() {
+    return (
+      canTakeCivicAction() ||
+      (membershipSnapshot === null && membershipSimulated === true)
+    );
+  }
+
+  // Shared feed/detail activation: confirm when eligible, otherwise open the
+  // existing membership boundary invite for visitor / registered / unpaid paths.
+  function activateSeeTooAction(options) {
+    const closeDetail = !!(options && options.closeDetail);
+    if (closeDetail) closeSignalDetail();
+    else closeSignalSheet();
+    originatingFeedIndex = feedIndex;
+    if (canConfirmSeeTooAction()) {
+      signalConfirmed = true;
+      syncFeedMemberState();
+      return "confirmed";
+    }
+    openInvite();
+    return "invite";
+  }
+
   function setCheckoutPendingMarker() {
     if (!membershipRecoveryApi) return false;
     return membershipRecoveryApi.setCheckoutPendingMarker();
@@ -3336,15 +3362,12 @@
 
     if (!seeToo || !seeTooDone) return;
 
+    // Keep I SEE THIS TOO active for visitors, registered accounts, and paying
+    // members. Only the confirmed done-state replaces it on the origin signal.
     if (onOrigin) {
       seeToo.hidden = true;
       seeToo.disabled = true;
       seeTooDone.hidden = false;
-    } else if (memberPresented) {
-      // Paid member (or prototype): no visitor CTA; civic actions require canParticipate.
-      seeToo.hidden = true;
-      seeToo.disabled = true;
-      seeTooDone.hidden = true;
     } else {
       seeToo.hidden = false;
       seeToo.disabled = false;
@@ -3403,10 +3426,6 @@
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = false;
-    } else if (memberPresented) {
-      detailSeeToo.hidden = true;
-      detailSeeToo.disabled = true;
-      detailSeeTooDone.hidden = true;
     } else {
       detailSeeToo.hidden = false;
       detailSeeToo.disabled = false;
@@ -5494,10 +5513,8 @@
   });
 
   detailSeeToo.addEventListener("click", () => {
-    if (isMemberPresented() || detailSeeToo.disabled) return;
-    originatingFeedIndex = feedIndex;
-    closeSignalDetail();
-    openInvite();
+    if (detailSeeToo.disabled) return;
+    activateSeeTooAction({ closeDetail: true });
   });
 
   // Public testimony CTA: open membership invitation; never activate media capture.
@@ -5874,10 +5891,8 @@
         return;
       }
       if (role === "feed-see-too") {
-        if (isMemberPresented() || control.disabled) return;
-        closeSignalSheet();
-        originatingFeedIndex = feedIndex;
-        openInvite();
+        if (control.disabled) return;
+        activateSeeTooAction();
         return;
       }
       if (role === "feed-open-signal") {
