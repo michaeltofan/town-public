@@ -111,6 +111,7 @@
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
+  const detailConfirmCount = document.getElementById("detail-confirm-count");
   const detailSessionLabel = document.getElementById("detail-session-label");
   const detailSessionBody = document.getElementById("detail-session-body");
   const detailSessionEmpty = document.getElementById("detail-session-empty");
@@ -484,6 +485,7 @@
     !detailSeeTooDone ||
     !detailDoneTitle ||
     !detailDoneNote ||
+    !detailConfirmCount ||
     !detailSessionLabel ||
     !detailSessionBody ||
     !detailSessionEmpty ||
@@ -1160,7 +1162,9 @@
       member: "Member · {city}",
       seeThisToo: "I SEE THIS TOO",
       doneTitle: "You see this too",
-      doneNote: "Confirmation recorded in the prototype",
+      doneNote: "Confirmation saved on TOWN",
+      confirmCount: "{count} confirmations",
+      confirmCountOne: "1 confirmation",
       openSignal: "Open signal",
       openSignalClose: "Close",
       whyLabel: "Why this matters here",
@@ -1205,7 +1209,9 @@
       member: "Miembro · {city}",
       seeThisToo: "YO TAMBIÉN LO VEO",
       doneTitle: "Tú también lo ves",
-      doneNote: "Confirmación registrada en el prototipo",
+      doneNote: "Confirmación guardada en TOWN",
+      confirmCount: "{count} confirmaciones",
+      confirmCountOne: "1 confirmación",
       openSignal: "Abrir señal",
       openSignalClose: "Cerrar",
       whyLabel: "Por qué importa aquí",
@@ -1250,7 +1256,9 @@
       member: "Membro · {city}",
       seeThisToo: "LO VEDO ANCH’IO",
       doneTitle: "Lo vedi anche tu",
-      doneNote: "Conferma registrata nel prototipo",
+      doneNote: "Conferma salvata su TOWN",
+      confirmCount: "{count} conferme",
+      confirmCountOne: "1 conferma",
       openSignal: "Apri il segnale",
       openSignalClose: "Chiudi",
       whyLabel: "Perché conta qui",
@@ -1295,7 +1303,9 @@
       member: "Mitglied · {city}",
       seeThisToo: "ICH SEHE DAS AUCH",
       doneTitle: "Du siehst das auch",
-      doneNote: "Bestätigung im Prototyp registriert",
+      doneNote: "Bestätigung auf TOWN gespeichert",
+      confirmCount: "{count} Bestätigungen",
+      confirmCountOne: "1 Bestätigung",
       openSignal: "Signal öffnen",
       openSignalClose: "Schließen",
       whyLabel: "Warum das hier zählt",
@@ -1340,7 +1350,9 @@
       member: "Membru · {city}",
       seeThisToo: "VĂD ȘI EU ASTA",
       doneTitle: "Vezi și tu",
-      doneNote: "Confirmare înregistrată în prototip",
+      doneNote: "Confirmare salvată pe TOWN",
+      confirmCount: "{count} confirmări",
+      confirmCountOne: "1 confirmare",
       openSignal: "Deschide semnalul",
       openSignalClose: "Închide",
       whyLabel: "De ce contează aici",
@@ -2558,20 +2570,186 @@
     );
   }
 
+  function signalApiIdForScene(scene) {
+    if (!scene) return null;
+    if (isSignalApiId(scene.signalId)) return String(scene.signalId);
+    if (isSignalApiId(scene.id)) return String(scene.id);
+    return null;
+  }
+
+  function signalConfirmationKeyForIndex(index) {
+    const scenes = currentScenes();
+    const scene = scenes[index];
+    const apiId = signalApiIdForScene(scene);
+    if (apiId) return apiId;
+    if (scene && scene.id) return String(scene.id);
+    return String(selectedCity || "city") + ":" + String(index);
+  }
+
+  function getSignalConfirmationState(index) {
+    const key = signalConfirmationKeyForIndex(index);
+    const state = signalConfirmationState[key];
+    if (!state) {
+      return { confirmed: false, confirmationCount: 0 };
+    }
+    return {
+      confirmed: state.confirmed === true,
+      confirmationCount:
+        typeof state.confirmationCount === "number" && state.confirmationCount > 0
+          ? state.confirmationCount
+          : 0,
+    };
+  }
+
+  function setSignalConfirmationState(key, patch) {
+    if (!key) return;
+    const prev = signalConfirmationState[key] || {
+      confirmed: false,
+      confirmationCount: 0,
+    };
+    signalConfirmationState[key] = {
+      confirmed:
+        patch.confirmed !== undefined ? !!patch.confirmed : !!prev.confirmed,
+      confirmationCount:
+        typeof patch.confirmationCount === "number"
+          ? patch.confirmationCount
+          : prev.confirmationCount || 0,
+    };
+  }
+
+  function clearSignalConfirmationState() {
+    for (const key of Object.keys(signalConfirmationState)) {
+      delete signalConfirmationState[key];
+    }
+  }
+
+  function formatConfirmCountLabel(copy, count) {
+    const n = typeof count === "number" && count > 0 ? count : 0;
+    if (n === 1) {
+      return copy.confirmCountOne || "1 confirmation";
+    }
+    return (copy.confirmCount || "{count} confirmations").replace(
+      "{count}",
+      String(n)
+    );
+  }
+
+  function applyConfirmCountLabel(el, copy, count) {
+    if (!el) return;
+    const n = typeof count === "number" && count > 0 ? count : 0;
+    if (n < 1) {
+      el.textContent = "";
+      el.hidden = true;
+      return;
+    }
+    el.textContent = formatConfirmCountLabel(copy, n);
+    el.hidden = false;
+  }
+
   // Shared feed/detail activation: confirm when eligible, otherwise open the
   // existing membership boundary invite for visitor / registered / unpaid paths.
-  function activateSeeTooAction(options) {
+  async function activateSeeTooAction(options) {
     const closeDetail = !!(options && options.closeDetail);
     if (closeDetail) closeSignalDetail();
     else closeSignalSheet();
     originatingFeedIndex = feedIndex;
-    if (canConfirmSeeTooAction()) {
-      signalConfirmed = true;
+    if (!canConfirmSeeTooAction()) {
+      openInvite();
+      return "invite";
+    }
+    if (seeTooConfirmSubmitting) return "busy";
+
+    const key = signalConfirmationKeyForIndex(feedIndex);
+    const apiId = signalApiIdForScene(currentScenes()[feedIndex]);
+
+    // Legacy simulate path or mock scenes without a live UUID: local done-state only.
+    if (!canTakeCivicAction() || !apiId) {
+      const prev = getSignalConfirmationState(feedIndex);
+      setSignalConfirmationState(key, {
+        confirmed: true,
+        confirmationCount: Math.max(1, prev.confirmationCount + (prev.confirmed ? 0 : 1)),
+      });
       syncFeedMemberState();
       return "confirmed";
     }
-    openInvite();
-    return "invite";
+
+    seeTooConfirmSubmitting = true;
+    try {
+      const result = await putJsonWithCredentials(
+        API_BASE +
+          "/v1/signals/" +
+          encodeURIComponent(apiId) +
+          "/confirmation",
+        {}
+      );
+      if (
+        result.response &&
+        result.response.status === 200 &&
+        result.payload &&
+        result.payload.data &&
+        result.payload.data.confirmed === true
+      ) {
+        setSignalConfirmationState(key, {
+          confirmed: true,
+          confirmationCount:
+            typeof result.payload.data.confirmationCount === "number"
+              ? result.payload.data.confirmationCount
+              : 1,
+        });
+        syncFeedMemberState();
+        return "confirmed";
+      }
+      if (result.response && result.response.status === 403) {
+        openInvite();
+        return "invite";
+      }
+      syncFeedMemberState();
+      return "failed";
+    } catch (_err) {
+      syncFeedMemberState();
+      return "failed";
+    } finally {
+      seeTooConfirmSubmitting = false;
+    }
+  }
+
+  async function refreshViewerSignalConfirmations() {
+    if (!canTakeCivicAction()) return;
+    const scenes = currentScenes();
+    const jobs = [];
+    for (let i = 0; i < scenes.length; i++) {
+      const apiId = signalApiIdForScene(scenes[i]);
+      if (!apiId) continue;
+      jobs.push(
+        getJsonWithCredentials(
+          API_BASE +
+            "/v1/signals/" +
+            encodeURIComponent(apiId) +
+            "/confirmation"
+        ).then(function (result) {
+          if (
+            result.response &&
+            result.response.ok &&
+            result.payload &&
+            result.payload.data
+          ) {
+            setSignalConfirmationState(apiId, {
+              confirmed: result.payload.data.confirmed === true,
+              confirmationCount:
+                typeof result.payload.data.confirmationCount === "number"
+                  ? result.payload.data.confirmationCount
+                  : 0,
+            });
+          }
+        }).catch(function () {
+          /* fail closed — keep prior count from signal detail if any */
+        })
+      );
+    }
+    if (jobs.length) {
+      await Promise.all(jobs);
+      syncFeedMemberState();
+    }
   }
 
   function setCheckoutPendingMarker() {
@@ -2592,6 +2770,9 @@
   function applyMembershipSnapshot(snapshot) {
     membershipSnapshot = snapshot;
     syncFeedMemberState();
+    if (canTakeCivicAction()) {
+      refreshViewerSignalConfirmations();
+    }
   }
 
   function stopMembershipRecoveryPolling(reason) {
@@ -2841,7 +3022,10 @@
   let passkeySubmitting = false;
   let membershipSimulated = false;
   let paymentCheckoutSubmitting = false;
-  let signalConfirmed = false;
+  // Per-signal confirmation state from API (or local fallback for mock scenes).
+  // Keyed by signal UUID / scene id: { confirmed, confirmationCount }.
+  const signalConfirmationState = Object.create(null);
+  let seeTooConfirmSubmitting = false;
   // DEMO ONLY — optional media for a session contribution; not uploaded.
   let demoTestimony = null;
   let demoTestimonyFeedIndex = null;
@@ -3109,6 +3293,10 @@
       whoAffected: detail.whoIsAffected || "",
       latestUpdate: detail.latestUpdate || "",
       statusNote: detail.statusNote || "",
+      confirmationCount:
+        typeof detail.confirmationCount === "number"
+          ? detail.confirmationCount
+          : 0,
     };
   }
 
@@ -3161,6 +3349,25 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+      credentials: "include",
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  async function putJsonWithCredentials(url, body) {
+    const response = await requestJson(url, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body == null ? {} : body),
       credentials: "include",
     });
     let payload = null;
@@ -3339,17 +3546,28 @@
         })
       );
 
-      const scenes = details
-        .filter(Boolean)
-        .map(function (detail) {
-          return mapSignalDetailToScene(detail, cityId);
-        });
+      const scenes = [];
+      for (let i = 0; i < details.length; i++) {
+        const detail = details[i];
+        if (!detail) continue;
+        const scene = mapSignalDetailToScene(detail, cityId);
+        scenes.push(scene);
+        const apiId = signalApiIdForScene(scene);
+        if (apiId && typeof detail.confirmationCount === "number") {
+          setSignalConfirmationState(apiId, {
+            confirmationCount: detail.confirmationCount,
+          });
+        }
+      }
 
       if (scenes.length < 1) {
         throw new Error("no mappable signal details for " + slug);
       }
 
       liveScenes[cityId] = scenes;
+      if (canTakeCivicAction()) {
+        refreshViewerSignalConfirmations();
+      }
       return true;
     } catch (err) {
       liveScenes[cityId] = null;
@@ -3780,8 +3998,9 @@
     const doneNote = feedRole("feed-done-note", panel);
     const memberPresented = isMemberPresented();
     const civicOk = canTakeCivicAction();
-    const onOrigin =
-      signalConfirmed && civicOk && panelIndex === originatingFeedIndex;
+    const confirmation = getSignalConfirmationState(panelIndex);
+    const onConfirmed = confirmation.confirmed && canConfirmSeeTooAction();
+    const confirmCountEl = feedRole("feed-confirm-count", panel);
 
     if (visitorEl) {
       if (
@@ -3799,12 +4018,13 @@
     }
     if (doneTitle) doneTitle.textContent = copy.doneTitle;
     if (doneNote) doneNote.textContent = copy.doneNote;
+    applyConfirmCountLabel(confirmCountEl, copy, confirmation.confirmationCount);
 
     if (!seeToo || !seeTooDone) return;
 
     // Keep I SEE THIS TOO active for visitors, registered accounts, and paying
-    // members. Only the confirmed done-state replaces it on the origin signal.
-    if (onOrigin) {
+    // members. Confirmed done-state replaces it per signal after a successful save.
+    if (onConfirmed) {
       seeToo.hidden = true;
       seeToo.disabled = true;
       seeTooDone.hidden = false;
@@ -3859,10 +4079,15 @@
     detailDoneTitle.textContent = copy.doneTitle;
     detailDoneNote.textContent = copy.doneNote;
     detailSeeToo.textContent = copy.seeThisToo;
+    const confirmation = getSignalConfirmationState(feedIndex);
+    applyConfirmCountLabel(
+      detailConfirmCount,
+      copy,
+      confirmation.confirmationCount
+    );
 
-    const onOrigin =
-      signalConfirmed && civicOk && feedIndex === originatingFeedIndex;
-    if (onOrigin) {
+    const onConfirmed = confirmation.confirmed && canConfirmSeeTooAction();
+    if (onConfirmed) {
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = false;
@@ -4590,35 +4815,35 @@
 
     profileActivityList.innerHTML = "";
     const scenes = currentScenes();
-    const originScene =
-      signalConfirmed &&
-      originatingFeedIndex >= 0 &&
-      originatingFeedIndex < scenes.length
-        ? scenes[originatingFeedIndex]
-        : null;
-    if (originScene && originScene.id) {
-      profileActivityEmpty.hidden = true;
+    let listed = 0;
+    for (let i = 0; i < scenes.length; i++) {
+      const scene = scenes[i];
+      if (!scene || !scene.id) continue;
+      if (!getSignalConfirmationState(i).confirmed) continue;
+      if (listed === 0) profileActivityEmpty.hidden = true;
       const li = document.createElement("li");
       li.className = "profile-panel__activity-item";
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "profile-panel__activity-item-btn";
-      btn.setAttribute("data-profile-signal-index", String(originatingFeedIndex));
+      btn.setAttribute("data-profile-signal-index", String(i));
       const date = document.createElement("span");
       date.className = "profile-panel__activity-date";
       date.textContent = copy.activityConfirmed;
       const headline = document.createElement("span");
       headline.className = "profile-panel__activity-headline";
-      const locale = feedLocaleForScene(originScene);
+      const locale = feedLocaleForScene(scene);
       headline.textContent =
         (locale.localizedScene && locale.localizedScene.headline) ||
-        originScene.headline ||
-        originScene.id;
+        scene.headline ||
+        scene.id;
       btn.appendChild(date);
       btn.appendChild(headline);
       li.appendChild(btn);
       profileActivityList.appendChild(li);
-    } else {
+      listed += 1;
+    }
+    if (listed === 0) {
       profileActivityEmpty.hidden = false;
       profileActivityEmpty.textContent = copy.activityEmpty;
     }
@@ -5533,7 +5758,7 @@
     passkeySubmitting = false;
     membershipSimulated = false;
     paymentCheckoutSubmitting = false;
-    signalConfirmed = false;
+    clearSignalConfirmationState();
     membershipSnapshot = null;
     commitmentCountry = null;
     commitmentCity = null;
@@ -7491,9 +7716,17 @@
 
   activeReturn.addEventListener("click", () => {
     feedIndex = originatingFeedIndex;
-    // Prototype signal-confirmation only when civic participation is allowed.
-    if (canTakeCivicAction() || (membershipSnapshot === null && membershipSimulated)) {
-      signalConfirmed = true;
+    // Returning from active membership: refresh persisted confirmations when
+    // participation is allowed; simulate path keeps local done-state only.
+    if (canTakeCivicAction()) {
+      refreshViewerSignalConfirmations();
+    } else if (membershipSnapshot === null && membershipSimulated) {
+      const key = signalConfirmationKeyForIndex(feedIndex);
+      const prev = getSignalConfirmationState(feedIndex);
+      setSignalConfirmationState(key, {
+        confirmed: true,
+        confirmationCount: Math.max(1, prev.confirmationCount),
+      });
     }
     if (isProductOnlyPublicMode()) {
       endInviteMembershipJourney();

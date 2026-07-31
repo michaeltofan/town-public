@@ -1914,6 +1914,18 @@ body.page-feed {
   color: rgba(244, 239, 230, 0.74);
 }
 
+.feed__confirm-count {
+  margin: 0.15rem 0 0;
+  width: 100%;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.feed__confirm-count[hidden] {
+  display: none !important;
+}
+
 #feed-see-too-done[hidden] {
   display: none !important;
 }
