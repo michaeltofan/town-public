@@ -1745,6 +1745,21 @@ body.page-feed {
   width: 100%;
 }
 
+.profile-panel__status {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #f0d7c4;
+}
+
+.profile-panel__status[data-tone="error"] {
+  color: #f0b4a4;
+}
+
+.profile-panel__status[data-tone="status"] {
+  color: #e8e0d4;
+}
+
 /* Member Activity — backend truth only */
 .activity-panel {
   position: absolute;

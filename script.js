@@ -100,6 +100,9 @@
   const profileCreateSignal = document.getElementById("profile-create-signal");
   const profileModeration = document.getElementById("profile-moderation");
   const profileMembershipCta = document.getElementById("profile-membership-cta");
+  const profileManageBilling = document.getElementById("profile-manage-billing");
+  const profileSignOut = document.getElementById("profile-sign-out");
+  const profileStatus = document.getElementById("profile-status");
   const ownerModeration = document.getElementById("owner-moderation");
   const ownerModerationDim = document.getElementById("owner-moderation-dim");
   const ownerModerationClose = document.getElementById("owner-moderation-close");
@@ -539,6 +542,9 @@
     !profileCreateSignal ||
     !profileModeration ||
     !profileMembershipCta ||
+    !profileManageBilling ||
+    !profileSignOut ||
+    !profileStatus ||
     !ownerModeration ||
     !ownerModerationDim ||
     !ownerModerationClose ||
@@ -2341,6 +2347,15 @@
       activityConfirmed: "You see this too",
       feedCta: "Back to feed",
       membershipCta: "Continue membership",
+      manageBillingCta: "Manage membership",
+      signOutCta: "Sign out",
+      signingOut: "Signing out…",
+      openingPortal: "Opening membership portal…",
+      errorSignOut: "Could not sign out. Try again.",
+      errorPortal:
+        "Could not open membership management. Try again in a moment.",
+      errorPortalUnavailable:
+        "Membership management is not available for this account yet.",
     },
     it: {
       label: "Il tuo profilo",
@@ -2365,6 +2380,15 @@
       activityConfirmed: "Lo vedi anche tu",
       feedCta: "Torna al feed",
       membershipCta: "Continua l’iscrizione",
+      manageBillingCta: "Gestisci l’iscrizione",
+      signOutCta: "Esci",
+      signingOut: "Disconnessione…",
+      openingPortal: "Apertura del portale iscrizione…",
+      errorSignOut: "Impossibile uscire. Riprova.",
+      errorPortal:
+        "Impossibile aprire la gestione iscrizione. Riprova tra poco.",
+      errorPortalUnavailable:
+        "La gestione iscrizione non è ancora disponibile per questo account.",
     },
     de: {
       label: "Dein Profil",
@@ -2389,6 +2413,15 @@
       activityConfirmed: "Du siehst das auch",
       feedCta: "Zurück zum Feed",
       membershipCta: "Mitgliedschaft fortsetzen",
+      manageBillingCta: "Mitgliedschaft verwalten",
+      signOutCta: "Abmelden",
+      signingOut: "Abmelden…",
+      openingPortal: "Mitgliedschaftsportal wird geöffnet…",
+      errorSignOut: "Abmelden fehlgeschlagen. Bitte erneut versuchen.",
+      errorPortal:
+        "Mitgliedschaftsverwaltung konnte nicht geöffnet werden. Bitte gleich erneut versuchen.",
+      errorPortalUnavailable:
+        "Mitgliedschaftsverwaltung ist für dieses Konto noch nicht verfügbar.",
     },
     ro: {
       label: "Profilul tău",
@@ -2413,6 +2446,15 @@
       activityConfirmed: "Vezi și tu",
       feedCta: "Înapoi la feed",
       membershipCta: "Continuă membership-ul",
+      manageBillingCta: "Gestionează membership-ul",
+      signOutCta: "Deconectare",
+      signingOut: "Se deconectează…",
+      openingPortal: "Se deschide portalul de membership…",
+      errorSignOut: "Nu s-a putut deconecta. Încearcă din nou.",
+      errorPortal:
+        "Nu s-a putut deschide gestionarea membership-ului. Încearcă din nou.",
+      errorPortalUnavailable:
+        "Gestionarea membership-ului nu este încă disponibilă pentru acest cont.",
     },
   };
 
@@ -3168,6 +3210,8 @@
   const communityCommitmentApi = window.TownCommunityCommitment || null;
   let loginSubmitting = false;
   let authSignInSubmitting = false;
+  let profileBillingSubmitting = false;
+  let profileSignOutSubmitting = false;
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
@@ -5641,11 +5685,181 @@
     }
   }
 
+  function clearProfileStatus() {
+    profileStatus.hidden = true;
+    profileStatus.textContent = "";
+    profileStatus.removeAttribute("data-tone");
+  }
+
+  function showProfileStatus(message, tone) {
+    profileStatus.hidden = false;
+    profileStatus.textContent = message || "";
+    if (tone) profileStatus.setAttribute("data-tone", tone);
+    else profileStatus.removeAttribute("data-tone");
+  }
+
+  // Stripe portal is for web-paid memberships only — not Google Play pending bind.
+  function hasStripeManageableMembership() {
+    return !!(
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isPaidMembership(membershipSnapshot)
+    );
+  }
+
+  function clearAuthenticatedClientState() {
+    sessionAuthenticated = false;
+    enteredEmail = "";
+    accountEmail = "";
+    emailVerificationId = null;
+    setupGrant = null;
+    setupGrantExpiresAt = null;
+    emailSubmitting = false;
+    codeSubmitting = false;
+    emailVerified = false;
+    passkeyRegistered = false;
+    passkeySubmitting = false;
+    membershipSimulated = false;
+    paymentCheckoutSubmitting = false;
+    clearSignalConfirmationState();
+    membershipSnapshot = null;
+    commitmentCountry = null;
+    commitmentCity = null;
+    commitmentAcceptanceChecked = false;
+    commitmentSnapshot = null;
+    commitmentSaving = false;
+    commitmentCheckoutSubmitting = false;
+    endMembershipRecoveryFlow();
+    loginSubmitting = false;
+    authSignInSubmitting = false;
+    profileBillingSubmitting = false;
+    profileSignOutSubmitting = false;
+    clearAuthWindowStatus();
+    clearEntryLoginStatus();
+    clearDemoTestimony();
+    clearProfileStatus();
+    entrySignIn.disabled = false;
+    applyEntryLoginCopy();
+    syncFeedMemberState();
+  }
+
+  async function requestCustomerPortalSession() {
+    let result;
+    try {
+      result = await postJsonWithCredentials(
+        API_BASE + "/v1/billing/customer-portal-session",
+        {}
+      );
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.portalUrl) {
+      return data.portalUrl;
+    }
+    if (status === 401) throw makeApiError("unauthenticated");
+    if (status === 404) throw makeApiError("unavailable");
+    if (status === 429) throw makeApiError("rateLimited");
+    if (status === 502 || status === 503) throw makeApiError("checkoutFailed");
+    throw makeApiError("network");
+  }
+
+  async function requestSignOut() {
+    let result;
+    try {
+      result = await postJsonWithCredentials(
+        API_BASE + "/v1/authentication/logout",
+        {}
+      );
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    // Logout is idempotent — treat signed-out / missing session as success.
+    if (
+      status === 200 &&
+      data &&
+      (data.status === "SIGNED_OUT" || data.status === "signed_out")
+    ) {
+      return;
+    }
+    if (status === 200) return;
+    if (status === 404 || status === 503) throw makeApiError("unavailable");
+    throw makeApiError("network");
+  }
+
+  function startProfileManageBilling() {
+    if (profileBillingSubmitting || profileSignOutSubmitting) return;
+    if (!sessionAuthenticated || !hasStripeManageableMembership()) return;
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    clearProfileStatus();
+    profileBillingSubmitting = true;
+    profileManageBilling.disabled = true;
+    profileSignOut.disabled = true;
+    showProfileStatus(copy.openingPortal, "status");
+
+    requestCustomerPortalSession()
+      .then(function (portalUrl) {
+        window.location = portalUrl;
+      })
+      .catch(function (err) {
+        const kind = err && err.kind ? err.kind : "network";
+        if (kind === "unauthenticated") {
+          clearAuthenticatedClientState();
+          closeProfilePanel();
+          closeActivityPanel();
+          closeOwnerModeration();
+          return;
+        }
+        showProfileStatus(
+          kind === "unavailable"
+            ? copy.errorPortalUnavailable
+            : copy.errorPortal,
+          "error"
+        );
+        profileBillingSubmitting = false;
+        profileManageBilling.disabled = false;
+        profileSignOut.disabled = false;
+      });
+  }
+
+  function startProfileSignOut() {
+    if (profileSignOutSubmitting || profileBillingSubmitting) return;
+    if (!sessionAuthenticated) return;
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    clearProfileStatus();
+    profileSignOutSubmitting = true;
+    profileSignOut.disabled = true;
+    profileManageBilling.disabled = true;
+    showProfileStatus(copy.signingOut, "status");
+
+    requestSignOut()
+      .then(function () {
+        clearAuthenticatedClientState();
+        closeProfilePanel();
+        closeActivityPanel();
+        closeOwnerModeration();
+        closeSignalCreate();
+        setNavActive(navHome);
+      })
+      .catch(function () {
+        // Fail closed for UI: still clear local auth chrome if cookie revoke failed
+        // only when the transport itself succeeded elsewhere — here keep signed-in
+        // and surface a retryable error.
+        showProfileStatus(copy.errorSignOut, "error");
+        profileSignOutSubmitting = false;
+        profileSignOut.disabled = false;
+        profileManageBilling.disabled = !hasStripeManageableMembership();
+      });
+  }
+
   function populateProfilePanel() {
     const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
     const email = accountEmail || enteredEmail || "";
     const displayName = profileDisplayName(email) || copy.defaultName;
     const paid = hasAuthoritativePaidMembership();
+    const stripePaid = hasStripeManageableMembership();
     const civicOk = canTakeCivicAction();
     const paidPending =
       membershipRecoveryApi &&
@@ -5697,6 +5911,14 @@
     profileMembershipCta.textContent = copy.membershipCta;
     // Paid accounts do not need the membership-continue CTA on Profile V1.
     profileMembershipCta.hidden = paid;
+    profileManageBilling.textContent = copy.manageBillingCta;
+    profileManageBilling.hidden = !stripePaid;
+    profileManageBilling.disabled =
+      profileBillingSubmitting || profileSignOutSubmitting;
+    profileSignOut.textContent = copy.signOutCta;
+    profileSignOut.disabled =
+      profileBillingSubmitting || profileSignOutSubmitting;
+    clearProfileStatus();
     profileCreateSignal.hidden = !canTakeCivicAction();
     profileCreateSignal.textContent =
       (SIGNAL_CREATE_COPY[membershipLang()] &&
@@ -8277,6 +8499,14 @@
     closeProfilePanel();
     beginInviteMembershipJourney();
     go("commitment");
+  });
+
+  profileManageBilling.addEventListener("click", () => {
+    startProfileManageBilling();
+  });
+
+  profileSignOut.addEventListener("click", () => {
+    startProfileSignOut();
   });
 
   profileCreateSignal.addEventListener("click", () => {
