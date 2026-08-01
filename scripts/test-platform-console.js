@@ -39,10 +39,10 @@ assert(js.includes("/schedule-cancellation"), "membership schedule-cancellation 
 assert(js.includes("/v1/platform/signals"), "signals path");
 assert(js.includes("/v1/platform/submissions"), "submissions path");
 assert(js.includes("/v1/platform/discussions"), "discussions path");
-assert(js.includes("/reject"), "submission reject path");
-assert(js.includes("/restore"), "submission restore path");
-assert(js.includes("/hide"), "discussion hide path");
-assert(js.includes("/unhide"), "discussion unhide path");
+assert(js.includes('action === "reject"'), "submission reject action");
+assert(js.includes("Submission restored"), "submission restore messaging");
+assert(js.includes('action === "hide"'), "discussion hide action");
+assert(js.includes("Contribution unhidden"), "discussion unhide messaging");
 assert(html.includes('id="submissions-search"'), "submissions search present");
 assert(html.includes('id="discussions-search"'), "discussions search present");
 assert(html.includes('id="submission-detail"'), "submission detail present");
