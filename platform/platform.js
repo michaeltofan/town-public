@@ -269,7 +269,8 @@
         componentCard("API", components.api) +
         componentCard("Database", components.database) +
         componentCard("Email", components.email) +
-        componentCard("Stripe", components.stripe);
+        componentCard("Stripe", components.stripe) +
+        componentCard("Backup", components.backup);
     }
     var html = "";
     html +=
@@ -301,6 +302,7 @@
       escapeHtml(counts.submissions.pendingReview) +
       "</strong></div>";
     document.getElementById("status-grid").innerHTML = html;
+    await loadBackup();
     await loadUptime();
     await loadAlerts();
     await loadRecentErrors();
@@ -315,6 +317,110 @@
 
   function canManageAlerts() {
     return session && (session.role === "ops_admin" || session.role === "role_admin");
+  }
+
+  function canManageBackup() {
+    return canManageAlerts();
+  }
+
+  async function loadBackup() {
+    var summaryEl = document.getElementById("status-backup-summary");
+    var actionsEl = document.getElementById("status-backup-actions");
+    var historyEl = document.getElementById("status-backup-history");
+    if (!summaryEl || !actionsEl || !historyEl) return;
+    var result = await getJson("/v1/platform/backup");
+    if (result.response.status !== 200) {
+      summaryEl.innerHTML = "";
+      actionsEl.innerHTML = "";
+      historyEl.innerHTML = '<p class="muted">Unable to load backup status.</p>';
+      return;
+    }
+    var data = result.payload.data || {};
+    var config = data.config || {};
+    var status = data.status || {};
+    var latest = data.latestVerification;
+    summaryEl.innerHTML =
+      '<div class="stat"><span>Status</span><strong>' +
+      escapeHtml(status.status || "unknown") +
+      "</strong></div>" +
+      '<div class="stat"><span>Provider</span><strong>' +
+      escapeHtml(config.provider || "none") +
+      "</strong></div>" +
+      '<div class="stat"><span>Retention</span><strong>' +
+      escapeHtml(
+        config.retentionDays === null || config.retentionDays === undefined
+          ? "—"
+          : config.retentionDays + " days"
+      ) +
+      "</strong></div>" +
+      '<div class="stat"><span>Automated</span><strong>' +
+      escapeHtml(config.automated ? "yes" : "no") +
+      "</strong></div>";
+    if (status.detail) {
+      summaryEl.innerHTML +=
+        '<p class="backup-detail">' + escapeHtml(status.detail) + "</p>";
+    }
+    if (canManageBackup() && config.automated) {
+      actionsEl.innerHTML =
+        '<button type="button" class="row-action" id="backup-verify-btn">Verify PITR active</button>';
+      var btn = document.getElementById("backup-verify-btn");
+      if (btn) {
+        btn.addEventListener("click", function () {
+          void verifyBackup();
+        });
+      }
+    } else {
+      actionsEl.innerHTML = latest
+        ? '<p class="muted">Last verified ' +
+          escapeHtml(latest.verifiedAt || "") +
+          "</p>"
+        : '<p class="muted">No operator verification recorded yet.</p>';
+    }
+    var recent = data.recentVerifications || [];
+    if (!recent.length) {
+      historyEl.innerHTML = '<p class="muted">No verification history.</p>';
+      return;
+    }
+    historyEl.innerHTML = recent
+      .slice(0, 5)
+      .map(function (row) {
+        return (
+          '<article class="alert-row">' +
+          '<div class="alert-row-top"><strong>Verified</strong>' +
+          '<time datetime="' +
+          escapeHtml(row.verifiedAt || "") +
+          '">' +
+          escapeHtml(row.verifiedAt || "") +
+          "</time></div>" +
+          '<p class="alert-detail">retention ' +
+          escapeHtml(
+            row.retentionDays === null || row.retentionDays === undefined
+              ? "—"
+              : String(row.retentionDays)
+          ) +
+          " days · by " +
+          escapeHtml(row.verifiedByAccountId || "—") +
+          "</p>" +
+          (row.note
+            ? '<p class="alert-meta">' + escapeHtml(row.note) + "</p>"
+            : "") +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  async function verifyBackup() {
+    var result = await postJson("/v1/platform/backup/verify", {
+      note: "Confirmed Railway Postgres PITR in platform dashboard",
+    });
+    if (result.response.status !== 200) {
+      setStatus(consoleStatus, "Backup verify failed (ops_admin + PITR config required)", "is-error");
+      return;
+    }
+    setStatus(consoleStatus, "Backup verification recorded", "is-ok");
+    await loadBackup();
+    await loadStatus();
   }
 
   function formatRatio(ratio) {
