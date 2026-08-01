@@ -20,6 +20,15 @@ function assert(condition, message) {
 
 assert(html.includes("TOWN Platform"), "brand title present");
 assert(html.includes('id="console"'), "console shell present");
+assert(html.includes('id="gate"'), "access gate present");
+assert(html.includes('id="platform-sign-in-form"'), "dedicated Sign-in form present");
+assert(html.includes('id="platform-email"'), "email field present");
+assert(html.includes('id="platform-password"'), "password field present");
+assert(html.includes('id="platform-sign-out"'), "Sign-out control present");
+assert(
+  !html.includes("Sign in on the main TOWN site"),
+  "gate no longer redirects operators to the public Sign-in surface"
+);
 assert(html.includes('data-section="status"'), "status nav present");
 assert(html.includes('data-section="accounts"'), "accounts nav present");
 assert(html.includes('data-section="moderation"'), "moderation nav present");
@@ -29,6 +38,11 @@ assert(html.includes('data-section="operators"'), "operators nav present");
 assert(html.includes('data-section="memberships"'), "memberships nav present");
 assert(html.includes('id="memberships-grant"'), "membership grant form present");
 assert(html.includes('id="memberships-search"'), "membership search form present");
+assert(html.includes('id="operator-grant-role"'), "operator grant role select present");
+assert(
+  (html.match(/id="operator-role"/g) || []).length === 1,
+  "operator-role id is unique for session chip"
+);
 
 assert(js.includes("/v1/platform/session"), "session path");
 assert(js.includes("/v1/platform/status"), "status path");
@@ -49,6 +63,13 @@ assert(html.includes('id="submission-detail"'), "submission detail present");
 assert(html.includes('id="discussion-detail"'), "discussion detail present");
 assert(js.includes("/v1/platform/audit"), "audit path");
 assert(js.includes("/v1/platform/operators"), "operators path");
+assert(js.includes("/v1/authentication/password"), "password Sign-in path");
+assert(js.includes("/v1/authentication/logout"), "logout path");
+assert(js.includes("function startPlatformPasswordSignIn"), "dedicated password Sign-in helper");
+assert(
+  js.includes("not authorized for platform access"),
+  "authenticated non-operator stays gated with clear copy"
+);
 assert(js.includes("credentials: \"include\""), "cookie credentials");
 assert(js.includes("idempotencyKey"), "membership idempotency key present");
 assert(js.includes("Provider-managed"), "provider-managed messaging present");
@@ -59,5 +80,6 @@ assert(!js.includes("/users"), "avoids /users path");
 assert(css.includes("--font-display"), "display font token");
 assert(css.includes("@keyframes rise"), "motion present");
 assert(css.includes("@keyframes drift"), "atmosphere motion present");
+assert(css.includes(".gate-form"), "gate form styles present");
 
 console.log("PASSED: " + passed + " platform console assertions");

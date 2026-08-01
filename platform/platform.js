@@ -10,8 +10,14 @@
   var operatorRole = document.getElementById("operator-role");
   var operatorId = document.getElementById("operator-id");
   var retrySession = document.getElementById("retry-session");
+  var signInForm = document.getElementById("platform-sign-in-form");
+  var signInButton = document.getElementById("platform-sign-in");
+  var signOutButton = document.getElementById("platform-sign-out");
+  var emailInput = document.getElementById("platform-email");
+  var passwordInput = document.getElementById("platform-password");
 
   var session = null;
+  var signInSubmitting = false;
 
   function setStatus(el, message, kind) {
     if (!el) return;
@@ -78,36 +84,109 @@
     );
   }
 
+  function setSignInBusy(busy) {
+    signInSubmitting = !!busy;
+    if (signInButton) signInButton.disabled = signInSubmitting;
+    if (retrySession) retrySession.disabled = signInSubmitting;
+    if (emailInput) emailInput.disabled = signInSubmitting;
+    if (passwordInput) passwordInput.disabled = signInSubmitting;
+  }
+
   function showConsole() {
     gate.hidden = true;
     consoleEl.hidden = false;
     operatorRole.hidden = false;
     operatorId.hidden = false;
+    if (signOutButton) signOutButton.hidden = false;
     operatorRole.textContent = session.role;
     operatorId.textContent = session.accountId;
   }
 
-  function showGate(message) {
+  function showGate(message, kind) {
     gate.hidden = false;
     consoleEl.hidden = true;
     operatorRole.hidden = true;
     operatorId.hidden = true;
-    setStatus(gateStatus, message, message ? "is-error" : null);
+    if (signOutButton) signOutButton.hidden = true;
+    session = null;
+    var statusKind = arguments.length > 1 ? kind : message ? "is-error" : null;
+    setStatus(gateStatus, message, statusKind);
+  }
+
+  async function loadOperatorSession() {
+    var result = await getJson("/v1/platform/session");
+    if (result.response.status === 200 && result.payload && result.payload.data) {
+      session = result.payload.data;
+      return { ok: true, session: session };
+    }
+    return { ok: false, status: result.response.status };
+  }
+
+  async function enterConsoleFromSession() {
+    showConsole();
+    setStatus(consoleStatus, "Signed in as platform operator.", "is-ok");
+    await loadSection("status");
   }
 
   async function bootstrap() {
     setStatus(gateStatus, "Checking operator session…");
-    var result = await getJson("/v1/platform/session");
-    if (result.response.status !== 200 || !result.payload || !result.payload.data) {
-      showGate(
-        "No platform operator session. Sign in on TOWN with an authorized account, then retry."
-      );
-      return;
+    var result = await loadOperatorSession();
+    if (result.ok) {
+      await enterConsoleFromSession();
+      return true;
     }
-    session = result.payload.data;
-    showConsole();
-    setStatus(consoleStatus, "Signed in as platform operator.", "is-ok");
-    await loadSection("status");
+    showGate("Sign in with an authorized platform operator account.", null);
+    return false;
+  }
+
+  async function startPlatformPasswordSignIn(email, password) {
+    if (signInSubmitting) return;
+    setSignInBusy(true);
+    setStatus(gateStatus, "Signing in…");
+    try {
+      var auth = await postJson("/v1/authentication/password", {
+        email: email,
+        password: password,
+        clientType: "web",
+      });
+      if (auth.response.status === 404) {
+        showGate(
+          "Password Sign-in is disabled on the API (PASSWORD_SIGN_IN_ENABLED).",
+          "is-error"
+        );
+        return;
+      }
+      if (auth.response.status !== 200) {
+        showGate("Sign-in failed. Check email and password.", "is-error");
+        return;
+      }
+      var operator = await loadOperatorSession();
+      if (operator.ok) {
+        if (passwordInput) passwordInput.value = "";
+        await enterConsoleFromSession();
+        return;
+      }
+      showGate(
+        "Signed in, but this account is not authorized for platform access.",
+        "is-error"
+      );
+    } catch (_err) {
+      showGate("Sign-in failed. Try again.", "is-error");
+    } finally {
+      setSignInBusy(false);
+    }
+  }
+
+  async function signOutPlatform() {
+    if (signOutButton) signOutButton.disabled = true;
+    try {
+      await postJson("/v1/authentication/logout", {});
+    } catch (_err) {
+      /* still clear local console state */
+    }
+    session = null;
+    showGate("Signed out. Sign in again with an authorized operator account.");
+    if (signOutButton) signOutButton.disabled = false;
   }
 
   function bindNav() {
@@ -1045,7 +1124,7 @@
   document.getElementById("operator-grant").addEventListener("submit", async function (event) {
     event.preventDefault();
     var accountId = document.getElementById("operator-account-id").value.trim();
-    var role = document.getElementById("operator-role").value;
+    var role = document.getElementById("operator-grant-role").value;
     var result = await postJson("/v1/platform/operators", {
       accountId: accountId,
       role: role,
@@ -1057,6 +1136,25 @@
     setStatus(consoleStatus, "Operator granted", "is-ok");
     await loadOperators();
   });
+
+  if (signInForm) {
+    signInForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var email = emailInput ? emailInput.value.trim() : "";
+      var password = passwordInput ? passwordInput.value : "";
+      if (!email || !password) {
+        showGate("Email and password are required.", "is-error");
+        return;
+      }
+      startPlatformPasswordSignIn(email, password);
+    });
+  }
+
+  if (signOutButton) {
+    signOutButton.addEventListener("click", function () {
+      signOutPlatform();
+    });
+  }
 
   retrySession.addEventListener("click", function () {
     bootstrap();

@@ -22,6 +22,9 @@
       <div class="topbar-meta">
         <span id="operator-role" class="meta-chip" hidden></span>
         <span id="operator-id" class="meta-quiet" hidden></span>
+        <button type="button" class="button secondary topbar-sign-out" id="platform-sign-out" hidden>
+          Sign out
+        </button>
       </div>
     </header>
 
@@ -29,14 +32,42 @@
       <section id="gate" class="panel gate">
         <h1>Platform access</h1>
         <p class="lead">
-          Sign in on the main TOWN site with an authorized operator account, then
-          open this console. Community owner tools stay on the member surface.
+          Operator console for TOWN staff. Sign in here with an authorized
+          platform account. Community owner tools stay on the member surface.
         </p>
-        <p id="gate-status" class="status" role="status"></p>
-        <div class="actions">
-          <a class="button secondary" href="/">Open TOWN</a>
-          <button type="button" class="button" id="retry-session">Check session</button>
-        </div>
+        <form id="platform-sign-in-form" class="gate-form">
+          <label class="field">
+            <span>Email</span>
+            <input
+              id="platform-email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              required
+            />
+          </label>
+          <label class="field">
+            <span>Password</span>
+            <input
+              id="platform-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              minlength="15"
+              maxlength="128"
+            />
+          </label>
+          <p id="gate-status" class="status" role="status"></p>
+          <div class="actions">
+            <button type="submit" class="button" id="platform-sign-in">
+              Sign in
+            </button>
+            <button type="button" class="button secondary" id="retry-session">
+              Check session
+            </button>
+          </div>
+        </form>
       </section>
 
       <section id="console" class="console" hidden>
@@ -270,7 +301,7 @@
                 placeholder="Account UUID"
                 required
               />
-              <select id="operator-role" name="role">
+              <select id="operator-grant-role" name="role">
                 <option value="viewer">viewer</option>
                 <option value="investigator">investigator</option>
                 <option value="moderator">moderator</option>
