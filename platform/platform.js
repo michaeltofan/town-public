@@ -227,6 +227,33 @@
     }
   }
 
+  function componentTone(status) {
+    if (status === "ok") return "is-ok";
+    if (status === "disabled") return "is-disabled";
+    if (status === "degraded" || status === "misconfigured" || status === "timeout") {
+      return "is-warn";
+    }
+    return "is-fail";
+  }
+
+  function componentCard(label, component) {
+    var status = component && component.status ? component.status : "unknown";
+    var detail = component && component.detail ? component.detail : "";
+    return (
+      '<div class="stat component-stat ' +
+      componentTone(status) +
+      '"><span>' +
+      escapeHtml(label) +
+      "</span><strong>" +
+      escapeHtml(status) +
+      "</strong>" +
+      (detail
+        ? '<em class="component-detail">' + escapeHtml(detail) + "</em>"
+        : "") +
+      "</div>"
+    );
+  }
+
   async function loadStatus() {
     var result = await getJson("/v1/platform/status");
     if (result.response.status !== 200) {
@@ -234,15 +261,20 @@
     }
     var data = result.payload.data;
     var health = data.health;
+    var components = data.components || {};
     var counts = data.counts;
+    var componentsEl = document.getElementById("status-components");
+    if (componentsEl) {
+      componentsEl.innerHTML =
+        componentCard("API", components.api) +
+        componentCard("Database", components.database) +
+        componentCard("Email", components.email) +
+        componentCard("Stripe", components.stripe);
+    }
     var html = "";
     html +=
       '<div class="stat"><span>Ready</span><strong>' +
       escapeHtml(health.ready) +
-      "</strong></div>";
-    html +=
-      '<div class="stat"><span>Database</span><strong>' +
-      escapeHtml(health.checks.database) +
       "</strong></div>";
     html +=
       '<div class="stat"><span>Migrations</span><strong>' +
@@ -269,9 +301,11 @@
       escapeHtml(counts.submissions.pendingReview) +
       "</strong></div>";
     document.getElementById("status-grid").innerHTML = html;
+    var commit =
+      health.build && health.build.commitSha ? health.build.commitSha.slice(0, 8) : "unknown";
     setStatus(
       consoleStatus,
-      "Build " + health.build.commitSha.slice(0, 8) + " · " + health.build.environment,
+      "Build " + commit + " · " + health.build.environment,
       "is-ok"
     );
   }

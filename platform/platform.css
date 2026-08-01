@@ -364,10 +364,33 @@ a.button {
   gap: 0.85rem;
 }
 
+.status-components {
+  margin-bottom: 1rem;
+}
+
 .stat {
   padding: 1rem;
   border: 1px solid var(--line);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(231, 239, 230, 0.55));
+}
+
+.stat.component-stat.is-ok {
+  border-color: rgba(46, 125, 72, 0.45);
+}
+
+.stat.component-stat.is-warn {
+  border-color: rgba(180, 120, 30, 0.5);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(250, 236, 210, 0.55));
+}
+
+.stat.component-stat.is-fail {
+  border-color: rgba(160, 48, 48, 0.5);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(247, 220, 220, 0.55));
+}
+
+.stat.component-stat.is-disabled {
+  border-color: rgba(90, 100, 95, 0.35);
+  opacity: 0.88;
 }
 
 .stat strong {
@@ -383,6 +406,15 @@ a.button {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+
+.component-detail {
+  display: block;
+  margin-top: 0.45rem;
+  font-style: normal;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  word-break: break-word;
 }
 
 .list {
