@@ -88,10 +88,17 @@
           <section class="section is-active" data-panel="status">
             <header class="section-head">
               <h2>Monitor</h2>
-              <p>Operational status for API, database, email, and Stripe, plus durable counts.</p>
+              <p>Operational status for API, database, email, and Stripe, plus durable counts and recent technical errors.</p>
             </header>
             <div id="status-components" class="stat-grid status-components"></div>
             <div id="status-grid" class="stat-grid"></div>
+            <div class="errors-panel">
+              <header class="section-head errors-head">
+                <h3>Recent errors</h3>
+                <p>Server-side incidents only. Messages are sanitized; no secrets or request bodies.</p>
+              </header>
+              <div id="status-errors" class="errors-list"></div>
+            </div>
           </section>
 
           <section class="section" data-panel="accounts">
