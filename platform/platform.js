@@ -295,13 +295,65 @@
     }
   }
 
-  async function loadMemberships() {
-    var result = await getJson("/v1/platform/memberships?limit=50");
+  function newIdempotencyKey() {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return window.crypto.randomUUID();
+    }
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (ch) {
+      var r = (Math.random() * 16) | 0;
+      var v = ch === "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  function toIsoFromLocalInput(value) {
+    if (!value) return null;
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toISOString();
+  }
+
+  function membershipActionButtons(row) {
+    var actions = Array.isArray(row.allowedActions) ? row.allowedActions : [];
+    var buttons = [];
+    if (actions.indexOf("extend") !== -1) {
+      buttons.push(
+        '<button type="button" class="row-action" data-action="extend" data-id="' +
+          escapeHtml(row.accountId) +
+          '">Extend</button>'
+      );
+    }
+    if (actions.indexOf("schedule_cancellation") !== -1) {
+      buttons.push(
+        '<button type="button" class="row-action danger" data-action="schedule_cancellation" data-id="' +
+          escapeHtml(row.accountId) +
+          '">Schedule cancellation</button>'
+      );
+    }
+    if (!buttons.length) {
+      if (row.source === "stripe" || row.source === "google_play") {
+        buttons.push(
+          '<span class="muted">Provider-managed — use Stripe/Play flows</span>'
+        );
+      } else {
+        buttons.push('<span class="muted">No local mutations available</span>');
+      }
+    }
+    return '<div class="row-actions">' + buttons.join("") + "</div>";
+  }
+
+  async function loadMemberships(filters) {
+    var query = new URLSearchParams();
+    query.set("limit", "50");
+    if (filters && filters.q) query.set("q", filters.q);
+    if (filters && filters.status) query.set("status", filters.status);
+    var result = await getJson("/v1/platform/memberships?" + query.toString());
     if (result.response.status !== 200) {
       throw new Error("Unable to load memberships");
     }
     var memberships = result.payload.data.memberships || [];
-    document.getElementById("memberships-list").innerHTML = memberships.length
+    var list = document.getElementById("memberships-list");
+    list.innerHTML = memberships.length
       ? memberships
           .map(function (row) {
             return (
@@ -313,11 +365,122 @@
               escapeHtml(row.source) +
               " · until " +
               escapeHtml(row.accessUntil || "n/a") +
-              "</p></div></div>"
+              (row.cancelAtPeriodEnd ? " · cancel at period end" : "") +
+              "</p><p class=\"muted\">" +
+              escapeHtml(row.accountId) +
+              "</p></div>" +
+              membershipActionButtons(row) +
+              "</div>"
             );
           })
           .join("")
       : emptyState("No memberships found.");
+
+    list.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        handleMembershipAction(
+          button.getAttribute("data-action"),
+          button.getAttribute("data-id")
+        );
+      });
+    });
+  }
+
+  async function handleMembershipAction(action, accountId) {
+    if (!accountId) return;
+    if (action === "extend") {
+      var untilLocal = window.prompt(
+        "New accessUntil (local datetime, e.g. 2031-01-01T00:00)",
+        ""
+      );
+      if (!untilLocal) return;
+      var accessUntil = toIsoFromLocalInput(untilLocal);
+      if (!accessUntil) {
+        setStatus(consoleStatus, "Invalid accessUntil", "is-error");
+        return;
+      }
+      var extendReason = window.prompt("Administrative reason (required)", "");
+      if (!extendReason || extendReason.trim().length < 3) {
+        setStatus(consoleStatus, "Reason is required", "is-error");
+        return;
+      }
+      setStatus(consoleStatus, "Extending membership…");
+      var extend = await postJson(
+        "/v1/platform/memberships/" + encodeURIComponent(accountId) + "/extend",
+        {
+          accessUntil: accessUntil,
+          reason: extendReason.trim(),
+          idempotencyKey: newIdempotencyKey(),
+        }
+      );
+      if (extend.response.status !== 200) {
+        var extendCode =
+          extend.payload && extend.payload.error && extend.payload.error.code
+            ? extend.payload.error.code
+            : "request_failed";
+        setStatus(consoleStatus, "Extend failed (" + extendCode + ")", "is-error");
+        return;
+      }
+      setStatus(
+        consoleStatus,
+        extend.payload.data.changed ? "Membership extended" : "Extend already applied",
+        "is-ok"
+      );
+      await loadMemberships(currentMembershipFilters());
+      return;
+    }
+
+    if (action === "schedule_cancellation") {
+      var cancelReason = window.prompt("Administrative reason (required)", "");
+      if (!cancelReason || cancelReason.trim().length < 3) {
+        setStatus(consoleStatus, "Reason is required", "is-error");
+        return;
+      }
+      if (
+        !window.confirm(
+          "Schedule cancellation for this admin membership? Access continues until accessUntil."
+        )
+      ) {
+        return;
+      }
+      setStatus(consoleStatus, "Scheduling cancellation…");
+      var cancel = await postJson(
+        "/v1/platform/memberships/" +
+          encodeURIComponent(accountId) +
+          "/schedule-cancellation",
+        {
+          reason: cancelReason.trim(),
+          idempotencyKey: newIdempotencyKey(),
+        }
+      );
+      if (cancel.response.status !== 200) {
+        var cancelCode =
+          cancel.payload && cancel.payload.error && cancel.payload.error.code
+            ? cancel.payload.error.code
+            : "request_failed";
+        setStatus(
+          consoleStatus,
+          "Schedule cancellation failed (" + cancelCode + ")",
+          "is-error"
+        );
+        return;
+      }
+      setStatus(
+        consoleStatus,
+        cancel.payload.data.changed
+          ? "Cancellation scheduled"
+          : "Cancellation already scheduled",
+        "is-ok"
+      );
+      await loadMemberships(currentMembershipFilters());
+    }
+  }
+
+  function currentMembershipFilters() {
+    return {
+      q: document.getElementById("memberships-q").value.trim(),
+      status: document.getElementById("memberships-status").value,
+    };
   }
 
   async function loadCommunities() {
@@ -561,6 +724,57 @@
       status: document.getElementById("accounts-status").value,
     });
   });
+
+  document
+    .getElementById("memberships-search")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      loadMemberships(currentMembershipFilters());
+    });
+
+  document
+    .getElementById("memberships-grant")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault();
+      var accountId = document.getElementById("memberships-grant-account").value.trim();
+      var accessUntil = toIsoFromLocalInput(
+        document.getElementById("memberships-grant-until").value
+      );
+      var reason = document.getElementById("memberships-grant-reason").value.trim();
+      if (!accountId || !accessUntil || reason.length < 3) {
+        setStatus(consoleStatus, "Grant requires account, accessUntil, and reason", "is-error");
+        return;
+      }
+      if (
+        !window.confirm(
+          "Grant an administrative membership to " + accountId + " until " + accessUntil + "?"
+        )
+      ) {
+        return;
+      }
+      setStatus(consoleStatus, "Granting membership…");
+      var grant = await postJson("/v1/platform/memberships/grant", {
+        accountId: accountId,
+        accessUntil: accessUntil,
+        reason: reason,
+        idempotencyKey: newIdempotencyKey(),
+      });
+      if (grant.response.status !== 200) {
+        var grantCode =
+          grant.payload && grant.payload.error && grant.payload.error.code
+            ? grant.payload.error.code
+            : "request_failed";
+        setStatus(consoleStatus, "Grant failed (" + grantCode + ")", "is-error");
+        return;
+      }
+      setStatus(
+        consoleStatus,
+        grant.payload.data.changed ? "Membership granted" : "Grant already applied",
+        "is-ok"
+      );
+      document.getElementById("memberships-grant").reset();
+      await loadMemberships(currentMembershipFilters());
+    });
 
   document
     .getElementById("investigate-form")
