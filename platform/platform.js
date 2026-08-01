@@ -301,6 +301,8 @@
       escapeHtml(counts.submissions.pendingReview) +
       "</strong></div>";
     document.getElementById("status-grid").innerHTML = html;
+    await loadUptime();
+    await loadAlerts();
     await loadRecentErrors();
     var commit =
       health.build && health.build.commitSha ? health.build.commitSha.slice(0, 8) : "unknown";
@@ -309,6 +311,150 @@
       "Build " + commit + " · " + health.build.environment,
       "is-ok"
     );
+  }
+
+  function canManageAlerts() {
+    return session && (session.role === "ops_admin" || session.role === "role_admin");
+  }
+
+  function formatRatio(ratio) {
+    if (ratio === null || ratio === undefined || Number.isNaN(Number(ratio))) return "—";
+    return Math.round(Number(ratio) * 100) + "%";
+  }
+
+  function uptimeSampleRow(sample) {
+    var comps = sample.components || {};
+    return (
+      '<article class="uptime-row">' +
+      '<div class="uptime-row-top">' +
+      '<strong class="uptime-overall">' +
+      escapeHtml(sample.overallStatus || "unknown") +
+      "</strong>" +
+      '<time datetime="' +
+      escapeHtml(sample.sampledAt || "") +
+      '">' +
+      escapeHtml(sample.sampledAt || "") +
+      "</time>" +
+      "</div>" +
+      '<p class="uptime-components">api ' +
+      escapeHtml(comps.api || "—") +
+      " · db " +
+      escapeHtml(comps.database || "—") +
+      " · email " +
+      escapeHtml(comps.email || "—") +
+      " · stripe " +
+      escapeHtml(comps.stripe || "—") +
+      "</p>" +
+      "</article>"
+    );
+  }
+
+  async function loadUptime() {
+    var summaryEl = document.getElementById("status-uptime-summary");
+    var samplesEl = document.getElementById("status-uptime-samples");
+    if (!summaryEl || !samplesEl) return;
+    var result = await getJson("/v1/platform/uptime?limit=24");
+    if (result.response.status !== 200) {
+      summaryEl.innerHTML = "";
+      samplesEl.innerHTML = '<p class="muted">Unable to load uptime samples.</p>';
+      return;
+    }
+    var data = result.payload.data || {};
+    var summary = data.summary || {};
+    summaryEl.innerHTML =
+      '<div class="stat"><span>Ok ratio</span><strong>' +
+      escapeHtml(formatRatio(summary.okRatio)) +
+      "</strong></div>" +
+      '<div class="stat"><span>Samples</span><strong>' +
+      escapeHtml(summary.sampleCount) +
+      "</strong></div>" +
+      '<div class="stat"><span>Open alerts</span><strong>' +
+      escapeHtml(summary.openAlertCount) +
+      "</strong></div>";
+    var samples = data.samples || [];
+    if (!samples.length) {
+      samplesEl.innerHTML =
+        '<p class="muted">No uptime samples yet. Samples appear after Monitor status checks (throttled).</p>';
+      return;
+    }
+    samplesEl.innerHTML = samples.slice(0, 12).map(uptimeSampleRow).join("");
+  }
+
+  function alertRow(alert) {
+    var actions = "";
+    if (!alert.acknowledgedAt && canManageAlerts()) {
+      actions =
+        '<button type="button" class="row-action" data-action="ack-alert" data-id="' +
+        escapeHtml(alert.id) +
+        '">Acknowledge</button>';
+    }
+    return (
+      '<article class="alert-row severity-' +
+      escapeHtml(alert.severity || "warning") +
+      '">' +
+      '<div class="alert-row-top">' +
+      "<strong>" +
+      escapeHtml(alert.component || "unknown") +
+      "</strong>" +
+      '<span class="alert-status">' +
+      escapeHtml(alert.status || "") +
+      " · " +
+      escapeHtml(alert.severity || "") +
+      "</span>" +
+      '<time datetime="' +
+      escapeHtml(alert.openedAt || "") +
+      '">' +
+      escapeHtml(alert.openedAt || "") +
+      "</time>" +
+      "</div>" +
+      '<p class="alert-detail">' +
+      escapeHtml(alert.detail || "No detail") +
+      "</p>" +
+      '<p class="alert-meta">' +
+      (alert.acknowledgedAt
+        ? "Acknowledged " + escapeHtml(alert.acknowledgedAt)
+        : "Unacknowledged") +
+      (alert.resolvedAt ? " · resolved " + escapeHtml(alert.resolvedAt) : " · open") +
+      "</p>" +
+      (actions ? '<div class="row-actions">' + actions + "</div>" : "") +
+      "</article>"
+    );
+  }
+
+  async function loadAlerts() {
+    var alertsEl = document.getElementById("status-alerts");
+    if (!alertsEl) return;
+    var result = await getJson("/v1/platform/alerts?limit=20&state=open");
+    if (result.response.status !== 200) {
+      alertsEl.innerHTML = '<p class="muted">Unable to load alerts.</p>';
+      return;
+    }
+    var alerts =
+      result.payload && result.payload.data && result.payload.data.alerts
+        ? result.payload.data.alerts
+        : [];
+    if (!alerts.length) {
+      alertsEl.innerHTML = '<p class="muted">No open alerts.</p>';
+      return;
+    }
+    alertsEl.innerHTML = alerts.map(alertRow).join("");
+    alertsEl.querySelectorAll('[data-action="ack-alert"]').forEach(function (button) {
+      button.addEventListener("click", function () {
+        void acknowledgeAlert(button.getAttribute("data-id"));
+      });
+    });
+  }
+
+  async function acknowledgeAlert(alertId) {
+    if (!alertId) return;
+    var result = await postJson("/v1/platform/alerts/" + alertId + "/acknowledge", {});
+    if (result.response.status !== 200) {
+      setStatus(consoleStatus, "Acknowledge failed (ops_admin required)", "is-error");
+      return;
+    }
+    setStatus(consoleStatus, "Alert acknowledged", "is-ok");
+    await loadAlerts();
+    await loadUptime();
   }
 
   function errorRow(error) {
