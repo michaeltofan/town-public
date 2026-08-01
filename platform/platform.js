@@ -506,10 +506,92 @@
       .join("");
   }
 
-  async function loadModeration() {
+  var REASON_PROMPT =
+    "Reason (immoral|abusive|spam|off_topic|illegal|other)";
+
+  function promptReason(defaultValue) {
+    var reason = window.prompt(REASON_PROMPT, defaultValue || "spam");
+    if (!reason) return null;
+    reason = reason.trim();
+    if (
+      ["immoral", "abusive", "spam", "off_topic", "illegal", "other"].indexOf(
+        reason
+      ) === -1
+    ) {
+      setStatus(consoleStatus, "Invalid moderation reason", "is-error");
+      return null;
+    }
+    return reason;
+  }
+
+  function currentSubmissionFilters() {
+    return {
+      q: document.getElementById("submissions-q").value.trim(),
+      communitySlug: document.getElementById("submissions-community").value.trim(),
+      status: document.getElementById("submissions-status").value,
+    };
+  }
+
+  function currentDiscussionFilters() {
+    return {
+      q: document.getElementById("discussions-q").value.trim(),
+      communitySlug: document.getElementById("discussions-community").value.trim(),
+      hiddenOnly: document.getElementById("discussions-hidden").value,
+    };
+  }
+
+  function actionButtons(actions, idAttr, id) {
+    return (actions || [])
+      .map(function (action) {
+        var danger =
+          action === "hide" || action === "reject" ? " danger" : "";
+        return (
+          '<button type="button" class="row-action' +
+          danger +
+          '" data-action="' +
+          escapeHtml(action) +
+          '" ' +
+          idAttr +
+          '="' +
+          escapeHtml(id) +
+          '">' +
+          escapeHtml(action) +
+          "</button>"
+        );
+      })
+      .join("");
+  }
+
+  async function loadModeration(filters) {
+    setStatus(consoleStatus, "Loading moderation…");
+    var submissionFilters = (filters && filters.submissions) || currentSubmissionFilters();
+    var discussionFilters = (filters && filters.discussions) || currentDiscussionFilters();
+
+    var submissionQuery = new URLSearchParams({ limit: "50" });
+    if (submissionFilters.q) submissionQuery.set("q", submissionFilters.q);
+    if (submissionFilters.communitySlug) {
+      submissionQuery.set("communitySlug", submissionFilters.communitySlug);
+    }
+    if (submissionFilters.status) {
+      submissionQuery.set("status", submissionFilters.status);
+    }
+
+    var discussionQuery = new URLSearchParams({ limit: "50" });
+    if (discussionFilters.q) discussionQuery.set("q", discussionFilters.q);
+    if (discussionFilters.communitySlug) {
+      discussionQuery.set("communitySlug", discussionFilters.communitySlug);
+    }
+    if (discussionFilters.hiddenOnly === "true") {
+      discussionQuery.set("hiddenOnly", "true");
+    }
+
     var signals = await getJson("/v1/platform/signals?limit=50");
-    var submissions = await getJson("/v1/platform/submissions");
-    var discussions = await getJson("/v1/platform/discussions");
+    var submissions = await getJson(
+      "/v1/platform/submissions?" + submissionQuery.toString()
+    );
+    var discussions = await getJson(
+      "/v1/platform/discussions?" + discussionQuery.toString()
+    );
     if (
       signals.response.status !== 200 ||
       submissions.response.status !== 200 ||
@@ -552,16 +634,19 @@
         var action = button.getAttribute("data-action");
         var result;
         if (action === "hide") {
-          var reason = window.prompt(
-            "Hide reason (immoral|abusive|spam|off_topic|illegal|other)",
-            "spam"
-          );
+          var reason = promptReason("spam");
           if (!reason) return;
+          if (!window.confirm("Hide this signal for reason: " + reason + "?")) {
+            return;
+          }
+          setStatus(consoleStatus, "Hiding signal…");
           result = await postJson(
             "/v1/platform/signals/" + encodeURIComponent(id) + "/hide",
             { reason: reason }
           );
         } else {
+          if (!window.confirm("Unhide this signal?")) return;
+          setStatus(consoleStatus, "Unhiding signal…");
           result = await postJson(
             "/v1/platform/signals/" + encodeURIComponent(id) + "/unhide",
             {}
@@ -576,41 +661,195 @@
       });
     });
 
-    document.getElementById("submissions-list").innerHTML = (
-      submissions.payload.data.submissions || []
-    )
-      .map(function (row) {
-        return (
-          '<div class="row"><div><h4>' +
-          escapeHtml(row.headline) +
-          "</h4><p>" +
-          escapeHtml(row.communitySlug) +
-          " · " +
-          escapeHtml(row.status) +
-          " · " +
-          escapeHtml(row.accountId) +
-          "</p></div></div>"
-        );
-      })
-      .join("") || emptyState("No pending submissions.");
+    var submissionsList = document.getElementById("submissions-list");
+    var submissionRows = submissions.payload.data.submissions || [];
+    submissionsList.innerHTML = submissionRows.length
+      ? submissionRows
+          .map(function (row) {
+            return (
+              '<div class="row"><div><h4>' +
+              escapeHtml(row.headline) +
+              "</h4><p>" +
+              escapeHtml(row.communitySlug) +
+              " · " +
+              escapeHtml(row.status) +
+              (row.reviewReason ? " · " + escapeHtml(row.reviewReason) : "") +
+              " · " +
+              escapeHtml(row.accountId) +
+              '</p></div><div class="row-actions">' +
+              '<button type="button" class="row-action secondary" data-action="inspect" data-id="' +
+              escapeHtml(row.id) +
+              '">Inspect</button>' +
+              actionButtons(row.allowedActions, "data-id", row.id) +
+              "</div></div>"
+            );
+          })
+          .join("")
+      : emptyState("No submissions match these filters.");
 
-    document.getElementById("discussions-list").innerHTML = (
-      discussions.payload.data.contributions || []
-    )
-      .map(function (row) {
-        return (
-          '<div class="row"><div><h4>' +
-          escapeHtml(row.intent) +
-          " · " +
-          escapeHtml(row.signalSlug) +
-          "</h4><p>" +
-          escapeHtml(row.body) +
-          "<br />" +
-          escapeHtml(row.accountId) +
-          "</p></div></div>"
+    submissionsList.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        var id = button.getAttribute("data-id");
+        var action = button.getAttribute("data-action");
+        if (action === "inspect") {
+          setStatus(consoleStatus, "Loading submission…");
+          var detail = await getJson(
+            "/v1/platform/submissions/" + encodeURIComponent(id)
+          );
+          if (detail.response.status !== 200) {
+            setStatus(consoleStatus, "Submission detail failed", "is-error");
+            return;
+          }
+          document.getElementById("submission-detail").textContent = JSON.stringify(
+            detail.payload.data,
+            null,
+            2
+          );
+          setStatus(consoleStatus, "Submission loaded", "is-ok");
+          return;
+        }
+        var reason = promptReason(action === "reject" ? "spam" : "other");
+        if (!reason) return;
+        if (
+          !window.confirm(
+            action === "reject"
+              ? "Reject this submission for reason: " + reason + "?"
+              : "Restore this submission to pending_review? Reason for audit: " +
+                  reason
+          )
+        ) {
+          return;
+        }
+        setStatus(
+          consoleStatus,
+          action === "reject" ? "Rejecting submission…" : "Restoring submission…"
         );
-      })
-      .join("") || emptyState("No recent discussion contributions.");
+        var result = await postJson(
+          "/v1/platform/submissions/" +
+            encodeURIComponent(id) +
+            "/" +
+            encodeURIComponent(action),
+          { reason: reason }
+        );
+        if (!result || result.response.status !== 200) {
+          setStatus(consoleStatus, "Submission action failed", "is-error");
+          return;
+        }
+        document.getElementById("submission-detail").textContent = JSON.stringify(
+          result.payload.data,
+          null,
+          2
+        );
+        setStatus(
+          consoleStatus,
+          result.payload.data.changed
+            ? action === "reject"
+              ? "Submission rejected"
+              : "Submission restored"
+            : "Submission already in target state",
+          "is-ok"
+        );
+        await loadModeration({
+          submissions: currentSubmissionFilters(),
+          discussions: currentDiscussionFilters(),
+        });
+      });
+    });
+
+    var discussionsList = document.getElementById("discussions-list");
+    var discussionRows = discussions.payload.data.contributions || [];
+    discussionsList.innerHTML = discussionRows.length
+      ? discussionRows
+          .map(function (row) {
+            return (
+              '<div class="row"><div><h4>' +
+              escapeHtml(row.intent) +
+              " · " +
+              escapeHtml(row.signalSlug) +
+              "</h4><p>" +
+              escapeHtml(row.body) +
+              "<br />" +
+              escapeHtml(row.communitySlug) +
+              " · " +
+              (row.hidden ? "hidden" : "visible") +
+              (row.hiddenReason ? " · " + escapeHtml(row.hiddenReason) : "") +
+              " · " +
+              escapeHtml(row.accountId) +
+              '</p></div><div class="row-actions">' +
+              '<button type="button" class="row-action secondary" data-action="inspect" data-id="' +
+              escapeHtml(row.contributionId) +
+              '">Inspect</button>' +
+              actionButtons(row.allowedActions, "data-id", row.contributionId) +
+              "</div></div>"
+            );
+          })
+          .join("")
+      : emptyState("No discussion contributions match these filters.");
+
+    discussionsList.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        var id = button.getAttribute("data-id");
+        var action = button.getAttribute("data-action");
+        var row = discussionRows.find(function (item) {
+          return item.contributionId === id;
+        });
+        if (action === "inspect") {
+          document.getElementById("discussion-detail").textContent = JSON.stringify(
+            row || { contributionId: id },
+            null,
+            2
+          );
+          setStatus(consoleStatus, "Contribution loaded", "is-ok");
+          return;
+        }
+        var reason = promptReason(action === "hide" ? "spam" : "other");
+        if (!reason) return;
+        if (
+          !window.confirm(
+            action === "hide"
+              ? "Hide this contribution for reason: " + reason + "?"
+              : "Unhide this contribution? Reason for audit: " + reason
+          )
+        ) {
+          return;
+        }
+        setStatus(
+          consoleStatus,
+          action === "hide" ? "Hiding contribution…" : "Unhiding contribution…"
+        );
+        var result = await postJson(
+          "/v1/platform/discussions/" +
+            encodeURIComponent(id) +
+            "/" +
+            encodeURIComponent(action),
+          { reason: reason }
+        );
+        if (!result || result.response.status !== 200) {
+          setStatus(consoleStatus, "Discussion action failed", "is-error");
+          return;
+        }
+        document.getElementById("discussion-detail").textContent = JSON.stringify(
+          result.payload.data,
+          null,
+          2
+        );
+        setStatus(
+          consoleStatus,
+          result.payload.data.changed
+            ? action === "hide"
+              ? "Contribution hidden"
+              : "Contribution unhidden"
+            : "Contribution already in target state",
+          "is-ok"
+        );
+        await loadModeration({
+          submissions: currentSubmissionFilters(),
+          discussions: currentDiscussionFilters(),
+        });
+      });
+    });
+
+    setStatus(consoleStatus, "Moderation inventory ready", "is-ok");
   }
 
   async function loadInvestigation(accountId) {
@@ -724,6 +963,26 @@
       status: document.getElementById("accounts-status").value,
     });
   });
+
+  document
+    .getElementById("submissions-search")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      loadModeration({
+        submissions: currentSubmissionFilters(),
+        discussions: currentDiscussionFilters(),
+      });
+    });
+
+  document
+    .getElementById("discussions-search")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      loadModeration({
+        submissions: currentSubmissionFilters(),
+        discussions: currentDiscussionFilters(),
+      });
+    });
 
   document
     .getElementById("memberships-search")
