@@ -44,6 +44,16 @@ Adapts the existing six local feed scenes for a premium desktop reading layout:
 6. Open signal continues into approved Signal Detail V1
 7. Visitor and member states preserved — no new product journey
 
+### Platform operator console
+
+Separate administration surface at `/platform/` (not community owner moderation).
+Requires an active TOWN session for an account granted via
+`account:mark-platform-operator` on town-api. Talks to `/v1/platform/*`.
+
+```bash
+node scripts/test-platform-console.js
+```
+
 ### Local preview
 
 ```bash
@@ -51,6 +61,7 @@ python3 -m http.server 4173
 ```
 
 Open `http://localhost:4173/`.
+Platform console: `http://localhost:4173/platform/`.
 
 ### Visual review URL
 
