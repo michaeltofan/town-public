@@ -26,14 +26,22 @@ assert(html.includes('data-section="moderation"'), "moderation nav present");
 assert(html.includes('data-section="investigate"'), "investigate nav present");
 assert(html.includes('data-section="audit"'), "audit nav present");
 assert(html.includes('data-section="operators"'), "operators nav present");
+assert(html.includes('data-section="memberships"'), "memberships nav present");
+assert(html.includes('id="memberships-grant"'), "membership grant form present");
+assert(html.includes('id="memberships-search"'), "membership search form present");
 
 assert(js.includes("/v1/platform/session"), "session path");
 assert(js.includes("/v1/platform/status"), "status path");
 assert(js.includes("/v1/platform/accounts"), "accounts path");
+assert(js.includes("/v1/platform/memberships"), "memberships path");
+assert(js.includes("/v1/platform/memberships/grant"), "membership grant path");
+assert(js.includes("/schedule-cancellation"), "membership schedule-cancellation path");
 assert(js.includes("/v1/platform/signals"), "signals path");
 assert(js.includes("/v1/platform/audit"), "audit path");
 assert(js.includes("/v1/platform/operators"), "operators path");
 assert(js.includes("credentials: \"include\""), "cookie credentials");
+assert(js.includes("idempotencyKey"), "membership idempotency key present");
+assert(js.includes("Provider-managed"), "provider-managed messaging present");
 assert(!js.includes("/admin"), "avoids /admin path");
 assert(!js.includes("/users"), "avoids /users path");
 

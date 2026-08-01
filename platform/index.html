@@ -86,8 +86,55 @@
           <section class="section" data-panel="memberships">
             <header class="section-head">
               <h2>Memberships</h2>
-              <p>Entitlement inventory across the platform.</p>
+              <p>Inventory and safe administrative operations for local entitlements.</p>
             </header>
+            <form id="memberships-search" class="toolbar">
+              <input
+                id="memberships-q"
+                name="q"
+                type="search"
+                placeholder="Email or account id"
+              />
+              <select id="memberships-status" name="status">
+                <option value="">Any status</option>
+                <option value="active">active</option>
+                <option value="cancelling">cancelling</option>
+                <option value="expired">expired</option>
+                <option value="inactive">inactive</option>
+                <option value="paid_pending_binding">paid_pending_binding</option>
+                <option value="suspended">suspended</option>
+              </select>
+              <button type="submit" class="button">Search</button>
+            </form>
+            <form id="memberships-grant" class="toolbar membership-grant">
+              <input
+                id="memberships-grant-account"
+                name="accountId"
+                type="text"
+                placeholder="Account id to grant"
+                required
+              />
+              <input
+                id="memberships-grant-until"
+                name="accessUntil"
+                type="datetime-local"
+                required
+              />
+              <input
+                id="memberships-grant-reason"
+                name="reason"
+                type="text"
+                placeholder="Administrative reason"
+                minlength="3"
+                maxlength="256"
+                required
+              />
+              <button type="submit" class="button">Grant admin membership</button>
+            </form>
+            <p id="memberships-note" class="muted">
+              Stripe and Google Play memberships stay provider-managed. Only active
+              <code>admin</code> entitlements expose extend or schedule-cancellation.
+            </p>
             <div id="memberships-list" class="list"></div>
           </section>
 
