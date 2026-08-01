@@ -47,8 +47,9 @@ Adapts the existing six local feed scenes for a premium desktop reading layout:
 ### Platform operator console
 
 Separate administration surface at `/platform/` (not community owner moderation).
-Requires an active TOWN session for an account granted via
-`account:mark-platform-operator` on town-api. Talks to `/v1/platform/*`.
+Operators sign in on `/platform/` with email + password. Access still requires an
+account granted as platform operator on town-api (bootstrap CLI or Operators
+panel). Talks to `/v1/platform/*`.
 
 ```bash
 node scripts/test-platform-console.js
