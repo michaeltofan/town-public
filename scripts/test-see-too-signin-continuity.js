@@ -68,39 +68,47 @@ assert(
   "stores feed index only as rendering aid"
 );
 
+const activateMatch = js.match(
+  /async function activateSeeTooAction\(options\)\s*\{([\s\S]*?)\n  \}/
+);
+assert(!!activateMatch, "activateSeeTooAction body readable");
+const activate = activateMatch ? activateMatch[1] : "";
+assert(
+  activate.includes("capturePendingSeeTooContext") &&
+    activate.includes("openInvite()"),
+  "invite path from see-too records pending context before openInvite"
+);
+assert(
+  activate.indexOf("capturePendingSeeTooContext") <
+    activate.indexOf("openInvite()"),
+  "pending context is captured before membership invite opens"
+);
+
 const feedSeeToo = sliceHandler(
   'if (role === "feed-see-too")',
   'if (role === "feed-open-signal")'
 );
 assert(
-  feedSeeToo.includes("capturePendingSeeTooContext"),
-  "feed I SEE THIS TOO records pending context"
-);
-assert(
-  feedSeeToo.includes("openInvite()"),
-  "feed I SEE THIS TOO still opens membership invite"
+  feedSeeToo.includes("activateSeeTooAction"),
+  "feed I SEE THIS TOO uses shared activation helper"
 );
 
 const detailSeeToo = sliceHandler(
   'detailSeeToo.addEventListener("click"',
-  'detailAddTestimony.addEventListener("click"'
+  'detailSessionContribute.addEventListener("click"'
 );
 assert(
-  detailSeeToo.includes("capturePendingSeeTooContext"),
-  "signal-detail I SEE THIS TOO records pending context"
-);
-assert(
-  detailSeeToo.includes("openInvite()"),
-  "signal-detail I SEE THIS TOO still opens membership invite"
+  detailSeeToo.includes("activateSeeTooAction"),
+  "signal-detail I SEE THIS TOO uses shared activation helper"
 );
 
-const testimony = sliceHandler(
-  'detailAddTestimony.addEventListener("click"',
-  'document.addEventListener("keydown"'
+const sessionContribute = sliceHandler(
+  'detailSessionContribute.addEventListener("click"',
+  'detailSessionAttach.addEventListener("click"'
 );
 assert(
-  !testimony.includes("capturePendingSeeTooContext"),
-  "testimony CTA does not invent see-too pending context"
+  !sessionContribute.includes("capturePendingSeeTooContext"),
+  "session contribute CTA does not invent see-too pending context"
 );
 
 const postMatch = js.match(
@@ -112,10 +120,15 @@ assert(
   post.includes("hasAuthoritativePaidMembership"),
   "paid-member branch still consulted first"
 );
+const paidBranch = post.slice(
+  post.indexOf("hasAuthoritativePaidMembership"),
+  post.indexOf("restorePendingSeeTooAfterSignIn")
+);
 assert(
-  post.includes("clearPendingSeeTooContext") &&
-    post.indexOf("clearPendingSeeTooContext") <
-      post.indexOf("syncFeedMemberState"),
+  paidBranch.includes("clearPendingSeeTooContext") &&
+    paidBranch.includes("syncFeedMemberState") &&
+    paidBranch.indexOf("clearPendingSeeTooContext") <
+      paidBranch.indexOf("syncFeedMemberState"),
   "paid-member Sign-in clears pending context and stays on feed"
 );
 assert(

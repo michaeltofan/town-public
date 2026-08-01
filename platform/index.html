@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TOWN Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./platform.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand-lockup">
+        <p class="brand">TOWN</p>
+        <p class="brand-sub">Platform</p>
+      </div>
+      <div class="topbar-meta">
+        <span id="operator-role" class="meta-chip" hidden></span>
+        <span id="operator-id" class="meta-quiet" hidden></span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section id="gate" class="panel gate">
+        <h1>Platform access</h1>
+        <p class="lead">
+          Sign in on the main TOWN site with an authorized operator account, then
+          open this console. Community owner tools stay on the member surface.
+        </p>
+        <p id="gate-status" class="status" role="status"></p>
+        <div class="actions">
+          <a class="button secondary" href="/">Open TOWN</a>
+          <button type="button" class="button" id="retry-session">Check session</button>
+        </div>
+      </section>
+
+      <section id="console" class="console" hidden>
+        <nav class="nav" aria-label="Platform sections">
+          <button type="button" class="nav-item is-active" data-section="status">Status</button>
+          <button type="button" class="nav-item" data-section="accounts">Accounts</button>
+          <button type="button" class="nav-item" data-section="memberships">Memberships</button>
+          <button type="button" class="nav-item" data-section="communities">Communities</button>
+          <button type="button" class="nav-item" data-section="moderation">Moderation</button>
+          <button type="button" class="nav-item" data-section="investigate">Investigate</button>
+          <button type="button" class="nav-item" data-section="audit">Audit</button>
+          <button type="button" class="nav-item" data-section="operators">Operators</button>
+        </nav>
+
+        <div class="workspace">
+          <p id="console-status" class="status" role="status"></p>
+
+          <section class="section is-active" data-panel="status">
+            <header class="section-head">
+              <h2>Monitor</h2>
+              <p>Service readiness and durable platform counts.</p>
+            </header>
+            <div id="status-grid" class="stat-grid"></div>
+          </section>
+
+          <section class="section" data-panel="accounts">
+            <header class="section-head">
+              <h2>Accounts</h2>
+              <p>Search, inspect, suspend, or reactivate accounts.</p>
+            </header>
+            <form id="accounts-search" class="toolbar">
+              <input id="accounts-q" name="q" type="search" placeholder="Email or account id" />
+              <select id="accounts-status" name="status">
+                <option value="">Any status</option>
+                <option value="active">active</option>
+                <option value="suspended">suspended</option>
+                <option value="pending_email">pending_email</option>
+                <option value="pending_password">pending_password</option>
+                <option value="pending_passkey">pending_passkey</option>
+                <option value="closed">closed</option>
+              </select>
+              <button type="submit" class="button">Search</button>
+            </form>
+            <div id="accounts-list" class="list"></div>
+          </section>
+
+          <section class="section" data-panel="memberships">
+            <header class="section-head">
+              <h2>Memberships</h2>
+              <p>Entitlement inventory across the platform.</p>
+            </header>
+            <div id="memberships-list" class="list"></div>
+          </section>
+
+          <section class="section" data-panel="communities">
+            <header class="section-head">
+              <h2>Communities</h2>
+              <p>Active cities and bound civic accounts.</p>
+            </header>
+            <div id="communities-list" class="list"></div>
+          </section>
+
+          <section class="section" data-panel="moderation">
+            <header class="section-head">
+              <h2>Moderation</h2>
+              <p>Signals, pending submissions, and recent discussions.</p>
+            </header>
+            <div class="split">
+              <div>
+                <h3>Signals</h3>
+                <div id="signals-list" class="list"></div>
+              </div>
+              <div>
+                <h3>Submissions</h3>
+                <div id="submissions-list" class="list"></div>
+                <h3>Discussions</h3>
+                <div id="discussions-list" class="list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-panel="investigate">
+            <header class="section-head">
+              <h2>Investigate</h2>
+              <p>Email challenges and payment ledger for one account.</p>
+            </header>
+            <form id="investigate-form" class="toolbar">
+              <input
+                id="investigate-account-id"
+                name="accountId"
+                type="text"
+                placeholder="Account UUID"
+                required
+              />
+              <button type="submit" class="button">Load</button>
+            </form>
+            <div class="split">
+              <div>
+                <h3>Emails</h3>
+                <pre id="investigate-emails" class="code-block">Select an account.</pre>
+              </div>
+              <div>
+                <h3>Payments</h3>
+                <pre id="investigate-payments" class="code-block">Select an account.</pre>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" data-panel="audit">
+            <header class="section-head">
+              <h2>Audit</h2>
+              <p>Operational history of platform-operator actions.</p>
+            </header>
+            <div id="audit-list" class="list"></div>
+          </section>
+
+          <section class="section" data-panel="operators">
+            <header class="section-head">
+              <h2>Operators</h2>
+              <p>Grant, update, or revoke platform operator roles.</p>
+            </header>
+            <form id="operator-grant" class="toolbar">
+              <input
+                id="operator-account-id"
+                name="accountId"
+                type="text"
+                placeholder="Account UUID"
+                required
+              />
+              <select id="operator-role" name="role">
+                <option value="viewer">viewer</option>
+                <option value="investigator">investigator</option>
+                <option value="moderator">moderator</option>
+                <option value="account_admin">account_admin</option>
+                <option value="ops_admin">ops_admin</option>
+                <option value="role_admin">role_admin</option>
+              </select>
+              <button type="submit" class="button">Grant / update</button>
+            </form>
+            <div id="operators-list" class="list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="./platform.js"></script>
+  </body>
+</html>

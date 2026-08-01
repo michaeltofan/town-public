@@ -54,12 +54,14 @@ require_contains "script.js" "isCheckoutRecoveryStopOutcome"
 require_contains "script.js" "shouldStartCheckoutRecoveryPolling"
 
 echo "== Guardrails =="
-# localStorage remains forbidden everywhere in the public surface.
-if grep -Eiq 'localStorage' index.html script.js membership-recovery.js; then
-  echo "FAIL: localStorage present"
+# localStorage is allowed only for the staging owner participate-preview flag.
+# It never grants backend canParticipate and is ignored off staging API.
+if grep -n 'localStorage' index.html script.js membership-recovery.js \
+  | grep -Ev 'PARTICIPATE_PREVIEW|town\.participatePreview|participatePreview|Owner product-testing|staging owner|Staging-only owner'; then
+  echo "FAIL: non-preview localStorage usage present"
   fail=1
 else
-  echo "OK: no localStorage"
+  echo "OK: localStorage limited to staging owner participate preview"
 fi
 
 # sessionStorage is allowed only for the advisory checkout-pending marker.
@@ -190,24 +192,28 @@ if "function markerGrantsAuthorization" not in helper:
 if "return false" not in helper.split("function markerGrantsAuthorization")[1].split("function ")[0]:
     fail("markerGrantsAuthorization must return false")
 
-# Visitor testimony behavior from PRs #37/#38 must remain intact.
-testimony = re.search(
-    r'detailAddTestimony\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
+# Discussion session: visitors keep membership invite; members compose contributions.
+session = re.search(
+    r'detailSessionContribute\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',
     js,
 )
-if not testimony:
-    fail("missing detailAddTestimony handler")
-tbody = testimony.group(1)
+if not session:
+    fail("missing detailSessionContribute handler")
+sbody = session.group(1)
+if "canTakeCivicAction()" not in sbody:
+    fail("session CTA must gate on canTakeCivicAction")
+if "openSessionCompose()" not in sbody:
+    fail("participating members must reach session compose")
 for fragment in (
     "originatingFeedIndex = feedIndex",
     "closeSignalDetail()",
     "openInvite()",
 ):
-    if fragment not in tbody:
-        fail(f"testimony CTA missing '{fragment}'")
-for forbidden in ("membershipSimulated", "signalConfirmed", ".click()", ".showPicker()"):
-    if forbidden in tbody:
-        fail(f"testimony CTA must not contain '{forbidden}'")
+    if fragment not in sbody:
+        fail(f"non-participating session path missing '{fragment}'")
+for forbidden in ("membershipSimulated", "signalConfirmed"):
+    if forbidden in sbody:
+        fail(f"session CTA must not contain '{forbidden}'")
 
 invite = re.search(
     r'inviteContinue\.addEventListener\("click",\s*\(\)\s*=>\s*\{([\s\S]*?)\}\);',

@@ -60,6 +60,16 @@
   const navMembership = document.getElementById("nav-membership");
   const navChat = document.getElementById("nav-chat");
   const navActivity = document.getElementById("nav-activity");
+  const activityPanel = document.getElementById("activity-panel");
+  const activityDim = document.getElementById("activity-dim");
+  const activityClose = document.getElementById("activity-close");
+  const activityLabel = document.getElementById("activity-label");
+  const activityTitle = document.getElementById("activity-title");
+  const activityLead = document.getElementById("activity-lead");
+  const activityStatus = document.getElementById("activity-status");
+  const activityEmpty = document.getElementById("activity-empty");
+  const activityList = document.getElementById("activity-list");
+  const activityFeed = document.getElementById("activity-feed");
   const navProfile = document.getElementById("nav-profile");
   const authWindow = document.getElementById("auth-window");
   const authWindowDim = document.getElementById("auth-window-dim");
@@ -73,6 +83,78 @@
   const authContinue = document.getElementById("auth-continue");
   const authPasskey = document.getElementById("auth-passkey");
   const authWindowStatus = document.getElementById("auth-window-status");
+  const profilePanel = document.getElementById("profile-panel");
+  const profileDim = document.getElementById("profile-dim");
+  const profileClose = document.getElementById("profile-close");
+  const profileLabel = document.getElementById("profile-label");
+  const profileAvatar = document.getElementById("profile-avatar");
+  const profileTitle = document.getElementById("profile-title");
+  const profileHandle = document.getElementById("profile-handle");
+  const profileBio = document.getElementById("profile-bio");
+  const profileCommunity = document.getElementById("profile-community");
+  const profileMembership = document.getElementById("profile-membership");
+  const profileActivityTitle = document.getElementById("profile-activity-title");
+  const profileActivityEmpty = document.getElementById("profile-activity-empty");
+  const profileActivityList = document.getElementById("profile-activity-list");
+  const profileFeed = document.getElementById("profile-feed");
+  const profileCreateSignal = document.getElementById("profile-create-signal");
+  const profileModeration = document.getElementById("profile-moderation");
+  const profileMembershipCta = document.getElementById("profile-membership-cta");
+  const profileManageBilling = document.getElementById("profile-manage-billing");
+  const profileSignOut = document.getElementById("profile-sign-out");
+  const profileStatus = document.getElementById("profile-status");
+  const ownerModeration = document.getElementById("owner-moderation");
+  const ownerModerationDim = document.getElementById("owner-moderation-dim");
+  const ownerModerationClose = document.getElementById("owner-moderation-close");
+  const ownerModerationTitle = document.getElementById("owner-moderation-title");
+  const ownerModerationLead = document.getElementById("owner-moderation-lead");
+  const ownerModerationReason = document.getElementById("owner-moderation-reason");
+  const ownerModerationStatus = document.getElementById("owner-moderation-status");
+  const ownerModerationError = document.getElementById("owner-moderation-error");
+  const ownerModerationSignalsTitle = document.getElementById(
+    "owner-moderation-signals-title"
+  );
+  const ownerModerationSignalsEmpty = document.getElementById(
+    "owner-moderation-signals-empty"
+  );
+  const ownerModerationSignalsList = document.getElementById(
+    "owner-moderation-signals-list"
+  );
+  const ownerModerationAccountsTitle = document.getElementById(
+    "owner-moderation-accounts-title"
+  );
+  const ownerModerationAccountsEmpty = document.getElementById(
+    "owner-moderation-accounts-empty"
+  );
+  const ownerModerationAccountsList = document.getElementById(
+    "owner-moderation-accounts-list"
+  );
+  const signalCreate = document.getElementById("signal-create");
+  const signalCreateDim = document.getElementById("signal-create-dim");
+  const signalCreateClose = document.getElementById("signal-create-close");
+  const signalCreateTitle = document.getElementById("signal-create-title");
+  const signalCreateLead = document.getElementById("signal-create-lead");
+  const signalCreateForm = document.getElementById("signal-create-form");
+  const signalCreateTitleInput = document.getElementById(
+    "signal-create-title-input"
+  );
+  const signalCreateDescription = document.getElementById(
+    "signal-create-description"
+  );
+  const signalCreateCategory = document.getElementById("signal-create-category");
+  const signalCreateRealName = document.getElementById("signal-create-real-name");
+  const signalCreatePhoto = document.getElementById("signal-create-photo");
+  const signalCreatePreview = document.getElementById("signal-create-preview");
+  const signalCreatePreviewImage = document.getElementById(
+    "signal-create-preview-image"
+  );
+  const signalCreateAccept = document.getElementById("signal-create-accept");
+  const signalCreateAcceptText = document.getElementById(
+    "signal-create-accept-text"
+  );
+  const signalCreateError = document.getElementById("signal-create-error");
+  const signalCreateSubmit = document.getElementById("signal-create-submit");
+  const signalCreateCancel = document.getElementById("signal-create-cancel");
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -96,7 +178,49 @@
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
   const detailDoneNote = document.getElementById("detail-done-note");
-  const detailAddTestimony = document.getElementById("detail-add-testimony");
+  const detailConfirmCount = document.getElementById("detail-confirm-count");
+  const detailSessionLabel = document.getElementById("detail-session-label");
+  const detailSessionBody = document.getElementById("detail-session-body");
+  const detailSessionEmpty = document.getElementById("detail-session-empty");
+  const detailSessionList = document.getElementById("detail-session-list");
+  const detailSessionContribute = document.getElementById(
+    "detail-session-contribute"
+  );
+  const detailSessionCompose = document.getElementById("detail-session-compose");
+  const detailSessionComposeTitle = document.getElementById(
+    "detail-session-compose-title"
+  );
+  const detailSessionComposeGuide = document.getElementById(
+    "detail-session-compose-guide"
+  );
+  const detailSessionInput = document.getElementById("detail-session-input");
+  const detailSessionIntent = document.getElementById("detail-session-intent");
+  const detailSessionIntentLegend = document.getElementById(
+    "detail-session-intent-legend"
+  );
+  const detailSessionIntentObservationLabel = document.getElementById(
+    "detail-session-intent-observation-label"
+  );
+  const detailSessionIntentProposalLabel = document.getElementById(
+    "detail-session-intent-proposal-label"
+  );
+  const detailSessionIntentNextStepLabel = document.getElementById(
+    "detail-session-intent-next-step-label"
+  );
+  const detailSessionAttach = document.getElementById("detail-session-attach");
+  const detailSessionPublish = document.getElementById("detail-session-publish");
+  const detailSessionCancel = document.getElementById("detail-session-cancel");
+  const detailSessionDemoNote = document.getElementById(
+    "detail-session-demo-note"
+  );
+  const detailTestimonyInput = document.getElementById("detail-testimony-input");
+  const detailTestimonyPreview = document.getElementById(
+    "detail-testimony-preview"
+  );
+  const detailTestimonyNote = document.getElementById("detail-testimony-note");
+  const detailTestimonyImage = document.getElementById("detail-testimony-image");
+  const detailTestimonyVideo = document.getElementById("detail-testimony-video");
+  const detailTestimonyClear = document.getElementById("detail-testimony-clear");
   const activeLabel = document.getElementById("active-label");
   const activeTitle = document.getElementById("active-title");
   const activeCommunity = document.getElementById("active-community");
@@ -378,6 +502,16 @@
     !navMembership ||
     !navChat ||
     !navActivity ||
+    !activityPanel ||
+    !activityDim ||
+    !activityClose ||
+    !activityLabel ||
+    !activityTitle ||
+    !activityLead ||
+    !activityStatus ||
+    !activityEmpty ||
+    !activityList ||
+    !activityFeed ||
     !navProfile ||
     !authWindow ||
     !authWindowDim ||
@@ -391,6 +525,58 @@
     !authContinue ||
     !authPasskey ||
     !authWindowStatus ||
+    !profilePanel ||
+    !profileDim ||
+    !profileClose ||
+    !profileLabel ||
+    !profileAvatar ||
+    !profileTitle ||
+    !profileHandle ||
+    !profileBio ||
+    !profileCommunity ||
+    !profileMembership ||
+    !profileActivityTitle ||
+    !profileActivityEmpty ||
+    !profileActivityList ||
+    !profileFeed ||
+    !profileCreateSignal ||
+    !profileModeration ||
+    !profileMembershipCta ||
+    !profileManageBilling ||
+    !profileSignOut ||
+    !profileStatus ||
+    !ownerModeration ||
+    !ownerModerationDim ||
+    !ownerModerationClose ||
+    !ownerModerationTitle ||
+    !ownerModerationLead ||
+    !ownerModerationReason ||
+    !ownerModerationStatus ||
+    !ownerModerationError ||
+    !ownerModerationSignalsTitle ||
+    !ownerModerationSignalsEmpty ||
+    !ownerModerationSignalsList ||
+    !ownerModerationAccountsTitle ||
+    !ownerModerationAccountsEmpty ||
+    !ownerModerationAccountsList ||
+    !signalCreate ||
+    !signalCreateDim ||
+    !signalCreateClose ||
+    !signalCreateTitle ||
+    !signalCreateLead ||
+    !signalCreateForm ||
+    !signalCreateTitleInput ||
+    !signalCreateDescription ||
+    !signalCreateCategory ||
+    !signalCreateRealName ||
+    !signalCreatePhoto ||
+    !signalCreatePreview ||
+    !signalCreatePreviewImage ||
+    !signalCreateAccept ||
+    !signalCreateAcceptText ||
+    !signalCreateError ||
+    !signalCreateSubmit ||
+    !signalCreateCancel ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -413,7 +599,31 @@
     !detailSeeTooDone ||
     !detailDoneTitle ||
     !detailDoneNote ||
-    !detailAddTestimony ||
+    !detailConfirmCount ||
+    !detailSessionLabel ||
+    !detailSessionBody ||
+    !detailSessionEmpty ||
+    !detailSessionList ||
+    !detailSessionContribute ||
+    !detailSessionCompose ||
+    !detailSessionComposeTitle ||
+    !detailSessionComposeGuide ||
+    !detailSessionInput ||
+    !detailSessionIntent ||
+    !detailSessionIntentLegend ||
+    !detailSessionIntentObservationLabel ||
+    !detailSessionIntentProposalLabel ||
+    !detailSessionIntentNextStepLabel ||
+    !detailSessionAttach ||
+    !detailSessionPublish ||
+    !detailSessionCancel ||
+    !detailSessionDemoNote ||
+    !detailTestimonyInput ||
+    !detailTestimonyPreview ||
+    !detailTestimonyNote ||
+    !detailTestimonyImage ||
+    !detailTestimonyVideo ||
+    !detailTestimonyClear ||
     !activeLabel ||
     !activeTitle ||
     !activeCommunity ||
@@ -817,6 +1027,10 @@
   };
 
   const API_BASE = "https://api-staging.towncivic.org";
+  // Owner product-testing only: unlocks canTakeCivicAction while API is staging.
+  // Does not invent backend canParticipate; strip after read. Not a production grant.
+  const PARTICIPATE_PREVIEW_STORAGE_KEY = "town.participatePreview";
+  const PARTICIPATE_PREVIEW_QUERY = "townParticipatePreview";
   const CITY_API_SLUG = {
     Milano: "milano-it",
     Munich: "munich-de",
@@ -1062,7 +1276,9 @@
       member: "Member · {city}",
       seeThisToo: "I SEE THIS TOO",
       doneTitle: "You see this too",
-      doneNote: "Confirmation recorded in the prototype",
+      doneNote: "Confirmation saved on TOWN",
+      confirmCount: "{count} confirmations",
+      confirmCountOne: "1 confirmation",
       openSignal: "Open signal",
       openSignalClose: "Close",
       whyLabel: "Why this matters here",
@@ -1070,9 +1286,35 @@
       updateLabel: "Latest update",
       statusLabel: "What this status means",
       communityArea: "{city} · {area}",
-      addTestimony: "Add testimony",
-      clearTestimony: "Remove",
-      demoTestimonyNote: "Demo only — not uploaded, not saved",
+      clearTestimony: "Remove media",
+      demoTestimonyNote: "Attached — uploads securely when you publish",
+      sessionLabel: "Session toward a solution",
+      sessionBody:
+        "This is not a chat. Paying members open a focused discussion on this signal — to turn what is seen into a local movement toward a solution.",
+      sessionEmpty:
+        "No session yet. The first contribution opens the discussion for this signal.",
+      sessionOpen: "Open a discussion session",
+      sessionContribute: "Add your contribution",
+      sessionComposeTitle: "Contribute to this signal",
+      sessionComposeGuide:
+        "Share a concrete observation, a local proposal, or a next step. Write to move the community toward a solution — not for empty talk.",
+      sessionAttach: "Attach photo or video",
+      sessionPublish: "Publish contribution",
+      sessionCancel: "Cancel",
+      sessionIntentLegend: "What kind of contribution is this?",
+      sessionIntentObservation: "Observation",
+      sessionIntentProposal: "Proposal",
+      sessionIntentNextStep: "Next step",
+      sessionNeedIntent: "Choose observation, proposal, or next step.",
+      sessionUnavailable:
+        "Couldn't reach TOWN for this session — try again later.",
+      sessionLocalOnly:
+        "This preview signal has no server session yet.",
+      sessionPublishFailed:
+        "Couldn't publish this contribution — try again.",
+      sessionNeedText:
+        "Write at least a short, concrete contribution before publishing.",
+      sessionYou: "You",
       cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
     },
     es: {
@@ -1081,7 +1323,9 @@
       member: "Miembro · {city}",
       seeThisToo: "YO TAMBIÉN LO VEO",
       doneTitle: "Tú también lo ves",
-      doneNote: "Confirmación registrada en el prototipo",
+      doneNote: "Confirmación guardada en TOWN",
+      confirmCount: "{count} confirmaciones",
+      confirmCountOne: "1 confirmación",
       openSignal: "Abrir señal",
       openSignalClose: "Cerrar",
       whyLabel: "Por qué importa aquí",
@@ -1089,9 +1333,35 @@
       updateLabel: "Última actualización",
       statusLabel: "Qué significa este estado",
       communityArea: "{city} · {area}",
-      addTestimony: "Añadir testimonio",
-      clearTestimony: "Eliminar",
-      demoTestimonyNote: "Solo demo — no se carga ni se guarda",
+      clearTestimony: "Quitar medio",
+      demoTestimonyNote: "Adjunto — se carga de forma segura al publicar",
+      sessionLabel: "Sesión hacia una solución",
+      sessionBody:
+        "Esto no es un chat. Los miembros de pago abren una discusión centrada en esta señal — para convertir lo visto en un movimiento local hacia una solución.",
+      sessionEmpty:
+        "Aún no hay sesión. La primera contribución abre la discusión de esta señal.",
+      sessionOpen: "Abrir una sesión de discusión",
+      sessionContribute: "Añadir tu contribución",
+      sessionComposeTitle: "Contribuir a esta señal",
+      sessionComposeGuide:
+        "Comparte una observación concreta, una propuesta local o un siguiente paso. Escribe para mover a la comunidad hacia una solución — no para hablar en vacío.",
+      sessionAttach: "Adjuntar foto o vídeo",
+      sessionPublish: "Publicar contribución",
+      sessionCancel: "Cancelar",
+      sessionIntentLegend: "¿Qué tipo de contribución es?",
+      sessionIntentObservation: "Observación",
+      sessionIntentProposal: "Propuesta",
+      sessionIntentNextStep: "Siguiente paso",
+      sessionNeedIntent: "Elige observación, propuesta o siguiente paso.",
+      sessionUnavailable:
+        "No se pudo contactar a TOWN para esta sesión — inténtalo de nuevo.",
+      sessionLocalOnly:
+        "Esta señal de vista previa aún no tiene sesión en el servidor.",
+      sessionPublishFailed:
+        "No se pudo publicar esta contribución — inténtalo de nuevo.",
+      sessionNeedText:
+        "Escribe al menos una contribución breve y concreta antes de publicar.",
+      sessionYou: "Tú",
       cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
     },
     it: {
@@ -1100,7 +1370,9 @@
       member: "Membro · {city}",
       seeThisToo: "LO VEDO ANCH’IO",
       doneTitle: "Lo vedi anche tu",
-      doneNote: "Conferma registrata nel prototipo",
+      doneNote: "Conferma salvata su TOWN",
+      confirmCount: "{count} conferme",
+      confirmCountOne: "1 conferma",
       openSignal: "Apri il segnale",
       openSignalClose: "Chiudi",
       whyLabel: "Perché conta qui",
@@ -1108,9 +1380,35 @@
       updateLabel: "Ultimo aggiornamento",
       statusLabel: "Cosa significa questo stato",
       communityArea: "{city} · {area}",
-      addTestimony: "Aggiungi testimonianza",
-      clearTestimony: "Rimuovi",
-      demoTestimonyNote: "Solo demo — non caricata, non salvata",
+      clearTestimony: "Rimuovi media",
+      demoTestimonyNote: "Allegato — viene caricato in sicurezza alla pubblicazione",
+      sessionLabel: "Sessione verso una soluzione",
+      sessionBody:
+        "Non è una chat. I membri paganti aprono una discussione focalizzata su questo segnale — per trasformare ciò che si vede in un movimento locale verso una soluzione.",
+      sessionEmpty:
+        "Nessuna sessione ancora. Il primo contributo apre la discussione su questo segnale.",
+      sessionOpen: "Apri una sessione di discussione",
+      sessionContribute: "Aggiungi il tuo contributo",
+      sessionComposeTitle: "Contribuisci a questo segnale",
+      sessionComposeGuide:
+        "Condividi un’osservazione concreta, una proposta locale o un passo successivo. Scrivi per avvicinare la comunità a una soluzione — non per parlare a vuoto.",
+      sessionAttach: "Allega foto o video",
+      sessionPublish: "Pubblica il contributo",
+      sessionCancel: "Annulla",
+      sessionIntentLegend: "Che tipo di contributo è?",
+      sessionIntentObservation: "Osservazione",
+      sessionIntentProposal: "Proposta",
+      sessionIntentNextStep: "Prossimo passo",
+      sessionNeedIntent: "Scegli osservazione, proposta o prossimo passo.",
+      sessionUnavailable:
+        "Impossibile raggiungere TOWN per questa sessione — riprova più tardi.",
+      sessionLocalOnly:
+        "Questo segnale di anteprima non ha ancora una sessione sul server.",
+      sessionPublishFailed:
+        "Impossibile pubblicare questo contributo — riprova.",
+      sessionNeedText:
+        "Scrivi almeno un contributo breve e concreto prima di pubblicare.",
+      sessionYou: "Tu",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1119,7 +1417,9 @@
       member: "Mitglied · {city}",
       seeThisToo: "ICH SEHE DAS AUCH",
       doneTitle: "Du siehst das auch",
-      doneNote: "Bestätigung im Prototyp registriert",
+      doneNote: "Bestätigung auf TOWN gespeichert",
+      confirmCount: "{count} Bestätigungen",
+      confirmCountOne: "1 Bestätigung",
       openSignal: "Signal öffnen",
       openSignalClose: "Schließen",
       whyLabel: "Warum das hier zählt",
@@ -1127,9 +1427,35 @@
       updateLabel: "Letzte Aktualisierung",
       statusLabel: "Was dieser Status bedeutet",
       communityArea: "{city} · {area}",
-      addTestimony: "Zeugnis hinzufügen",
-      clearTestimony: "Entfernen",
-      demoTestimonyNote: "Nur Demo — nicht hochgeladen, nicht gespeichert",
+      clearTestimony: "Medium entfernen",
+      demoTestimonyNote: "Angehängt — wird beim Veröffentlichen sicher hochgeladen",
+      sessionLabel: "Sitzung auf dem Weg zur Lösung",
+      sessionBody:
+        "Das ist kein Chat. Zahlende Mitglieder eröffnen eine fokussierte Diskussion zu diesem Signal — damit aus dem Gesehenen eine lokale Bewegung zur Lösung wird.",
+      sessionEmpty:
+        "Noch keine Sitzung. Der erste Beitrag eröffnet die Diskussion zu diesem Signal.",
+      sessionOpen: "Diskussionssitzung eröffnen",
+      sessionContribute: "Deinen Beitrag hinzufügen",
+      sessionComposeTitle: "Zu diesem Signal beitragen",
+      sessionComposeGuide:
+        "Teile eine konkrete Beobachtung, einen lokalen Vorschlag oder einen nächsten Schritt. Schreibe, um die Gemeinschaft einer Lösung näherzubringen — nicht für leeres Gerede.",
+      sessionAttach: "Foto oder Video anhängen",
+      sessionPublish: "Beitrag veröffentlichen",
+      sessionCancel: "Abbrechen",
+      sessionIntentLegend: "Welche Art von Beitrag ist das?",
+      sessionIntentObservation: "Beobachtung",
+      sessionIntentProposal: "Vorschlag",
+      sessionIntentNextStep: "Nächster Schritt",
+      sessionNeedIntent: "Wähle Beobachtung, Vorschlag oder nächsten Schritt.",
+      sessionUnavailable:
+        "TOWN ist für diese Sitzung nicht erreichbar — später erneut versuchen.",
+      sessionLocalOnly:
+        "Dieses Vorschau-Signal hat noch keine Serversitzung.",
+      sessionPublishFailed:
+        "Dieser Beitrag konnte nicht veröffentlicht werden — erneut versuchen.",
+      sessionNeedText:
+        "Schreibe mindestens einen kurzen, konkreten Beitrag vor dem Veröffentlichen.",
+      sessionYou: "Du",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1138,7 +1464,9 @@
       member: "Membru · {city}",
       seeThisToo: "VĂD ȘI EU ASTA",
       doneTitle: "Vezi și tu",
-      doneNote: "Confirmare înregistrată în prototip",
+      doneNote: "Confirmare salvată pe TOWN",
+      confirmCount: "{count} confirmări",
+      confirmCountOne: "1 confirmare",
       openSignal: "Deschide semnalul",
       openSignalClose: "Închide",
       whyLabel: "De ce contează aici",
@@ -1146,9 +1474,35 @@
       updateLabel: "Ultima actualizare",
       statusLabel: "Ce înseamnă această stare",
       communityArea: "{city} · {area}",
-      addTestimony: "Adaugă mărturie",
-      clearTestimony: "Elimină",
-      demoTestimonyNote: "Doar demo — nu este încărcată, nu este salvată",
+      clearTestimony: "Elimină media",
+      demoTestimonyNote: "Atașat — se încarcă în siguranță la publicare",
+      sessionLabel: "Sesiune către o soluție",
+      sessionBody:
+        "Nu este un chat. Membrii care plătesc deschid o discuție concentrată pe acest semnal — ca ceea ce se vede să devină o mișcare locală către o soluție.",
+      sessionEmpty:
+        "Nicio sesiune încă. Prima contribuție deschide discuția pe acest semnal.",
+      sessionOpen: "Deschide o sesiune de discuții",
+      sessionContribute: "Adaugă contribuția ta",
+      sessionComposeTitle: "Contribuie la acest semnal",
+      sessionComposeGuide:
+        "Spune o observație concretă, o propunere locală sau un pas următor. Scrie ca să muți comunitatea spre o soluție — nu pentru vorbă goală.",
+      sessionAttach: "Atașează foto sau video",
+      sessionPublish: "Publică contribuția",
+      sessionCancel: "Anulează",
+      sessionIntentLegend: "Ce fel de contribuție este?",
+      sessionIntentObservation: "Observație",
+      sessionIntentProposal: "Propunere",
+      sessionIntentNextStep: "Pas următor",
+      sessionNeedIntent: "Alege observație, propunere sau pas următor.",
+      sessionUnavailable:
+        "Nu am putut contacta TOWN pentru această sesiune — încearcă din nou.",
+      sessionLocalOnly:
+        "Acest semnal de previzualizare nu are încă sesiune pe server.",
+      sessionPublishFailed:
+        "Nu am putut publica această contribuție — încearcă din nou.",
+      sessionNeedText:
+        "Scrie cel puțin o contribuție scurtă și concretă înainte de publicare.",
+      sessionYou: "Tu",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1180,7 +1534,7 @@
       ],
       rightsTitle: "Con una membership attiva puoi:",
       rights:
-        "Confermare segnali, pubblicare, commentare e partecipare alle decisioni della comunità.",
+        "Confermare segnali, aprire sessioni di discussione verso una soluzione e partecipare alle decisioni della comunità.",
       endedTitle:
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
@@ -1213,7 +1567,7 @@
       ],
       rightsTitle: "Mit einer aktiven Mitgliedschaft kannst du:",
       rights:
-        "Signale bestätigen, Beiträge veröffentlichen, kommentieren und an Entscheidungen der Gemeinschaft teilnehmen.",
+        "Signale bestätigen, Diskussionssitzungen auf dem Weg zur Lösung eröffnen und an Entscheidungen der Gemeinschaft teilnehmen.",
       endedTitle:
         "TOWN ist für Menschen, die bereit sind, sich an ihrer Gemeinschaft zu beteiligen.",
       endedBody:
@@ -1247,7 +1601,7 @@
       ],
       rightsTitle: "Cu un membership activ poți:",
       rights:
-        "Confirma semnale, publica, comenta și participa la deciziile comunității.",
+        "Confirma semnale, deschide sesiuni de discuții către o soluție și participa la deciziile comunității.",
       endedTitle:
         "TOWN este pentru cei gata să participe în comunitatea lor.",
       endedBody: "Poți reveni când ești pregătit să faci parte din ea.",
@@ -1968,6 +2322,142 @@
     },
   };
 
+  // Profile V1 — registered civic identity. No invented blog/social fields.
+  const PROFILE_COPY = {
+    en: {
+      label: "Your profile",
+      close: "Close",
+      defaultName: "TOWN neighbour",
+      handleFallback: "Registered account",
+      bioRegistered:
+        "Registered on TOWN. Local civic participation opens with active membership.",
+      bioMember:
+        "Active local member. You can confirm signals in your community.",
+      bioPaidPending:
+        "Membership recorded. Local participation is not available yet.",
+      communityNone: "Community: not chosen yet",
+      communityLine: "Community: {community}",
+      membershipNone: "Membership: not active",
+      membershipPaid: "Membership: active",
+      membershipPending: "Membership: paid — participation pending",
+      membershipOther: "Membership: {status}",
+      activityTitle: "Civic activity",
+      activityEmpty:
+        "No confirmations yet. Open a local signal and tap I SEE THIS TOO when you are ready.",
+      activityConfirmed: "You see this too",
+      feedCta: "Back to feed",
+      membershipCta: "Continue membership",
+      manageBillingCta: "Manage membership",
+      signOutCta: "Sign out",
+      signingOut: "Signing out…",
+      openingPortal: "Opening membership portal…",
+      errorSignOut: "Could not sign out. Try again.",
+      errorPortal:
+        "Could not open membership management. Try again in a moment.",
+      errorPortalUnavailable:
+        "Membership management is not available for this account yet.",
+    },
+    it: {
+      label: "Il tuo profilo",
+      close: "Chiudi",
+      defaultName: "Vicino TOWN",
+      handleFallback: "Account registrato",
+      bioRegistered:
+        "Registrato su TOWN. La partecipazione civica locale si apre con l’iscrizione attiva.",
+      bioMember:
+        "Membro locale attivo. Puoi confermare i segnali nella tua comunità.",
+      bioPaidPending:
+        "Iscrizione registrata. La partecipazione locale non è ancora disponibile.",
+      communityNone: "Comunità: non ancora scelta",
+      communityLine: "Comunità: {community}",
+      membershipNone: "Iscrizione: non attiva",
+      membershipPaid: "Iscrizione: attiva",
+      membershipPending: "Iscrizione: pagata — partecipazione in attesa",
+      membershipOther: "Iscrizione: {status}",
+      activityTitle: "Attività civica",
+      activityEmpty:
+        "Nessuna conferma ancora. Apri un segnale locale e tocca LO VEDO ANCH’IO quando sei pronto.",
+      activityConfirmed: "Lo vedi anche tu",
+      feedCta: "Torna al feed",
+      membershipCta: "Continua l’iscrizione",
+      manageBillingCta: "Gestisci l’iscrizione",
+      signOutCta: "Esci",
+      signingOut: "Disconnessione…",
+      openingPortal: "Apertura del portale iscrizione…",
+      errorSignOut: "Impossibile uscire. Riprova.",
+      errorPortal:
+        "Impossibile aprire la gestione iscrizione. Riprova tra poco.",
+      errorPortalUnavailable:
+        "La gestione iscrizione non è ancora disponibile per questo account.",
+    },
+    de: {
+      label: "Dein Profil",
+      close: "Schließen",
+      defaultName: "TOWN-Nachbar",
+      handleFallback: "Registriertes Konto",
+      bioRegistered:
+        "Bei TOWN registriert. Lokale Mitwirkung öffnet sich mit aktiver Mitgliedschaft.",
+      bioMember:
+        "Aktives lokales Mitglied. Du kannst Signale in deiner Gemeinde bestätigen.",
+      bioPaidPending:
+        "Mitgliedschaft erfasst. Lokale Mitwirkung ist noch nicht verfügbar.",
+      communityNone: "Gemeinde: noch nicht gewählt",
+      communityLine: "Gemeinde: {community}",
+      membershipNone: "Mitgliedschaft: nicht aktiv",
+      membershipPaid: "Mitgliedschaft: aktiv",
+      membershipPending: "Mitgliedschaft: bezahlt — Mitwirkung ausstehend",
+      membershipOther: "Mitgliedschaft: {status}",
+      activityTitle: "Bürgerliche Aktivität",
+      activityEmpty:
+        "Noch keine Bestätigungen. Öffne ein lokales Signal und tippe ICH SEHE DAS AUCH, wenn du bereit bist.",
+      activityConfirmed: "Du siehst das auch",
+      feedCta: "Zurück zum Feed",
+      membershipCta: "Mitgliedschaft fortsetzen",
+      manageBillingCta: "Mitgliedschaft verwalten",
+      signOutCta: "Abmelden",
+      signingOut: "Abmelden…",
+      openingPortal: "Mitgliedschaftsportal wird geöffnet…",
+      errorSignOut: "Abmelden fehlgeschlagen. Bitte erneut versuchen.",
+      errorPortal:
+        "Mitgliedschaftsverwaltung konnte nicht geöffnet werden. Bitte gleich erneut versuchen.",
+      errorPortalUnavailable:
+        "Mitgliedschaftsverwaltung ist für dieses Konto noch nicht verfügbar.",
+    },
+    ro: {
+      label: "Profilul tău",
+      close: "Închide",
+      defaultName: "Vecin TOWN",
+      handleFallback: "Cont înregistrat",
+      bioRegistered:
+        "Înregistrat pe TOWN. Participarea civică locală se deschide cu membership activ.",
+      bioMember:
+        "Membru local activ. Poți confirma semnale în comunitatea ta.",
+      bioPaidPending:
+        "Membership înregistrat. Participarea locală nu este încă disponibilă.",
+      communityNone: "Comunitate: încă nealeasă",
+      communityLine: "Comunitate: {community}",
+      membershipNone: "Membership: inactiv",
+      membershipPaid: "Membership: activ",
+      membershipPending: "Membership: plătit — participare în așteptare",
+      membershipOther: "Membership: {status}",
+      activityTitle: "Activitate civică",
+      activityEmpty:
+        "Nicio confirmare încă. Deschide un semnal local și apasă VĂD ȘI EU ASTA când ești gata.",
+      activityConfirmed: "Vezi și tu",
+      feedCta: "Înapoi la feed",
+      membershipCta: "Continuă membership-ul",
+      manageBillingCta: "Gestionează membership-ul",
+      signOutCta: "Deconectare",
+      signingOut: "Se deconectează…",
+      openingPortal: "Se deschide portalul de membership…",
+      errorSignOut: "Nu s-a putut deconecta. Încearcă din nou.",
+      errorPortal:
+        "Nu s-a putut deschide gestionarea membership-ului. Încearcă din nou.",
+      errorPortalUnavailable:
+        "Gestionarea membership-ului nu este încă disponibilă pentru acest cont.",
+    },
+  };
+
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Public product-only mode: visitors land on the existing feed only.
@@ -2216,10 +2706,76 @@
     );
   }
 
+  function isStagingApiBase() {
+    return String(API_BASE || "").indexOf("api-staging.towncivic.org") !== -1;
+  }
+
+  function isOwnerParticipatePreviewEnabled() {
+    if (!isStagingApiBase()) return false;
+    try {
+      return (
+        window.localStorage.getItem(PARTICIPATE_PREVIEW_STORAGE_KEY) === "1"
+      );
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  function setOwnerParticipatePreviewEnabled(enabled) {
+    if (!isStagingApiBase()) return false;
+    try {
+      if (enabled) {
+        window.localStorage.setItem(PARTICIPATE_PREVIEW_STORAGE_KEY, "1");
+      } else {
+        window.localStorage.removeItem(PARTICIPATE_PREVIEW_STORAGE_KEY);
+      }
+      return true;
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  // Staging-only owner path: paid (or paid_pending_binding) + signed-in session.
+  // Lets the product owner feel member UX on towncivic.org before backend grant.
+  function ownerParticipatePreviewAllowsCivicAction() {
+    if (!isOwnerParticipatePreviewEnabled()) return false;
+    if (!sessionAuthenticated) return false;
+    if (!membershipRecoveryApi || !membershipSnapshot) return false;
+    return (
+      membershipRecoveryApi.isPaidMembership(membershipSnapshot) ||
+      membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot)
+    );
+  }
+
+  function applyOwnerParticipatePreviewFromUrl() {
+    try {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has(PARTICIPATE_PREVIEW_QUERY)) return;
+      const raw = String(
+        url.searchParams.get(PARTICIPATE_PREVIEW_QUERY) || ""
+      ).toLowerCase();
+      if (raw === "1" || raw === "true" || raw === "on") {
+        setOwnerParticipatePreviewEnabled(true);
+      } else if (raw === "0" || raw === "false" || raw === "off") {
+        setOwnerParticipatePreviewEnabled(false);
+      }
+      url.searchParams.delete(PARTICIPATE_PREVIEW_QUERY);
+      window.history.replaceState(
+        {},
+        "",
+        url.pathname + url.search + url.hash
+      );
+    } catch (_err) {
+      /* ignore URL helpers */
+    }
+  }
+
   // Civic participation: fail closed unless backend canParticipate is true
   // and status is not paid_pending_binding. Prototype-only membershipSimulated
-  // is not used for production auth.
+  // is not used for production auth. Staging owner preview is an explicit
+  // product-test unlock only — never a silent grant.
   function canTakeCivicAction() {
+    if (ownerParticipatePreviewAllowsCivicAction()) return true;
     if (!membershipRecoveryApi) return false;
     return (
       membershipRecoveryApi.enablesCivicParticipation(membershipSnapshot) ===
@@ -2227,10 +2783,217 @@
     );
   }
 
+  // Owner moderation UI gate: accounts.is_owner from membership self-read only.
+  // Distinct from staging participate-preview localStorage unlock.
+  function canUseOwnerModeration() {
+    return !!(
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isOwnerAccount(membershipSnapshot)
+    );
+  }
+
   function isMemberPresented() {
     if (hasAuthoritativePaidMembership()) return true;
     // Legacy prototype simulate path only when no authoritative snapshot exists.
     return membershipSnapshot === null && membershipSimulated === true;
+  }
+
+  // Eligible to complete "I SEE THIS TOO" as a civic confirmation.
+  // Matches the active-return prototype gate: backend canParticipate, or the
+  // legacy simulate path when no authoritative snapshot exists.
+  function canConfirmSeeTooAction() {
+    return (
+      canTakeCivicAction() ||
+      (membershipSnapshot === null && membershipSimulated === true)
+    );
+  }
+
+  function signalApiIdForScene(scene) {
+    if (!scene) return null;
+    if (isSignalApiId(scene.signalId)) return String(scene.signalId);
+    if (isSignalApiId(scene.id)) return String(scene.id);
+    return null;
+  }
+
+  function signalConfirmationKeyForIndex(index) {
+    const scenes = currentScenes();
+    const scene = scenes[index];
+    const apiId = signalApiIdForScene(scene);
+    if (apiId) return apiId;
+    if (scene && scene.id) return String(scene.id);
+    return String(selectedCity || "city") + ":" + String(index);
+  }
+
+  function getSignalConfirmationState(index) {
+    const key = signalConfirmationKeyForIndex(index);
+    const state = signalConfirmationState[key];
+    if (!state) {
+      return { confirmed: false, confirmationCount: 0 };
+    }
+    return {
+      confirmed: state.confirmed === true,
+      confirmationCount:
+        typeof state.confirmationCount === "number" && state.confirmationCount > 0
+          ? state.confirmationCount
+          : 0,
+    };
+  }
+
+  function setSignalConfirmationState(key, patch) {
+    if (!key) return;
+    const prev = signalConfirmationState[key] || {
+      confirmed: false,
+      confirmationCount: 0,
+    };
+    signalConfirmationState[key] = {
+      confirmed:
+        patch.confirmed !== undefined ? !!patch.confirmed : !!prev.confirmed,
+      confirmationCount:
+        typeof patch.confirmationCount === "number"
+          ? patch.confirmationCount
+          : prev.confirmationCount || 0,
+    };
+  }
+
+  function clearSignalConfirmationState() {
+    for (const key of Object.keys(signalConfirmationState)) {
+      delete signalConfirmationState[key];
+    }
+  }
+
+  function formatConfirmCountLabel(copy, count) {
+    const n = typeof count === "number" && count > 0 ? count : 0;
+    if (n === 1) {
+      return copy.confirmCountOne || "1 confirmation";
+    }
+    return (copy.confirmCount || "{count} confirmations").replace(
+      "{count}",
+      String(n)
+    );
+  }
+
+  function applyConfirmCountLabel(el, copy, count) {
+    if (!el) return;
+    const n = typeof count === "number" && count > 0 ? count : 0;
+    if (n < 1) {
+      el.textContent = "";
+      el.hidden = true;
+      return;
+    }
+    el.textContent = formatConfirmCountLabel(copy, n);
+    el.hidden = false;
+  }
+
+  // Shared feed/detail activation: confirm when eligible, otherwise open the
+  // existing membership boundary invite for visitor / registered / unpaid paths.
+  // Invite paths capture pending see-too context so public Sign-in can restore
+  // the originating signal afterward.
+  async function activateSeeTooAction(options) {
+    const closeDetail = !!(options && options.closeDetail);
+    if (closeDetail) closeSignalDetail();
+    else closeSignalSheet();
+    originatingFeedIndex = feedIndex;
+    if (!canConfirmSeeTooAction()) {
+      capturePendingSeeTooContext();
+      openInvite();
+      return "invite";
+    }
+    if (seeTooConfirmSubmitting) return "busy";
+
+    const key = signalConfirmationKeyForIndex(feedIndex);
+    const apiId = signalApiIdForScene(currentScenes()[feedIndex]);
+
+    // Legacy simulate path or mock scenes without a live UUID: local done-state only.
+    if (!canTakeCivicAction() || !apiId) {
+      clearPendingSeeTooContext();
+      const prev = getSignalConfirmationState(feedIndex);
+      setSignalConfirmationState(key, {
+        confirmed: true,
+        confirmationCount: Math.max(1, prev.confirmationCount + (prev.confirmed ? 0 : 1)),
+      });
+      syncFeedMemberState();
+      return "confirmed";
+    }
+
+    seeTooConfirmSubmitting = true;
+    try {
+      const result = await putJsonWithCredentials(
+        API_BASE +
+          "/v1/signals/" +
+          encodeURIComponent(apiId) +
+          "/confirmation",
+        {}
+      );
+      if (
+        result.response &&
+        result.response.status === 200 &&
+        result.payload &&
+        result.payload.data &&
+        result.payload.data.confirmed === true
+      ) {
+        clearPendingSeeTooContext();
+        setSignalConfirmationState(key, {
+          confirmed: true,
+          confirmationCount:
+            typeof result.payload.data.confirmationCount === "number"
+              ? result.payload.data.confirmationCount
+              : 1,
+        });
+        syncFeedMemberState();
+        return "confirmed";
+      }
+      if (result.response && result.response.status === 403) {
+        capturePendingSeeTooContext();
+        openInvite();
+        return "invite";
+      }
+      syncFeedMemberState();
+      return "failed";
+    } catch (_err) {
+      syncFeedMemberState();
+      return "failed";
+    } finally {
+      seeTooConfirmSubmitting = false;
+    }
+  }
+
+  async function refreshViewerSignalConfirmations() {
+    if (!canTakeCivicAction()) return;
+    const scenes = currentScenes();
+    const jobs = [];
+    for (let i = 0; i < scenes.length; i++) {
+      const apiId = signalApiIdForScene(scenes[i]);
+      if (!apiId) continue;
+      jobs.push(
+        getJsonWithCredentials(
+          API_BASE +
+            "/v1/signals/" +
+            encodeURIComponent(apiId) +
+            "/confirmation"
+        ).then(function (result) {
+          if (
+            result.response &&
+            result.response.ok &&
+            result.payload &&
+            result.payload.data
+          ) {
+            setSignalConfirmationState(apiId, {
+              confirmed: result.payload.data.confirmed === true,
+              confirmationCount:
+                typeof result.payload.data.confirmationCount === "number"
+                  ? result.payload.data.confirmationCount
+                  : 0,
+            });
+          }
+        }).catch(function () {
+          /* fail closed — keep prior count from signal detail if any */
+        })
+      );
+    }
+    if (jobs.length) {
+      await Promise.all(jobs);
+      syncFeedMemberState();
+    }
   }
 
   function setCheckoutPendingMarker() {
@@ -2251,6 +3014,9 @@
   function applyMembershipSnapshot(snapshot) {
     membershipSnapshot = snapshot;
     syncFeedMemberState();
+    if (canTakeCivicAction()) {
+      refreshViewerSignalConfirmations();
+    }
   }
 
   function stopMembershipRecoveryPolling(reason) {
@@ -2491,6 +3257,8 @@
   // signalId is the stable scene identity; feedIndex is only a rendering aid.
   let pendingSeeTooContext = null;
   let enteredEmail = "";
+  // Best-effort account email for Profile V1 (create-account or session payload).
+  let accountEmail = "";
   let emailVerificationId = null;
   let setupGrant = null;
   let setupGrantExpiresAt = null;
@@ -2501,7 +3269,25 @@
   let passkeySubmitting = false;
   let membershipSimulated = false;
   let paymentCheckoutSubmitting = false;
-  let signalConfirmed = false;
+  // Per-signal confirmation state from API (or local fallback for mock scenes).
+  // Keyed by signal UUID / scene id: { confirmed, confirmationCount }.
+  const signalConfirmationState = Object.create(null);
+  let seeTooConfirmSubmitting = false;
+  // Optional pending media for the compose surface (local preview until publish).
+  // On publish, bytes are uploaded to town-api private object storage.
+  let demoTestimony = null;
+  let demoTestimonyFeedIndex = null;
+  const sessionMediaObjectUrls = [];
+  const ALLOWED_CONTRIBUTION_MEDIA_TYPES = {
+    "image/jpeg": "image",
+    "image/png": "image",
+    "image/webp": "image",
+    "video/mp4": "video",
+  };
+  // Cache of discussion-session GET/POST responses keyed by scene/API id.
+  const signalSessionCache = Object.create(null);
+  let sessionPublishSubmitting = false;
+  let sessionLoadToken = 0;
   let sessionAuthenticated = false;
   let commitmentCountry = null;
   let commitmentCity = null;
@@ -2512,6 +3298,8 @@
   const communityCommitmentApi = window.TownCommunityCommitment || null;
   let loginSubmitting = false;
   let authSignInSubmitting = false;
+  let profileBillingSubmitting = false;
+  let profileSignOutSubmitting = false;
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
@@ -2721,6 +3509,18 @@
     return fallback;
   }
 
+  function resolveSignalDetailImage(detail, cityId) {
+    if (
+      detail &&
+      detail.imageMedia &&
+      detail.imageMedia.url &&
+      String(detail.imageMedia.url).indexOf("/v1/signals/") === 0
+    ) {
+      return API_BASE + detail.imageMedia.url;
+    }
+    return resolveSceneImage(detail && detail.imageKey, cityId);
+  }
+
   function mapSignalDetailToScene(detail, cityId) {
     const localeTag =
       detail.locale ||
@@ -2745,6 +3545,8 @@
 
     return {
       id: detail.slug || detail.id,
+      // Canonical UUID for discussion-session and other signal-scoped APIs.
+      signalId: detail.id || "",
       category: detail.category || "",
       authorName: detail.authorDisplayName || "",
       observedTime: observedLabel,
@@ -2752,7 +3554,7 @@
       area: detail.area || "",
       headline: detail.headline || "",
       summary: detail.summary || "",
-      image: resolveSceneImage(detail.imageKey, cityId),
+      image: resolveSignalDetailImage(detail, cityId),
       focus: focusX + "% " + focusY + "%",
       civicStatus: detail.statusLabel || "",
       description: detail.description || "",
@@ -2760,6 +3562,10 @@
       whoAffected: detail.whoIsAffected || "",
       latestUpdate: detail.latestUpdate || "",
       statusNote: detail.statusNote || "",
+      confirmationCount:
+        typeof detail.confirmationCount === "number"
+          ? detail.confirmationCount
+          : 0,
     };
   }
 
@@ -2823,10 +3629,48 @@
     return { response: response, payload: payload };
   }
 
+  async function putJsonWithCredentials(url, body) {
+    const response = await requestJson(url, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body == null ? {} : body),
+      credentials: "include",
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
   async function getJsonWithCredentials(url) {
     const response = await requestJson(url, {
       method: "GET",
       headers: { Accept: "application/json" },
+      credentials: "include",
+    });
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch (_err) {
+      payload = null;
+    }
+    return { response: response, payload: payload };
+  }
+
+  async function postBinaryWithCredentials(url, body, contentType) {
+    const response = await requestJson(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": contentType,
+      },
+      body: body,
       credentials: "include",
     });
     let payload = null;
@@ -2990,17 +3834,28 @@
         })
       );
 
-      const scenes = details
-        .filter(Boolean)
-        .map(function (detail) {
-          return mapSignalDetailToScene(detail, cityId);
-        });
+      const scenes = [];
+      for (let i = 0; i < details.length; i++) {
+        const detail = details[i];
+        if (!detail) continue;
+        const scene = mapSignalDetailToScene(detail, cityId);
+        scenes.push(scene);
+        const apiId = signalApiIdForScene(scene);
+        if (apiId && typeof detail.confirmationCount === "number") {
+          setSignalConfirmationState(apiId, {
+            confirmationCount: detail.confirmationCount,
+          });
+        }
+      }
 
       if (scenes.length < 1) {
         throw new Error("no mappable signal details for " + slug);
       }
 
       liveScenes[cityId] = scenes;
+      if (canTakeCivicAction()) {
+        refreshViewerSignalConfirmations();
+      }
       return true;
     } catch (err) {
       liveScenes[cityId] = null;
@@ -3352,9 +4207,47 @@
       !membershipInvite.hidden ||
       !signalDetail.hidden ||
       !authWindow.hidden ||
+      !profilePanel.hidden ||
+      !activityPanel.hidden ||
+      !signalCreate.hidden ||
+      !ownerModeration.hidden ||
       (termsSheet && !termsSheet.hidden) ||
       (sheet && !sheet.hidden)
     );
+  }
+
+  function noteAccountEmail(value) {
+    if (typeof value !== "string") return;
+    const trimmed = value.trim();
+    if (EMAIL_PATTERN.test(trimmed)) accountEmail = trimmed;
+  }
+
+  function profileDisplayName(email) {
+    if (!email) return "";
+    const local = email.split("@")[0] || "";
+    const cleaned = local.replace(/[._-]+/g, " ").trim();
+    if (!cleaned) return "";
+    return cleaned
+      .split(/\s+/)
+      .map(function (part) {
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      })
+      .join(" ");
+  }
+
+  function profileLang() {
+    const lang = resolvePublicReadingLanguage();
+    return PROFILE_COPY[lang] ? lang : "en";
+  }
+
+  function setNavActive(button) {
+    [navHome, navMembership, navChat, navActivity, navProfile].forEach((btn) => {
+      if (!btn) return;
+      const active = btn === button;
+      btn.classList.toggle("is-active", active);
+      if (active) btn.setAttribute("aria-current", "page");
+      else btn.removeAttribute("aria-current");
+    });
   }
 
   function isFeedSurfaceActive() {
@@ -3396,8 +4289,9 @@
     const doneNote = feedRole("feed-done-note", panel);
     const memberPresented = isMemberPresented();
     const civicOk = canTakeCivicAction();
-    const onOrigin =
-      signalConfirmed && civicOk && panelIndex === originatingFeedIndex;
+    const confirmation = getSignalConfirmationState(panelIndex);
+    const onConfirmed = confirmation.confirmed && canConfirmSeeTooAction();
+    const confirmCountEl = feedRole("feed-confirm-count", panel);
 
     if (visitorEl) {
       if (
@@ -3415,18 +4309,16 @@
     }
     if (doneTitle) doneTitle.textContent = copy.doneTitle;
     if (doneNote) doneNote.textContent = copy.doneNote;
+    applyConfirmCountLabel(confirmCountEl, copy, confirmation.confirmationCount);
 
     if (!seeToo || !seeTooDone) return;
 
-    if (onOrigin) {
+    // Keep I SEE THIS TOO active for visitors, registered accounts, and paying
+    // members. Confirmed done-state replaces it per signal after a successful save.
+    if (onConfirmed) {
       seeToo.hidden = true;
       seeToo.disabled = true;
       seeTooDone.hidden = false;
-    } else if (memberPresented) {
-      // Paid member (or prototype): no visitor CTA; civic actions require canParticipate.
-      seeToo.hidden = true;
-      seeToo.disabled = true;
-      seeTooDone.hidden = true;
     } else {
       seeToo.hidden = false;
       seeToo.disabled = false;
@@ -3478,17 +4370,18 @@
     detailDoneTitle.textContent = copy.doneTitle;
     detailDoneNote.textContent = copy.doneNote;
     detailSeeToo.textContent = copy.seeThisToo;
+    const confirmation = getSignalConfirmationState(feedIndex);
+    applyConfirmCountLabel(
+      detailConfirmCount,
+      copy,
+      confirmation.confirmationCount
+    );
 
-    const onOrigin =
-      signalConfirmed && civicOk && feedIndex === originatingFeedIndex;
-    if (onOrigin) {
+    const onConfirmed = confirmation.confirmed && canConfirmSeeTooAction();
+    if (onConfirmed) {
       detailSeeToo.hidden = true;
       detailSeeToo.disabled = true;
       detailSeeTooDone.hidden = false;
-    } else if (memberPresented) {
-      detailSeeToo.hidden = true;
-      detailSeeToo.disabled = true;
-      detailSeeTooDone.hidden = true;
     } else {
       detailSeeToo.hidden = false;
       detailSeeToo.disabled = false;
@@ -3535,7 +4428,7 @@
     detailWhoLabel.textContent = copy.whoLabel;
     detailUpdateLabel.textContent = copy.updateLabel;
     detailStatusLabel.textContent = copy.statusLabel;
-    detailAddTestimony.textContent = copy.addTestimony;
+    applySignalSessionCopy(currentFeedCopy());
     syncFeedMemberState();
     document.documentElement.lang = readingLang === "en" ? "en" : readingLang;
   }
@@ -3581,6 +4474,9 @@
     detailWho.textContent = view.whoAffected || "";
     detailUpdate.textContent = view.latestUpdate || "";
     detailStatusNote.textContent = view.statusNote || "";
+    closeSessionCompose({ keepDraft: false });
+    renderSignalSession();
+    loadSignalDiscussionSession();
     syncFeedMemberState();
   }
 
@@ -4021,7 +4917,20 @@
   // Post-auth destination for the public Sign-in window. Membership and
   // community-commitment state must already be refreshed from the backend.
   function continueAfterPublicPasskeySignIn() {
+    const openedFor = authOpenedByTarget;
     closeAuthWindow();
+    if (openedFor === "profile") {
+      // PROFILE nav Sign-in: land on Profile V1, not commitment.
+      syncFeedMemberState();
+      openProfilePanel();
+      return;
+    }
+    if (openedFor === "activity") {
+      // ACTIVITY nav Sign-in: land on Activity from backend truth.
+      syncFeedMemberState();
+      openActivityPanel();
+      return;
+    }
     if (hasAuthoritativePaidMembership()) {
       // Paid member: remain on the public feed with authoritative member UI.
       clearPendingSeeTooContext();
@@ -4144,9 +5053,1336 @@
     const status = result.response.status;
     const data = result.payload && result.payload.data;
     if (status === 200 && data && data.authenticated === true) {
+      if (data.email) noteAccountEmail(data.email);
       return data;
     }
     throw makeApiError("failed");
+  }
+
+  const SIGNAL_CREATE_CATEGORIES = {
+    Milano: ["SPAZIO PUBBLICO", "ILLUMINAZIONE", "LAVORI PUBBLICI"],
+    Munich: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Arad: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+  };
+
+  const SIGNAL_CREATE_COPY = {
+    it: {
+      profileCta: "Pubblica un segnale civico",
+      title: "Pubblica un segnale civico",
+      lead:
+        "Pubblica con il tuo nome reale nella tua comunità. Hai già accettato la responsabilità personale come membro TOWN — confermala di nuovo per questa pubblicazione.",
+      titleLabel: "Titolo",
+      descriptionLabel: "Descrizione",
+      categoryLabel: "Categoria",
+      realNameLabel: "Nome reale",
+      photoLabel: "Fotografia",
+      acceptText:
+        "Pubblico con il mio nome reale e accetto la responsabilità personale per questo segnale, secondo le regole di membership TOWN che ho già accettato.",
+      submit: "Pubblica segnale",
+      cancel: "Annulla",
+      close: "Chiudi",
+      errorGeneric: "Non è stato possibile pubblicare. Riprova.",
+      errorPhoto: "Scegli una foto JPEG, PNG o WebP.",
+      errorAccept: "Conferma la responsabilità personale per pubblicare.",
+      errorName: "Usa il tuo nome e cognome reali, non un username.",
+    },
+    de: {
+      profileCta: "Ziviles Signal veröffentlichen",
+      title: "Ziviles Signal veröffentlichen",
+      lead:
+        "Veröffentliche unter deinem echten Namen in deiner Gemeinschaft. Du hast die persönliche Verantwortung als TOWN-Mitglied bereits akzeptiert — bestätige sie erneut für diese Veröffentlichung.",
+      titleLabel: "Titel",
+      descriptionLabel: "Beschreibung",
+      categoryLabel: "Kategorie",
+      realNameLabel: "Echter Name",
+      photoLabel: "Foto",
+      acceptText:
+        "Ich veröffentliche unter meinem echten Namen und übernehme die persönliche Verantwortung für dieses Signal gemäß den TOWN-Mitgliedschaftsregeln, die ich bereits akzeptiert habe.",
+      submit: "Signal veröffentlichen",
+      cancel: "Abbrechen",
+      close: "Schließen",
+      errorGeneric: "Veröffentlichen nicht möglich. Bitte erneut versuchen.",
+      errorPhoto: "Wähle ein JPEG-, PNG- oder WebP-Foto.",
+      errorAccept: "Bestätige die persönliche Verantwortung zum Veröffentlichen.",
+      errorName: "Verwende deinen echten Vor- und Nachnamen, keinen Benutzernamen.",
+    },
+    ro: {
+      profileCta: "Publică un semnal civic",
+      title: "Publică un semnal civic",
+      lead:
+        "Publică sub numele tău real în comunitatea ta. Ai acceptat deja responsabilitatea personală ca membru TOWN — confirm-o din nou pentru această publicare.",
+      titleLabel: "Titlu",
+      descriptionLabel: "Descriere",
+      categoryLabel: "Categorie",
+      realNameLabel: "Nume real",
+      photoLabel: "Fotografie",
+      acceptText:
+        "Public sub numele meu real și îmi asum responsabilitatea personală pentru acest semnal, conform regulilor de membru TOWN pe care le-am acceptat deja.",
+      submit: "Publică semnalul",
+      cancel: "Anulează",
+      close: "Închide",
+      errorGeneric: "Nu a fost posibil să publici. Încearcă din nou.",
+      errorPhoto: "Alege o fotografie JPEG, PNG sau WebP.",
+      errorAccept: "Confirmă responsabilitatea personală pentru a publica.",
+      errorName: "Folosește numele și prenumele reale, nu un username.",
+    },
+    en: {
+      profileCta: "Publish a civic signal",
+      title: "Publish a civic signal",
+      lead:
+        "Publish under your real name in your community. You already accepted personal responsibility as a TOWN member — confirm it again for this publication.",
+      titleLabel: "Title",
+      descriptionLabel: "Description",
+      categoryLabel: "Category",
+      realNameLabel: "Real name",
+      photoLabel: "Photo",
+      acceptText:
+        "I publish under my real name and accept personal responsibility for this signal, under the TOWN membership rules I already accepted.",
+      submit: "Publish signal",
+      cancel: "Cancel",
+      close: "Close",
+      errorGeneric: "Could not publish. Try again.",
+      errorPhoto: "Choose a JPEG, PNG, or WebP photo.",
+      errorAccept: "Confirm personal responsibility to publish.",
+      errorName: "Use your real given and family name, not a username.",
+    },
+  };
+
+  let signalCreatePhotoFile = null;
+  let signalCreatePhotoObjectUrl = null;
+  let signalCreateSubmitting = false;
+
+  function signalCreateCopy() {
+    return SIGNAL_CREATE_COPY[membershipLang()] || SIGNAL_CREATE_COPY.en;
+  }
+
+  function currentCommunitySlug() {
+    if (
+      commitmentSnapshot &&
+      commitmentSnapshot.community &&
+      commitmentSnapshot.community.slug
+    ) {
+      return String(commitmentSnapshot.community.slug);
+    }
+    const city =
+      (commitmentSnapshot &&
+        commitmentSnapshot.community &&
+        (commitmentSnapshot.community.cityName ||
+          commitmentSnapshot.community.displayName)) ||
+      selectedCity ||
+      "";
+    if (CITY_API_SLUG[city]) return CITY_API_SLUG[city];
+    if (city === "München") return CITY_API_SLUG.Munich;
+    return CITY_API_SLUG[selectedCity] || null;
+  }
+
+  function fillSignalCreateCategories() {
+    const city = selectedCity || "Milano";
+    const categories =
+      SIGNAL_CREATE_CATEGORIES[city] || SIGNAL_CREATE_CATEGORIES.Milano;
+    signalCreateCategory.innerHTML = "";
+    for (let i = 0; i < categories.length; i++) {
+      const option = document.createElement("option");
+      option.value = categories[i];
+      option.textContent = categories[i];
+      signalCreateCategory.appendChild(option);
+    }
+  }
+
+  function clearSignalCreatePhotoPreview() {
+    if (signalCreatePhotoObjectUrl) {
+      try {
+        URL.revokeObjectURL(signalCreatePhotoObjectUrl);
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+    signalCreatePhotoObjectUrl = null;
+    signalCreatePhotoFile = null;
+    signalCreatePreviewImage.removeAttribute("src");
+    signalCreatePreview.hidden = true;
+    signalCreatePhoto.value = "";
+  }
+
+  function applySignalCreateCopy() {
+    const copy = signalCreateCopy();
+    signalCreateTitle.textContent = copy.title;
+    signalCreateLead.textContent = copy.lead;
+    signalCreateClose.textContent = copy.close;
+    signalCreateAcceptText.textContent = copy.acceptText;
+    signalCreateSubmit.textContent = copy.submit;
+    signalCreateCancel.textContent = copy.cancel;
+    document.getElementById("signal-create-title-label").textContent =
+      copy.titleLabel;
+    document.getElementById("signal-create-description-label").textContent =
+      copy.descriptionLabel;
+    document.getElementById("signal-create-category-label").textContent =
+      copy.categoryLabel;
+    document.getElementById("signal-create-real-name-label").textContent =
+      copy.realNameLabel;
+    document.getElementById("signal-create-photo-label").textContent =
+      copy.photoLabel;
+  }
+
+  function openSignalCreate() {
+    if (!canTakeCivicAction()) {
+      openInvite();
+      return;
+    }
+    if (!currentCommunitySlug()) {
+      go("commitment");
+      return;
+    }
+    closeProfilePanel();
+    closeSignalDetail();
+    applySignalCreateCopy();
+    fillSignalCreateCategories();
+    signalCreateError.hidden = true;
+    signalCreateError.textContent = "";
+    signalCreateAccept.checked = false;
+    signalCreate.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    signalCreateTitleInput.focus();
+  }
+
+  function closeSignalCreate() {
+    if (signalCreate.hidden) return;
+    signalCreate.hidden = true;
+    clearSignalCreatePhotoPreview();
+    signalCreateForm.reset();
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+  }
+
+  async function publishMemberSignal(event) {
+    if (event) event.preventDefault();
+    if (signalCreateSubmitting) return;
+    const copy = signalCreateCopy();
+    const slug = currentCommunitySlug();
+    if (!slug || !canTakeCivicAction()) {
+      signalCreateError.textContent = copy.errorGeneric;
+      signalCreateError.hidden = false;
+      return;
+    }
+    if (!signalCreateAccept.checked) {
+      signalCreateError.textContent = copy.errorAccept;
+      signalCreateError.hidden = false;
+      return;
+    }
+    const realName = (signalCreateRealName.value || "").trim();
+    if (!realName || realName.indexOf(" ") < 0 || realName.charAt(0) === "@") {
+      signalCreateError.textContent = copy.errorName;
+      signalCreateError.hidden = false;
+      return;
+    }
+    const file = signalCreatePhotoFile;
+    if (
+      !file ||
+      (file.type !== "image/jpeg" &&
+        file.type !== "image/png" &&
+        file.type !== "image/webp")
+    ) {
+      signalCreateError.textContent = copy.errorPhoto;
+      signalCreateError.hidden = false;
+      return;
+    }
+
+    signalCreateSubmitting = true;
+    signalCreateSubmit.disabled = true;
+    signalCreateError.hidden = true;
+    try {
+      const upload = await postBinaryWithCredentials(
+        API_BASE +
+          "/v1/communities/" +
+          encodeURIComponent(slug) +
+          "/signals/media",
+        file,
+        file.type
+      );
+      if (
+        !(
+          upload.response &&
+          upload.response.status === 201 &&
+          upload.payload &&
+          upload.payload.data &&
+          upload.payload.data.mediaUploadId
+        )
+      ) {
+        signalCreateError.textContent = copy.errorGeneric;
+        signalCreateError.hidden = false;
+        return;
+      }
+      const created = await postJsonWithCredentials(
+        API_BASE +
+          "/v1/communities/" +
+          encodeURIComponent(slug) +
+          "/signals",
+        {
+          title: (signalCreateTitleInput.value || "").trim(),
+          description: (signalCreateDescription.value || "").trim(),
+          category: signalCreateCategory.value,
+          realName: realName,
+          acceptedResponsibility: true,
+          mediaUploadId: upload.payload.data.mediaUploadId,
+        }
+      );
+      if (
+        !(
+          created.response &&
+          created.response.status === 201 &&
+          created.payload &&
+          created.payload.data &&
+          created.payload.data.id
+        )
+      ) {
+        signalCreateError.textContent = copy.errorGeneric;
+        signalCreateError.hidden = false;
+        return;
+      }
+      closeSignalCreate();
+      clearLiveScenes();
+      await loadLiveScenesForCity(selectedCity);
+      rebuildFeedPanels();
+      renderFeedScene();
+    } catch (_err) {
+      signalCreateError.textContent = copy.errorGeneric;
+      signalCreateError.hidden = false;
+    } finally {
+      signalCreateSubmitting = false;
+      signalCreateSubmit.disabled = false;
+    }
+  }
+
+  const OWNER_MODERATION_REASONS = [
+    "immoral",
+    "abusive",
+    "spam",
+    "off_topic",
+    "illegal",
+    "other",
+  ];
+
+  const OWNER_MODERATION_COPY = {
+    en: {
+      profileCta: "Moderation",
+      title: "Owner moderation",
+      lead:
+        "Hide or unhide signals, and ban or unban accounts. These are the existing owner tools — no approval queue and no report flow.",
+      reasonLabel: "Reason",
+      signalsTitle: "Community signals",
+      signalsEmpty: "No signals in this community.",
+      accountsTitle: "Suspended accounts",
+      accountsEmpty: "No suspended accounts.",
+      hide: "Hide",
+      unhide: "Unhide",
+      ban: "Ban author",
+      unban: "Unban",
+      hidden: "Hidden",
+      visible: "Visible",
+      close: "Close",
+      statusHidden: "Signal hidden.",
+      statusUnhidden: "Signal visible again.",
+      statusBanned: "Account banned.",
+      statusUnbanned: "Account unbanned.",
+      errorGeneric: "Moderation action failed. Try again.",
+      errorOwner: "Owner moderation is available only for owner accounts.",
+      errorCommunity: "Choose your community before moderating.",
+      metaAuthor: "Author: {name}",
+      metaAccount: "Account: {id}",
+      metaSuspended: "Suspended: {when}",
+      reasons: {
+        immoral: "Immoral",
+        abusive: "Abusive",
+        spam: "Spam",
+        off_topic: "Off topic",
+        illegal: "Illegal",
+        other: "Other",
+      },
+    },
+    it: {
+      profileCta: "Moderazione",
+      title: "Moderazione owner",
+      lead:
+        "Nascondi o ripristina segnali, e banna o sbanna account. Solo gli strumenti owner già esistenti — nessuna coda di approvazione e nessun report.",
+      reasonLabel: "Motivo",
+      signalsTitle: "Segnali della comunità",
+      signalsEmpty: "Nessun segnale in questa comunità.",
+      accountsTitle: "Account sospesi",
+      accountsEmpty: "Nessun account sospeso.",
+      hide: "Nascondi",
+      unhide: "Ripristina",
+      ban: "Banna autore",
+      unban: "Sbanna",
+      hidden: "Nascosto",
+      visible: "Visibile",
+      close: "Chiudi",
+      statusHidden: "Segnale nascosto.",
+      statusUnhidden: "Segnale di nuovo visibile.",
+      statusBanned: "Account bannato.",
+      statusUnbanned: "Account sbannato.",
+      errorGeneric: "Azione di moderazione non riuscita. Riprova.",
+      errorOwner: "La moderazione è disponibile solo per gli account owner.",
+      errorCommunity: "Scegli la tua comunità prima di moderare.",
+      metaAuthor: "Autore: {name}",
+      metaAccount: "Account: {id}",
+      metaSuspended: "Sospeso: {when}",
+      reasons: {
+        immoral: "Immoral",
+        abusive: "Abusivo",
+        spam: "Spam",
+        off_topic: "Fuori tema",
+        illegal: "Illegale",
+        other: "Altro",
+      },
+    },
+    de: {
+      profileCta: "Moderation",
+      title: "Owner-Moderation",
+      lead:
+        "Signale verstecken oder wieder zeigen, Konten sperren oder entsperren. Nur die bestehenden Owner-Werkzeuge — keine Freigabe-Warteschlange und kein Report-Flow.",
+      reasonLabel: "Grund",
+      signalsTitle: "Gemeinschaftssignale",
+      signalsEmpty: "Keine Signale in dieser Gemeinschaft.",
+      accountsTitle: "Gesperrte Konten",
+      accountsEmpty: "Keine gesperrten Konten.",
+      hide: "Verstecken",
+      unhide: "Wieder zeigen",
+      ban: "Autor sperren",
+      unban: "Entsperren",
+      hidden: "Versteckt",
+      visible: "Sichtbar",
+      close: "Schließen",
+      statusHidden: "Signal versteckt.",
+      statusUnhidden: "Signal wieder sichtbar.",
+      statusBanned: "Konto gesperrt.",
+      statusUnbanned: "Konto entsperrt.",
+      errorGeneric: "Moderation fehlgeschlagen. Bitte erneut versuchen.",
+      errorOwner: "Moderation ist nur für Owner-Konten verfügbar.",
+      errorCommunity: "Wähle zuerst deine Gemeinschaft.",
+      metaAuthor: "Autor: {name}",
+      metaAccount: "Konto: {id}",
+      metaSuspended: "Gesperrt: {when}",
+      reasons: {
+        immoral: "Unmoralisch",
+        abusive: "Missbräuchlich",
+        spam: "Spam",
+        off_topic: "Themaverfehlt",
+        illegal: "Illegal",
+        other: "Sonstiges",
+      },
+    },
+    ro: {
+      profileCta: "Moderare",
+      title: "Moderare owner",
+      lead:
+        "Ascunde sau reașază semnale și banează sau debanează conturi. Doar instrumentele owner deja existente — fără coadă de aprobare și fără report.",
+      reasonLabel: "Motiv",
+      signalsTitle: "Semnale din comunitate",
+      signalsEmpty: "Niciun semnal în această comunitate.",
+      accountsTitle: "Conturi suspendate",
+      accountsEmpty: "Niciun cont suspendat.",
+      hide: "Ascunde",
+      unhide: "Reașază",
+      ban: "Banează autorul",
+      unban: "Debanează",
+      hidden: "Ascuns",
+      visible: "Vizibil",
+      close: "Închide",
+      statusHidden: "Semnal ascuns.",
+      statusUnhidden: "Semnal din nou vizibil.",
+      statusBanned: "Cont banat.",
+      statusUnbanned: "Cont debanat.",
+      errorGeneric: "Acțiunea de moderare a eșuat. Încearcă din nou.",
+      errorOwner: "Moderarea este disponibilă doar pentru conturile owner.",
+      errorCommunity: "Alege comunitatea înainte de moderare.",
+      metaAuthor: "Autor: {name}",
+      metaAccount: "Cont: {id}",
+      metaSuspended: "Suspendat: {when}",
+      reasons: {
+        immoral: "Imoral",
+        abusive: "Abuziv",
+        spam: "Spam",
+        off_topic: "În afara subiectului",
+        illegal: "Ilegal",
+        other: "Altul",
+      },
+    },
+  };
+
+  let ownerModerationBusy = false;
+
+  function ownerModerationCopy() {
+    return (
+      OWNER_MODERATION_COPY[membershipLang()] || OWNER_MODERATION_COPY.en
+    );
+  }
+
+  function selectedModerationReason() {
+    const value = String(ownerModerationReason.value || "");
+    if (OWNER_MODERATION_REASONS.indexOf(value) !== -1) return value;
+    return "other";
+  }
+
+  function fillOwnerModerationReasons() {
+    const copy = ownerModerationCopy();
+    ownerModerationReason.innerHTML = "";
+    for (let i = 0; i < OWNER_MODERATION_REASONS.length; i++) {
+      const reason = OWNER_MODERATION_REASONS[i];
+      const option = document.createElement("option");
+      option.value = reason;
+      option.textContent =
+        (copy.reasons && copy.reasons[reason]) || reason;
+      ownerModerationReason.appendChild(option);
+    }
+  }
+
+  function setOwnerModerationMessage(kind, text) {
+    if (kind === "status") {
+      ownerModerationError.hidden = true;
+      ownerModerationError.textContent = "";
+      ownerModerationStatus.textContent = text || "";
+      ownerModerationStatus.hidden = !text;
+      return;
+    }
+    ownerModerationStatus.hidden = true;
+    ownerModerationStatus.textContent = "";
+    ownerModerationError.textContent = text || "";
+    ownerModerationError.hidden = !text;
+  }
+
+  function applyOwnerModerationCopy() {
+    const copy = ownerModerationCopy();
+    ownerModerationTitle.textContent = copy.title;
+    ownerModerationLead.textContent = copy.lead;
+    ownerModerationClose.textContent = copy.close;
+    ownerModerationSignalsTitle.textContent = copy.signalsTitle;
+    ownerModerationAccountsTitle.textContent = copy.accountsTitle;
+    fillOwnerModerationReasons();
+  }
+
+  function renderOwnerModerationSignals(signals) {
+    const copy = ownerModerationCopy();
+    ownerModerationSignalsList.innerHTML = "";
+    if (!signals || !signals.length) {
+      ownerModerationSignalsEmpty.hidden = false;
+      ownerModerationSignalsEmpty.textContent = copy.signalsEmpty;
+      return;
+    }
+    ownerModerationSignalsEmpty.hidden = true;
+    for (let i = 0; i < signals.length; i++) {
+      const row = signals[i];
+      const li = document.createElement("li");
+      li.className = "owner-moderation__item";
+      const title = document.createElement("p");
+      title.className = "owner-moderation__item-title";
+      title.textContent = row.headline || row.slug || row.id;
+      const meta = document.createElement("p");
+      meta.className = "owner-moderation__item-meta";
+      meta.textContent =
+        (row.hidden ? copy.hidden : copy.visible) +
+        " · " +
+        copy.metaAuthor.replace("{name}", row.authorDisplayName || "—") +
+        (row.hiddenReason ? " · " + row.hiddenReason : "");
+      const actions = document.createElement("div");
+      actions.className = "owner-moderation__item-actions";
+      if (row.hidden) {
+        const unhideBtn = document.createElement("button");
+        unhideBtn.type = "button";
+        unhideBtn.className = "btn btn--primary";
+        unhideBtn.textContent = copy.unhide;
+        unhideBtn.setAttribute("data-owner-unhide", row.id);
+        actions.appendChild(unhideBtn);
+      } else {
+        const hideBtn = document.createElement("button");
+        hideBtn.type = "button";
+        hideBtn.className = "btn btn--primary";
+        hideBtn.textContent = copy.hide;
+        hideBtn.setAttribute("data-owner-hide", row.id);
+        actions.appendChild(hideBtn);
+      }
+      if (row.authorAccountId) {
+        const banBtn = document.createElement("button");
+        banBtn.type = "button";
+        banBtn.className = "btn btn--secondary";
+        banBtn.textContent = copy.ban;
+        banBtn.setAttribute("data-owner-ban", row.authorAccountId);
+        actions.appendChild(banBtn);
+      }
+      li.appendChild(title);
+      li.appendChild(meta);
+      li.appendChild(actions);
+      ownerModerationSignalsList.appendChild(li);
+    }
+  }
+
+  function renderOwnerModerationAccounts(accounts) {
+    const copy = ownerModerationCopy();
+    ownerModerationAccountsList.innerHTML = "";
+    if (!accounts || !accounts.length) {
+      ownerModerationAccountsEmpty.hidden = false;
+      ownerModerationAccountsEmpty.textContent = copy.accountsEmpty;
+      return;
+    }
+    ownerModerationAccountsEmpty.hidden = true;
+    for (let i = 0; i < accounts.length; i++) {
+      const row = accounts[i];
+      const li = document.createElement("li");
+      li.className = "owner-moderation__item";
+      const title = document.createElement("p");
+      title.className = "owner-moderation__item-title";
+      title.textContent = row.email || row.accountId;
+      const meta = document.createElement("p");
+      meta.className = "owner-moderation__item-meta";
+      meta.textContent =
+        copy.metaAccount.replace("{id}", row.accountId) +
+        " · " +
+        copy.metaSuspended.replace("{when}", row.suspendedAt || "—");
+      const actions = document.createElement("div");
+      actions.className = "owner-moderation__item-actions";
+      const unbanBtn = document.createElement("button");
+      unbanBtn.type = "button";
+      unbanBtn.className = "btn btn--primary";
+      unbanBtn.textContent = copy.unban;
+      unbanBtn.setAttribute("data-owner-unban", row.accountId);
+      actions.appendChild(unbanBtn);
+      li.appendChild(title);
+      li.appendChild(meta);
+      li.appendChild(actions);
+      ownerModerationAccountsList.appendChild(li);
+    }
+  }
+
+  async function refreshOwnerModerationLists() {
+    const copy = ownerModerationCopy();
+    const slug = currentCommunitySlug();
+    if (!slug) {
+      setOwnerModerationMessage("error", copy.errorCommunity);
+      renderOwnerModerationSignals([]);
+      renderOwnerModerationAccounts([]);
+      return;
+    }
+    const signalsResult = await getJsonWithCredentials(
+      API_BASE +
+        "/v1/communities/" +
+        encodeURIComponent(slug) +
+        "/moderation/signals"
+    );
+    if (signalsResult.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const accountsResult = await getJsonWithCredentials(
+      API_BASE + "/v1/moderation/accounts/suspended"
+    );
+    if (accountsResult.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const signals =
+      (signalsResult.payload &&
+        signalsResult.payload.data &&
+        signalsResult.payload.data.signals) ||
+      [];
+    const accounts =
+      (accountsResult.payload &&
+        accountsResult.payload.data &&
+        accountsResult.payload.data.accounts) ||
+      [];
+    renderOwnerModerationSignals(signals);
+    renderOwnerModerationAccounts(accounts);
+  }
+
+  async function openOwnerModeration() {
+    const copy = ownerModerationCopy();
+    if (!canUseOwnerModeration()) {
+      setOwnerModerationMessage("error", copy.errorOwner);
+      return;
+    }
+    closeProfilePanel();
+    applyOwnerModerationCopy();
+    setOwnerModerationMessage("status", "");
+    ownerModeration.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    ownerModerationClose.focus();
+    try {
+      await refreshOwnerModerationLists();
+    } catch (_err) {
+      setOwnerModerationMessage("error", copy.errorGeneric);
+    }
+  }
+
+  function closeOwnerModeration() {
+    ownerModeration.hidden = true;
+    setOwnerModerationMessage("status", "");
+    syncFeedScrollLockFromOverlays();
+    if (
+      !profilePanel ||
+      profilePanel.hidden
+    ) {
+      document.body.style.overflow = "";
+    }
+  }
+
+  async function runOwnerModerationAction(kind, id) {
+    if (ownerModerationBusy || !id) return;
+    const copy = ownerModerationCopy();
+    if (!canUseOwnerModeration()) {
+      setOwnerModerationMessage("error", copy.errorOwner);
+      return;
+    }
+    ownerModerationBusy = true;
+    setOwnerModerationMessage("status", "");
+    try {
+      let result = null;
+      let okMessage = copy.errorGeneric;
+      if (kind === "hide") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/signals/" + encodeURIComponent(id) + "/hide",
+          { reason: selectedModerationReason() }
+        );
+        okMessage = copy.statusHidden;
+      } else if (kind === "unhide") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/signals/" + encodeURIComponent(id) + "/unhide",
+          {}
+        );
+        okMessage = copy.statusUnhidden;
+      } else if (kind === "ban") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/accounts/" + encodeURIComponent(id) + "/ban",
+          { reason: selectedModerationReason() }
+        );
+        okMessage = copy.statusBanned;
+      } else if (kind === "unban") {
+        result = await postJsonWithCredentials(
+          API_BASE + "/v1/accounts/" + encodeURIComponent(id) + "/unban",
+          {}
+        );
+        okMessage = copy.statusUnbanned;
+      }
+      if (!result || result.response.status !== 200) {
+        setOwnerModerationMessage("error", copy.errorGeneric);
+        return;
+      }
+      setOwnerModerationMessage("status", okMessage);
+      await refreshOwnerModerationLists();
+      if (kind === "hide" || kind === "unhide") {
+        clearLiveScenes();
+        await loadLiveScenesForCity(selectedCity);
+        rebuildFeedPanels();
+        renderFeedScene();
+      }
+    } catch (_err) {
+      setOwnerModerationMessage("error", copy.errorGeneric);
+    } finally {
+      ownerModerationBusy = false;
+    }
+  }
+
+  function clearProfileStatus() {
+    profileStatus.hidden = true;
+    profileStatus.textContent = "";
+    profileStatus.removeAttribute("data-tone");
+  }
+
+  function showProfileStatus(message, tone) {
+    profileStatus.hidden = false;
+    profileStatus.textContent = message || "";
+    if (tone) profileStatus.setAttribute("data-tone", tone);
+    else profileStatus.removeAttribute("data-tone");
+  }
+
+  // Stripe portal is for web-paid memberships only — not Google Play pending bind.
+  function hasStripeManageableMembership() {
+    return !!(
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isPaidMembership(membershipSnapshot)
+    );
+  }
+
+  function clearAuthenticatedClientState() {
+    sessionAuthenticated = false;
+    enteredEmail = "";
+    accountEmail = "";
+    emailVerificationId = null;
+    setupGrant = null;
+    setupGrantExpiresAt = null;
+    emailSubmitting = false;
+    codeSubmitting = false;
+    emailVerified = false;
+    passkeyRegistered = false;
+    passkeySubmitting = false;
+    membershipSimulated = false;
+    paymentCheckoutSubmitting = false;
+    clearSignalConfirmationState();
+    membershipSnapshot = null;
+    commitmentCountry = null;
+    commitmentCity = null;
+    commitmentAcceptanceChecked = false;
+    commitmentSnapshot = null;
+    commitmentSaving = false;
+    commitmentCheckoutSubmitting = false;
+    endMembershipRecoveryFlow();
+    loginSubmitting = false;
+    authSignInSubmitting = false;
+    profileBillingSubmitting = false;
+    profileSignOutSubmitting = false;
+    clearAuthWindowStatus();
+    clearEntryLoginStatus();
+    clearDemoTestimony();
+    clearProfileStatus();
+    entrySignIn.disabled = false;
+    applyEntryLoginCopy();
+    syncFeedMemberState();
+  }
+
+  async function requestCustomerPortalSession() {
+    let result;
+    try {
+      result = await postJsonWithCredentials(
+        API_BASE + "/v1/billing/customer-portal-session",
+        {}
+      );
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.portalUrl) {
+      return data.portalUrl;
+    }
+    if (status === 401) throw makeApiError("unauthenticated");
+    if (status === 404) throw makeApiError("unavailable");
+    if (status === 429) throw makeApiError("rateLimited");
+    if (status === 502 || status === 503) throw makeApiError("checkoutFailed");
+    throw makeApiError("network");
+  }
+
+  async function requestSignOut() {
+    let result;
+    try {
+      result = await postJsonWithCredentials(
+        API_BASE + "/v1/authentication/logout",
+        {}
+      );
+    } catch (_err) {
+      throw makeApiError("network");
+    }
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    // Logout is idempotent — treat signed-out / missing session as success.
+    if (
+      status === 200 &&
+      data &&
+      (data.status === "SIGNED_OUT" || data.status === "signed_out")
+    ) {
+      return;
+    }
+    if (status === 200) return;
+    if (status === 404 || status === 503) throw makeApiError("unavailable");
+    throw makeApiError("network");
+  }
+
+  function startProfileManageBilling() {
+    if (profileBillingSubmitting || profileSignOutSubmitting) return;
+    if (!sessionAuthenticated || !hasStripeManageableMembership()) return;
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    clearProfileStatus();
+    profileBillingSubmitting = true;
+    profileManageBilling.disabled = true;
+    profileSignOut.disabled = true;
+    showProfileStatus(copy.openingPortal, "status");
+
+    requestCustomerPortalSession()
+      .then(function (portalUrl) {
+        window.location = portalUrl;
+      })
+      .catch(function (err) {
+        const kind = err && err.kind ? err.kind : "network";
+        if (kind === "unauthenticated") {
+          clearAuthenticatedClientState();
+          closeProfilePanel();
+          closeActivityPanel();
+          closeOwnerModeration();
+          return;
+        }
+        showProfileStatus(
+          kind === "unavailable"
+            ? copy.errorPortalUnavailable
+            : copy.errorPortal,
+          "error"
+        );
+        profileBillingSubmitting = false;
+        profileManageBilling.disabled = false;
+        profileSignOut.disabled = false;
+      });
+  }
+
+  function startProfileSignOut() {
+    if (profileSignOutSubmitting || profileBillingSubmitting) return;
+    if (!sessionAuthenticated) return;
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    clearProfileStatus();
+    profileSignOutSubmitting = true;
+    profileSignOut.disabled = true;
+    profileManageBilling.disabled = true;
+    showProfileStatus(copy.signingOut, "status");
+
+    requestSignOut()
+      .then(function () {
+        clearAuthenticatedClientState();
+        closeProfilePanel();
+        closeActivityPanel();
+        closeOwnerModeration();
+        closeSignalCreate();
+        setNavActive(navHome);
+      })
+      .catch(function () {
+        // Fail closed for UI: still clear local auth chrome if cookie revoke failed
+        // only when the transport itself succeeded elsewhere — here keep signed-in
+        // and surface a retryable error.
+        showProfileStatus(copy.errorSignOut, "error");
+        profileSignOutSubmitting = false;
+        profileSignOut.disabled = false;
+        profileManageBilling.disabled = !hasStripeManageableMembership();
+      });
+  }
+
+  function populateProfilePanel() {
+    const copy = PROFILE_COPY[profileLang()] || PROFILE_COPY.en;
+    const email = accountEmail || enteredEmail || "";
+    const displayName = profileDisplayName(email) || copy.defaultName;
+    const paid = hasAuthoritativePaidMembership();
+    const stripePaid = hasStripeManageableMembership();
+    const civicOk = canTakeCivicAction();
+    const paidPending =
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot);
+    let bio = copy.bioRegistered;
+    if (civicOk || (paid && !paidPending)) bio = copy.bioMember;
+    else if (paidPending || (paid && !civicOk)) bio = copy.bioPaidPending;
+
+    let membershipLine = copy.membershipNone;
+    if (civicOk || (paid && !paidPending)) membershipLine = copy.membershipPaid;
+    else if (paidPending) membershipLine = copy.membershipPending;
+    else if (
+      membershipSnapshot &&
+      typeof membershipSnapshot.status === "string" &&
+      membershipSnapshot.status
+    ) {
+      membershipLine = copy.membershipOther.replace(
+        "{status}",
+        membershipSnapshot.status
+      );
+    }
+
+    let communityName = "";
+    if (
+      commitmentSnapshot &&
+      commitmentSnapshot.community &&
+      (commitmentSnapshot.community.displayName ||
+        commitmentSnapshot.community.cityName)
+    ) {
+      communityName =
+        commitmentSnapshot.community.displayName ||
+        commitmentSnapshot.community.cityName;
+    } else if (selectedCity) {
+      communityName = selectedCity;
+    }
+
+    profileLabel.textContent = copy.label;
+    profileClose.textContent = copy.close;
+    profileTitle.textContent = displayName;
+    profileHandle.textContent = email || copy.handleFallback;
+    profileAvatar.textContent = (displayName.charAt(0) || "T").toUpperCase();
+    profileBio.textContent = bio;
+    profileCommunity.textContent = communityName
+      ? copy.communityLine.replace("{community}", communityName)
+      : copy.communityNone;
+    profileMembership.textContent = membershipLine;
+    profileActivityTitle.textContent = copy.activityTitle;
+    profileFeed.textContent = copy.feedCta;
+    profileMembershipCta.textContent = copy.membershipCta;
+    // Paid accounts do not need the membership-continue CTA on Profile V1.
+    profileMembershipCta.hidden = paid;
+    profileManageBilling.textContent = copy.manageBillingCta;
+    profileManageBilling.hidden = !stripePaid;
+    profileManageBilling.disabled =
+      profileBillingSubmitting || profileSignOutSubmitting;
+    profileSignOut.textContent = copy.signOutCta;
+    profileSignOut.disabled =
+      profileBillingSubmitting || profileSignOutSubmitting;
+    clearProfileStatus();
+    profileCreateSignal.hidden = !canTakeCivicAction();
+    profileCreateSignal.textContent =
+      (SIGNAL_CREATE_COPY[membershipLang()] &&
+        SIGNAL_CREATE_COPY[membershipLang()].profileCta) ||
+      "Publish a civic signal";
+    profileModeration.hidden = !canUseOwnerModeration();
+    profileModeration.textContent =
+      (OWNER_MODERATION_COPY[membershipLang()] &&
+        OWNER_MODERATION_COPY[membershipLang()].profileCta) ||
+      "Moderation";
+
+    profileActivityList.innerHTML = "";
+    profileActivityEmpty.hidden = true;
+    // Profile confirmations come from GET /v1/account/activity — not browser-only state.
+    refreshProfileActivityFromBackend(copy);
+    document.documentElement.lang =
+      profileLang() === "en" ? "en" : profileLang();
+  }
+
+  async function refreshProfileActivityFromBackend(copy) {
+    profileActivityList.innerHTML = "";
+    if (!sessionAuthenticated) {
+      profileActivityEmpty.hidden = false;
+      profileActivityEmpty.textContent = copy.activityEmpty;
+      return;
+    }
+    try {
+      const items = await fetchAccountActivity();
+      const confirmations = items.filter(function (item) {
+        return item && item.kind === "confirmation" && item.signal && item.signal.id;
+      });
+      if (!confirmations.length) {
+        profileActivityEmpty.hidden = false;
+        profileActivityEmpty.textContent = copy.activityEmpty;
+        return;
+      }
+      profileActivityEmpty.hidden = true;
+      for (let i = 0; i < confirmations.length; i++) {
+        const item = confirmations[i];
+        const li = document.createElement("li");
+        li.className = "profile-panel__activity-item";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "profile-panel__activity-item-btn";
+        btn.setAttribute("data-profile-signal-id", item.signal.id);
+        const date = document.createElement("span");
+        date.className = "profile-panel__activity-date";
+        date.textContent = copy.activityConfirmed;
+        const headline = document.createElement("span");
+        headline.className = "profile-panel__activity-headline";
+        headline.textContent = item.signal.headline || item.signal.slug || "";
+        btn.appendChild(date);
+        btn.appendChild(headline);
+        li.appendChild(btn);
+        profileActivityList.appendChild(li);
+      }
+    } catch (_err) {
+      profileActivityEmpty.hidden = false;
+      profileActivityEmpty.textContent = copy.activityEmpty;
+    }
+  }
+
+  function openProfilePanel() {
+    if (!sessionAuthenticated) return;
+    closeAuthWindow();
+    closeInvite();
+    closeSignalDetail();
+    closeOwnerModeration();
+    closeActivityPanel();
+    populateProfilePanel();
+    profilePanel.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navProfile);
+    profileClose.focus();
+  }
+
+  function closeProfilePanel() {
+    if (profilePanel.hidden) return;
+    profilePanel.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navHome);
+  }
+
+  const ACTIVITY_COPY = {
+    en: {
+      label: "Activity",
+      title: "Your civic activity",
+      lead:
+        "Confirmations, published contributions, and updates on signals you participate in — from TOWN, not examples.",
+      empty:
+        "No civic activity yet. Confirm a signal or publish a contribution in your community.",
+      loading: "Loading your activity…",
+      error: "Could not load activity. Try again.",
+      close: "Close",
+      feedCta: "Back to feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "You confirmed this signal",
+        contribution: "You published a contribution",
+        signal_published: "You published a civic signal",
+        signal_evolution: "Signal update",
+      },
+      intents: {
+        observation: "Observation",
+        proposal: "Proposal",
+        next_step: "Next step",
+      },
+    },
+    it: {
+      label: "Attività",
+      title: "La tua attività civica",
+      lead:
+        "Conferme, contributi pubblicati e aggiornamenti sui segnali a cui partecipi — da TOWN, non esempi.",
+      empty:
+        "Nessuna attività civica ancora. Conferma un segnale o pubblica un contributo nella tua comunità.",
+      loading: "Caricamento attività…",
+      error: "Impossibile caricare l’attività. Riprova.",
+      close: "Chiudi",
+      feedCta: "Torna al feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Hai confermato questo segnale",
+        contribution: "Hai pubblicato un contributo",
+        signal_published: "Hai pubblicato un segnale civico",
+        signal_evolution: "Aggiornamento del segnale",
+      },
+      intents: {
+        observation: "Osservazione",
+        proposal: "Proposta",
+        next_step: "Prossimo passo",
+      },
+    },
+    de: {
+      label: "Aktivität",
+      title: "Deine zivile Aktivität",
+      lead:
+        "Bestätigungen, veröffentlichte Beiträge und Updates zu Signalen, an denen du teilnimmst — von TOWN, keine Beispiele.",
+      empty:
+        "Noch keine zivile Aktivität. Bestätige ein Signal oder veröffentliche einen Beitrag in deiner Gemeinschaft.",
+      loading: "Aktivität wird geladen…",
+      error: "Aktivität konnte nicht geladen werden. Bitte erneut versuchen.",
+      close: "Schließen",
+      feedCta: "Zurück zum Feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Du hast dieses Signal bestätigt",
+        contribution: "Du hast einen Beitrag veröffentlicht",
+        signal_published: "Du hast ein ziviles Signal veröffentlicht",
+        signal_evolution: "Signal-Update",
+      },
+      intents: {
+        observation: "Beobachtung",
+        proposal: "Vorschlag",
+        next_step: "Nächster Schritt",
+      },
+    },
+    ro: {
+      label: "Activitate",
+      title: "Activitatea ta civică",
+      lead:
+        "Confirmări, contribuții publicate și evoluția semnalelor la care participi — din TOWN, nu exemple.",
+      empty:
+        "Nicio activitate civică încă. Confirmă un semnal sau publică o contribuție în comunitatea ta.",
+      loading: "Se încarcă activitatea…",
+      error: "Nu s-a putut încărca activitatea. Încearcă din nou.",
+      close: "Închide",
+      feedCta: "Înapoi la feed",
+      whenUnknown: "",
+      kinds: {
+        confirmation: "Ai confirmat acest semnal",
+        contribution: "Ai publicat o contribuție",
+        signal_published: "Ai publicat un semnal civic",
+        signal_evolution: "Actualizare semnal",
+      },
+      intents: {
+        observation: "Observație",
+        proposal: "Propunere",
+        next_step: "Următorul pas",
+      },
+    },
+  };
+
+  let activityItemsCache = [];
+  let activityLoading = false;
+
+  function activityCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return ACTIVITY_COPY[lang] || ACTIVITY_COPY.en;
+  }
+
+  function formatActivityWhen(iso) {
+    if (!iso || typeof iso !== "string") return "";
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return "";
+    try {
+      return date.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch (_err) {
+      return iso.slice(0, 10);
+    }
+  }
+
+  function activityItemDetail(item, copy) {
+    if (!item || !item.kind) return "";
+    if (item.kind === "contribution" && item.contribution) {
+      const intentKey = item.contribution.intent;
+      const intentLabel =
+        (copy.intents && copy.intents[intentKey]) || intentKey || "";
+      const text = String(item.contribution.text || "").trim();
+      const clipped = text.length > 140 ? text.slice(0, 137) + "…" : text;
+      return intentLabel ? intentLabel + " · " + clipped : clipped;
+    }
+    if (item.kind === "signal_evolution" && item.evolution) {
+      const latest = String(item.evolution.latestUpdate || "").trim();
+      const status = String(item.evolution.statusLabel || "").trim();
+      if (latest) return latest;
+      return status;
+    }
+    const community =
+      item.signal && item.signal.community && item.signal.community.displayName;
+    return community || "";
+  }
+
+  function renderActivityItems(items) {
+    const copy = activityCopy();
+    activityList.innerHTML = "";
+    activityItemsCache = Array.isArray(items) ? items : [];
+    if (!activityItemsCache.length) {
+      activityEmpty.hidden = false;
+      activityEmpty.textContent = copy.empty;
+      return;
+    }
+    activityEmpty.hidden = true;
+    for (let i = 0; i < activityItemsCache.length; i++) {
+      const item = activityItemsCache[i];
+      if (!item || !item.signal || !item.signal.id) continue;
+      const li = document.createElement("li");
+      li.className = "activity-panel__item";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "activity-panel__item-btn";
+      btn.setAttribute("data-activity-signal-id", item.signal.id);
+      const kind = document.createElement("span");
+      kind.className = "activity-panel__item-kind";
+      kind.textContent =
+        (copy.kinds && copy.kinds[item.kind]) || item.kind || "";
+      const headline = document.createElement("span");
+      headline.className = "activity-panel__item-headline";
+      headline.textContent = item.signal.headline || item.signal.slug || "";
+      const detailText = activityItemDetail(item, copy);
+      btn.appendChild(kind);
+      btn.appendChild(headline);
+      if (detailText) {
+        const detail = document.createElement("span");
+        detail.className = "activity-panel__item-detail";
+        detail.textContent = detailText;
+        btn.appendChild(detail);
+      }
+      const when = formatActivityWhen(item.occurredAt);
+      if (when) {
+        const whenEl = document.createElement("span");
+        whenEl.className = "activity-panel__item-when";
+        whenEl.textContent = when;
+        btn.appendChild(whenEl);
+      }
+      li.appendChild(btn);
+      activityList.appendChild(li);
+    }
+  }
+
+  async function fetchAccountActivity() {
+    const result = await getJsonWithCredentials(API_BASE + "/v1/account/activity");
+    if (result.response.status !== 200) {
+      throw makeApiError("failed");
+    }
+    const items =
+      result.payload &&
+      result.payload.data &&
+      Array.isArray(result.payload.data.items)
+        ? result.payload.data.items
+        : null;
+    if (!items) {
+      throw makeApiError("failed");
+    }
+    return items;
+  }
+
+  async function refreshActivityPanel() {
+    const copy = activityCopy();
+    if (activityLoading) return;
+    activityLoading = true;
+    activityStatus.hidden = false;
+    activityStatus.textContent = copy.loading;
+    activityEmpty.hidden = true;
+    activityList.innerHTML = "";
+    try {
+      const items = await fetchAccountActivity();
+      activityStatus.hidden = true;
+      activityStatus.textContent = "";
+      renderActivityItems(items);
+    } catch (_err) {
+      activityStatus.hidden = false;
+      activityStatus.textContent = copy.error;
+      activityEmpty.hidden = true;
+      activityList.innerHTML = "";
+      activityItemsCache = [];
+    } finally {
+      activityLoading = false;
+    }
+  }
+
+  function applyActivityCopy() {
+    const copy = activityCopy();
+    activityLabel.textContent = copy.label;
+    activityTitle.textContent = copy.title;
+    activityLead.textContent = copy.lead;
+    activityClose.textContent = copy.close;
+    activityFeed.textContent = copy.feedCta;
+  }
+
+  function openActivityPanel() {
+    if (!sessionAuthenticated) return;
+    closeAuthWindow();
+    closeInvite();
+    closeSignalDetail();
+    closeOwnerModeration();
+    closeProfilePanel();
+    applyActivityCopy();
+    activityPanel.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navActivity);
+    activityClose.focus();
+    refreshActivityPanel();
+  }
+
+  function closeActivityPanel() {
+    if (!activityPanel || activityPanel.hidden) return;
+    activityPanel.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+    if (profilePanel.hidden) {
+      setNavActive(navHome);
+    }
+  }
+
+  function openActivitySignal(signalId) {
+    if (!signalId) return;
+    closeActivityPanel();
+    const scenes = currentScenes();
+    let index = -1;
+    for (let i = 0; i < scenes.length; i++) {
+      if (scenes[i] && scenes[i].id === signalId) {
+        index = i;
+        break;
+      }
+    }
+    if (index >= 0 && isFeedSurfaceActive()) {
+      scrollFeedToIndex(index, { behavior: "auto" });
+      openSignalDetail();
+    }
   }
 
   function isPasskeyCeremonyCancelled(err) {
@@ -4918,6 +7154,9 @@
     if (feedMain) feedMain.inert = isInert;
     if (signalDetail) signalDetail.inert = isInert;
     if (membershipInvite) membershipInvite.inert = isInert;
+    if (profilePanel && authWindow && !authWindow.hidden) {
+      profilePanel.inert = isInert;
+    }
   }
 
   function syncAuthModeUi() {
@@ -4955,6 +7194,7 @@
     // Close competing overlays before presenting the shared auth window.
     closeInvite();
     closeSignalDetail();
+    closeProfilePanel();
 
     authOpenedByTarget = navTarget || null;
     lastAuthFocus = openerEl || document.activeElement;
@@ -4993,13 +7233,31 @@
 
   function handleHomeNav() {
     closeAuthWindow();
-    // HOME remains the active public surface; no route change.
-    navHome.classList.add("is-active");
-    navHome.setAttribute("aria-current", "page");
-    [navMembership, navChat, navActivity, navProfile].forEach((btn) => {
-      btn.classList.remove("is-active");
-      btn.removeAttribute("aria-current");
-    });
+    // Public HOME / ACASĂ: return to the first feed page (first signal).
+    closeInvite();
+    closeSignalDetail();
+    closeProfilePanel();
+    closeActivityPanel();
+    setNavActive(navHome);
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(0, { behavior: "auto" });
+    }
+  }
+
+  function handleProfileNav() {
+    if (sessionAuthenticated) {
+      openProfilePanel();
+      return;
+    }
+    openAuthWindow(navProfile, "profile");
+  }
+
+  function handleActivityNav() {
+    if (sessionAuthenticated) {
+      openActivityPanel();
+      return;
+    }
+    openAuthWindow(navActivity, "activity");
   }
 
   function resetVisitorSession() {
@@ -5009,6 +7267,7 @@
     locationOutsideBoundary = false;
     feedIndex = 0;
     enteredEmail = "";
+    accountEmail = "";
     emailVerificationId = null;
     setupGrant = null;
     setupGrantExpiresAt = null;
@@ -5019,7 +7278,7 @@
     passkeySubmitting = false;
     membershipSimulated = false;
     paymentCheckoutSubmitting = false;
-    signalConfirmed = false;
+    clearSignalConfirmationState();
     membershipSnapshot = null;
     commitmentCountry = null;
     commitmentCity = null;
@@ -5035,6 +7294,7 @@
     originatingFeedIndex = 0;
     clearPendingSeeTooContext();
     clearLiveScenes();
+    clearDemoTestimony();
     clearEntryLoginStatus();
     if (sessionAuthenticated) {
       showEntryLoginStatus(LOGIN_COPY[entryLang()].success, "success");
@@ -5112,6 +7372,7 @@
       closeInvite();
       closeSignalDetail();
       closeAuthWindow();
+      closeProfilePanel();
     }
     if (name !== "payment") {
       closePaymentNotice();
@@ -5379,9 +7640,552 @@
 
   function closeSignalDetail() {
     if (signalDetail.hidden) return;
+    closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
+  }
+
+  function signalSessionKey() {
+    const apiId = currentSignalApiId();
+    if (apiId) return apiId;
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (scene && scene.id) return String(scene.id);
+    return String(selectedCity || "city") + ":" + String(feedIndex);
+  }
+
+  function isSignalApiId(value) {
+    return (
+      typeof value === "string" &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        value
+      )
+    );
+  }
+
+  function currentSignalApiId() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (!scene) return null;
+    if (isSignalApiId(scene.signalId)) return String(scene.signalId);
+    if (isSignalApiId(scene.id)) return String(scene.id);
+    return null;
+  }
+
+  function sessionCacheEntries(key) {
+    const cached = signalSessionCache[key];
+    if (!cached || !Array.isArray(cached.contributions)) return [];
+    return cached.contributions;
+  }
+
+  function intentLabel(copy, intent) {
+    if (intent === "proposal") return copy.sessionIntentProposal || "Proposal";
+    if (intent === "next_step") return copy.sessionIntentNextStep || "Next step";
+    if (intent === "observation") {
+      return copy.sessionIntentObservation || "Observation";
+    }
+    return "";
+  }
+
+  function selectedSessionIntent() {
+    const checked = detailSessionIntent.querySelector(
+      'input[name="session-intent"]:checked'
+    );
+    return checked && checked.value ? String(checked.value) : "";
+  }
+
+  function clearSessionIntentSelection() {
+    const inputs = detailSessionIntent.querySelectorAll(
+      'input[name="session-intent"]'
+    );
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].checked = false;
+    }
+  }
+
+  function currentFeedCopy() {
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    const locale = feedLocaleForScene(scene);
+    const lang = (locale && locale.lang) || resolvePublicReadingLanguage();
+    const fallback = FEED_COPY[lang] || FEED_COPY.en || FEED_COPY.it;
+    // Merge so session strings in FEED_COPY fill gaps from public-i18n chrome.
+    return Object.assign({}, fallback, locale.copy || {});
+  }
+
+  function sessionStatusNoteText(copy, cached) {
+    if (!cached) return "";
+    if (cached.note === "unavailable") {
+      return copy.sessionUnavailable || "";
+    }
+    if (cached.note === "local") {
+      return copy.sessionLocalOnly || "";
+    }
+    if (cached.note === "publish_failed") {
+      return copy.sessionPublishFailed || "";
+    }
+    return "";
+  }
+
+  function applySignalSessionCopy(copy) {
+    if (!copy) return;
+    detailSessionLabel.textContent = copy.sessionLabel || "";
+    detailSessionBody.textContent = copy.sessionBody || "";
+    detailSessionEmpty.textContent = copy.sessionEmpty || "";
+    detailSessionComposeTitle.textContent = copy.sessionComposeTitle || "";
+    detailSessionComposeGuide.textContent = copy.sessionComposeGuide || "";
+    detailSessionIntentLegend.textContent = copy.sessionIntentLegend || "";
+    detailSessionIntentObservationLabel.textContent =
+      copy.sessionIntentObservation || "";
+    detailSessionIntentProposalLabel.textContent =
+      copy.sessionIntentProposal || "";
+    detailSessionIntentNextStepLabel.textContent =
+      copy.sessionIntentNextStep || "";
+    detailSessionAttach.textContent = copy.sessionAttach || "";
+    detailSessionPublish.textContent = copy.sessionPublish || "";
+    detailSessionCancel.textContent = copy.sessionCancel || "";
+    const note = sessionStatusNoteText(copy, signalSessionCache[signalSessionKey()]);
+    detailSessionDemoNote.textContent = note;
+    detailSessionDemoNote.hidden = !note;
+    detailSessionInput.setAttribute(
+      "aria-label",
+      copy.sessionComposeTitle || "Contribution"
+    );
+    if (detailTestimonyClear && copy.clearTestimony) {
+      detailTestimonyClear.textContent = copy.clearTestimony;
+    }
+    if (detailTestimonyNote && copy.demoTestimonyNote) {
+      detailTestimonyNote.textContent = copy.demoTestimonyNote;
+    }
+    syncSessionContributeLabel(copy);
+  }
+
+  function syncSessionContributeLabel(copy) {
+    const feedCopy = copy || currentFeedCopy();
+    const entries = sessionCacheEntries(signalSessionKey());
+    detailSessionContribute.textContent =
+      entries.length > 0
+        ? feedCopy.sessionContribute || feedCopy.sessionOpen
+        : feedCopy.sessionOpen || feedCopy.sessionContribute;
+  }
+
+  function applySessionApiPayload(key, data, note) {
+    signalSessionCache[key] = {
+      source: "api",
+      session: data && data.session ? data.session : null,
+      contributions:
+        data && Array.isArray(data.contributions) ? data.contributions : [],
+      note: note || null,
+    };
+  }
+
+  async function fetchSignalDiscussionSession(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session"
+    );
+  }
+
+  async function uploadSignalDiscussionMedia(signalId, file, contentType) {
+    return postBinaryWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session/media",
+      file,
+      contentType
+    );
+  }
+
+  async function publishSignalDiscussionContribution(
+    signalId,
+    text,
+    intent,
+    mediaUploadId
+  ) {
+    const body = { text: text, intent: intent };
+    if (mediaUploadId) {
+      body.mediaUploadId = mediaUploadId;
+    }
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/discussion-session/contributions",
+      body
+    );
+  }
+
+  function revokeSessionMediaObjectUrls() {
+    while (sessionMediaObjectUrls.length > 0) {
+      const url = sessionMediaObjectUrls.pop();
+      try {
+        URL.revokeObjectURL(url);
+      } catch (_err) {
+        /* ignore */
+      }
+    }
+  }
+
+  function appendContributionMedia(li, media) {
+    if (!media || !media.url || !li) return;
+    const kind = media.kind === "video" ? "video" : "image";
+    const el = document.createElement(kind === "video" ? "video" : "img");
+    el.className = "signal-detail__demo-testimony-media";
+    el.hidden = true;
+    if (kind === "video") {
+      el.controls = true;
+      el.setAttribute("playsinline", "");
+    } else {
+      el.alt = "";
+    }
+    li.appendChild(el);
+    const absolute =
+      String(media.url).indexOf("http") === 0
+        ? media.url
+        : API_BASE + media.url;
+    requestJson(absolute, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(function (response) {
+        if (!response.ok) return null;
+        return response.blob();
+      })
+      .then(function (blob) {
+        if (!blob || !li.isConnected) return;
+        const objectUrl = URL.createObjectURL(blob);
+        sessionMediaObjectUrls.push(objectUrl);
+        el.src = objectUrl;
+        el.hidden = false;
+      })
+      .catch(function () {
+        /* leave media hidden on fetch failure */
+      });
+  }
+
+  async function loadSignalDiscussionSession() {
+    const key = signalSessionKey();
+    const apiId = currentSignalApiId();
+    const loadToken = ++sessionLoadToken;
+
+    if (!apiId) {
+      signalSessionCache[key] = {
+        source: "local",
+        session: null,
+        contributions: [],
+        note: "local",
+      };
+      renderSignalSession();
+      return;
+    }
+
+    if (!canTakeCivicAction()) {
+      // API requires participant access; keep empty without pretending local demo.
+      signalSessionCache[key] = {
+        source: "gated",
+        session: null,
+        contributions: [],
+        note: null,
+      };
+      renderSignalSession();
+      return;
+    }
+
+    const previous = signalSessionCache[key];
+    signalSessionCache[key] = {
+      source: previous && previous.source === "api" ? "api" : "loading",
+      session: previous && previous.session ? previous.session : null,
+      contributions: sessionCacheEntries(key),
+      note: null,
+    };
+    renderSignalSession();
+
+    try {
+      const result = await fetchSignalDiscussionSession(apiId);
+      if (loadToken !== sessionLoadToken || currentSignalApiId() !== apiId) {
+        return;
+      }
+      if (
+        result.response &&
+        result.response.ok &&
+        result.payload &&
+        result.payload.data
+      ) {
+        applySessionApiPayload(key, result.payload.data, null);
+      } else {
+        signalSessionCache[key] = {
+          source: "error",
+          session: null,
+          contributions: [],
+          note: "unavailable",
+        };
+      }
+    } catch (_err) {
+      if (loadToken !== sessionLoadToken || currentSignalApiId() !== apiId) {
+        return;
+      }
+      signalSessionCache[key] = {
+        source: "error",
+        session: null,
+        contributions: [],
+        note: "unavailable",
+      };
+    }
+    renderSignalSession();
+  }
+
+  function renderSignalSession() {
+    const copy = currentFeedCopy();
+    applySignalSessionCopy(copy);
+    const key = signalSessionKey();
+    const entries = sessionCacheEntries(key);
+    revokeSessionMediaObjectUrls();
+    detailSessionList.textContent = "";
+    detailSessionEmpty.hidden = entries.length > 0;
+    for (let i = 0; i < entries.length; i++) {
+      const entry = entries[i];
+      const li = document.createElement("li");
+      li.className = "signal-detail__session-item";
+      const meta = document.createElement("p");
+      meta.className = "signal-detail__session-meta";
+      const author =
+        entry.authorDisplayName || entry.author || copy.sessionYou || "Member";
+      meta.textContent = author;
+      const intentText = intentLabel(copy, entry.intent);
+      if (intentText) {
+        const badge = document.createElement("span");
+        badge.className = "signal-detail__session-intent-badge";
+        badge.textContent = intentText;
+        meta.appendChild(badge);
+      }
+      const body = document.createElement("p");
+      body.className = "signal-detail__session-text";
+      body.textContent = entry.text || "";
+      li.appendChild(meta);
+      li.appendChild(body);
+      if (entry.media && entry.media.url) {
+        appendContributionMedia(li, entry.media);
+      }
+      detailSessionList.appendChild(li);
+    }
+  }
+
+  function openSessionCompose() {
+    const copy = currentFeedCopy();
+    applySignalSessionCopy(copy);
+    detailSessionCompose.hidden = false;
+    detailSessionContribute.hidden = true;
+    detailSessionInput.focus();
+  }
+
+  function closeSessionCompose(options) {
+    const keepDraft = !!(options && options.keepDraft);
+    detailSessionCompose.hidden = true;
+    detailSessionContribute.hidden = false;
+    if (!keepDraft) {
+      detailSessionInput.value = "";
+      detailSessionInput.setCustomValidity("");
+      clearSessionIntentSelection();
+      if (demoTestimony && demoTestimonyFeedIndex === feedIndex) {
+        clearDemoTestimony();
+      }
+    }
+    syncSessionContributeLabel();
+  }
+
+  async function publishSessionContribution() {
+    const copy = currentFeedCopy();
+    if (sessionPublishSubmitting) return;
+    const text = (detailSessionInput.value || "").trim();
+    if (text.length < 12) {
+      detailSessionInput.setCustomValidity(
+        copy.sessionNeedText || "Write a concrete contribution."
+      );
+      detailSessionInput.reportValidity();
+      return;
+    }
+    detailSessionInput.setCustomValidity("");
+
+    const intent = selectedSessionIntent();
+    if (
+      intent !== "observation" &&
+      intent !== "proposal" &&
+      intent !== "next_step"
+    ) {
+      detailSessionDemoNote.textContent = copy.sessionNeedIntent || "";
+      detailSessionDemoNote.hidden = !detailSessionDemoNote.textContent;
+      return;
+    }
+
+    if (!canTakeCivicAction()) {
+      originatingFeedIndex = feedIndex;
+      closeSignalDetail();
+      openInvite();
+      return;
+    }
+
+    const apiId = currentSignalApiId();
+    const key = signalSessionKey();
+    if (!apiId) {
+      signalSessionCache[key] = {
+        source: "local",
+        session: null,
+        contributions: sessionCacheEntries(key),
+        note: "local",
+      };
+      renderSignalSession();
+      return;
+    }
+
+    sessionPublishSubmitting = true;
+    detailSessionPublish.disabled = true;
+    try {
+      let mediaUploadId = null;
+      if (
+        demoTestimony &&
+        demoTestimony.file &&
+        demoTestimonyFeedIndex === feedIndex
+      ) {
+        const uploadResult = await uploadSignalDiscussionMedia(
+          apiId,
+          demoTestimony.file,
+          demoTestimony.contentType
+        );
+        if (
+          !(
+            uploadResult.response &&
+            uploadResult.response.status === 201 &&
+            uploadResult.payload &&
+            uploadResult.payload.data &&
+            uploadResult.payload.data.mediaUploadId
+          )
+        ) {
+          signalSessionCache[key] = {
+            source: signalSessionCache[key] && signalSessionCache[key].source,
+            session:
+              signalSessionCache[key] && signalSessionCache[key].session
+                ? signalSessionCache[key].session
+                : null,
+            contributions: sessionCacheEntries(key),
+            note: "publish_failed",
+          };
+          renderSignalSession();
+          return;
+        }
+        mediaUploadId = uploadResult.payload.data.mediaUploadId;
+      }
+
+      const result = await publishSignalDiscussionContribution(
+        apiId,
+        text,
+        intent,
+        mediaUploadId
+      );
+      if (
+        result.response &&
+        (result.response.status === 201 || result.response.status === 200) &&
+        result.payload &&
+        result.payload.data
+      ) {
+        clearDemoTestimony();
+        applySessionApiPayload(key, result.payload.data, null);
+        closeSessionCompose({ keepDraft: false });
+        renderSignalSession();
+        return;
+      }
+      signalSessionCache[key] = {
+        source: signalSessionCache[key] && signalSessionCache[key].source,
+        session:
+          signalSessionCache[key] && signalSessionCache[key].session
+            ? signalSessionCache[key].session
+            : null,
+        contributions: sessionCacheEntries(key),
+        note: "publish_failed",
+      };
+      renderSignalSession();
+    } catch (_err) {
+      signalSessionCache[key] = {
+        source: signalSessionCache[key] && signalSessionCache[key].source,
+        session:
+          signalSessionCache[key] && signalSessionCache[key].session
+            ? signalSessionCache[key].session
+            : null,
+        contributions: sessionCacheEntries(key),
+        note: "unavailable",
+      };
+      renderSignalSession();
+    } finally {
+      sessionPublishSubmitting = false;
+      detailSessionPublish.disabled = false;
+    }
+  }
+
+  // Local compose preview until publish uploads bytes to private object storage.
+  function clearDemoTestimony() {
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = null;
+    demoTestimonyFeedIndex = null;
+    detailTestimonyInput.value = "";
+    detailTestimonyImage.removeAttribute("src");
+    detailTestimonyImage.hidden = true;
+    detailTestimonyVideo.removeAttribute("src");
+    detailTestimonyVideo.hidden = true;
+    if (typeof detailTestimonyVideo.load === "function") {
+      detailTestimonyVideo.load();
+    }
+    detailTestimonyPreview.hidden = true;
+  }
+
+  function renderDemoTestimony() {
+    if (
+      !demoTestimony ||
+      demoTestimonyFeedIndex === null ||
+      demoTestimonyFeedIndex !== feedIndex
+    ) {
+      if (demoTestimony && demoTestimonyFeedIndex !== feedIndex) {
+        clearDemoTestimony();
+      } else if (!demoTestimony) {
+        detailTestimonyPreview.hidden = true;
+        detailTestimonyImage.hidden = true;
+        detailTestimonyVideo.hidden = true;
+      }
+      return;
+    }
+
+    detailTestimonyPreview.hidden = false;
+    if (demoTestimony.kind === "video") {
+      detailTestimonyImage.hidden = true;
+      detailTestimonyImage.removeAttribute("src");
+      detailTestimonyVideo.hidden = false;
+      detailTestimonyVideo.src = demoTestimony.objectUrl;
+    } else {
+      detailTestimonyVideo.hidden = true;
+      detailTestimonyVideo.removeAttribute("src");
+      if (typeof detailTestimonyVideo.load === "function") {
+        detailTestimonyVideo.load();
+      }
+      detailTestimonyImage.hidden = false;
+      detailTestimonyImage.src = demoTestimony.objectUrl;
+    }
+  }
+
+  function openMemberDemoTestimonyCapture() {
+    // Restored PR #19 picker — only for canParticipate members.
+    if (typeof detailTestimonyInput.showPicker === "function") {
+      try {
+        detailTestimonyInput.showPicker();
+        return;
+      } catch (_err) {
+        /* fall through to click() */
+      }
+    }
+    detailTestimonyInput.click();
   }
 
   function openSignalDetail() {
@@ -5392,6 +8196,7 @@
     }
     applyFeedCopyChrome();
     populateSignalDetail();
+    renderDemoTestimony();
     signalDetail.hidden = false;
     document.body.style.overflow = "hidden";
     syncFeedScrollLockFromOverlays();
@@ -5583,18 +8388,79 @@
   });
 
   detailSeeToo.addEventListener("click", () => {
-    if (isMemberPresented() || detailSeeToo.disabled) return;
+    if (detailSeeToo.disabled) return;
+    activateSeeTooAction({ closeDetail: true });
+  });
+
+  // Discussion session CTA:
+  // - participating member (canParticipate): compose a solution-oriented contribution
+  // - everyone else: membership invitation boundary
+  detailSessionContribute.addEventListener("click", () => {
+    if (canTakeCivicAction()) {
+      openSessionCompose();
+      return;
+    }
     originatingFeedIndex = feedIndex;
-    capturePendingSeeTooContext();
     closeSignalDetail();
     openInvite();
   });
 
-  // Public testimony CTA: open membership invitation; never activate media capture.
-  detailAddTestimony.addEventListener("click", () => {
-    originatingFeedIndex = feedIndex;
-    closeSignalDetail();
-    openInvite();
+  detailSessionAttach.addEventListener("click", () => {
+    if (!canTakeCivicAction()) {
+      originatingFeedIndex = feedIndex;
+      closeSignalDetail();
+      openInvite();
+      return;
+    }
+    openMemberDemoTestimonyCapture();
+  });
+
+  detailSessionPublish.addEventListener("click", () => {
+    publishSessionContribution();
+  });
+
+  detailSessionCancel.addEventListener("click", () => {
+    closeSessionCompose({ keepDraft: false });
+  });
+
+  detailTestimonyInput.addEventListener("change", () => {
+    if (!canTakeCivicAction()) {
+      detailTestimonyInput.value = "";
+      return;
+    }
+    const file =
+      detailTestimonyInput.files && detailTestimonyInput.files[0]
+        ? detailTestimonyInput.files[0]
+        : null;
+    if (!file) return;
+
+    const kind = ALLOWED_CONTRIBUTION_MEDIA_TYPES[file.type];
+    if (!kind) {
+      detailTestimonyInput.value = "";
+      detailSessionDemoNote.textContent =
+        (currentFeedCopy() && currentFeedCopy().sessionNeedText) ||
+        "Use JPEG, PNG, WebP, or MP4.";
+      detailSessionDemoNote.hidden = !detailSessionDemoNote.textContent;
+      return;
+    }
+    if (demoTestimony && demoTestimony.objectUrl) {
+      URL.revokeObjectURL(demoTestimony.objectUrl);
+    }
+    demoTestimony = {
+      kind: kind,
+      objectUrl: URL.createObjectURL(file),
+      file: file,
+      contentType: file.type,
+    };
+    demoTestimonyFeedIndex = feedIndex;
+    if (detailSessionCompose.hidden) {
+      openSessionCompose();
+    }
+    renderDemoTestimony();
+  });
+
+  detailTestimonyClear.addEventListener("click", () => {
+    clearDemoTestimony();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -5604,8 +8470,32 @@
         closeAuthWindow();
         return;
       }
+      if (!signalCreate.hidden) {
+        event.preventDefault();
+        closeSignalCreate();
+        return;
+      }
+      if (!ownerModeration.hidden) {
+        event.preventDefault();
+        closeOwnerModeration();
+        return;
+      }
+      if (!activityPanel.hidden) {
+        event.preventDefault();
+        closeActivityPanel();
+        return;
+      }
+      if (!profilePanel.hidden) {
+        event.preventDefault();
+        closeProfilePanel();
+        return;
+      }
       if (!signalDetail.hidden) {
         event.preventDefault();
+        if (!detailSessionCompose.hidden) {
+          closeSessionCompose({ keepDraft: false });
+          return;
+        }
         closeSignalDetail();
         return;
       }
@@ -5657,11 +8547,153 @@
   });
 
   navActivity.addEventListener("click", () => {
-    handleProtectedNav(navActivity, "activity");
+    handleActivityNav();
+  });
+
+  activityClose.addEventListener("click", () => {
+    closeActivityPanel();
+  });
+  activityDim.addEventListener("click", () => {
+    closeActivityPanel();
+  });
+  activityFeed.addEventListener("click", () => {
+    closeActivityPanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
+    }
+  });
+  activityList.addEventListener("click", (event) => {
+    let target = event.target;
+    if (target && target.nodeType === 3) target = target.parentElement;
+    if (!target || !target.closest) return;
+    const btn = target.closest("[data-activity-signal-id]");
+    if (!btn) return;
+    openActivitySignal(btn.getAttribute("data-activity-signal-id"));
   });
 
   navProfile.addEventListener("click", () => {
-    handleProtectedNav(navProfile, "profile");
+    handleProfileNav();
+  });
+
+  profileClose.addEventListener("click", () => {
+    closeProfilePanel();
+  });
+
+  profileDim.addEventListener("click", () => {
+    closeProfilePanel();
+  });
+
+  profileFeed.addEventListener("click", () => {
+    closeProfilePanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
+    }
+  });
+
+  profileMembershipCta.addEventListener("click", () => {
+    closeProfilePanel();
+    beginInviteMembershipJourney();
+    go("commitment");
+  });
+
+  profileManageBilling.addEventListener("click", () => {
+    startProfileManageBilling();
+  });
+
+  profileSignOut.addEventListener("click", () => {
+    startProfileSignOut();
+  });
+
+  profileCreateSignal.addEventListener("click", () => {
+    openSignalCreate();
+  });
+
+  profileModeration.addEventListener("click", () => {
+    openOwnerModeration();
+  });
+
+  ownerModerationClose.addEventListener("click", () => {
+    closeOwnerModeration();
+  });
+  ownerModerationDim.addEventListener("click", () => {
+    closeOwnerModeration();
+  });
+  ownerModerationSignalsList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.getAttribute) return;
+    const hideId = target.getAttribute("data-owner-hide");
+    if (hideId) {
+      runOwnerModerationAction("hide", hideId);
+      return;
+    }
+    const unhideId = target.getAttribute("data-owner-unhide");
+    if (unhideId) {
+      runOwnerModerationAction("unhide", unhideId);
+      return;
+    }
+    const banId = target.getAttribute("data-owner-ban");
+    if (banId) {
+      runOwnerModerationAction("ban", banId);
+    }
+  });
+  ownerModerationAccountsList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.getAttribute) return;
+    const unbanId = target.getAttribute("data-owner-unban");
+    if (unbanId) {
+      runOwnerModerationAction("unban", unbanId);
+    }
+  });
+
+  signalCreateClose.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateCancel.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateDim.addEventListener("click", () => {
+    closeSignalCreate();
+  });
+  signalCreateForm.addEventListener("submit", (event) => {
+    publishMemberSignal(event);
+  });
+  signalCreatePhoto.addEventListener("change", () => {
+    const file =
+      signalCreatePhoto.files && signalCreatePhoto.files[0]
+        ? signalCreatePhoto.files[0]
+        : null;
+    if (!file) {
+      clearSignalCreatePhotoPreview();
+      return;
+    }
+    if (
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/webp"
+    ) {
+      clearSignalCreatePhotoPreview();
+      signalCreateError.textContent = signalCreateCopy().errorPhoto;
+      signalCreateError.hidden = false;
+      return;
+    }
+    if (signalCreatePhotoObjectUrl) {
+      URL.revokeObjectURL(signalCreatePhotoObjectUrl);
+    }
+    signalCreatePhotoFile = file;
+    signalCreatePhotoObjectUrl = URL.createObjectURL(file);
+    signalCreatePreviewImage.src = signalCreatePhotoObjectUrl;
+    signalCreatePreview.hidden = false;
+  });
+
+  profileActivityList.addEventListener("click", (event) => {
+    let target = event.target;
+    if (target && target.nodeType === 3) target = target.parentElement;
+    if (!target || !target.closest) return;
+    const btn = target.closest("[data-profile-signal-id]");
+    if (!btn) return;
+    const signalId = btn.getAttribute("data-profile-signal-id");
+    closeProfilePanel();
+    openActivitySignal(signalId);
   });
 
   authWindowClose.addEventListener("click", () => {
@@ -5718,6 +8750,7 @@
 
       authIdentityInput.setCustomValidity("");
       enteredEmail = value;
+      noteAccountEmail(value);
       emailSubmitting = true;
       authContinue.disabled = true;
 
@@ -5964,11 +8997,8 @@
         return;
       }
       if (role === "feed-see-too") {
-        if (isMemberPresented() || control.disabled) return;
-        closeSignalSheet();
-        originatingFeedIndex = feedIndex;
-        capturePendingSeeTooContext();
-        openInvite();
+        if (control.disabled) return;
+        activateSeeTooAction();
         return;
       }
       if (role === "feed-open-signal") {
@@ -6055,6 +9085,7 @@
       return;
     }
     enteredEmail = value;
+    noteAccountEmail(value);
     emailSubmitting = true;
     emailContinue.disabled = true;
     emailError.hidden = true;
@@ -6085,6 +9116,7 @@
 
   emailBack.addEventListener("click", () => {
     enteredEmail = (emailInput.value || "").trim();
+    noteAccountEmail(enteredEmail);
     go("account");
   });
 
@@ -6443,9 +9475,17 @@
 
   activeReturn.addEventListener("click", () => {
     feedIndex = originatingFeedIndex;
-    // Prototype signal-confirmation only when civic participation is allowed.
-    if (canTakeCivicAction() || (membershipSnapshot === null && membershipSimulated)) {
-      signalConfirmed = true;
+    // Returning from active membership: refresh persisted confirmations when
+    // participation is allowed; simulate path keeps local done-state only.
+    if (canTakeCivicAction()) {
+      refreshViewerSignalConfirmations();
+    } else if (membershipSnapshot === null && membershipSimulated) {
+      const key = signalConfirmationKeyForIndex(feedIndex);
+      const prev = getSignalConfirmationState(feedIndex);
+      setSignalConfirmationState(key, {
+        confirmed: true,
+        confirmationCount: Math.max(1, prev.confirmationCount),
+      });
     }
     if (isProductOnlyPublicMode()) {
       endInviteMembershipJourney();
@@ -6461,6 +9501,7 @@
   window.addEventListener("hashchange", render);
   window.addEventListener("popstate", render);
   syncCountryContinue();
+  applyOwnerParticipatePreviewFromUrl();
   try {
     const params = new URLSearchParams(window.location.search || "");
     const story = params.get("townStory");

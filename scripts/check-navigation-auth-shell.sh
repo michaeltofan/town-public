@@ -157,16 +157,26 @@ if "Sign in with password" in auth_html:
 for fragment in (
     'handleProtectedNav(navMembership, "membership")',
     'handleProtectedNav(navChat, "chat")',
-    'handleProtectedNav(navActivity, "activity")',
-    'handleProtectedNav(navProfile, "profile")',
+    "handleActivityNav()",
+    "handleProfileNav()",
     "handleHomeNav()",
     "closeAuthWindow()",
     "openAuthWindow(",
+    "openProfilePanel()",
+    "openActivityPanel()",
 ):
     if fragment not in js:
         fail(f"missing nav/auth wiring: {fragment}")
+if 'handleProtectedNav(navProfile, "profile")' in js:
+    fail("PROFILE must use handleProfileNav, not always-open auth")
+if 'handleProtectedNav(navActivity, "activity")' in js:
+    fail("ACTIVITY must use handleActivityNav, not always-open auth")
+if "/v1/account/activity" not in js:
+    fail("ACTIVITY must load from GET /v1/account/activity")
+if 'id="activity-panel"' not in html:
+    fail("ACTIVITY panel markup missing")
 
-# HOME must not open another screen / route
+# HOME / ACASĂ returns to the first public feed page; must not open auth or dormant routes
 home_handler = re.search(
     r"function handleHomeNav\(\) \{([\s\S]*?)\n  \}",
     js,
@@ -180,6 +190,10 @@ if "openAuthWindow" in home_body:
     fail("HOME must not open the auth window")
 if "closeAuthWindow" not in home_body:
     fail("HOME must close the auth window when selected")
+if "closeInvite()" not in home_body or "closeSignalDetail()" not in home_body:
+    fail("HOME must dismiss feed overlays before returning to the first page")
+if "scrollFeedToIndex(0" not in home_body:
+    fail("HOME must scroll to the first feed page")
 
 # No dormant route exposure from nav/auth shell open/close helpers
 nav_auth_fns = re.search(

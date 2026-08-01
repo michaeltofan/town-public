@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TOWN — mock: flusso di cattura testimonianza membro (esplorazione design)."
+    />
+    <title>TOWN — Testimonianza · Cattura (mock)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="member-signal-detail.css" />
+    <link rel="stylesheet" href="member-testimony-capture.css" />
+  </head>
+  <body class="mock-capture">
+    <a class="skip-link" href="#capture-main">Vai al contenuto</a>
+
+    <!--
+      Static design mock: member testimony capture flow.
+      Three review stages stacked (+ video composition variant).
+      Reuses approved Signal Detail / testimony language.
+    -->
+    <div class="capture" id="capture-main">
+      <div class="capture__media" aria-hidden="true">
+        <img
+          class="capture__image"
+          src="../assets/feed/signal_citta_studi_pavement.jpg"
+          alt=""
+          style="object-position: 50% 42%"
+          decoding="async"
+        />
+        <div class="capture__veil"></div>
+      </div>
+
+      <div class="capture__chrome">
+        <header class="capture__top">
+          <div class="capture__top-left">
+            <button type="button" class="capture__close">Chiudi</button>
+            <p class="capture__brand" aria-label="TOWN">TOWN</p>
+          </div>
+          <div class="capture__top-right">
+            <p class="capture__status">Membro · Milano</p>
+          </div>
+        </header>
+
+        <div class="capture__scroll">
+          <header class="capture__signal">
+            <p class="capture__category">SPAZIO PUBBLICO</p>
+            <h1 class="capture__headline">
+              Marciapiede danneggiato davanti alla scuola di via Padova
+            </h1>
+          </header>
+
+          <!-- ——— STAGE 1 — Choice ——— -->
+          <section
+            class="capture-stage"
+            aria-labelledby="stage-1-title"
+            id="stage-1"
+          >
+            <p class="capture-stage__mark">Fase 1 · Scelta</p>
+            <h2 class="capture-stage__title" id="stage-1-title">
+              Come vuoi testimoniare?
+            </h2>
+            <p class="capture-stage__lead">
+              Una testimonianza civica. Calma, precisa, a nome tuo.
+            </p>
+
+            <ul class="capture-choices">
+              <li>
+                <a class="capture-choice" href="#stage-2-photo">
+                  <span class="capture-choice__label"
+                    >Scrivi la tua testimonianza</span
+                  >
+                  <span class="capture-choice__note"
+                    >Un commento. Puoi aggiungere una foto, se serve.</span
+                  >
+                </a>
+              </li>
+              <li>
+                <a class="capture-choice" href="#stage-2-photo">
+                  <span class="capture-choice__label">Aggiungi una foto</span>
+                  <span class="capture-choice__note"
+                    >Una foto del luogo, con le tue parole.</span
+                  >
+                </a>
+              </li>
+              <li>
+                <a class="capture-choice" href="#stage-2-video">
+                  <span class="capture-choice__label">Registra un video</span>
+                  <span class="capture-choice__note"
+                    >massimo 60 secondi</span
+                  >
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          <!-- ——— STAGE 2 — Photo composition ——— -->
+          <section
+            class="capture-stage"
+            aria-labelledby="stage-2-photo-title"
+            id="stage-2-photo"
+          >
+            <p class="capture-stage__mark">Fase 2 · Composizione · Foto</p>
+            <h2 class="capture-stage__title" id="stage-2-photo-title">
+              La tua testimonianza
+            </h2>
+
+            <figure class="capture-photo">
+              <img
+                class="capture-photo__image"
+                src="../assets/feed/signal_lorenteggio_works.jpg"
+                alt=""
+                style="object-position: 48% 42%"
+                decoding="async"
+              />
+              <figcaption class="capture-photo__caption">
+                Foto del membro — prototipo fittizio
+              </figcaption>
+            </figure>
+
+            <div class="capture-compose">
+              <label class="capture-compose__label" for="testimony-draft"
+                >La tua testimonianza</label
+              >
+              <p class="capture-compose__draft" id="testimony-draft" role="textbox" aria-readonly="true">
+                Il marciapiede davanti alla scuola è spezzato da giorni. Chi
+                passa a piedi è costretto verso la carreggiata, soprattutto
+                all’entrata e all’uscita.
+              </p>
+              <p class="capture-compose__guide">
+                Una testimonianza civica: descrivi ciò che vedi, con rispetto.
+              </p>
+              <p class="capture-compose__meta">fino a 280 caratteri</p>
+            </div>
+          </section>
+
+          <!-- ——— STAGE 2 — Video composition (additional state) ——— -->
+          <section
+            class="capture-stage"
+            aria-labelledby="stage-2-video-title"
+            id="stage-2-video"
+          >
+            <p class="capture-stage__mark">Fase 2 · Composizione · Video</p>
+            <h2 class="capture-stage__title" id="stage-2-video-title">
+              Registra un video
+            </h2>
+
+            <div
+              class="capture-video"
+              role="img"
+              aria-label="Registrazione video in corso — 12 secondi su 60 — solo prototipo"
+            >
+              <img
+                class="capture-video__still"
+                src="../assets/feed/signal_porta_romana_lighting.jpg"
+                alt=""
+                decoding="async"
+              />
+              <div class="capture-video__chrome">
+                <p class="capture-video__duration">0:12 / 0:60</p>
+                <button type="button" class="capture-video__stop" aria-label="Interrompi registrazione">
+                  <svg
+                    class="capture-video__stop-glyph"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="23"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      opacity="0.85"
+                    />
+                    <rect
+                      x="16.5"
+                      y="16.5"
+                      width="15"
+                      height="15"
+                      rx="1.5"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="capture-compose">
+              <p class="capture-compose__guide">
+                Una testimonianza civica: descrivi ciò che vedi, con rispetto.
+              </p>
+              <p class="capture-compose__meta">massimo 60 secondi</p>
+            </div>
+          </section>
+
+          <!-- ——— STAGE 3 — Confirmation review ——— -->
+          <section
+            class="capture-stage"
+            aria-labelledby="stage-3-title"
+            id="stage-3"
+          >
+            <p class="capture-stage__mark">Fase 3 · Revisione</p>
+            <h2 class="capture-stage__title" id="stage-3-title">
+              Così apparirà la tua testimonianza
+            </h2>
+
+            <div class="capture-preview">
+              <article class="mock-testimony">
+                <div class="mock-testimony__header">
+                  <img
+                    class="mock-testimony__thumb"
+                    src="../assets/feed/signal_lorenteggio_works.jpg"
+                    alt=""
+                    style="object-position: 48% 42%"
+                    width="40"
+                    height="40"
+                    decoding="async"
+                  />
+                  <div class="mock-testimony__identity">
+                    <p class="mock-testimony__name">Giulia · Città Studi</p>
+                    <p class="mock-testimony__date">21 luglio 2026</p>
+                  </div>
+                </div>
+                <p class="mock-testimony__body">
+                  Il marciapiede davanti alla scuola è spezzato da giorni. Chi
+                  passa a piedi è costretto verso la carreggiata, soprattutto
+                  all’entrata e all’uscita.
+                </p>
+                <div class="capture-preview__media">
+                  <img
+                    class="capture-preview__photo"
+                    src="../assets/feed/signal_lorenteggio_works.jpg"
+                    alt=""
+                    style="object-position: 48% 42%"
+                    decoding="async"
+                  />
+                </div>
+              </article>
+            </div>
+
+            <p class="capture-trust">
+              La tua testimonianza sarà visibile ai membri di Milano con il tuo
+              nome.
+            </p>
+
+            <div class="capture-actions">
+              <button type="button" class="feed__primary">
+                Pubblica la testimonianza
+              </button>
+              <button type="button" class="feed__secondary">Annulla</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

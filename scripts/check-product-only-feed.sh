@@ -202,7 +202,8 @@ for fragment in (
     'id="signal-detail"',
     'id="detail-close"',
     'id="membership-invite"',
-    'id="detail-add-testimony"',
+    'id="detail-session-contribute"',
+    'id="detail-session"',
 ):
     if fragment not in html:
         fail(f"feed/signal-detail structure removed: {fragment}")
@@ -210,14 +211,21 @@ for removed in ('id="feed-prev"', 'id="feed-next"', "feed__scene-nav"):
     if removed in html:
         fail(f"visible feed navigation control must remain removed: {removed}")
 
-# Public surface must not expose the retired testimony capture demo.
-for forbidden in (
+# Restored demo capture primitives must remain present (gated in script.js).
+for required in (
     'id="detail-testimony-input"',
-    'capture="environment"',
     'id="detail-testimony-preview"',
 ):
-    if forbidden in html:
-        fail(f"retired public testimony capture primitive still present: {forbidden}")
+    if required not in html:
+        fail(f"restored member demo capture primitive missing: {required}")
+if "canTakeCivicAction()" not in js or "openMemberDemoTestimonyCapture" not in js:
+    fail("demo capture must stay gated behind canTakeCivicAction")
+for mock in (
+    "mock/member-signal-detail.html",
+    "mock/member-testimony-capture.html",
+):
+    if not Path(mock).is_file():
+        fail(f"member design mock missing: {mock}")
 
 # Cache-invalidating script reference required for deployed handler updates.
 if not re.search(r'src="script\.js\?v=[^"]+"', html):

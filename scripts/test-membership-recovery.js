@@ -101,11 +101,13 @@ function membershipPayload(status, canParticipate, extra) {
         canParticipate: canParticipate,
         localEligibility: "eligible",
       },
+      isOwner: false,
     },
   };
   if (extra) {
     Object.assign(body.data.membership, extra.membership || {});
     Object.assign(body.data.access, extra.access || {});
+    if (extra.isOwner !== undefined) body.data.isOwner = extra.isOwner;
   }
   return body;
 }
@@ -170,6 +172,15 @@ assert(
   recovery.enablesCivicParticipation(activeOk) === true,
   "active + canParticipate enables civic participation"
 );
+assertEqual(activeOk.isOwner, false, "isOwner defaults false");
+assert(
+  recovery.isOwnerAccount(activeOk) === false,
+  "isOwnerAccount false for ordinary member"
+);
+const ownerSnap = recovery.deriveMembershipSnapshot(
+  membershipPayload("active", true, { isOwner: true })
+);
+assert(recovery.isOwnerAccount(ownerSnap) === true, "isOwnerAccount true");
 
 // --- 5. Active + canParticipate false does not enable civic participation ---
 const activeNoPart = recovery.deriveMembershipSnapshot(

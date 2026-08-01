@@ -110,7 +110,13 @@
       accessLevel: access.level,
       canParticipate: access.canParticipate === true,
       localEligibility: access.localEligibility,
+      // Self-only owner label from GET /v1/account/membership — gates owner tools UI.
+      isOwner: data.isOwner === true,
     };
+  }
+
+  function isOwnerAccount(snapshot) {
+    return !!(snapshot && snapshot.isOwner === true);
   }
 
   function isPaidMembership(snapshot) {
@@ -298,6 +304,7 @@
     hasCheckoutPendingMarker: hasCheckoutPendingMarker,
     markerGrantsAuthorization: markerGrantsAuthorization,
     deriveMembershipSnapshot: deriveMembershipSnapshot,
+    isOwnerAccount: isOwnerAccount,
     isPaidMembership: isPaidMembership,
     canParticipate: canParticipate,
     isPreWebhookMembershipStatus: isPreWebhookMembershipStatus,

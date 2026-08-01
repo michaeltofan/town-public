@@ -501,6 +501,7 @@
                   <p class="feed__done-title" id="feed-done-title"></p>
                   <p class="feed__done-note" id="feed-done-note"></p>
                 </div>
+                <p class="feed__confirm-count" id="feed-confirm-count" hidden></p>
                 <button
                   type="button"
                   class="feed__secondary"
@@ -752,6 +753,24 @@
               <h2 class="signal-detail__label" id="detail-status-label"></h2>
               <p class="signal-detail__text" id="detail-status-note"></p>
             </section>
+
+            <!-- Paying members: civic discussion session toward a local solution — not chat. -->
+            <section
+              class="signal-detail__section signal-detail__session"
+              id="detail-session"
+              aria-labelledby="detail-session-label"
+            >
+              <h2 class="signal-detail__label" id="detail-session-label"></h2>
+              <p class="signal-detail__text" id="detail-session-body"></p>
+              <p
+                class="signal-detail__session-empty"
+                id="detail-session-empty"
+              ></p>
+              <ul
+                class="signal-detail__session-list"
+                id="detail-session-list"
+              ></ul>
+            </section>
           </div>
 
           <div class="signal-detail__actions">
@@ -762,10 +781,137 @@
               <p class="feed__done-title" id="detail-done-title"></p>
               <p class="feed__done-note" id="detail-done-note"></p>
             </div>
-            <!-- Public visitors: CTA opens membership invitation; no capture input on the public surface. -->
-            <button type="button" class="feed__secondary" id="detail-add-testimony">
-              Add testimony
+            <p class="feed__confirm-count" id="detail-confirm-count" hidden></p>
+            <!-- Visitors → membership invite. Participating members → discussion session compose. -->
+            <button
+              type="button"
+              class="feed__secondary"
+              id="detail-session-contribute"
+            >
+              Open a discussion session
             </button>
+            <!-- Optional media for a session contribution; uploaded securely on publish. -->
+            <input
+              type="file"
+              id="detail-testimony-input"
+              accept="image/jpeg,image/png,image/webp,video/mp4"
+              capture="environment"
+              hidden
+            />
+            <div
+              class="signal-detail__session-compose"
+              id="detail-session-compose"
+              hidden
+            >
+              <p
+                class="signal-detail__session-compose-title"
+                id="detail-session-compose-title"
+              ></p>
+              <p
+                class="signal-detail__session-compose-guide"
+                id="detail-session-compose-guide"
+              ></p>
+              <fieldset
+                class="signal-detail__session-intent"
+                id="detail-session-intent"
+              >
+                <legend
+                  class="signal-detail__session-intent-legend"
+                  id="detail-session-intent-legend"
+                ></legend>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="observation"
+                    id="detail-session-intent-observation"
+                  />
+                  <span id="detail-session-intent-observation-label"></span>
+                </label>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="proposal"
+                    id="detail-session-intent-proposal"
+                  />
+                  <span id="detail-session-intent-proposal-label"></span>
+                </label>
+                <label class="signal-detail__session-intent-option">
+                  <input
+                    type="radio"
+                    name="session-intent"
+                    value="next_step"
+                    id="detail-session-intent-next-step"
+                  />
+                  <span id="detail-session-intent-next-step-label"></span>
+                </label>
+              </fieldset>
+              <textarea
+                class="signal-detail__session-input"
+                id="detail-session-input"
+                maxlength="480"
+                rows="4"
+                aria-label="Contribution"
+              ></textarea>
+              <div class="signal-detail__session-compose-actions">
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-session-attach"
+                >
+                  Attach photo or video
+                </button>
+                <button
+                  type="button"
+                  class="feed__primary"
+                  id="detail-session-publish"
+                >
+                  Publish contribution
+                </button>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-session-cancel"
+                >
+                  Cancel
+                </button>
+              </div>
+              <p
+                class="signal-detail__session-demo-note"
+                id="detail-session-demo-note"
+              ></p>
+              <div
+                class="signal-detail__demo-testimony"
+                id="detail-testimony-preview"
+                hidden
+              >
+                <p
+                  class="signal-detail__demo-testimony-note"
+                  id="detail-testimony-note"
+                ></p>
+                <img
+                  class="signal-detail__demo-testimony-media"
+                  id="detail-testimony-image"
+                  alt=""
+                  hidden
+                />
+                <video
+                  class="signal-detail__demo-testimony-media"
+                  id="detail-testimony-video"
+                  controls
+                  playsinline
+                  hidden
+                ></video>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-testimony-clear"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -893,6 +1039,257 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Profile V1: registered-account civic identity (overlay on public feed) -->
+      <div
+        class="profile-panel"
+        id="profile-panel"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-title"
+      >
+        <div class="profile-panel__dim" id="profile-dim" aria-hidden="true"></div>
+        <div class="profile-panel__sheet" role="document">
+          <button
+            type="button"
+            class="profile-panel__close"
+            id="profile-close"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <div class="profile-panel__inner">
+            <p class="profile-panel__brand" aria-label="TOWN">TOWN</p>
+            <p class="profile-panel__label" id="profile-label"></p>
+            <div class="profile-panel__identity">
+              <div class="profile-panel__avatar" id="profile-avatar" aria-hidden="true">
+                T
+              </div>
+              <div class="profile-panel__who">
+                <h2 class="profile-panel__title" id="profile-title"></h2>
+                <p class="profile-panel__handle" id="profile-handle"></p>
+              </div>
+            </div>
+            <p class="profile-panel__bio" id="profile-bio"></p>
+            <div class="profile-panel__meta">
+              <p class="profile-panel__meta-item" id="profile-community"></p>
+              <p class="profile-panel__meta-item" id="profile-membership"></p>
+            </div>
+            <section class="profile-panel__activity" aria-labelledby="profile-activity-title">
+              <h3 class="profile-panel__activity-title" id="profile-activity-title"></h3>
+              <p class="profile-panel__activity-empty" id="profile-activity-empty" hidden></p>
+              <ul class="profile-panel__activity-list" id="profile-activity-list"></ul>
+            </section>
+            <div class="profile-panel__actions">
+              <button type="button" class="btn btn--primary" id="profile-create-signal" hidden>
+                Publish a civic signal
+              </button>
+              <button type="button" class="btn btn--secondary" id="profile-moderation" hidden>
+                Moderation
+              </button>
+              <button type="button" class="btn btn--primary" id="profile-feed">
+                Back to feed
+              </button>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                id="profile-membership-cta"
+                hidden
+              >
+                Continue membership
+              </button>
+              <button
+                type="button"
+                class="btn btn--secondary"
+                id="profile-manage-billing"
+                hidden
+              >
+                Manage membership
+              </button>
+              <button type="button" class="btn btn--secondary" id="profile-sign-out">
+                Sign out
+              </button>
+              <p class="profile-panel__status" id="profile-status" hidden></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member Activity — backend truth only (confirmations, contributions, evolution) -->
+      <div
+        class="activity-panel"
+        id="activity-panel"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="activity-title"
+      >
+        <div class="activity-panel__dim" id="activity-dim" aria-hidden="true"></div>
+        <div class="activity-panel__sheet" role="document">
+          <button
+            type="button"
+            class="activity-panel__close"
+            id="activity-close"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <div class="activity-panel__inner">
+            <p class="activity-panel__brand" aria-label="TOWN">TOWN</p>
+            <p class="activity-panel__label" id="activity-label">Activity</p>
+            <h2 class="activity-panel__title" id="activity-title">Your civic activity</h2>
+            <p class="activity-panel__lead" id="activity-lead">
+              Confirmations, published contributions, and updates on signals you
+              participate in — from TOWN, not examples.
+            </p>
+            <p class="activity-panel__status" id="activity-status" role="status" hidden></p>
+            <p class="activity-panel__empty" id="activity-empty" hidden></p>
+            <ul class="activity-panel__list" id="activity-list"></ul>
+            <div class="activity-panel__actions">
+              <button type="button" class="btn btn--primary" id="activity-feed">
+                Back to feed
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Owner moderation — wires existing hide/unhide and ban/unban tools only -->
+    <div
+      class="owner-moderation"
+      id="owner-moderation"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="owner-moderation-title"
+    >
+      <div class="owner-moderation__dim" id="owner-moderation-dim" aria-hidden="true"></div>
+      <div class="owner-moderation__sheet" role="document">
+        <button type="button" class="owner-moderation__close" id="owner-moderation-close">
+          Close
+        </button>
+        <p class="owner-moderation__brand" aria-label="TOWN">TOWN</p>
+        <h2 class="owner-moderation__title" id="owner-moderation-title">
+          Owner moderation
+        </h2>
+        <p class="owner-moderation__lead" id="owner-moderation-lead">
+          Hide or unhide signals, and ban or unban accounts. These are the existing
+          owner tools — no approval queue and no report flow.
+        </p>
+        <label class="owner-moderation__label" for="owner-moderation-reason">
+          Reason
+        </label>
+        <select
+          class="owner-moderation__select"
+          id="owner-moderation-reason"
+        ></select>
+        <p class="owner-moderation__status" id="owner-moderation-status" role="status" hidden></p>
+        <p class="owner-moderation__error" id="owner-moderation-error" role="alert" hidden></p>
+        <section class="owner-moderation__section" aria-labelledby="owner-moderation-signals-title">
+          <h3 class="owner-moderation__section-title" id="owner-moderation-signals-title">
+            Community signals
+          </h3>
+          <p class="owner-moderation__empty" id="owner-moderation-signals-empty" hidden>
+            No signals in this community.
+          </p>
+          <ul class="owner-moderation__list" id="owner-moderation-signals-list"></ul>
+        </section>
+        <section class="owner-moderation__section" aria-labelledby="owner-moderation-accounts-title">
+          <h3 class="owner-moderation__section-title" id="owner-moderation-accounts-title">
+            Suspended accounts
+          </h3>
+          <p class="owner-moderation__empty" id="owner-moderation-accounts-empty" hidden>
+            No suspended accounts.
+          </p>
+          <ul class="owner-moderation__list" id="owner-moderation-accounts-list"></ul>
+        </section>
+      </div>
+    </div>
+
+    <!-- Member civic signal create — publishes immediately under real name -->
+    <div
+      class="signal-create"
+      id="signal-create"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="signal-create-title"
+    >
+      <div class="signal-create__dim" id="signal-create-dim" aria-hidden="true"></div>
+      <div class="signal-create__sheet" role="document">
+        <button type="button" class="signal-create__close" id="signal-create-close">
+          Close
+        </button>
+        <p class="signal-create__brand" aria-label="TOWN">TOWN</p>
+        <h1 class="signal-create__title" id="signal-create-title">Publish a civic signal</h1>
+        <p class="signal-create__lead" id="signal-create-lead">
+          Publish under your real name in your community. You already accepted personal
+          responsibility as a TOWN member — confirm it again for this publication.
+        </p>
+        <form class="signal-create__form" id="signal-create-form">
+          <label class="signal-create__label" for="signal-create-title-input" id="signal-create-title-label">Title</label>
+          <input
+            class="signal-create__input"
+            id="signal-create-title-input"
+            name="title"
+            type="text"
+            maxlength="160"
+            required
+            autocomplete="off"
+          />
+          <label class="signal-create__label" for="signal-create-description" id="signal-create-description-label">Description</label>
+          <textarea
+            class="signal-create__textarea"
+            id="signal-create-description"
+            name="description"
+            maxlength="2000"
+            rows="5"
+            required
+          ></textarea>
+          <label class="signal-create__label" for="signal-create-category" id="signal-create-category-label">Category</label>
+          <select class="signal-create__select" id="signal-create-category" name="category" required></select>
+          <label class="signal-create__label" for="signal-create-real-name" id="signal-create-real-name-label">Real name</label>
+          <input
+            class="signal-create__input"
+            id="signal-create-real-name"
+            name="realName"
+            type="text"
+            maxlength="80"
+            required
+            autocomplete="name"
+          />
+          <label class="signal-create__label" for="signal-create-photo" id="signal-create-photo-label">Photo</label>
+          <input
+            class="signal-create__file"
+            id="signal-create-photo"
+            name="photo"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            required
+          />
+          <div class="signal-create__preview" id="signal-create-preview" hidden>
+            <img id="signal-create-preview-image" alt="" />
+          </div>
+          <label class="signal-create__accept" id="signal-create-accept-wrap">
+            <input type="checkbox" id="signal-create-accept" required />
+            <span id="signal-create-accept-text">
+              I publish under my real name and accept personal responsibility for this
+              signal, under the TOWN membership rules I already accepted.
+            </span>
+          </label>
+          <p class="signal-create__error" id="signal-create-error" hidden></p>
+          <div class="signal-create__actions">
+            <button type="submit" class="btn btn--primary" id="signal-create-submit">
+              Publish signal
+            </button>
+            <button type="button" class="btn btn--secondary" id="signal-create-cancel">
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -1305,6 +1702,6 @@
     <script src="city-discovery.js" defer></script>
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
-    <script src="script.js?v=see-too-signin-continuity-1" defer></script>
+    <script src="script.js?v=see-too-signin-continuity-2" defer></script>
   </body>
 </html>
