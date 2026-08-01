@@ -301,6 +301,7 @@
       escapeHtml(counts.submissions.pendingReview) +
       "</strong></div>";
     document.getElementById("status-grid").innerHTML = html;
+    await loadRecentErrors();
     var commit =
       health.build && health.build.commitSha ? health.build.commitSha.slice(0, 8) : "unknown";
     setStatus(
@@ -308,6 +309,60 @@
       "Build " + commit + " · " + health.build.environment,
       "is-ok"
     );
+  }
+
+  function errorRow(error) {
+    var when = error.occurredAt || "";
+    var route =
+      (error.method ? error.method + " " : "") + (error.route ? error.route : "unknown-route");
+    return (
+      '<article class="error-row">' +
+      '<div class="error-row-top">' +
+      '<strong class="error-code">' +
+      escapeHtml(error.errorCode || "INTERNAL_ERROR") +
+      "</strong>" +
+      '<span class="error-status">' +
+      escapeHtml(String(error.statusCode || "")) +
+      "</span>" +
+      '<time datetime="' +
+      escapeHtml(when) +
+      '">' +
+      escapeHtml(when) +
+      "</time>" +
+      "</div>" +
+      '<p class="error-route">' +
+      escapeHtml(route) +
+      "</p>" +
+      '<p class="error-message">' +
+      escapeHtml(error.message || "") +
+      "</p>" +
+      '<p class="error-meta">requestId ' +
+      escapeHtml(error.requestId || "—") +
+      (error.commitSha
+        ? " · build " + escapeHtml(String(error.commitSha).slice(0, 8))
+        : "") +
+      "</p>" +
+      "</article>"
+    );
+  }
+
+  async function loadRecentErrors() {
+    var errorsEl = document.getElementById("status-errors");
+    if (!errorsEl) return;
+    var result = await getJson("/v1/platform/errors?limit=20");
+    if (result.response.status !== 200) {
+      errorsEl.innerHTML = '<p class="muted">Unable to load recent errors.</p>';
+      return;
+    }
+    var errors =
+      result.payload && result.payload.data && result.payload.data.errors
+        ? result.payload.data.errors
+        : [];
+    if (!errors.length) {
+      errorsEl.innerHTML = '<p class="muted">No recent technical errors.</p>';
+      return;
+    }
+    errorsEl.innerHTML = errors.map(errorRow).join("");
   }
 
   function accountRow(account) {

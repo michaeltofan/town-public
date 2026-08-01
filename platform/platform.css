@@ -417,6 +417,72 @@ a.button {
   word-break: break-word;
 }
 
+.errors-panel {
+  margin-top: 1.5rem;
+}
+
+.errors-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+.errors-head p {
+  margin: 0.35rem 0 0.85rem;
+  color: var(--ink-soft);
+}
+
+.errors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.error-row {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(160, 48, 48, 0.28);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(247, 228, 228, 0.5));
+}
+
+.error-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.85rem;
+  align-items: baseline;
+}
+
+.error-code {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.error-status {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.error-row time {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.error-route,
+.error-message,
+.error-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+}
+
+.error-meta {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
 .list {
   display: flex;
   flex-direction: column;
