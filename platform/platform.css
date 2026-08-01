@@ -166,6 +166,24 @@ body {
   margin-top: 1.5rem;
 }
 
+.moderation-block {
+  margin-top: 2rem;
+}
+
+.moderation-block h3 {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+}
+
+.moderation-block h4 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
 .button,
 .nav-item,
 .row-action {

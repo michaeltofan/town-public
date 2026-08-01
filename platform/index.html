@@ -149,18 +149,75 @@
           <section class="section" data-panel="moderation">
             <header class="section-head">
               <h2>Moderation</h2>
-              <p>Signals, pending submissions, and recent discussions.</p>
+              <p>
+                Hide or restore signals, reject or restore submissions, and hide
+                or unhide discussion contributions. Mutations require a reason.
+              </p>
             </header>
-            <div class="split">
-              <div>
-                <h3>Signals</h3>
-                <div id="signals-list" class="list"></div>
-              </div>
-              <div>
-                <h3>Submissions</h3>
+
+            <div class="moderation-block">
+              <h3>Signals</h3>
+              <div id="signals-list" class="list"></div>
+            </div>
+
+            <div class="moderation-block">
+              <h3>Submissions</h3>
+              <form id="submissions-search" class="toolbar">
+                <input
+                  id="submissions-q"
+                  name="q"
+                  type="search"
+                  placeholder="Headline, body, account, or id"
+                />
+                <input
+                  id="submissions-community"
+                  name="communitySlug"
+                  type="text"
+                  placeholder="Community slug"
+                />
+                <select id="submissions-status" name="status">
+                  <option value="">Any status</option>
+                  <option value="pending_review">pending_review</option>
+                  <option value="rejected">rejected</option>
+                </select>
+                <button type="submit" class="button">Search</button>
+              </form>
+              <div class="split">
                 <div id="submissions-list" class="list"></div>
-                <h3>Discussions</h3>
+                <div>
+                  <h4>Submission detail</h4>
+                  <pre id="submission-detail" class="code-block">Select a submission.</pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="moderation-block">
+              <h3>Discussions</h3>
+              <form id="discussions-search" class="toolbar">
+                <input
+                  id="discussions-q"
+                  name="q"
+                  type="search"
+                  placeholder="Body, signal, account, or id"
+                />
+                <input
+                  id="discussions-community"
+                  name="communitySlug"
+                  type="text"
+                  placeholder="Community slug"
+                />
+                <select id="discussions-hidden" name="hiddenOnly">
+                  <option value="">All contributions</option>
+                  <option value="true">Hidden only</option>
+                </select>
+                <button type="submit" class="button">Search</button>
+              </form>
+              <div class="split">
                 <div id="discussions-list" class="list"></div>
+                <div>
+                  <h4>Contribution detail</h4>
+                  <pre id="discussion-detail" class="code-block">Select a contribution.</pre>
+                </div>
               </div>
             </div>
           </section>
