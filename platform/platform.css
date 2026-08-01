@@ -508,6 +508,16 @@ a.button {
   margin-top: 0.65rem;
 }
 
+.backup-actions {
+  margin: 0.35rem 0 0.85rem;
+}
+
+.backup-detail {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
 .errors-head h3 {
   margin: 0;
   font-family: var(--font-display);
