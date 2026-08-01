@@ -10,8 +10,12 @@
   var operatorRole = document.getElementById("operator-role");
   var operatorId = document.getElementById("operator-id");
   var retrySession = document.getElementById("retry-session");
+  var signInButton = document.getElementById("platform-sign-in");
+  var signOutButton = document.getElementById("platform-sign-out");
 
   var session = null;
+  var anonymousClientKey = null;
+  var signInSubmitting = false;
 
   function setStatus(el, message, kind) {
     if (!el) return;
@@ -78,36 +82,205 @@
     );
   }
 
+  function getAnonymousClientKey() {
+    if (anonymousClientKey) return anonymousClientKey;
+    var bytes = new Uint8Array(24);
+    if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+      crypto.getRandomValues(bytes);
+    } else {
+      for (var i = 0; i < bytes.length; i += 1) {
+        bytes[i] = (Math.random() * 256) | 0;
+      }
+    }
+    var binary = "";
+    for (var j = 0; j < bytes.length; j += 1) {
+      binary += String.fromCharCode(bytes[j]);
+    }
+    anonymousClientKey = btoa(binary)
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/g, "");
+    return anonymousClientKey;
+  }
+
+  function setSignInBusy(busy) {
+    signInSubmitting = !!busy;
+    if (signInButton) signInButton.disabled = signInSubmitting;
+    if (retrySession) retrySession.disabled = signInSubmitting;
+  }
+
   function showConsole() {
     gate.hidden = true;
     consoleEl.hidden = false;
     operatorRole.hidden = false;
     operatorId.hidden = false;
+    if (signOutButton) signOutButton.hidden = false;
     operatorRole.textContent = session.role;
     operatorId.textContent = session.accountId;
   }
 
-  function showGate(message) {
+  function showGate(message, kind) {
     gate.hidden = false;
     consoleEl.hidden = true;
     operatorRole.hidden = true;
     operatorId.hidden = true;
-    setStatus(gateStatus, message, message ? "is-error" : null);
+    if (signOutButton) signOutButton.hidden = true;
+    session = null;
+    // Pass kind explicitly (including null) when provided; default message → error.
+    var statusKind = arguments.length > 1 ? kind : message ? "is-error" : null;
+    setStatus(gateStatus, message, statusKind);
   }
 
-  async function bootstrap() {
-    setStatus(gateStatus, "Checking operator session…");
+  async function loadOperatorSession() {
     var result = await getJson("/v1/platform/session");
-    if (result.response.status !== 200 || !result.payload || !result.payload.data) {
-      showGate(
-        "No platform operator session. Sign in on TOWN with an authorized account, then retry."
-      );
-      return;
+    if (result.response.status === 200 && result.payload && result.payload.data) {
+      session = result.payload.data;
+      return { ok: true, session: session };
     }
-    session = result.payload.data;
+    return { ok: false, status: result.response.status };
+  }
+
+  async function requestPasskeyAuthenticationOptions() {
+    var result = await postJson("/v1/authentication/passkeys/options", {
+      clientType: "web",
+      anonymousClientKey: getAnonymousClientKey(),
+    });
+    var data = result.payload && result.payload.data;
+    if (
+      result.response.status === 200 &&
+      data &&
+      data.authenticationCeremonyId &&
+      data.options
+    ) {
+      return {
+        authenticationCeremonyId: data.authenticationCeremonyId,
+        options: data.options,
+      };
+    }
+    throw new Error("Unable to start passkey Sign-in");
+  }
+
+  async function verifyPasskeyAuthentication(authenticationCeremonyId, assertion) {
+    var result = await postJson("/v1/authentication/passkeys/verify", {
+      authenticationCeremonyId: authenticationCeremonyId,
+      clientType: "web",
+      response: assertion,
+    });
+    var data = result.payload && result.payload.data;
+    if (result.response.status === 200 && data && data.status === "AUTHENTICATED") {
+      return data;
+    }
+    throw new Error("Passkey verification failed");
+  }
+
+  async function fetchAuthenticationSession() {
+    var result = await getJson("/v1/authentication/session");
+    var data = result.payload && result.payload.data;
+    if (result.response.status === 200 && data && data.authenticated === true) {
+      return data;
+    }
+    throw new Error("Authenticated session was not established");
+  }
+
+  function isPasskeyCeremonyCancelled(err) {
+    var name = err && err.name;
+    var causeName = err && err.cause && err.cause.name;
+    return (
+      name === "NotAllowedError" ||
+      name === "AbortError" ||
+      causeName === "NotAllowedError" ||
+      causeName === "AbortError" ||
+      (err &&
+        err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
+        causeName === "NotAllowedError")
+    );
+  }
+
+  function runPasskeyAuthenticationCeremony() {
+    var swaBrowser = window["Simple" + "Web" + "Authn" + "Browser"];
+    var startAuthentication = swaBrowser && swaBrowser.startAuthentication;
+    if (typeof startAuthentication !== "function") {
+      return Promise.reject(new Error("Passkey support is unavailable in this browser"));
+    }
+    return requestPasskeyAuthenticationOptions()
+      .then(function (ceremony) {
+        return startAuthentication({ optionsJSON: ceremony.options }).then(
+          function (assertion) {
+            return verifyPasskeyAuthentication(
+              ceremony.authenticationCeremonyId,
+              assertion
+            );
+          }
+        );
+      })
+      .then(function () {
+        return fetchAuthenticationSession();
+      });
+  }
+
+  async function enterConsoleFromSession() {
     showConsole();
     setStatus(consoleStatus, "Signed in as platform operator.", "is-ok");
     await loadSection("status");
+  }
+
+  async function bootstrap(options) {
+    var opts = options || {};
+    if (!opts.quiet) {
+      setStatus(gateStatus, "Checking operator session…");
+    }
+    var result = await loadOperatorSession();
+    if (result.ok) {
+      await enterConsoleFromSession();
+      return true;
+    }
+    showGate(
+      "Sign in with an authorized platform operator account.",
+      null
+    );
+    return false;
+  }
+
+  async function startPlatformPasskeySignIn() {
+    if (signInSubmitting) return;
+    setSignInBusy(true);
+    setStatus(gateStatus, "Waiting for passkey…");
+    try {
+      await runPasskeyAuthenticationCeremony();
+      var operator = await loadOperatorSession();
+      if (operator.ok) {
+        await enterConsoleFromSession();
+        return;
+      }
+      // Authenticated account without platform_operators grant stays gated.
+      showGate(
+        "Signed in, but this account is not authorized for platform access.",
+        "is-error"
+      );
+    } catch (err) {
+      if (isPasskeyCeremonyCancelled(err)) {
+        showGate("Passkey Sign-in was cancelled.", "is-error");
+      } else {
+        showGate(
+          (err && err.message) || "Passkey Sign-in failed. Try again.",
+          "is-error"
+        );
+      }
+    } finally {
+      setSignInBusy(false);
+    }
+  }
+
+  async function signOutPlatform() {
+    if (signOutButton) signOutButton.disabled = true;
+    try {
+      await postJson("/v1/authentication/logout", {});
+    } catch (_err) {
+      /* still clear local console state */
+    }
+    session = null;
+    showGate("Signed out. Sign in again with an authorized operator account.");
+    if (signOutButton) signOutButton.disabled = false;
   }
 
   function bindNav() {
@@ -572,7 +745,7 @@
   document.getElementById("operator-grant").addEventListener("submit", async function (event) {
     event.preventDefault();
     var accountId = document.getElementById("operator-account-id").value.trim();
-    var role = document.getElementById("operator-role").value;
+    var role = document.getElementById("operator-grant-role").value;
     var result = await postJson("/v1/platform/operators", {
       accountId: accountId,
       role: role,
@@ -584,6 +757,18 @@
     setStatus(consoleStatus, "Operator granted", "is-ok");
     await loadOperators();
   });
+
+  if (signInButton) {
+    signInButton.addEventListener("click", function () {
+      startPlatformPasskeySignIn();
+    });
+  }
+
+  if (signOutButton) {
+    signOutButton.addEventListener("click", function () {
+      signOutPlatform();
+    });
+  }
 
   retrySession.addEventListener("click", function () {
     bootstrap();
