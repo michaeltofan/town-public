@@ -54,6 +54,13 @@ assert(html.includes('id="status-components"'), "status components grid present"
 assert(html.includes('id="status-errors"'), "recent errors panel present");
 assert(js.includes("/v1/platform/errors"), "recent errors path");
 assert(js.includes("loadRecentErrors"), "recent errors loader");
+assert(html.includes('id="status-uptime-summary"'), "uptime summary present");
+assert(html.includes('id="status-alerts"'), "alerts panel present");
+assert(js.includes("/v1/platform/uptime"), "uptime path");
+assert(js.includes("/v1/platform/alerts"), "alerts path");
+assert(js.includes("loadUptime"), "uptime loader");
+assert(js.includes("loadAlerts"), "alerts loader");
+assert(js.includes("/acknowledge"), "alert acknowledge path");
 assert(js.includes("/v1/platform/accounts"), "accounts path");
 assert(js.includes("/v1/platform/memberships"), "memberships path");
 assert(js.includes("/v1/platform/memberships/grant"), "membership grant path");

@@ -417,8 +417,95 @@ a.button {
   word-break: break-word;
 }
 
+.monitor-panel,
 .errors-panel {
   margin-top: 1.5rem;
+}
+
+.monitor-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+.monitor-head p {
+  margin: 0.35rem 0 0.85rem;
+  color: var(--ink-soft);
+}
+
+.uptime-summary {
+  margin-bottom: 0.85rem;
+}
+
+.uptime-samples,
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.uptime-row,
+.alert-row {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.uptime-row-top,
+.alert-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.85rem;
+  align-items: baseline;
+}
+
+.uptime-overall {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.uptime-row time,
+.alert-row time {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.uptime-components,
+.alert-detail,
+.alert-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+}
+
+.alert-meta {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+.alert-status {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.alert-row.severity-critical {
+  border-color: rgba(160, 48, 48, 0.35);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(247, 228, 228, 0.45));
+}
+
+.alert-row.severity-warning {
+  border-color: rgba(150, 110, 40, 0.35);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(250, 240, 220, 0.45));
+}
+
+.alert-row .row-actions {
+  margin-top: 0.65rem;
 }
 
 .errors-head h3 {

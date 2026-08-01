@@ -88,10 +88,25 @@
           <section class="section is-active" data-panel="status">
             <header class="section-head">
               <h2>Monitor</h2>
-              <p>Operational status for API, database, email, and Stripe, plus durable counts and recent technical errors.</p>
+              <p>Operational status for API, database, email, and Stripe, plus uptime samples, in-console alerts, counts, and recent technical errors.</p>
             </header>
             <div id="status-components" class="stat-grid status-components"></div>
             <div id="status-grid" class="stat-grid"></div>
+            <div class="monitor-panel">
+              <header class="section-head monitor-head">
+                <h3>Uptime</h3>
+                <p>Opportunistic samples from status checks. No external pager — console history only.</p>
+              </header>
+              <div id="status-uptime-summary" class="stat-grid uptime-summary"></div>
+              <div id="status-uptime-samples" class="uptime-samples"></div>
+            </div>
+            <div class="monitor-panel">
+              <header class="section-head monitor-head">
+                <h3>Alerts</h3>
+                <p>Open when a component is unhealthy. Acknowledge requires ops_admin.</p>
+              </header>
+              <div id="status-alerts" class="alerts-list"></div>
+            </div>
             <div class="errors-panel">
               <header class="section-head errors-head">
                 <h3>Recent errors</h3>
