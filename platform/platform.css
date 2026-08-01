@@ -128,6 +128,14 @@ body {
   animation: rise 650ms ease both;
 }
 
+/* Author display rules must not defeat the HTML hidden attribute. */
+.panel[hidden],
+.console[hidden],
+.section[hidden],
+[hidden] {
+  display: none !important;
+}
+
 .gate {
   padding: 2.5rem 2rem;
   max-width: 40rem;
