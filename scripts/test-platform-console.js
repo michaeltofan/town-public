@@ -46,6 +46,11 @@ assert(
 
 assert(js.includes("/v1/platform/session"), "session path");
 assert(js.includes("/v1/platform/status"), "status path");
+assert(js.includes("components.api"), "status renders API component");
+assert(js.includes("components.database"), "status renders database component");
+assert(js.includes("components.email"), "status renders email component");
+assert(js.includes("components.stripe"), "status renders Stripe component");
+assert(html.includes('id="status-components"'), "status components grid present");
 assert(js.includes("/v1/platform/accounts"), "accounts path");
 assert(js.includes("/v1/platform/memberships"), "memberships path");
 assert(js.includes("/v1/platform/memberships/grant"), "membership grant path");
