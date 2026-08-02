@@ -1,5 +1,5 @@
 /**
- * Smoke + behavioral checks for the single active API base.
+ * Smoke + behavioral checks for host-aware API base routing.
  */
 const fs = require("fs");
 const path = require("path");
@@ -57,7 +57,7 @@ assert(
   productJs.includes("resolveApiBaseSafe"),
   "product uses fail-closed resolver"
 );
-assert(source.includes("ACTIVE_API_BASE"), "single active API constant present");
+assert(source.includes("ACTIVE_API_BASE"), "active API constant present");
 assert(
   !source.includes("PRODUCTION_PAGE_API_BASE"),
   "cutover production-page constant removed"
@@ -77,56 +77,65 @@ vm.runInNewContext(source, sandbox);
 const TownApiBase = sandbox.window.TownApiBase || sandbox.TownApiBase;
 assert(!!TownApiBase, "TownApiBase exported");
 
-const active = TownApiBase.ACTIVE_API_BASE;
+const production = "https://api.towncivic.org";
+const staging = "https://api-staging.towncivic.org";
 assert(
-  active === "https://api.towncivic.org",
-  "active API is production"
+  TownApiBase.ACTIVE_API_BASE === production,
+  "ACTIVE_API_BASE default is production"
 );
 
 assert(
-  TownApiBase.resolveApiBase("towncivic.org") === active,
-  "towncivic.org → active API"
+  TownApiBase.resolveApiBase("towncivic.org") === production,
+  "towncivic.org → production API"
 );
 assert(
-  TownApiBase.resolveApiBase("www.towncivic.org") === active,
-  "www → active API"
+  TownApiBase.resolveApiBase("www.towncivic.org") === production,
+  "www → production API"
 );
 assert(
-  TownApiBase.resolveApiBase("localhost") === active,
-  "localhost → active API"
+  TownApiBase.resolveApiBase("localhost") === staging,
+  "localhost → staging API"
 );
 assert(
   TownApiBase.resolveApiBase("town-public-staging-staging.up.railway.app") ===
-    active,
-  "railway host → active API"
+    staging,
+  "railway staging host → staging API"
 );
 
 const safe = TownApiBase.resolveApiBaseSafe("towncivic.org");
 assert(safe.ok === true, "safe resolve ok");
-assert(safe.apiBase === active, "safe resolve returns active API");
+assert(safe.apiBase === production, "safe resolve returns production API");
 
 assert(
-  TownApiBase.allowApiBaseForHost("towncivic.org", active),
-  "active API allowed"
+  TownApiBase.allowApiBaseForHost("towncivic.org", production),
+  "production API allowed on production host"
+);
+assert(
+  !TownApiBase.allowApiBaseForHost("towncivic.org", staging),
+  "staging API refused on production host"
+);
+assert(
+  TownApiBase.allowApiBaseForHost(
+    "town-public-staging-staging.up.railway.app",
+    staging
+  ),
+  "staging API allowed on staging host"
 );
 assert(
   !TownApiBase.allowApiBaseForHost(
-    "towncivic.org",
-    "https://api-staging.towncivic.org"
+    "town-public-staging-staging.up.railway.app",
+    production
   ),
-  "inactive staging API refused while production is active"
+  "production API refused on staging host"
 );
 assert(
   !TownApiBase.allowApiBaseForHost("towncivic.org", ""),
   "empty API refused"
 );
 assert(
-  TownApiBase.isProductionApiBase(active),
-  "active API detected as production"
+  TownApiBase.isProductionApiBase(production),
+  "production API detected"
 );
-assert(
-  !TownApiBase.isStagingApiBase(active),
-  "active production API is not staging"
-);
+assert(TownApiBase.isStagingApiBase(staging), "staging API detected");
 
 console.log("PASSED: " + passed + " api-base assertions");

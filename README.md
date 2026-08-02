@@ -2,18 +2,18 @@
 
 Public web surface for **TOWN**.
 
-## Current phase — production API cutover
+## Current phase — production live + staging isolated
 
-- Site: `https://towncivic.org`
-- API: `https://api.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
-- Staging API remains at `https://api-staging.towncivic.org` for ops/testing only
+- Live site: `https://towncivic.org` → `https://api.towncivic.org`
+- Staging site: `https://town-public-staging-staging.up.railway.app` → `https://api-staging.towncivic.org`
+- Routing is host-aware in `api-base.js` so staging cannot hit live member/payment data
 
 ## Live surfaces
 
 | Surface | URL | Notes |
 | --- | --- | --- |
-| Public feed | `https://towncivic.org/` | Product-only mode; loads live signals from staging API. Fail-closed loading/empty states (no fictional civic feed). |
-| Platform console | `https://towncivic.org/platform/` | Operator email+password; requires platform role on staging API. |
+| Public feed | `https://towncivic.org/` | Product-only mode; loads live signals from production API. Fail-closed loading/empty states (no fictional civic feed). |
+| Platform console | `https://towncivic.org/platform/` | Operator email+password; requires platform role on production API. |
 
 Member journey (Etapa 3) on the public surface:
 
@@ -34,7 +34,7 @@ Already proven live against `api-staging` (2026-08-02):
 4. Webhook → membership `active`, `source: stripe`, `accessUntil` ~+1 year
 
 Production API + Stripe live are provisioned. First real €12 membership payment
-is the remaining live proof on `api.towncivic.org`.
+is proven on `api.towncivic.org`.
 
 ## Honesty rules (foundation)
 
