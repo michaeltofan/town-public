@@ -818,7 +818,7 @@
         whoAffected:
           "Famiglie con bambini, anziani, persone con mobilità ridotta e chi attraversa Città Studi a piedi nelle ore di punta.",
         latestUpdate:
-          "Il segnale resta locale e aperto. Nessuna conferma rilevante di intervento è ancora disponibile in questo prototipo.",
+          "Il segnale resta locale e aperto. Nessuna conferma rilevante di intervento è ancora disponibile.",
         statusNote:
           "«Osservato» significa che il problema è stato riconosciuto dalla comunità locale. Non implica una pratica ufficiale né un intervento già avviato.",
       },
@@ -842,7 +842,7 @@
         whoAffected:
           "Studenti, genitori, residenti della sera e chi usa questo tratto pedonale per raggiungere fermate e abitazioni vicine.",
         latestUpdate:
-          "I residenti riferiscono di aver già segnalato il Comune. In questo prototipo il segnale resta in monitoraggio locale.",
+          "I residenti riferiscono di aver già segnalato il Comune. Il segnale resta in monitoraggio locale.",
         statusNote:
           "«Segnalato» indica che il problema è stato portato all’attenzione locale. Non conferma riparazione, presa in carico formale o tempi di intervento.",
       },
@@ -867,7 +867,7 @@
         whoAffected:
           "Pedoni, ciclisti, residenti di Lorenteggio e chi attraversa l’area per lavoro o scuola.",
         latestUpdate:
-          "Il segnale resta aperto. In questo prototipo non risultano ancora indicazioni aggiornate su durata o percorso alternativo.",
+          "Il segnale resta aperto. Non risultano ancora indicazioni aggiornate su durata o percorso alternativo.",
         statusNote:
           "«Aperto» significa che la situazione resta da chiarire per la comunità. Non implica una decisione amministrativa già conclusa.",
       },
@@ -893,7 +893,7 @@
         whoAffected:
           "Familien mit Kinderwagen, ältere Menschen, Personen mit eingeschränkter Mobilität und Fußgängerinnen und Fußgänger im täglichen Weg durch Schwabing.",
         latestUpdate:
-          "Das Signal bleibt lokal und offen. In diesem Prototyp liegt noch keine bestätigte Maßnahme vor.",
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Maßnahme vor.",
         statusNote:
           "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
       },
@@ -917,7 +917,7 @@
         whoAffected:
           "Anwohnerinnen und Anwohner, Schülerinnen und Schüler, Abendgänger sowie alle, die diesen Fußweg zur Haltestelle nutzen.",
         latestUpdate:
-          "Anwohner berichten, die Störung bereits gemeldet zu haben. In diesem Prototyp bleibt das Signal in lokaler Beobachtung.",
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
         statusNote:
           "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
       },
@@ -941,7 +941,7 @@
         whoAffected:
           "Fußgänger, Radfahrer, Anwohner in Sendling und alle, die das Gebiet regelmäßig durchqueren.",
         latestUpdate:
-          "Das Signal bleibt offen. In diesem Prototyp gibt es noch keine aktualisierte Angabe zu Dauer oder Ausweichweg.",
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu Dauer oder Ausweichweg.",
         statusNote:
           "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
       },
@@ -1334,6 +1334,8 @@
       feedRetry: "Try again",
       seeTooFailed: "Couldn't save this confirmation — try again.",
       seeTooBusy: "Saving your confirmation…",
+      notYourCommunity:
+        "This signal is outside your community — you can explore it, but participation stays local.",
       cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
     },
     es: {
@@ -1391,6 +1393,8 @@
       feedRetry: "Intentar de nuevo",
       seeTooFailed: "No se pudo guardar esta confirmación — inténtalo de nuevo.",
       seeTooBusy: "Guardando tu confirmación…",
+      notYourCommunity:
+        "Esta señal está fuera de tu comunidad — puedes explorarla, pero la participación sigue siendo local.",
       cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
     },
     it: {
@@ -1448,6 +1452,8 @@
       feedRetry: "Riprova",
       seeTooFailed: "Impossibile salvare questa conferma — riprova.",
       seeTooBusy: "Salvataggio della conferma…",
+      notYourCommunity:
+        "Questo segnale è fuori dalla tua comunità — puoi esplorarlo, ma la partecipazione resta locale.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1505,6 +1511,8 @@
       feedRetry: "Erneut versuchen",
       seeTooFailed: "Diese Bestätigung konnte nicht gespeichert werden — erneut versuchen.",
       seeTooBusy: "Bestätigung wird gespeichert…",
+      notYourCommunity:
+        "Dieses Signal liegt außerhalb deiner Gemeinschaft — du kannst es erkunden, aber Mitwirkung bleibt lokal.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1562,6 +1570,8 @@
       feedRetry: "Încearcă din nou",
       seeTooFailed: "Nu am putut salva această confirmare — încearcă din nou.",
       seeTooBusy: "Se salvează confirmarea…",
+      notYourCommunity:
+        "Acest semnal este în afara comunității tale — îl poți explora, dar participarea rămâne locală.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -2605,11 +2615,29 @@
     return !!CITY_DISCOVERY_JOURNEY_ROUTES[route];
   }
 
+  function memberHomeCityId() {
+    const api = window.TownCommunityCommitment;
+    if (
+      !api ||
+      typeof api.cityIdFromCommitment !== "function" ||
+      !commitmentSnapshot
+    ) {
+      return null;
+    }
+    return api.cityIdFromCommitment(commitmentSnapshot);
+  }
+
   function productOnlyScenes() {
     // Live API scenes only — never invent civic content from FEED_SCENES.
+    // Committed members get their home community on HOME; other cities stay
+    // reachable through city discovery, without mixed participate rights.
     const out = [];
-    for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
-      const cityId = PRODUCT_ONLY_CITY_ORDER[i];
+    const homeCityId = memberHomeCityId();
+    const cityOrder = homeCityId
+      ? [homeCityId]
+      : PRODUCT_ONLY_CITY_ORDER.slice();
+    for (let i = 0; i < cityOrder.length; i++) {
+      const cityId = cityOrder[i];
       const scenes = liveScenes[cityId];
       if (!scenes || scenes.length < 1) continue;
       for (let j = 0; j < scenes.length; j++) {
@@ -2625,6 +2653,22 @@
     if (scene.id.indexOf("munich-") === 0) return "Munich";
     if (scene.id.indexOf("arad-") === 0) return "Arad";
     return null;
+  }
+
+  function sceneMatchesMemberCommunity(scene) {
+    const homeCityId = memberHomeCityId();
+    if (!homeCityId) return true;
+    const sceneCityId = cityIdFromScene(scene);
+    if (!sceneCityId) return true;
+    return sceneCityId === homeCityId;
+  }
+
+  function noticeNotYourCommunity() {
+    const copy = currentFeedCopy();
+    showTransientFeedNotice(
+      copy.notYourCommunity ||
+        "This signal is outside your community — you can explore it, but participation stays local."
+    );
   }
 
   function syncProductOnlyCityFromScene(scene) {
@@ -2896,6 +2940,8 @@
   // existing membership boundary invite for visitor / registered / unpaid paths.
   // Invite paths capture pending see-too context so public Sign-in can restore
   // the originating signal afterward.
+  // Civic-eligible members who hit a wrong-community signal get an honest
+  // explore-only notice — never another "become a member" invite.
   async function activateSeeTooAction(options) {
     const closeDetail = !!(options && options.closeDetail);
     if (closeDetail) closeSignalDetail();
@@ -2908,8 +2954,15 @@
     }
     if (seeTooConfirmSubmitting) return "busy";
 
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
+    if (!sceneMatchesMemberCommunity(scene)) {
+      noticeNotYourCommunity();
+      return "wrong_community";
+    }
+
     const key = signalConfirmationKeyForIndex(feedIndex);
-    const apiId = signalApiIdForScene(currentScenes()[feedIndex]);
+    const apiId = signalApiIdForScene(scene);
     const copy = currentFeedCopy();
 
     // Fail closed: civic confirmation requires a live signal UUID + API write.
@@ -2954,10 +3007,17 @@
         return "confirmed";
       }
       if (result.response && result.response.status === 403) {
+        // Already civic-eligible above: 403 is not a membership upsell.
         clearTransientFeedNotice();
-        capturePendingSeeTooContext();
-        openInvite();
-        return "invite";
+        if (!sceneMatchesMemberCommunity(scene)) {
+          noticeNotYourCommunity();
+          return "wrong_community";
+        }
+        showTransientFeedNotice(
+          copy.seeTooFailed || "Couldn't save this confirmation — try again."
+        );
+        syncFeedMemberState();
+        return "forbidden";
       }
       showTransientFeedNotice(
         copy.seeTooFailed || "Couldn't save this confirmation — try again."
@@ -6768,6 +6828,11 @@
     ) {
       restoreCommitmentSelectionFromSnapshot(snapshot);
     }
+    // HOME feed scopes to the member community once commitment is known.
+    if (isProductOnlyPublicMode() && parseRoute() === "feed") {
+      feedIndex = 0;
+      renderFeedScene();
+    }
   }
 
   function renderCommitmentCityOptions() {
@@ -8216,6 +8281,10 @@
       openInvite();
       return;
     }
+    if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+      noticeNotYourCommunity();
+      return;
+    }
 
     const apiId = currentSignalApiId();
     const key = signalSessionKey();
@@ -8582,10 +8651,15 @@
   });
 
   // Discussion session CTA:
-  // - participating member (canParticipate): compose a solution-oriented contribution
+  // - participating member in their community: compose a solution-oriented contribution
+  // - civic member outside their community: honest explore-only notice
   // - everyone else: membership invitation boundary
   detailSessionContribute.addEventListener("click", () => {
     if (canTakeCivicAction()) {
+      if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+        noticeNotYourCommunity();
+        return;
+      }
       openSessionCompose();
       return;
     }
@@ -8599,6 +8673,10 @@
       originatingFeedIndex = feedIndex;
       closeSignalDetail();
       openInvite();
+      return;
+    }
+    if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+      noticeNotYourCommunity();
       return;
     }
     openMemberDemoTestimonyCapture();

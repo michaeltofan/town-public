@@ -119,6 +119,15 @@ assert(
   "non-eligible roles still open the membership invite boundary"
 );
 assert(
+  activate.includes("sceneMatchesMemberCommunity") &&
+    activate.includes("noticeNotYourCommunity"),
+  "eligible members outside their community get explore-only notice"
+);
+assert(
+  !activate.slice(activate.indexOf('status === 403')).includes("openInvite()"),
+  "API 403 after civic eligibility does not upsell membership"
+);
+assert(
   !activate.includes("membershipSimulated = true"),
   "activation does not auto-activate membership"
 );
