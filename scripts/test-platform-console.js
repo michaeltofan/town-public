@@ -50,8 +50,8 @@ assert(
 );
 assert(js.includes("resolveApiBaseSafe"), "fail-closed API base resolver");
 assert(
-  js.includes("productionPageUsesStagingApi"),
-  "surfaces pre-cutover staging API note on production hosts"
+  !js.includes("productionPageUsesStagingApi"),
+  "no cutover staging-API note in console"
 );
 assert(
   js.includes("api_base_misconfigured"),

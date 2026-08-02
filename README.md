@@ -46,23 +46,13 @@ Adapts the existing six local feed scenes for a premium desktop reading layout:
 
 ### Platform operator console
 
-Separate administration surface at `/platform/` (not community owner moderation).
-Operators sign in on `/platform/` with email + password. Access still requires an
-account granted as platform operator on town-api (bootstrap CLI or Operators
-panel). Talks to `/v1/platform/*`.
+One console. One API.
 
-API host is resolved from the page hostname via shared `api-base.js` (fail-closed):
+- Console: `https://towncivic.org/platform/`
+- API: `https://api-staging.towncivic.org` (via shared `api-base.js` `ACTIVE_API_BASE`)
 
-| Page host | API base |
-| --- | --- |
-| `towncivic.org`, `www.towncivic.org` | `PRODUCTION_PAGE_API_BASE` (currently staging until `api.towncivic.org` is live) |
-| localhost, Railway staging, other non-prod hosts | `https://api-staging.towncivic.org` |
-
-Production pages only allow the configured production-page API base. Cutover:
-set `PRODUCTION_PAGE_API_BASE` to `https://api.towncivic.org` when that API exists.
-
-Staging operator console (always staging API):
-`https://town-public-staging-staging.up.railway.app/platform/`
+Sign in with email + password on an account granted as platform operator
+(bootstrap CLI or Operators panel). Do not use Railway public URLs for login.
 
 ```bash
 node scripts/test-api-base.js
@@ -75,9 +65,8 @@ node scripts/test-platform-console.js
 python3 -m http.server 4173
 ```
 
-Open `http://localhost:4173/`.
-Platform console: `http://localhost:4173/platform/`.
-Local preview uses the staging API.
+Open `http://localhost:4173/` or `http://localhost:4173/platform/`.
+Local preview uses the same staging API.
 
 ### Visual review URL
 
