@@ -52,6 +52,50 @@
     },
   };
 
+  // Divider before other-city signals for members who already have a home community.
+  const MEMBER_EXPLORE_COPY = {
+    en: {
+      headline1: "Explore other communities.",
+      headline2: "Participation stays local.",
+      support:
+        "You can explore, but participation is reserved for the local community.",
+      primary: "Back to my community",
+      secondary: "Continue exploring",
+    },
+    es: {
+      headline1: "Explora otras comunidades.",
+      headline2: "La participación sigue siendo local.",
+      support:
+        "Puedes explorar, pero la participación está reservada a la comunidad local.",
+      primary: "Volver a mi comunidad",
+      secondary: "Seguir explorando",
+    },
+    ro: {
+      headline1: "Explorează alte comunități.",
+      headline2: "Participarea rămâne locală.",
+      support:
+        "Poți explora, dar participarea este rezervată comunității locale.",
+      primary: "Înapoi în comunitatea mea",
+      secondary: "Continuă explorarea",
+    },
+    it: {
+      headline1: "Esplora altre comunità.",
+      headline2: "La partecipazione resta locale.",
+      support:
+        "Puoi esplorare, ma la partecipazione è riservata alla comunità locale.",
+      primary: "Torna alla mia comunità",
+      secondary: "Continua a esplorare",
+    },
+    de: {
+      headline1: "Andere Gemeinschaften erkunden.",
+      headline2: "Mitwirkung bleibt lokal.",
+      support:
+        "Du kannst erkunden, aber die Teilnahme ist der lokalen Gemeinschaft vorbehalten.",
+      primary: "Zurück zu meiner Gemeinschaft",
+      secondary: "Weiter entdecken",
+    },
+  };
+
   const SUPPORTED_EDITORIAL_LANGS = {
     en: true,
     es: true,
@@ -113,12 +157,31 @@
     return CITY_DISCOVERY_COPY[key] || CITY_DISCOVERY_COPY.en;
   }
 
+  function memberExploreCopyForLanguage(lang) {
+    const key = SUPPORTED_EDITORIAL_LANGS[lang] ? lang : "en";
+    return MEMBER_EXPLORE_COPY[key] || MEMBER_EXPLORE_COPY.en;
+  }
+
   function createCityDiscoveryStory(lang) {
     const resolved = resolveEditorialLanguage([lang]);
     const copy = editorialCopyForLanguage(resolved);
     return {
       id: CITY_DISCOVERY_STORY_ID,
       kind: "city-discovery",
+      lang: resolved,
+      copy: copy,
+      image: "assets/welcome-street.png",
+      focus: "50% 45%",
+    };
+  }
+
+  function createMemberExploreStory(lang) {
+    const resolved = resolveEditorialLanguage([lang]);
+    const copy = memberExploreCopyForLanguage(resolved);
+    return {
+      id: CITY_DISCOVERY_STORY_ID,
+      kind: "city-discovery",
+      exploreZone: true,
       lang: resolved,
       copy: copy,
       image: "assets/welcome-street.png",
@@ -177,10 +240,13 @@
     CITY_DISCOVERY_STORY_ID: CITY_DISCOVERY_STORY_ID,
     CITY_DISCOVERY_INSERT_AFTER: CITY_DISCOVERY_INSERT_AFTER,
     CITY_DISCOVERY_COPY: CITY_DISCOVERY_COPY,
+    MEMBER_EXPLORE_COPY: MEMBER_EXPLORE_COPY,
     normalizeLanguageTag: normalizeLanguageTag,
     resolveEditorialLanguage: resolveEditorialLanguage,
     editorialCopyForLanguage: editorialCopyForLanguage,
+    memberExploreCopyForLanguage: memberExploreCopyForLanguage,
     createCityDiscoveryStory: createCityDiscoveryStory,
+    createMemberExploreStory: createMemberExploreStory,
     isCityDiscoveryStory: isCityDiscoveryStory,
     insertCityDiscoveryStory: insertCityDiscoveryStory,
     resolveLocaleWithoutSideEffects: resolveLocaleWithoutSideEffects,

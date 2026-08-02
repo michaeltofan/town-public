@@ -90,7 +90,10 @@ assert(!!handler, "session contribute handler found");
 const body = handler ? handler[1] : "";
 assert(body.includes("canTakeCivicAction()"), "gates on canTakeCivicAction");
 assert(body.includes("openSessionCompose()"), "members open compose");
-assert(body.includes("openInvite()"), "non-members keep invite");
+assert(
+  body.includes("shouldOfferMembershipInvite") && body.includes("openInvite()"),
+  "non-members keep invite; members are not upsold"
+);
 
 assert(
   js.includes('sessionLabel: "Session toward a solution"'),

@@ -134,10 +134,15 @@ if pos < 0:
     fail("missing productOnlyScenes()")
 pos_end = js.find("\n  function ", pos + 1)
 body = js[pos:pos_end if pos_end > pos else pos + 800]
-if "liveScenes[cityId]" not in body:
+if (
+    "liveScenes[cityId]" not in body
+    and "appendLiveScenesForCity" not in body
+):
     fail("productOnlyScenes must use liveScenes")
 if "FEED_SCENES[cityId]" in body:
     fail("productOnlyScenes must not invent content from FEED_SCENES")
+if "memberHomeCityId()" not in body:
+    fail("productOnlyScenes must scope HOME to the member community")
 if "loadProductOnlyLiveFeed" not in js:
     fail("product-only boot must load live feed")
 if "using approved fallback scenes" in js:

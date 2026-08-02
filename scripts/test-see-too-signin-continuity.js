@@ -151,7 +151,16 @@ assert(
   "restore resolves origin by signal identity"
 );
 assert(restore.includes('go("feed")'), "restore returns to feed");
-assert(restore.includes("openInvite()"), "restore presents membership invite");
+assert(
+  restore.includes("shouldOfferMembershipInvite") &&
+    restore.includes("openInvite()"),
+  "restore presents membership invite only when membership is still missing"
+);
+assert(
+  restore.includes("noticeNotYourCommunity") ||
+    restore.includes("redirectMemberWithoutCivicAccess"),
+  "restore never upsells a paid member as a non-member"
+);
 assert(
   restore.includes("clearPendingSeeTooContext"),
   "restore consumes pending context"

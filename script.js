@@ -1335,7 +1335,7 @@
       seeTooFailed: "Couldn't save this confirmation — try again.",
       seeTooBusy: "Saving your confirmation…",
       notYourCommunity:
-        "This signal is outside your community — you can explore it, but participation stays local.",
+        "You can explore, but participation is reserved for the local community.",
       cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
     },
     es: {
@@ -1394,7 +1394,7 @@
       seeTooFailed: "No se pudo guardar esta confirmación — inténtalo de nuevo.",
       seeTooBusy: "Guardando tu confirmación…",
       notYourCommunity:
-        "Esta señal está fuera de tu comunidad — puedes explorarla, pero la participación sigue siendo local.",
+        "Puedes explorar, pero la participación está reservada a la comunidad local.",
       cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
     },
     it: {
@@ -1453,7 +1453,7 @@
       seeTooFailed: "Impossibile salvare questa conferma — riprova.",
       seeTooBusy: "Salvataggio della conferma…",
       notYourCommunity:
-        "Questo segnale è fuori dalla tua comunità — puoi esplorarlo, ma la partecipazione resta locale.",
+        "Puoi esplorare, ma la partecipazione è riservata alla comunità locale.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1512,7 +1512,7 @@
       seeTooFailed: "Diese Bestätigung konnte nicht gespeichert werden — erneut versuchen.",
       seeTooBusy: "Bestätigung wird gespeichert…",
       notYourCommunity:
-        "Dieses Signal liegt außerhalb deiner Gemeinschaft — du kannst es erkunden, aber Mitwirkung bleibt lokal.",
+        "Du kannst erkunden, aber die Teilnahme ist der lokalen Gemeinschaft vorbehalten.",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1571,7 +1571,7 @@
       seeTooFailed: "Nu am putut salva această confirmare — încearcă din nou.",
       seeTooBusy: "Se salvează confirmarea…",
       notYourCommunity:
-        "Acest semnal este în afara comunității tale — îl poți explora, dar participarea rămâne locală.",
+        "Poți explora, dar participarea este rezervată comunității locale.",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -2627,22 +2627,49 @@
     return api.cityIdFromCommitment(commitmentSnapshot);
   }
 
+  function appendLiveScenesForCity(out, cityId) {
+    const scenes = liveScenes[cityId];
+    if (!scenes || scenes.length < 1) return 0;
+    for (let j = 0; j < scenes.length; j++) {
+      out.push(scenes[j]);
+    }
+    return scenes.length;
+  }
+
+  function countLiveScenesForCity(cityId) {
+    const scenes = liveScenes[cityId];
+    return scenes && scenes.length > 0 ? scenes.length : 0;
+  }
+
   function productOnlyScenes() {
     // Live API scenes only — never invent civic content from FEED_SCENES.
-    // Committed members get their home community on HOME; other cities stay
-    // reachable through city discovery, without mixed participate rights.
+    // Members with a home community see that community first on HOME; other
+    // cities follow in a separate exploration zone (after the explore divider).
     const out = [];
     const homeCityId = memberHomeCityId();
-    const cityOrder = homeCityId
-      ? [homeCityId]
-      : PRODUCT_ONLY_CITY_ORDER.slice();
-    for (let i = 0; i < cityOrder.length; i++) {
-      const cityId = cityOrder[i];
-      const scenes = liveScenes[cityId];
-      if (!scenes || scenes.length < 1) continue;
-      for (let j = 0; j < scenes.length; j++) {
-        out.push(scenes[j]);
+    if (homeCityId) {
+      appendLiveScenesForCity(out, homeCityId);
+      for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
+        const cityId = PRODUCT_ONLY_CITY_ORDER[i];
+        if (cityId === homeCityId) continue;
+        appendLiveScenesForCity(out, cityId);
       }
+      return out;
+    }
+    // Paid / pending members without a resolved home must not see a mixed
+    // multi-city HOME that invites the wrong participation story.
+    if (
+      hasAuthoritativePaidMembership() ||
+      (membershipRecoveryApi &&
+        membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+    ) {
+      if (selectedCity && PRODUCT_ONLY_COUNTRY_BY_CITY[selectedCity]) {
+        appendLiveScenesForCity(out, selectedCity);
+      }
+      return out;
+    }
+    for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
+      appendLiveScenesForCity(out, PRODUCT_ONLY_CITY_ORDER[i]);
     }
     return out;
   }
@@ -2657,9 +2684,20 @@
 
   function sceneMatchesMemberCommunity(scene) {
     const homeCityId = memberHomeCityId();
-    if (!homeCityId) return true;
+    if (!homeCityId) {
+      // Fail closed for members: unknown home is never "local enough" to act.
+      if (
+        hasAuthoritativePaidMembership() ||
+        canTakeCivicAction() ||
+        (membershipRecoveryApi &&
+          membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+      ) {
+        return false;
+      }
+      return true;
+    }
     const sceneCityId = cityIdFromScene(scene);
-    if (!sceneCityId) return true;
+    if (!sceneCityId) return false;
     return sceneCityId === homeCityId;
   }
 
@@ -2667,7 +2705,7 @@
     const copy = currentFeedCopy();
     showTransientFeedNotice(
       copy.notYourCommunity ||
-        "This signal is outside your community — you can explore it, but participation stays local."
+        "You can explore, but participation is reserved for the local community."
     );
   }
 
@@ -2767,7 +2805,9 @@
     return -1;
   }
 
-  // Restores the originating signal and opens the existing membership invite.
+  // Restores the originating signal after Sign-in. Opens the membership invite
+  // only for accounts that still lack membership. Paid members never see the
+  // visitor upsell here — a wrong-community signal gets the explore notice.
   // Consumes pending context on success or when the context is invalid.
   function restorePendingSeeTooAfterSignIn() {
     const context = pendingSeeTooContext;
@@ -2787,7 +2827,22 @@
     const scenes = currentScenes();
     if (scenes[index]) syncProductOnlyCityFromScene(scenes[index]);
     go("feed");
-    openInvite();
+    if (
+      hasAuthoritativePaidMembership() ||
+      canTakeCivicAction() ||
+      (membershipRecoveryApi &&
+        membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+    ) {
+      if (!sceneMatchesMemberCommunity(scenes[index])) {
+        noticeNotYourCommunity();
+      } else if (!canTakeCivicAction()) {
+        redirectMemberWithoutCivicAccess();
+      }
+      return true;
+    }
+    if (shouldOfferMembershipInvite()) {
+      openInvite();
+    }
     return true;
   }
 
@@ -2833,6 +2888,25 @@
     );
   }
 
+  // "Become a member" / invite boundary: only for accounts without paid or
+  // civic membership truth. Never upsell a payer as a non-member.
+  function shouldOfferMembershipInvite() {
+    if (!membershipRecoveryApi) return true;
+    if (
+      typeof membershipRecoveryApi.shouldOfferMembershipInvite === "function"
+    ) {
+      return (
+        membershipRecoveryApi.shouldOfferMembershipInvite(membershipSnapshot) ===
+        true
+      );
+    }
+    if (hasAuthoritativePaidMembership()) return false;
+    if (membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot)) {
+      return false;
+    }
+    return !canTakeCivicAction();
+  }
+
   // Civic participation: fail closed unless backend canParticipate is true
   // and status is not paid_pending_binding.
   function canTakeCivicAction() {
@@ -2841,6 +2915,12 @@
       membershipRecoveryApi.enablesCivicParticipation(membershipSnapshot) ===
       true
     );
+  }
+
+  // Paid / pending member who cannot take the civic action yet — recovery or
+  // community setup, never the visitor membership invite.
+  function redirectMemberWithoutCivicAccess() {
+    continueAuthenticatedMembershipDestination();
   }
 
   // Owner moderation UI gate: accounts.is_owner from membership self-read only.
@@ -2937,25 +3017,45 @@
   }
 
   // Shared feed/detail activation: confirm when eligible, otherwise open the
-  // existing membership boundary invite for visitor / registered / unpaid paths.
+  // existing membership boundary invite only for true non-members.
   // Invite paths capture pending see-too context so public Sign-in can restore
   // the originating signal afterward.
-  // Civic-eligible members who hit a wrong-community signal get an honest
-  // explore-only notice — never another "become a member" invite.
+  // Paid members and civic-eligible members who hit a wrong-community signal
+  // get an honest explore-only notice — never another "become a member" invite.
+  // A 403 is never interpreted as missing membership.
   async function activateSeeTooAction(options) {
     const closeDetail = !!(options && options.closeDetail);
     if (closeDetail) closeSignalDetail();
     else closeSignalSheet();
     originatingFeedIndex = feedIndex;
+    const scenes = currentScenes();
+    const scene = scenes[feedIndex];
     if (!canConfirmSeeTooAction()) {
+      if (
+        hasAuthoritativePaidMembership() ||
+        (membershipRecoveryApi &&
+          membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+      ) {
+        if (memberHomeCityId() && !sceneMatchesMemberCommunity(scene)) {
+          noticeNotYourCommunity();
+          return "wrong_community";
+        }
+        redirectMemberWithoutCivicAccess();
+        return "member_blocked";
+      }
+      if (!shouldOfferMembershipInvite()) {
+        showTransientFeedNotice(
+          (currentFeedCopy() && currentFeedCopy().seeTooFailed) ||
+            "Couldn't save this confirmation — try again."
+        );
+        return "unavailable";
+      }
       capturePendingSeeTooContext();
       openInvite();
       return "invite";
     }
     if (seeTooConfirmSubmitting) return "busy";
 
-    const scenes = currentScenes();
-    const scene = scenes[feedIndex];
     if (!sceneMatchesMemberCommunity(scene)) {
       noticeNotYourCommunity();
       return "wrong_community";
@@ -3007,9 +3107,16 @@
         return "confirmed";
       }
       if (result.response && result.response.status === 403) {
-        // Already civic-eligible above: 403 is not a membership upsell.
+        // Civic-eligible path already passed: 403 is never a membership upsell.
         clearTransientFeedNotice();
-        if (!sceneMatchesMemberCommunity(scene)) {
+        const denialCode =
+          result.payload &&
+          result.payload.error &&
+          result.payload.error.code;
+        if (
+          !sceneMatchesMemberCommunity(scene) ||
+          denialCode === "ACTOR_NOT_ELIGIBLE_FOR_COMMUNITY"
+        ) {
           noticeNotYourCommunity();
           return "wrong_community";
         }
@@ -3538,6 +3645,23 @@
       if (!discovery || base.length < 1) return base;
       const preferred = resolveEditorialPreferredLanguages();
       const lang = discovery.resolveEditorialLanguage(preferred);
+      const homeCityId = memberHomeCityId();
+      // Members: keep home community first, then an explore divider, then
+      // other-city signals as a separate exploration zone.
+      if (
+        homeCityId &&
+        typeof discovery.createMemberExploreStory === "function"
+      ) {
+        const homeCount = countLiveScenesForCity(homeCityId);
+        if (homeCount < base.length) {
+          return discovery.insertCityDiscoveryStory(
+            base,
+            discovery.createMemberExploreStory(lang),
+            homeCount
+          );
+        }
+        return base;
+      }
       return discovery.insertCityDiscoveryStory(
         base,
         discovery.createCityDiscoveryStory(lang),
@@ -4492,7 +4616,17 @@
     const confirmCountEl = feedRole("feed-confirm-count", panel);
 
     if (visitorEl) {
-      if (
+      const scene = currentScenes()[panelIndex];
+      const outsideCommunity =
+        (hasAuthoritativePaidMembership() || civicOk) &&
+        memberHomeCityId() &&
+        scene &&
+        !sceneMatchesMemberCommunity(scene);
+      if (outsideCommunity) {
+        visitorEl.textContent =
+          copy.notYourCommunity ||
+          "You can explore, but participation is reserved for the local community.";
+      } else if (
         hasAuthoritativePaidMembership() &&
         !civicOk &&
         PAYMENT_COPY[membershipLang()]
@@ -4553,7 +4687,16 @@
     const cityName = activeLocale.cityName;
     const memberPresented = isMemberPresented();
     const civicOk = canTakeCivicAction();
-    if (
+    const outsideCommunity =
+      (hasAuthoritativePaidMembership() || civicOk) &&
+      memberHomeCityId() &&
+      activeScene &&
+      !sceneMatchesMemberCommunity(activeScene);
+    if (outsideCommunity) {
+      detailUserStatus.textContent =
+        copy.notYourCommunity ||
+        "You can explore, but participation is reserved for the local community.";
+    } else if (
       hasAuthoritativePaidMembership() &&
       !civicOk &&
       PAYMENT_COPY[membershipLang()]
@@ -5203,7 +5346,8 @@
               applyMembershipSnapshot(snapshot);
             })
             .catch(function () {
-              membershipSnapshot = null;
+              // Keep prior authoritative snapshot on transient failure so a
+              // paying member is never routed as a non-member.
             }),
           bootstrapCommunityCommitment(),
         ]).then(function () {
@@ -5458,6 +5602,10 @@
 
   function openSignalCreate() {
     if (!canTakeCivicAction()) {
+      if (!shouldOfferMembershipInvite()) {
+        redirectMemberWithoutCivicAccess();
+        return;
+      }
       openInvite();
       return;
     }
@@ -7365,6 +7513,11 @@
   }
 
   function openInvite() {
+    // Hard stop: never show the visitor membership invite to a payer.
+    if (!shouldOfferMembershipInvite()) {
+      redirectMemberWithoutCivicAccess();
+      return;
+    }
     closeSignalSheet();
     applyInviteCopy();
     membershipInvite.hidden = false;
@@ -8276,6 +8429,19 @@
     }
 
     if (!canTakeCivicAction()) {
+      if (
+        hasAuthoritativePaidMembership() ||
+        (membershipRecoveryApi &&
+          membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+      ) {
+        if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+          noticeNotYourCommunity();
+          return;
+        }
+        redirectMemberWithoutCivicAccess();
+        return;
+      }
+      if (!shouldOfferMembershipInvite()) return;
       originatingFeedIndex = feedIndex;
       closeSignalDetail();
       openInvite();
@@ -8652,8 +8818,9 @@
 
   // Discussion session CTA:
   // - participating member in their community: compose a solution-oriented contribution
-  // - civic member outside their community: honest explore-only notice
-  // - everyone else: membership invitation boundary
+  // - member outside their community: honest explore-only notice
+  // - paid but not yet civic: recovery / community setup — never visitor invite
+  // - everyone else without membership: membership invitation boundary
   detailSessionContribute.addEventListener("click", () => {
     if (canTakeCivicAction()) {
       if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
@@ -8663,6 +8830,19 @@
       openSessionCompose();
       return;
     }
+    if (
+      hasAuthoritativePaidMembership() ||
+      (membershipRecoveryApi &&
+        membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+    ) {
+      if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+        noticeNotYourCommunity();
+        return;
+      }
+      redirectMemberWithoutCivicAccess();
+      return;
+    }
+    if (!shouldOfferMembershipInvite()) return;
     originatingFeedIndex = feedIndex;
     closeSignalDetail();
     openInvite();
@@ -8670,6 +8850,19 @@
 
   detailSessionAttach.addEventListener("click", () => {
     if (!canTakeCivicAction()) {
+      if (
+        hasAuthoritativePaidMembership() ||
+        (membershipRecoveryApi &&
+          membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+      ) {
+        if (!sceneMatchesMemberCommunity(currentScenes()[feedIndex])) {
+          noticeNotYourCommunity();
+          return;
+        }
+        redirectMemberWithoutCivicAccess();
+        return;
+      }
+      if (!shouldOfferMembershipInvite()) return;
       originatingFeedIndex = feedIndex;
       closeSignalDetail();
       openInvite();
@@ -9084,7 +9277,8 @@
               applyMembershipSnapshot(snapshot);
             })
             .catch(function () {
-              membershipSnapshot = null;
+              // Keep prior authoritative snapshot on transient failure so a
+              // paying member is never routed as a non-member.
             }),
           bootstrapCommunityCommitment(),
         ]);
@@ -9265,6 +9459,13 @@
         return;
       }
       if (role === "discovery-find-city") {
+        // Members with a home community use this control to return home;
+        // visitors still start the find-my-city journey.
+        if (memberHomeCityId()) {
+          feedIndex = 0;
+          go("feed");
+          return;
+        }
         beginCityDiscoveryJourney();
         go("country");
         return;

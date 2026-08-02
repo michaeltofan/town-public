@@ -115,8 +115,15 @@ assert(
   "eligible members persist see-too via confirmation PUT"
 );
 assert(
-  activate.includes("openInvite()"),
-  "non-eligible roles still open the membership invite boundary"
+  activate.includes("shouldOfferMembershipInvite") &&
+    activate.includes("openInvite()"),
+  "non-member roles still open the membership invite boundary"
+);
+assert(
+  activate.includes("hasAuthoritativePaidMembership") &&
+    (activate.includes("redirectMemberWithoutCivicAccess") ||
+      activate.includes('return "member_blocked"')),
+  "paid members without civic access are not sent to visitor invite"
 );
 assert(
   activate.includes("sceneMatchesMemberCommunity") &&

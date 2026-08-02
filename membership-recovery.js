@@ -176,6 +176,20 @@
   }
 
   /**
+   * Membership upsell / "become a member" invite is only for accounts that are
+   * not already paid and not already civic-capable. Paid or pending-binding
+   * members must never be treated as non-payers.
+   */
+  function shouldOfferMembershipInvite(snapshot) {
+    if (!snapshot) return true;
+    if (isPaidMembership(snapshot)) return false;
+    if (isPaidPendingBinding(snapshot)) return false;
+    if (enablesCivicParticipation(snapshot)) return false;
+    if (isOwnerAccount(snapshot) && canParticipate(snapshot)) return false;
+    return true;
+  }
+
+  /**
    * Normal authenticated loads (no Checkout marker): apply any derived snapshot
    * once. Non-paid states fail closed and must not start recovery polling.
    */
@@ -313,6 +327,7 @@
     isTerminalMembershipOutcome: isTerminalMembershipOutcome,
     enablesMemberAuthorizedState: enablesMemberAuthorizedState,
     enablesCivicParticipation: enablesCivicParticipation,
+    shouldOfferMembershipInvite: shouldOfferMembershipInvite,
     shouldStartCheckoutRecoveryPolling: shouldStartCheckoutRecoveryPolling,
     shouldClearCheckoutPendingMarker: shouldClearCheckoutPendingMarker,
     createBoundedPoller: createBoundedPoller,

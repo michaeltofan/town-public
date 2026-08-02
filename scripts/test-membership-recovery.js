@@ -198,6 +198,24 @@ assert(
   recovery.enablesMemberAuthorizedState(activeNoPart) === false,
   "active without canParticipate is not fully member-authorized"
 );
+assert(
+  recovery.shouldOfferMembershipInvite(activeNoPart) === false,
+  "paid member without civic access must not get membership invite"
+);
+assert(
+  recovery.shouldOfferMembershipInvite(activeOk) === false,
+  "active civic member must not get membership invite"
+);
+assert(
+  recovery.shouldOfferMembershipInvite(null) === true,
+  "missing snapshot may offer membership invite"
+);
+assert(
+  recovery.shouldOfferMembershipInvite(
+    recovery.deriveMembershipSnapshot(membershipPayload("inactive", false))
+  ) === true,
+  "inactive account may offer membership invite"
+);
 
 const cancelling = recovery.deriveMembershipSnapshot(
   membershipPayload("cancelling", true)
