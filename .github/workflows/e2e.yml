@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           cache: npm
           cache-dependency-path: e2e/package-lock.json
       - name: Static smoke
@@ -21,19 +21,19 @@ jobs:
           node scripts/test-api-base.js
           node scripts/test-platform-console.js
           node scripts/test-owner-participate-preview.js
+          node scripts/test-etapa3-member-journey.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
       - name: Install Chromium
         working-directory: e2e
         run: npx playwright install --with-deps chromium
-      - name: Feed live E2E
+      - name: Public product E2E
         working-directory: e2e
         env:
           TOWN_PUBLIC_BASE_URL: https://towncivic.org
-        run: npx playwright test feed-live.spec.js
+        run: npx playwright test feed-live.spec.js member-nav.spec.js
       - name: Platform login E2E
-        if: ${{ secrets.TOWN_PLATFORM_EMAIL != '' && secrets.TOWN_PLATFORM_PASSWORD != '' }}
         working-directory: e2e
         env:
           TOWN_PUBLIC_BASE_URL: https://towncivic.org

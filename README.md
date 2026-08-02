@@ -51,8 +51,10 @@ bash scripts/check-screen-13.sh
 ```
 
 Playwright lives under `e2e/` so the site root stays static for Railway.
-E2E hits the live staging site (`towncivic.org`). Platform login E2E needs
-`TOWN_PLATFORM_EMAIL` / `TOWN_PLATFORM_PASSWORD` (or local artifact).
+GitHub Actions (`.github/workflows/e2e.yml`) runs smoke + live E2E against
+`towncivic.org`. Do not use `secrets.*` in workflow `if:` expressions — that
+fails the whole run at parse time. Platform login skips cleanly when
+`TOWN_PLATFORM_EMAIL` / `TOWN_PLATFORM_PASSWORD` are unset.
 
 ## Local preview
 
