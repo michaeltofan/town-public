@@ -61,7 +61,10 @@ API host is resolved from the page hostname via shared `api-base.js` (fail-close
 Production pages only allow the configured production-page API base. Cutover:
 set `PRODUCTION_PAGE_API_BASE` to `https://api.towncivic.org` when that API exists.
 
-Staging operator console (always staging API):
+Primary operator console (staging API, allowed CORS origin):
+`https://towncivic.org/platform/`
+
+Secondary Railway public host (same staging API; requires API CORS allowlist):
 `https://town-public-staging-staging.up.railway.app/platform/`
 
 ```bash
