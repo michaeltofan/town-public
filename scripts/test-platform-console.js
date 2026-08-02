@@ -50,6 +50,10 @@ assert(
 );
 assert(js.includes("resolveApiBaseSafe"), "fail-closed API base resolver");
 assert(
+  js.includes("productionPageUsesStagingApi"),
+  "surfaces pre-cutover staging API note on production hosts"
+);
+assert(
   js.includes("api_base_misconfigured"),
   "blocks platform requests when API base is unavailable"
 );

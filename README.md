@@ -55,10 +55,14 @@ API host is resolved from the page hostname via shared `api-base.js` (fail-close
 
 | Page host | API base |
 | --- | --- |
-| `towncivic.org`, `www.towncivic.org` | `https://api.towncivic.org` |
+| `towncivic.org`, `www.towncivic.org` | `PRODUCTION_PAGE_API_BASE` (currently staging until `api.towncivic.org` is live) |
 | localhost, Railway staging, other non-prod hosts | `https://api-staging.towncivic.org` |
 
-Production pages refuse a staging API base.
+Production pages only allow the configured production-page API base. Cutover:
+set `PRODUCTION_PAGE_API_BASE` to `https://api.towncivic.org` when that API exists.
+
+Staging operator console (always staging API):
+`https://town-public-staging-staging.up.railway.app/platform/`
 
 ```bash
 node scripts/test-api-base.js
