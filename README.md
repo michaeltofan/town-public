@@ -28,6 +28,26 @@ Member journey (Etapa 3) on the public surface:
 - I SEE THIS TOO → invite or API confirmation with visible failure feedback
 - Stripe return → bounded membership recovery; paid-without-participate stays fail-closed
 
+### First-member staging proof (current)
+
+Already proven live against `api-staging` (2026-08-02):
+
+1. Community commitment → `canParticipate: true` for the platform **owner** path
+2. `PUT /v1/signals/:id/confirmation` succeeds
+3. Discussion contribution (`next_step`) succeeds and appears in `/v1/account/activity`
+4. `POST /v1/billing/checkout-session` returns a Stripe **test** Checkout URL
+
+Still required for a true **paid non-owner** first member:
+
+1. Create a non-owner account (email verification code via Resend)
+2. Passkey + community commitment
+3. Complete Stripe Checkout with a test card and confirm webhook → `active`
+4. Recovery UI → `#/active` / `canParticipate: true`
+5. Confirm + contribute as that non-owner
+
+Honesty: owner participation without payment must not be labeled “Membership: active”.
+Admin membership grant is a participate substitute, not a paid proof.
+
 ## Honesty rules (foundation)
 
 - Feed uses live `/v1/communities/:slug/signals` data only

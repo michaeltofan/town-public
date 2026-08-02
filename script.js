@@ -2394,12 +2394,15 @@
         "Registered on TOWN. Local civic participation opens with active membership.",
       bioMember:
         "Active local member. You can confirm signals in your community.",
+      bioOwner:
+        "Platform owner access. Civic participation is open without a paid membership.",
       bioPaidPending:
         "Membership recorded. Local participation is not available yet.",
       communityNone: "Community: not chosen yet",
       communityLine: "Community: {community}",
       membershipNone: "Membership: not active",
       membershipPaid: "Membership: active",
+      membershipOwner: "Membership: not active — owner access",
       membershipPending: "Membership: paid — participation pending",
       membershipOther: "Membership: {status}",
       activityTitle: "Civic activity",
@@ -2429,12 +2432,15 @@
         "Registrato su TOWN. La partecipazione civica locale si apre con l’iscrizione attiva.",
       bioMember:
         "Membro locale attivo. Puoi confermare i segnali nella tua comunità.",
+      bioOwner:
+        "Accesso owner della piattaforma. La partecipazione civica è aperta senza iscrizione a pagamento.",
       bioPaidPending:
         "Iscrizione registrata. La partecipazione locale non è ancora disponibile.",
       communityNone: "Comunità: non ancora scelta",
       communityLine: "Comunità: {community}",
       membershipNone: "Iscrizione: non attiva",
       membershipPaid: "Iscrizione: attiva",
+      membershipOwner: "Iscrizione: non attiva — accesso owner",
       membershipPending: "Iscrizione: pagata — partecipazione in attesa",
       membershipOther: "Iscrizione: {status}",
       activityTitle: "Attività civica",
@@ -2464,12 +2470,15 @@
         "Bei TOWN registriert. Lokale Mitwirkung öffnet sich mit aktiver Mitgliedschaft.",
       bioMember:
         "Aktives lokales Mitglied. Du kannst Signale in deiner Gemeinde bestätigen.",
+      bioOwner:
+        "Plattform-Owner-Zugang. Bürgerliche Mitwirkung ist ohne bezahlte Mitgliedschaft offen.",
       bioPaidPending:
         "Mitgliedschaft erfasst. Lokale Mitwirkung ist noch nicht verfügbar.",
       communityNone: "Gemeinde: noch nicht gewählt",
       communityLine: "Gemeinde: {community}",
       membershipNone: "Mitgliedschaft: nicht aktiv",
       membershipPaid: "Mitgliedschaft: aktiv",
+      membershipOwner: "Mitgliedschaft: nicht aktiv — Owner-Zugang",
       membershipPending: "Mitgliedschaft: bezahlt — Mitwirkung ausstehend",
       membershipOther: "Mitgliedschaft: {status}",
       activityTitle: "Bürgerliche Aktivität",
@@ -2499,12 +2508,15 @@
         "Înregistrat pe TOWN. Participarea civică locală se deschide cu membership activ.",
       bioMember:
         "Membru local activ. Poți confirma semnale în comunitatea ta.",
+      bioOwner:
+        "Acces owner pe platformă. Participarea civică este deschisă fără membership plătit.",
       bioPaidPending:
         "Membership înregistrat. Participarea locală nu este încă disponibilă.",
       communityNone: "Comunitate: încă nealeasă",
       communityLine: "Comunitate: {community}",
       membershipNone: "Membership: inactiv",
       membershipPaid: "Membership: activ",
+      membershipOwner: "Membership: inactiv — acces owner",
       membershipPending: "Membership: plătit — participare în așteptare",
       membershipOther: "Membership: {status}",
       activityTitle: "Activitate civică",
@@ -6114,15 +6126,24 @@
     const paid = hasAuthoritativePaidMembership();
     const stripePaid = hasStripeManageableMembership();
     const civicOk = canTakeCivicAction();
+    const ownerAccount =
+      membershipRecoveryApi &&
+      membershipRecoveryApi.isOwnerAccount(membershipSnapshot);
     const paidPending =
       membershipRecoveryApi &&
       membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot);
     let bio = copy.bioRegistered;
-    if (civicOk || (paid && !paidPending)) bio = copy.bioMember;
+    // Do not label owner-without-payment as a paid membership.
+    if (paid && !paidPending) bio = copy.bioMember;
+    else if (civicOk && ownerAccount && !paid)
+      bio = copy.bioOwner || copy.bioMember;
+    else if (civicOk) bio = copy.bioMember;
     else if (paidPending || (paid && !civicOk)) bio = copy.bioPaidPending;
 
     let membershipLine = copy.membershipNone;
-    if (civicOk || (paid && !paidPending)) membershipLine = copy.membershipPaid;
+    if (paid && !paidPending) membershipLine = copy.membershipPaid;
+    else if (civicOk && ownerAccount && !paid)
+      membershipLine = copy.membershipOwner || copy.membershipNone;
     else if (paidPending) membershipLine = copy.membershipPending;
     else if (
       membershipSnapshot &&
@@ -6162,8 +6183,8 @@
     profileActivityTitle.textContent = copy.activityTitle;
     profileFeed.textContent = copy.feedCta;
     profileMembershipCta.textContent = copy.membershipCta;
-    // Paid accounts do not need the membership-continue CTA on Profile V1.
-    profileMembershipCta.hidden = paid;
+    // Paid or already-participating accounts do not need membership-continue CTA.
+    profileMembershipCta.hidden = paid || civicOk;
     profileManageBilling.textContent = copy.manageBillingCta;
     profileManageBilling.hidden = !stripePaid;
     profileManageBilling.disabled =
