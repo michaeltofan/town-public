@@ -49,6 +49,7 @@ is proven on `api.towncivic.org`.
 ```bash
 node scripts/test-api-base.js
 node scripts/test-security-headers-config.js
+node scripts/test-member-local-feed.js
 node scripts/test-platform-console.js
 node scripts/test-owner-participate-preview.js
 node scripts/test-see-too-active-all-roles.js

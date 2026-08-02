@@ -90,7 +90,12 @@ assert(
 );
 assert(
   activate.includes("putJsonWithCredentials") && activate.includes("openInvite()"),
-  "see-too still uses API confirm + invite boundary"
+  "see-too still uses API confirm + invite boundary for non-members"
+);
+assert(
+  activate.includes("sceneMatchesMemberCommunity") &&
+    !activate.slice(activate.indexOf('status === 403')).includes("openInvite()"),
+  "see-too does not re-invite paid members on wrong-community 403"
 );
 
 assert(
