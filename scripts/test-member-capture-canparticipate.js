@@ -71,7 +71,14 @@ assert(
   body.includes("openMemberDemoTestimonyCapture()"),
   "participating path opens demo capture"
 );
-assert(body.includes("openInvite()"), "non-participating path keeps invite");
+assert(
+  body.includes("shouldOfferMembershipInvite") && body.includes("openInvite()"),
+  "non-member path keeps invite; members are not upsold"
+);
+assert(
+  body.includes("noticeNotYourCommunity"),
+  "attach outside community shows explore-only notice"
+);
 
 assert(
   js.includes("function uploadSignalDiscussionMedia"),

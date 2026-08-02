@@ -17,12 +17,13 @@ Public web surface for **TOWN**.
 
 Member journey (Etapa 3) on the public surface:
 
-- HOME → live feed (loading / empty / retry)
+- HOME → member community first; other cities only in a separate explore zone
 - MEMBERSHIP → auth when needed, then commitment / recovery / profile by membership truth
 - PROFILE / ACTIVITY → session-authenticated destinations
 - CHAT → honest “not available yet” (no fake auth destination)
-- I SEE THIS TOO → invite or API confirmation with visible failure feedback
+- I SEE THIS TOO → confirm in-community; explore-only notice outside; invite only without membership
 - Stripe return → bounded membership recovery; paid-without-participate stays fail-closed
+- A community-mismatch 403 is never treated as “not a member”
 
 ### First-member staging proof (current)
 

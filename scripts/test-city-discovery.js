@@ -120,6 +120,44 @@ assertEqual(
   "Romanian secondary CTA copy"
 );
 
+const memberExplore = discovery.createMemberExploreStory("ro");
+assert(
+  discovery.isCityDiscoveryStory(memberExplore),
+  "member explore story is a city-discovery story"
+);
+assertEqual(memberExplore.exploreZone, true, "member explore story marks explore zone");
+assertEqual(
+  memberExplore.copy.support,
+  "Poți explora, dar participarea este rezervată comunității locale.",
+  "Romanian member explore support copy"
+);
+assertEqual(
+  memberExplore.copy.primary,
+  "Înapoi în comunitatea mea",
+  "Romanian member explore primary returns home"
+);
+
+const homeThenExplore = [
+  { id: "arad-signal-1" },
+  { id: "arad-signal-2" },
+  { id: "milano-signal-1" },
+  { id: "munich-signal-1" },
+];
+const exploreSequence = discovery.insertCityDiscoveryStory(
+  homeThenExplore,
+  memberExplore,
+  2
+);
+assert(
+  discovery.isCityDiscoveryStory(exploreSequence[2]),
+  "explore divider sits after home community signals"
+);
+assertEqual(
+  exploreSequence[3].id,
+  "milano-signal-1",
+  "other-city signals follow the explore divider"
+);
+
 const state = {
   selectedCountry: "Italy",
   selectedCity: "Milano",
