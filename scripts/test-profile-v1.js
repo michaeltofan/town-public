@@ -78,6 +78,16 @@ assert(
   "profile activity loads confirmations from backend activity"
 );
 assert(
+  body.includes("isOwnerAccount") &&
+    body.includes("membershipOwner") &&
+    body.includes("bioOwner"),
+  "owner-without-payment is not labeled as paid membership"
+);
+assert(
+  body.includes("profileMembershipCta.hidden = paid || civicOk"),
+  "membership CTA hidden when already able to participate"
+);
+assert(
   !body.includes("subscribers") && !body.includes("Substack"),
   "profile does not invent Substack social fields"
 );
