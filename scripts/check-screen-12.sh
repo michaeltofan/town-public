@@ -37,14 +37,11 @@ require_file "script.js"
 require_contains "index.html" "view-payment"
 require_contains "index.html" "payment-simulate-start"
 require_contains "index.html" "payment-error"
-require_contains "index.html" "payment-notice"
-require_contains "index.html" "payment-simulate-confirm"
 require_contains "index.html" "payment-success"
 require_contains "index.html" "view-active"
 require_contains "script.js" "PAYMENT_COPY"
 require_contains "script.js" "Attiva l’iscrizione annuale a TOWN."
 require_contains "script.js" "Aktiviere die jährliche TOWN-Mitgliedschaft."
-require_contains "script.js" "membershipSimulated"
 require_contains "script.js" "/v1/billing/checkout-session"
 require_contains "script.js" "requestCheckoutSession"
 require_contains "script.js" "postJsonWithCredentials"
@@ -57,17 +54,31 @@ require_contains "index.html" "membership-recovery.js"
 require_contains "index.html" "payment-confirming"
 
 echo "== Guardrails =="
+if grep -qF 'membershipSimulated' script.js || grep -qF 'payment-notice' index.html || grep -qF 'payment-simulate-confirm' index.html; then
+  echo "FAIL: simulate membership path must be removed"
+  fail=1
+else
+  echo "OK: simulate membership path removed"
+fi
 # Card forms, secrets, and hosted Stripe Checkout URL literals remain forbidden.
 # Intended billing uses POST /v1/billing/checkout-session via postJsonWithCredentials
 # (requestJson / window.fetch.bind) and redirects to the returned checkoutUrl —
 # do not treat that API field name as the forbidden checkout.stripe pattern.
 # sessionStorage is forbidden in script.js/index.html; the advisory checkout-pending
 # marker lives only in membership-recovery.js (see check-membership-recovery.sh).
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
+# localStorage is reserved for staging owner participate-preview only (not payment).
+# Payment/recovery must not use localStorage/sessionStorage (see check-membership-recovery).
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
   echo "FAIL: forbidden payment/checkout pattern present"
   fail=1
 else
-  echo "OK: no payment form, hosted Stripe checkout URL, or storage patterns in index/script"
+  echo "OK: no payment form, hosted Stripe checkout URL, or forbidden storage patterns in index/script"
+fi
+if grep -n 'localStorage' script.js | grep -viE 'PARTICIPATE_PREVIEW|participate-preview' | grep -q .; then
+  echo "FAIL: localStorage used outside participate-preview"
+  fail=1
+else
+  echo "OK: localStorage limited to participate-preview"
 fi
 if grep -Eiq '<input[^>]+(card|billing|cvv|cvc)' index.html; then
   echo "FAIL: card/billing inputs present"
@@ -110,13 +121,12 @@ if 'go("payment")' in ready_body:
     fail("readyContinue must not skip commitment by going directly to payment")
 
 pay_start = js.find('paymentSimulateStart.addEventListener("click"')
-pay_confirm = js.find('paymentSimulateConfirm.addEventListener("click"')
 if pay_start < 0:
     fail("missing paymentSimulateStart (Activate membership) handler")
 # Handler may be followed by commitment helpers; bound by next payment* listener or commitmentCheckout
-pay_end = js.find('paymentSimulateConfirm.addEventListener("click"', pay_start + 1)
+pay_end = js.find("commitmentCheckout.addEventListener", pay_start + 1)
 if pay_end <= pay_start:
-    pay_end = js.find("commitmentCheckout.addEventListener", pay_start + 1)
+    pay_end = js.find('paymentBack.addEventListener("click"', pay_start + 1)
 if pay_end <= pay_start:
     fail("unable to isolate paymentSimulateStart handler")
 pay_body = js[pay_start:pay_end]
@@ -146,7 +156,6 @@ for fragment in (
     "payment-intro",
     "payment-success",
     "payment-error",
-    "payment-notice",
     "payment-continue",
     "view-active",
 ):
@@ -167,10 +176,10 @@ for fragment in (
     "Troppi tentativi. Riprova tra poco.",
     "Il pagamento non è disponibile in questo momento.",
     "Non è stato possibile avviare il checkout. Riprova.",
-    "solo prototipo",
-    "nur Prototyp",
-    "Nessun pagamento reale",
-    "keine echte Zahlung",
+    "Membership annuale attiva.",
+    "Jährliche Mitgliedschaft aktiv.",
+    "Membership anual activ.",
+    "Il pagamento è stato confermato",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")

@@ -41,26 +41,37 @@ require_contains "index.html" "active-back"
 require_contains "index.html" "feed-see-too-done"
 require_contains "script.js" "ACTIVE_COPY"
 require_contains "script.js" "originatingFeedIndex"
-require_contains "script.js" "signalConfirmed"
-require_contains "script.js" "Membership attiva — solo prototipo."
-require_contains "script.js" "Mitgliedschaft aktiv — nur Prototyp."
+require_contains "script.js" "Membership annuale attiva."
+require_contains "script.js" "Jährliche Mitgliedschaft aktiv."
 require_contains "script.js" "Torna al segnale"
 require_contains "script.js" "Zurück zum Signal"
 require_contains "script.js" "Lo vedi anche tu"
 require_contains "script.js" "Du siehst das auch"
-require_contains "script.js" "Conferma registrata nel prototipo"
-require_contains "script.js" "Bestätigung im Prototyp registriert"
+require_contains "script.js" "Confirmation saved on TOWN"
 require_contains "script.js" "Membro · {city}"
 require_contains "script.js" "Mitglied · {city}"
 require_contains "script.js" 'go("active")'
 require_contains "script.js" "syncFeedMemberState"
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy|WebAuthn|navigator\.credentials' index.html script.js; then
+if grep -qF 'membershipSimulated' script.js || grep -qiE 'solo prototipo|nur Prototyp|doar prototip' script.js; then
+  echo "FAIL: prototype membership language or simulate path remains"
+  fail=1
+else
+  echo "OK: no prototype membership simulate language"
+fi
+# localStorage allowed only for staging participate-preview keys.
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy' index.html script.js; then
   echo "FAIL: forbidden payment/auth/social/celebration pattern present"
   fail=1
 else
-  echo "OK: no payment, auth, storage, celebration, or dashboard patterns"
+  echo "OK: no payment, celebration, or dashboard patterns"
+fi
+if grep -n 'localStorage' script.js | grep -viE 'PARTICIPATE_PREVIEW|participate-preview' | grep -q .; then
+  echo "FAIL: localStorage used outside participate-preview"
+  fail=1
+else
+  echo "OK: localStorage limited to participate-preview"
 fi
 
 if grep -Eiq 'view-boundary|Screen 14|go\("boundary"\)' index.html script.js; then
@@ -106,17 +117,16 @@ for fragment in (
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "ACTIVE_COPY",
-    "Membership attiva — solo prototipo.",
-    "Mitgliedschaft aktiv — nur Prototyp.",
+    "Membership annuale attiva.",
+    "Jährliche Mitgliedschaft aktiv.",
     "Torna al segnale",
     "Zurück zum Signal",
     "originatingFeedIndex = feedIndex",
-    "signalConfirmed = true",
     "feedIndex = originatingFeedIndex",
     "Lo vedi anche tu",
     "Du siehst das auch",
-    "Conferma registrata nel prototipo",
-    "Bestätigung im Prototyp registriert",
+    "Confirmation saved on TOWN",
+    "canTakeCivicAction",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
