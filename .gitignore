@@ -1,9 +1,5 @@
-.DS_Store
-Thumbs.db
-*.log
-.vscode/
-.idea/
 node_modules/
-.vercel/
-.surge/
-dist/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

@@ -25,18 +25,22 @@ Onboarding / membership / payment screens remain in the codebase and can open fr
 
 - Feed uses live `/v1/communities/:slug/signals` data only
 - No client-side “simulate membership” authority
+- No client-side participate-preview unlock
 - Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
 ## Checks
 
 ```bash
-node scripts/test-api-base.js
-node scripts/test-platform-console.js
+npm run test:smoke
 node scripts/test-see-too-active-all-roles.js
 bash scripts/check-product-only-feed.sh
 bash scripts/check-screen-12.sh
 bash scripts/check-screen-13.sh
+npm run test:e2e
 ```
+
+Playwright E2E hits the live staging site (`towncivic.org`). Platform login E2E needs
+`TOWN_PLATFORM_EMAIL` / `TOWN_PLATFORM_PASSWORD` (or local artifact).
 
 ## Local preview
 

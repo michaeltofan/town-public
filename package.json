@@ -1,0 +1,14 @@
+{
+  "name": "town-public",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TOWN public web surface and platform console",
+  "scripts": {
+    "test:smoke": "node scripts/test-api-base.js && node scripts/test-platform-console.js && node scripts/test-owner-participate-preview.js",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  }
+}

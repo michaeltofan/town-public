@@ -54,14 +54,12 @@ require_contains "script.js" "isCheckoutRecoveryStopOutcome"
 require_contains "script.js" "shouldStartCheckoutRecoveryPolling"
 
 echo "== Guardrails =="
-# localStorage is allowed only for the staging owner participate-preview flag.
-# It never grants backend canParticipate and is ignored off staging API.
-if grep -n 'localStorage' index.html script.js membership-recovery.js \
-  | grep -Eiv 'PARTICIPATE_PREVIEW|town\.participatePreview|participatePreview|participate-preview|Owner product-testing|staging owner|Staging-only owner'; then
-  echo "FAIL: non-preview localStorage usage present"
+# Product path must not use localStorage for membership/participation unlocks.
+if grep -n 'localStorage' index.html script.js membership-recovery.js; then
+  echo "FAIL: localStorage usage present"
   fail=1
 else
-  echo "OK: localStorage limited to staging owner participate preview"
+  echo "OK: no localStorage in product membership path"
 fi
 
 # sessionStorage is allowed only for the advisory checkout-pending marker.
