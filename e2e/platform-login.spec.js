@@ -23,7 +23,7 @@ function readOperatorCredentials() {
 }
 
 test.describe("platform console login", () => {
-  test("signs in against staging API and opens Monitor", async ({ page }) => {
+  test("signs in against production API and opens Monitor", async ({ page }) => {
     const credentials = readOperatorCredentials();
     test.skip(
       !credentials,
@@ -33,7 +33,7 @@ test.describe("platform console login", () => {
     const apiCalls = [];
     page.on("request", (request) => {
       const url = request.url();
-      if (url.includes("api-staging.towncivic.org")) {
+      if (url.includes("api.towncivic.org")) {
         apiCalls.push(url);
       }
     });
@@ -57,7 +57,7 @@ test.describe("platform console login", () => {
       apiCalls.some((url) => url.includes("/v1/platform/session"))
     ).toBeTruthy();
     expect(
-      apiCalls.every((url) => url.startsWith("https://api-staging.towncivic.org"))
+      apiCalls.every((url) => url.startsWith("https://api.towncivic.org"))
     ).toBeTruthy();
   });
 });

@@ -1,15 +1,16 @@
 /**
  * Single active API for the public site and /platform/ console.
  *
- * This phase has one backend: staging. Every page host uses it.
- * When a real production API exists, change ACTIVE_API_BASE only.
+ * Production API is live. Every page host uses it.
+ * Rollback emergency: set ACTIVE_API_BASE back to STAGING_API_BASE and
+ * temporarily set ALLOW_PRODUCTION_WEB_ORIGIN=true on staging.
  */
 (function (global) {
   "use strict";
 
   var STAGING_API_BASE = "https://api-staging.towncivic.org";
   var PRODUCTION_API_BASE = "https://api.towncivic.org";
-  var ACTIVE_API_BASE = STAGING_API_BASE;
+  var ACTIVE_API_BASE = PRODUCTION_API_BASE;
 
   function normalizeHost(hostname) {
     return String(hostname || "")

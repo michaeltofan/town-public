@@ -2,15 +2,11 @@
 
 Public web surface for **TOWN**.
 
-## Current phase (staging) — Etapa 3 member journey
-
-This is a **staging** product surface, even on `towncivic.org`.
+## Current phase — production API cutover
 
 - Site: `https://towncivic.org`
-- API: `https://api-staging.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
-- Production API (`api.towncivic.org`) is **not provisioned** yet
-
-Do not treat this host as a finished production member product.
+- API: `https://api.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
+- Staging API remains at `https://api-staging.towncivic.org` for ops/testing only
 
 ## Live surfaces
 
@@ -32,21 +28,13 @@ Member journey (Etapa 3) on the public surface:
 
 Already proven live against `api-staging` (2026-08-02):
 
-1. Community commitment → `canParticipate: true` for the platform **owner** path
-2. `PUT /v1/signals/:id/confirmation` succeeds
-3. Discussion contribution (`next_step`) succeeds and appears in `/v1/account/activity`
-4. `POST /v1/billing/checkout-session` returns a Stripe **test** Checkout URL
+1. Community commitment → participate on the platform **owner** path
+2. Signal confirmation + discussion contribution + activity
+3. Stripe **test** Checkout (`cs_test_…`) with test card `4242…` (0 €)
+4. Webhook → membership `active`, `source: stripe`, `accessUntil` ~+1 year
 
-Still required for a true **paid non-owner** first member:
-
-1. Create a non-owner account (email verification code via Resend)
-2. Passkey + community commitment
-3. Complete Stripe Checkout with a test card and confirm webhook → `active`
-4. Recovery UI → `#/active` / `canParticipate: true`
-5. Confirm + contribute as that non-owner
-
-Honesty: owner participation without payment must not be labeled “Membership: active”.
-Admin membership grant is a participate substitute, not a paid proof.
+Production API + Stripe live are provisioned. First real €12 membership payment
+is the remaining live proof on `api.towncivic.org`.
 
 ## Honesty rules (foundation)
 
@@ -90,7 +78,7 @@ Uses the same staging API. Browser auth against staging from `localhost` may fai
 One console. One API.
 
 - Console: `https://towncivic.org/platform/`
-- API: `https://api-staging.towncivic.org`
+- API: `https://api.towncivic.org`
 
 Sign in with email + password on an account granted as platform operator
 (bootstrap CLI or Operators panel). Prefer this URL over Railway public hosts.
