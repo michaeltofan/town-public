@@ -1398,6 +1398,8 @@
   }
 
   async function loadInvestigation(accountId) {
+    var exportBtn = document.getElementById("investigate-export");
+    if (exportBtn) exportBtn.disabled = true;
     var emails = await getJson(
       "/v1/platform/accounts/" + encodeURIComponent(accountId) + "/emails"
     );
@@ -1418,7 +1420,38 @@
       null,
       2
     );
+    if (exportBtn) exportBtn.disabled = false;
     setStatus(consoleStatus, "Investigation loaded", "is-ok");
+  }
+
+  async function downloadInvestigationPack(accountId) {
+    var result = await getJson(
+      "/v1/platform/accounts/" + encodeURIComponent(accountId) + "/export"
+    );
+    if (result.response.status !== 200) {
+      setStatus(
+        consoleStatus,
+        "Export failed (investigator+ required)",
+        "is-error"
+      );
+      return;
+    }
+    var pack = result.payload.data || {};
+    var stamp = (pack.generatedAt || new Date().toISOString()).slice(0, 10);
+    var filename =
+      "town-investigation-" + accountId.slice(0, 8) + "-" + stamp + ".json";
+    var blob = new Blob([JSON.stringify(pack, null, 2)], {
+      type: "application/json",
+    });
+    var url = URL.createObjectURL(blob);
+    var anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    setStatus(consoleStatus, "Investigation pack downloaded", "is-ok");
   }
 
   async function loadAudit() {
@@ -1586,6 +1619,18 @@
       event.preventDefault();
       loadInvestigation(document.getElementById("investigate-account-id").value.trim());
     });
+
+  var investigateExportBtn = document.getElementById("investigate-export");
+  if (investigateExportBtn) {
+    investigateExportBtn.addEventListener("click", function () {
+      var accountId = document.getElementById("investigate-account-id").value.trim();
+      if (!accountId) {
+        setStatus(consoleStatus, "Enter an account UUID first", "is-error");
+        return;
+      }
+      void downloadInvestigationPack(accountId);
+    });
+  }
 
   document.getElementById("operator-grant").addEventListener("submit", async function (event) {
     event.preventDefault();
