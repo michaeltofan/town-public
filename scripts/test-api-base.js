@@ -1,5 +1,5 @@
 /**
- * Smoke + behavioral checks for hostname → API base resolution.
+ * Smoke + behavioral checks for the single active API base.
  */
 const fs = require("fs");
 const path = require("path");
@@ -17,6 +17,7 @@ const platformJs = fs.readFileSync(
   "utf8"
 );
 const productJs = fs.readFileSync(path.join(root, "script.js"), "utf8");
+const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
 
 let passed = 0;
 function assert(condition, message) {
@@ -41,6 +42,10 @@ assert(
   "platform console blocks requests when API base is unavailable"
 );
 assert(
+  !platformJs.includes("productionPageUsesStagingApi"),
+  "platform console has no cutover messaging helper"
+);
+assert(
   !platformJs.includes('var API_BASE = "https://api-staging.towncivic.org"'),
   "platform console no longer hardcodes staging API"
 );
@@ -52,9 +57,18 @@ assert(
   productJs.includes("resolveApiBaseSafe"),
   "product uses fail-closed resolver"
 );
+assert(source.includes("ACTIVE_API_BASE"), "single active API constant present");
 assert(
-  source.includes("PRODUCTION_PAGE_API_BASE"),
-  "cutover constant present"
+  !source.includes("PRODUCTION_PAGE_API_BASE"),
+  "cutover production-page constant removed"
+);
+assert(
+  readme.includes("https://towncivic.org/platform/"),
+  "README documents the one console URL"
+);
+assert(
+  !readme.includes("town-public-staging-staging.up.railway.app/platform"),
+  "README does not push Railway as operator login URL"
 );
 
 const sandbox = { window: {}, globalThis: {} };
@@ -63,92 +77,56 @@ vm.runInNewContext(source, sandbox);
 const TownApiBase = sandbox.window.TownApiBase || sandbox.TownApiBase;
 assert(!!TownApiBase, "TownApiBase exported");
 
-const configuredProductionPageApi = TownApiBase.PRODUCTION_PAGE_API_BASE;
+const active = TownApiBase.ACTIVE_API_BASE;
 assert(
-  !!configuredProductionPageApi,
-  "production-page API base configured"
-);
-assert(
-  TownApiBase.resolveApiBase("towncivic.org") === configuredProductionPageApi,
-  "production host → configured production-page API"
-);
-assert(
-  TownApiBase.resolveApiBase("www.towncivic.org") === configuredProductionPageApi,
-  "www production host → configured production-page API"
-);
-assert(
-  TownApiBase.resolveApiBase("localhost") ===
-    "https://api-staging.towncivic.org",
-  "localhost → staging API"
-);
-assert(
-  TownApiBase.resolveApiBase(
-    "town-public-staging-staging.up.railway.app"
-  ) === "https://api-staging.towncivic.org",
-  "railway staging host → staging API"
-);
-
-const prodSafe = TownApiBase.resolveApiBaseSafe("towncivic.org");
-assert(prodSafe.ok === true, "production host resolves safely");
-assert(
-  prodSafe.apiBase === configuredProductionPageApi,
-  "production safe base matches cutover config"
-);
-
-const stagingSafe = TownApiBase.resolveApiBaseSafe("localhost");
-assert(stagingSafe.ok === true, "staging host resolves safely");
-assert(
-  stagingSafe.apiBase === "https://api-staging.towncivic.org",
-  "staging safe base is staging API"
+  active === "https://api-staging.towncivic.org",
+  "active API is staging for this phase"
 );
 
 assert(
-  TownApiBase.isProductionHost("towncivic.org"),
-  "towncivic.org is production host"
+  TownApiBase.resolveApiBase("towncivic.org") === active,
+  "towncivic.org → active API"
 );
 assert(
-  !TownApiBase.isProductionHost("api-staging.towncivic.org"),
-  "API staging host is not a production page host"
+  TownApiBase.resolveApiBase("www.towncivic.org") === active,
+  "www → active API"
 );
 assert(
-  TownApiBase.isStagingApiBase("https://api-staging.towncivic.org"),
-  "staging API detector"
+  TownApiBase.resolveApiBase("localhost") === active,
+  "localhost → active API"
 );
 assert(
-  !TownApiBase.isStagingApiBase("https://api.towncivic.org"),
-  "production API is not staging"
+  TownApiBase.resolveApiBase("town-public-staging-staging.up.railway.app") ===
+    active,
+  "railway host → active API"
 );
 
-// Pre-cutover: production pages intentionally still use staging until
-// api.towncivic.org is live.
+const safe = TownApiBase.resolveApiBaseSafe("towncivic.org");
+assert(safe.ok === true, "safe resolve ok");
+assert(safe.apiBase === active, "safe resolve returns active API");
+
 assert(
-  TownApiBase.productionPageUsesStagingApi() === true,
-  "pre-cutover production pages still target staging"
-);
-assert(
-  TownApiBase.allowApiBaseForHost(
-    "towncivic.org",
-    "https://api-staging.towncivic.org"
-  ),
-  "production host allows configured staging cutover API"
+  TownApiBase.allowApiBaseForHost("towncivic.org", active),
+  "active API allowed"
 );
 assert(
   !TownApiBase.allowApiBaseForHost(
     "towncivic.org",
     "https://api.towncivic.org"
   ),
-  "pre-cutover production host refuses unset production API"
+  "inactive production API refused while staging is active"
 );
 assert(
   !TownApiBase.allowApiBaseForHost("towncivic.org", ""),
-  "production host refuses empty API"
+  "empty API refused"
 );
 assert(
-  TownApiBase.allowApiBaseForHost(
-    "localhost",
-    "https://api-staging.towncivic.org"
-  ),
-  "non-production host may use staging API"
+  TownApiBase.isStagingApiBase(active),
+  "active API detected as staging"
+);
+assert(
+  !TownApiBase.isProductionApiBase(active),
+  "active staging API is not production"
 );
 
 console.log("PASSED: " + passed + " api-base assertions");
