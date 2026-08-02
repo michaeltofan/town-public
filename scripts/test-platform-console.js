@@ -89,6 +89,8 @@ assert(js.includes("/acknowledge"), "alert acknowledge path");
 assert(js.includes("/v1/platform/backup/verify"), "backup verify path");
 assert(js.includes("/v1/platform/restore/attest"), "restore attest path");
 assert(js.includes("Record restore drill"), "restore drill CTA present");
+assert(js.includes("Record PITR verification"), "backup CTA is attestation");
+assert(js.includes("PITR attestation recorded"), "backup success is attestation");
 assert(!js.includes("Run restore"), "must not offer restore execution");
 assert(js.includes("/v1/platform/accounts"), "accounts path");
 assert(js.includes("/v1/platform/memberships"), "memberships path");

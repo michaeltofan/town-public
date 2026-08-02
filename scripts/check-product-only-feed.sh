@@ -125,13 +125,23 @@ if "CITY_DISCOVERY_JOURNEY_ROUTES" not in js:
 if "function currentScenes()" not in js or "productOnlyScenes()" not in js:
     fail("currentScenes must use productOnlyScenes in product-only mode")
 
-# All three cities represented via existing FEED_SCENES, no Milano-only hardcode for public product.
+# All three cities represented via live API scenes, no Milano-only hardcode for public product.
 if 'PRODUCT_ONLY_CITY_ORDER = ["Milano", "Munich", "Arad"]' not in js:
     fail("product-only city order must include Milano, Munich, and Arad")
 
-for city in ("Milano", "Munich", "Arad"):
-    if f"{city}: [" not in js:
-        fail(f"FEED_SCENES must still define {city}")
+pos = js.find("function productOnlyScenes()")
+if pos < 0:
+    fail("missing productOnlyScenes()")
+pos_end = js.find("\n  function ", pos + 1)
+body = js[pos:pos_end if pos_end > pos else pos + 800]
+if "liveScenes[cityId]" not in body:
+    fail("productOnlyScenes must use liveScenes")
+if "FEED_SCENES[cityId]" in body:
+    fail("productOnlyScenes must not invent content from FEED_SCENES")
+if "loadProductOnlyLiveFeed" not in js:
+    fail("product-only boot must load live feed")
+if "using approved fallback scenes" in js:
+    fail("live feed must not silently fall back to fictional scenes")
 
 # Signal detail remains reachable from the feed (event-delegated openSignalDetail).
 if 'role === "feed-open-signal"' not in js or "openSignalDetail()" not in js:

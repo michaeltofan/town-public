@@ -406,7 +406,7 @@
     }
     if (canManageBackup() && config.automated) {
       actionsEl.innerHTML =
-        '<button type="button" class="row-action" id="backup-verify-btn">Verify PITR active</button>';
+        '<button type="button" class="row-action" id="backup-verify-btn">Record PITR verification</button>';
       var btn = document.getElementById("backup-verify-btn");
       if (btn) {
         btn.addEventListener("click", function () {
@@ -430,7 +430,7 @@
       .map(function (row) {
         return (
           '<article class="alert-row">' +
-          '<div class="alert-row-top"><strong>Verified</strong>' +
+          '<div class="alert-row-top"><strong>Attested</strong>' +
           '<time datetime="' +
           escapeHtml(row.verifiedAt || "") +
           '">' +
@@ -459,10 +459,10 @@
       note: "Confirmed Railway Postgres PITR in platform dashboard",
     });
     if (result.response.status !== 200) {
-      setStatus(consoleStatus, "Backup verify failed (ops_admin + PITR config required)", "is-error");
+      setStatus(consoleStatus, "PITR attestation failed (ops_admin + PITR config required)", "is-error");
       return;
     }
-    setStatus(consoleStatus, "Backup verification recorded", "is-ok");
+    setStatus(consoleStatus, "PITR attestation recorded", "is-ok");
     await loadBackup();
     await loadStatus();
   }

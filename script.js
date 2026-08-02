@@ -406,12 +406,6 @@
   const paymentConfirmingDismiss = document.getElementById(
     "payment-confirming-dismiss"
   );
-  const paymentNotice = document.getElementById("payment-notice");
-  const paymentNoticeTitle = document.getElementById("payment-notice-title");
-  const paymentNoticeBody = document.getElementById("payment-notice-body");
-  const paymentSimulateConfirm = document.getElementById(
-    "payment-simulate-confirm"
-  );
   const membershipInvite = document.getElementById("membership-invite");
   const inviteTitle = document.getElementById("invite-title");
   const inviteBody = document.getElementById("invite-body");
@@ -758,10 +752,6 @@
     !paymentConfirmingStatus ||
     !paymentConfirmingRetry ||
     !paymentConfirmingDismiss ||
-    !paymentNotice ||
-    !paymentNoticeTitle ||
-    !paymentNoticeBody ||
-    !paymentSimulateConfirm ||
     !membershipInvite ||
     !inviteTitle ||
     !inviteBody ||
@@ -1913,17 +1903,17 @@
       title: "Il tuo account TOWN è pronto.",
       community: "Comunità: {city}",
       emailLine: "Email: {email}",
-      emailStatus: "Email verificata (prototipo)",
-      accessStatus: "Accesso sicuro configurato (prototipo)",
+      emailStatus: "Email verificata",
+      accessStatus: "Accesso sicuro configurato",
       body:
-        "La configurazione dell’account nel prototipo è completa.",
+        "La configurazione dell’account è completa.",
       bodySecond:
         "Il prossimo passo è attivare l’iscrizione annuale a TOWN.",
       inactive:
         "Account pronto — la membership non è attiva. Non puoi ancora partecipare come membro.",
       membership: "Iscrizione TOWN — €12 all’anno",
       paymentNote:
-        "In questo prototipo non è attivo alcun pagamento reale.",
+        "Il passo successivo è Stripe Checkout per la membership annuale.",
       continue: "Continua",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1943,7 +1933,7 @@
         "Konto bereit — die Mitgliedschaft ist nicht aktiv. Du kannst noch nicht als Mitglied teilnehmen.",
       membership: "TOWN-Mitgliedschaft — €12 pro Jahr",
       paymentNote:
-        "In diesem Prototyp ist keine echte Zahlung aktiv.",
+        "Der nächste Schritt ist Stripe Checkout für die jährliche Mitgliedschaft.",
       continue: "Weiter",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1963,7 +1953,7 @@
         "Cont pregătit — membership-ul nu este activ. Nu poți încă participa ca membru.",
       membership: "Abonament TOWN — 12 € pe an",
       paymentNote:
-        "În acest prototip nu este activă nicio plată reală.",
+        "Următorul pas este Stripe Checkout pentru membership-ul anual.",
       continue: "Continuă",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
@@ -1987,19 +1977,15 @@
         "Verrai indirizzato a Stripe Checkout per completare il pagamento in modo sicuro.",
       simulateStart: "Attiva membership",
       back: "Indietro",
-      noticeTitle: "Pagamento non attivo",
-      noticeBody:
-        "Il pagamento reale non è attivo in questo prototipo. Stripe non è integrato. Puoi solo simulare l’attivazione.",
-      simulateConfirm: "Simula attivazione",
-      successLabel: "MEMBERSHIP SIMULATA",
-      successTitle: "Membership attiva — solo prototipo.",
+      successLabel: "MEMBERSHIP ATTIVA",
+      successTitle: "Membership annuale attiva.",
       successCommunity: "Comunità: {city}",
       successAccount: "Account: pronto",
-      successMembership: "Membership: attiva — solo prototipo",
+      successMembership: "Membership: attiva",
       successBody:
-        "Nessun pagamento reale è avvenuto. Non esiste alcun entitlement reale.",
+        "Il pagamento è stato confermato. La membership annuale TOWN è attiva per questa comunità.",
       successNote:
-        "Questo stato è solo una simulazione. Non implica conferma civica, autenticazione reale o abbonamento reale.",
+        "Puoi gestire l’abbonamento dal profilo quando Stripe lo consente per questo account.",
       continue: "Continua",
       errorUnauthenticated:
         "Non hai effettuato l’accesso oppure la sessione è scaduta.",
@@ -2040,19 +2026,15 @@
         "Du wirst zu Stripe Checkout weitergeleitet, um die Zahlung sicher abzuschließen.",
       simulateStart: "Mitgliedschaft aktivieren",
       back: "Zurück",
-      noticeTitle: "Zahlung nicht aktiv",
-      noticeBody:
-        "Echte Zahlung ist in diesem Prototyp nicht aktiv. Stripe ist nicht integriert. Du kannst die Aktivierung nur simulieren.",
-      simulateConfirm: "Aktivierung simulieren",
-      successLabel: "MITGLIEDSCHAFT SIMULIERT",
-      successTitle: "Mitgliedschaft aktiv — nur Prototyp.",
+      successLabel: "MITGLIEDSCHAFT AKTIV",
+      successTitle: "Jährliche Mitgliedschaft aktiv.",
       successCommunity: "Gemeinschaft: {city}",
       successAccount: "Konto: bereit",
-      successMembership: "Mitgliedschaft: aktiv — nur Prototyp",
+      successMembership: "Mitgliedschaft: aktiv",
       successBody:
-        "Es ist keine echte Zahlung erfolgt. Es gibt kein reales Entitlement.",
+        "Die Zahlung wurde bestätigt. Die jährliche TOWN-Mitgliedschaft ist für diese Gemeinschaft aktiv.",
       successNote:
-        "Dieser Zustand ist nur eine Simulation. Er bedeutet keine zivile Bestätigung, keine echte Authentifizierung und kein echtes Abonnement.",
+        "Du kannst das Abonnement im Profil verwalten, wenn Stripe das für dieses Konto erlaubt.",
       continue: "Weiter",
       errorUnauthenticated:
         "Du bist nicht angemeldet oder die Sitzung ist abgelaufen.",
@@ -2095,19 +2077,15 @@
         "Vei fi redirecționat către Stripe Checkout pentru a finaliza plata în siguranță.",
       simulateStart: "Activează membership-ul",
       back: "Înapoi",
-      noticeTitle: "Plată inactivă",
-      noticeBody:
-        "Plata reală nu este activă în acest prototip. Stripe nu este integrat. Poți doar simula activarea.",
-      simulateConfirm: "Simulează activarea",
-      successLabel: "MEMBERSHIP SIMULAT",
-      successTitle: "Membership activ — doar prototip.",
+      successLabel: "MEMBERSHIP ACTIV",
+      successTitle: "Membership anual activ.",
       successCommunity: "Comunitate: {city}",
       successAccount: "Cont: pregătit",
-      successMembership: "Membership: activ — doar prototip",
+      successMembership: "Membership: activ",
       successBody:
-        "Nu a avut loc nicio plată reală. Nu există niciun entitlement real.",
+        "Plata a fost confirmată. Membership-ul anual TOWN este activ pentru această comunitate.",
       successNote:
-        "Această stare este doar o simulare. Nu implică confirmare civică, autentificare reală sau abonament real.",
+        "Poți gestiona abonamentul din profil când Stripe o permite pentru acest cont.",
       continue: "Continuă",
       errorUnauthenticated:
         "Nu ești autentificat sau sesiunea a expirat.",
@@ -2137,45 +2115,45 @@
   const ACTIVE_COPY = {
     it: {
       label: "MEMBERSHIP ATTIVA",
-      title: "Membership attiva — solo prototipo.",
+      title: "Membership annuale attiva.",
       community: "Comunità: {city}",
       memberStatus: "Membro · {city}",
       body:
-        "La configurazione dell’account nel prototipo è completa e la partecipazione è ora attiva nel prototipo.",
+        "La membership annuale TOWN è attiva per la tua comunità.",
       bodySecond:
-        "Nessun pagamento reale è avvenuto e non esiste alcun entitlement reale.",
+        "Puoi tornare al segnale da cui sei partito e partecipare quando l’account lo consente.",
       prototype:
-        "Questo è solo lo stato di chiusura del percorso prototipo. Non implica autenticazione reale o conferma civica salvata.",
+        "Gestisci l’abbonamento dal profilo quando Stripe lo consente per questo account.",
       returnSignal: "Torna al segnale",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
       label: "MITGLIEDSCHAFT AKTIV",
-      title: "Mitgliedschaft aktiv — nur Prototyp.",
+      title: "Jährliche Mitgliedschaft aktiv.",
       community: "Gemeinschaft: {city}",
       memberStatus: "Mitglied · {city}",
       body:
-        "Die Kontoeinrichtung im Prototyp ist abgeschlossen und die Teilnahme ist im Prototyp jetzt aktiv.",
+        "Die jährliche TOWN-Mitgliedschaft ist für deine Gemeinschaft aktiv.",
       bodySecond:
-        "Es ist keine echte Zahlung erfolgt und es gibt kein reales Entitlement.",
+        "Du kannst zum Signal zurückkehren, von dem du gekommen bist, und teilnehmen, wenn das Konto es erlaubt.",
       prototype:
-        "Dies ist nur der Abschlusszustand des Prototypwegs. Er bedeutet keine echte Authentifizierung und keine gespeicherte zivile Bestätigung.",
+        "Verwalte das Abonnement im Profil, wenn Stripe das für dieses Konto erlaubt.",
       returnSignal: "Zurück zum Signal",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
       label: "MEMBERSHIP ACTIV",
-      title: "Membership activ — doar prototip.",
+      title: "Membership anual activ.",
       community: "Comunitate: {city}",
       memberStatus: "Membru · {city}",
       body:
-        "Configurarea contului în prototip este completă, iar participarea este acum activă în prototip.",
+        "Membership-ul anual TOWN este activ pentru comunitatea ta.",
       bodySecond:
-        "Nu a avut loc nicio plată reală și nu există niciun entitlement real.",
+        "Poți reveni la semnalul de unde ai plecat și poți participa când contul o permite.",
       prototype:
-        "Aceasta este doar starea de încheiere a parcursului prototip. Nu implică autentificare reală sau confirmare civică salvată.",
+        "Gestionează abonamentul din profil când Stripe o permite pentru acest cont.",
       returnSignal: "Înapoi la semnal",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
@@ -2538,10 +2516,12 @@
   }
 
   function productOnlyScenes() {
+    // Live API scenes only — never invent civic content from FEED_SCENES.
     const out = [];
     for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
       const cityId = PRODUCT_ONLY_CITY_ORDER[i];
-      const scenes = FEED_SCENES[cityId] || [];
+      const scenes = liveScenes[cityId];
+      if (!scenes || scenes.length < 1) continue;
       for (let j = 0; j < scenes.length; j++) {
         out.push(scenes[j]);
       }
@@ -2790,7 +2770,7 @@
   }
 
   // Civic participation: fail closed unless backend canParticipate is true
-  // and status is not paid_pending_binding. Prototype-only membershipSimulated
+  // and status is not paid_pending_binding.
   // is not used for production auth. Staging owner preview is an explicit
   // product-test unlock only — never a silent grant.
   function canTakeCivicAction() {
@@ -2812,19 +2792,12 @@
   }
 
   function isMemberPresented() {
-    if (hasAuthoritativePaidMembership()) return true;
-    // Legacy prototype simulate path only when no authoritative snapshot exists.
-    return membershipSnapshot === null && membershipSimulated === true;
+    return hasAuthoritativePaidMembership();
   }
 
   // Eligible to complete "I SEE THIS TOO" as a civic confirmation.
-  // Matches the active-return prototype gate: backend canParticipate, or the
-  // legacy simulate path when no authoritative snapshot exists.
   function canConfirmSeeTooAction() {
-    return (
-      canTakeCivicAction() ||
-      (membershipSnapshot === null && membershipSimulated === true)
-    );
+    return canTakeCivicAction();
   }
 
   function signalApiIdForScene(scene) {
@@ -3116,7 +3089,7 @@
     }
     if (membershipRecoveryApi.enablesMemberAuthorizedState(snapshot)) {
       // Paid + canParticipate: show existing active confirmation without
-      // setting membershipSimulated (not a production authorization path).
+      // without inventing client-side membership authority.
       beginMembershipRecoveryFlow();
       go("active");
       endMembershipRecoveryFlow();
@@ -3286,7 +3259,6 @@
   let emailVerified = false;
   let passkeyRegistered = false;
   let passkeySubmitting = false;
-  let membershipSimulated = false;
   let paymentCheckoutSubmitting = false;
   // Per-signal confirmation state from API (or local fallback for mock scenes).
   // Keyed by signal UUID / scene id: { confirmed, confirmationCount }.
@@ -3470,7 +3442,7 @@
     if (isProductOnlyPublicMode()) {
       const base = productOnlyScenes();
       const discovery = window.TownCityDiscovery;
-      if (!discovery) return base;
+      if (!discovery || base.length < 1) return base;
       const preferred = resolveEditorialPreferredLanguages();
       const lang = discovery.resolveEditorialLanguage(preferred);
       return discovery.insertCityDiscoveryStory(
@@ -3482,7 +3454,7 @@
     if (!selectedCity) return [];
     const live = liveScenes[selectedCity];
     if (live && live.length >= 1) return live;
-    return FEED_SCENES[selectedCity] || [];
+    return [];
   }
 
   function resolveEditorialPreferredLanguages() {
@@ -3877,14 +3849,49 @@
       }
       return true;
     } catch (err) {
-      liveScenes[cityId] = null;
+      liveScenes[cityId] = [];
       if (typeof console !== "undefined" && console.warn) {
         console.warn(
-          "[TOWN] Live signals unavailable; using approved fallback scenes.",
+          "[TOWN] Live signals unavailable.",
           err && err.message ? err.message : err
         );
       }
       return false;
+    }
+  }
+
+  function feedUnavailableMessage() {
+    const lang = resolvePublicReadingLanguage();
+    const copy = FEED_COPY[lang] || FEED_COPY.en || {};
+    return copy.sessionUnavailable || "Couldn't reach TOWN — try again later.";
+  }
+
+  function syncFeedAvailabilityStatus() {
+    if (!feedLiveStatus) return;
+    const scenes = currentScenes();
+    if (scenes.length < 1) {
+      feedLiveStatus.textContent = feedUnavailableMessage();
+      return;
+    }
+    const lang = resolvePublicReadingLanguage();
+    feedLiveStatus.textContent =
+      (window.TownPublicI18n &&
+        window.TownPublicI18n.storyLabel(lang, feedIndex + 1, scenes.length)) ||
+      "Story " + (feedIndex + 1) + " of " + scenes.length;
+  }
+
+  async function loadProductOnlyLiveFeed() {
+    if (!isProductOnlyPublicMode()) return;
+    await Promise.all(
+      PRODUCT_ONLY_CITY_ORDER.map(function (cityId) {
+        return loadLiveScenesForCity(cityId);
+      })
+    );
+    rebuildFeedPanels();
+    applyFeedCopyChrome();
+    syncFeedAvailabilityStatus();
+    if (currentScenes().length) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
     }
   }
 
@@ -4807,7 +4814,12 @@
 
   function renderFeedScene() {
     const scenes = currentScenes();
-    if (!scenes.length) return;
+    if (!scenes.length) {
+      rebuildFeedPanels();
+      applyFeedCopyChrome();
+      syncFeedAvailabilityStatus();
+      return;
+    }
     if (feedIndex < 0) feedIndex = 0;
     if (feedIndex > scenes.length - 1) feedIndex = scenes.length - 1;
 
@@ -5831,7 +5843,6 @@
     emailVerified = false;
     passkeyRegistered = false;
     passkeySubmitting = false;
-    membershipSimulated = false;
     paymentCheckoutSubmitting = false;
     clearSignalConfirmationState();
     membershipSnapshot = null;
@@ -7059,21 +7070,6 @@
     document.documentElement.lang = membershipLang();
   }
 
-  function closePaymentNotice() {
-    if (paymentNotice.hidden) return;
-    paymentNotice.hidden = true;
-    document.body.style.overflow = "";
-  }
-
-  function openPaymentNotice() {
-    const copy = PAYMENT_COPY[membershipLang()];
-    paymentNoticeTitle.textContent = copy.noticeTitle;
-    paymentNoticeBody.textContent = copy.noticeBody;
-    paymentSimulateConfirm.textContent = copy.simulateConfirm;
-    paymentNotice.hidden = false;
-    document.body.style.overflow = "hidden";
-    paymentSimulateConfirm.focus();
-  }
 
   function showPaymentIntro() {
     paymentIntro.hidden = false;
@@ -7118,7 +7114,7 @@
       // Preserve confirming / pending / paid-no-participate recovery UI.
       return;
     }
-    if (membershipSimulated || hasAuthoritativePaidMembership()) {
+    if (hasAuthoritativePaidMembership()) {
       if (
         hasAuthoritativePaidMembership() &&
         !canTakeCivicAction() &&
@@ -7295,7 +7291,6 @@
     emailVerified = false;
     passkeyRegistered = false;
     passkeySubmitting = false;
-    membershipSimulated = false;
     paymentCheckoutSubmitting = false;
     clearSignalConfirmationState();
     membershipSnapshot = null;
@@ -7335,7 +7330,6 @@
     clearPasskeyError();
     showPasskeyIntro();
     clearPaymentError();
-    closePaymentNotice();
     showPaymentIntro();
     countryInputs.forEach((input) => {
       input.checked = false;
@@ -7394,8 +7388,7 @@
       closeProfilePanel();
     }
     if (name !== "payment") {
-      closePaymentNotice();
-    }
+      }
 
     if (name === "entry") {
       applyEntryLoginCopy();
@@ -7529,11 +7522,7 @@
       ) {
         route = "commitment";
       }
-      if (
-        route === "active" &&
-        !membershipSimulated &&
-        !hasAuthoritativePaidMembership()
-      ) {
+      if (route === "active" && !hasAuthoritativePaidMembership()) {
         route = "payment";
       }
       const target = "#/" + route;
@@ -7601,11 +7590,7 @@
     ) {
       route = "passkey";
     }
-    if (
-      route === "active" &&
-      !membershipSimulated &&
-      !hasAuthoritativePaidMembership()
-    ) {
+    if (route === "active" && !hasAuthoritativePaidMembership()) {
       route = "payment";
     }
 
@@ -9282,8 +9267,7 @@
       .then(function () {
         // Session probe already confirmed authenticated before this runs.
         sessionAuthenticated = true;
-        membershipSimulated = false;
-        clearReadyError();
+            clearReadyError();
         return bootstrapCommunityCommitment().then(function () {
           if (hasRecordedCommunityCommitment()) {
             go("commitment");
@@ -9366,7 +9350,6 @@
       return;
     }
     clearPaymentError();
-    closePaymentNotice();
     paymentCheckoutSubmitting = true;
     paymentSimulateStart.disabled = true;
 
@@ -9389,15 +9372,8 @@
       });
   });
 
-  paymentSimulateConfirm.addEventListener("click", () => {
-    membershipSimulated = true;
-    closePaymentNotice();
-    applyPaymentCopy();
-    paymentContinue.focus();
-  });
 
   paymentBack.addEventListener("click", () => {
-    closePaymentNotice();
     clearPaymentError();
     go("commitment");
   });
@@ -9498,13 +9474,6 @@
     // participation is allowed; simulate path keeps local done-state only.
     if (canTakeCivicAction()) {
       refreshViewerSignalConfirmations();
-    } else if (membershipSnapshot === null && membershipSimulated) {
-      const key = signalConfirmationKeyForIndex(feedIndex);
-      const prev = getSignalConfirmationState(feedIndex);
-      setSignalConfirmationState(key, {
-        confirmed: true,
-        confirmationCount: Math.max(1, prev.confirmationCount),
-      });
     }
     if (isProductOnlyPublicMode()) {
       endInviteMembershipJourney();
@@ -9513,7 +9482,6 @@
   });
 
   activeBack.addEventListener("click", () => {
-    membershipSimulated = true;
     go("payment");
   });
 
@@ -9539,5 +9507,6 @@
     /* ignore URL helpers */
   }
   render();
+  void loadProductOnlyLiveFeed();
   bootstrapAccountMembership();
 })();

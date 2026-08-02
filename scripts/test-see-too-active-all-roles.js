@@ -100,8 +100,8 @@ const confirmMatch = js.match(
 const confirm = confirmMatch ? confirmMatch[1] : "";
 assert(
   confirm.includes("canTakeCivicAction") &&
-    confirm.includes("membershipSimulated"),
-  "confirm eligibility uses civic participation / prototype simulate gate"
+    !confirm.includes("membershipSimulated"),
+  "confirm eligibility uses civic participation only"
 );
 
 const activateMatch = js.match(

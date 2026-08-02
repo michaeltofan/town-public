@@ -1,80 +1,58 @@
 # town-public
 
-Public web surface for **TOWN** (`towncivic.org`).
+Public web surface for **TOWN**.
 
-## Screens
+## Current phase (staging)
 
-### Screen 01 — TOWN Entry (approved on `main`)
+This is a **staging** product surface, even on `towncivic.org`.
 
-### Screen 02 — Country Selection (approved on `main`)
+- Site: `https://towncivic.org`
+- API: `https://api-staging.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
+- Production API (`api.towncivic.org`) is **not provisioned** yet
 
-### Screen 03 — City Selection (approved on `main`)
+Do not treat this host as a finished production member product.
 
-### Screen 04 — Location Verification Mock (approved on `main`)
+## Live surfaces
 
-### Screen 05 — Visitor Local Feed (approved on `main`)
+| Surface | URL | Notes |
+| --- | --- | --- |
+| Public feed | `https://towncivic.org/` | Product-only mode; loads live signals from staging API. Fail-closed when signals are unavailable (no fictional civic feed). |
+| Platform console | `https://towncivic.org/platform/` | Operator email+password; requires platform role on staging API. |
 
-### Screen 06 — Membership Invitation (approved on `main`)
+Onboarding / membership / payment screens remain in the codebase and can open from the membership invitation journey. They are not a separate marketed production funnel yet.
 
-### Screen 07 — Account Setup Introduction (approved on `main`)
+## Honesty rules (foundation)
 
-### Screen 08 — Email Entry Mock (approved on `main`)
+- Feed uses live `/v1/communities/:slug/signals` data only
+- No client-side “simulate membership” authority
+- Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
-### Screen 09 — Verification Code Mock (approved on `main`)
-
-### Screen 10 — Passkey Introduction Mock (approved on `main`)
-
-### Screen 11 — Account Ready Mock (approved on `main`)
-
-### Screen 12 — Membership Payment Boundary Mock (approved on `main`)
-
-### Screen 13 — Membership Active Confirmation + Return to Originating Signal (approved on `main`)
-
-### Signal Detail V1 (approved on `main`)
-
-### Desktop Feed Experience V1 (review)
-
-Adapts the existing six local feed scenes for a premium desktop reading layout:
-
-1. One full-screen scene at a time
-2. Full-bleed photography with restrained left-weighted overlays
-3. Single editorial text column on the left
-4. Warm pearl-white body text and quiet metadata
-5. Finite Previous / Next across three signals only
-6. Open signal continues into approved Signal Detail V1
-7. Visitor and member states preserved — no new product journey
-
-### Platform operator console
-
-One console. One API.
-
-- Console: `https://towncivic.org/platform/`
-- API: `https://api-staging.towncivic.org` (via shared `api-base.js` `ACTIVE_API_BASE`)
-
-Sign in with email + password on an account granted as platform operator
-(bootstrap CLI or Operators panel). Do not use Railway public URLs for login.
+## Checks
 
 ```bash
 node scripts/test-api-base.js
 node scripts/test-platform-console.js
+node scripts/test-see-too-active-all-roles.js
+bash scripts/check-product-only-feed.sh
+bash scripts/check-screen-12.sh
+bash scripts/check-screen-13.sh
 ```
 
-### Local preview
+## Local preview
 
 ```bash
 python3 -m http.server 4173
 ```
 
 Open `http://localhost:4173/` or `http://localhost:4173/platform/`.
-Local preview uses the same staging API.
+Uses the same staging API. Browser auth against staging from `localhost` may fail CORS/cookie policy unless the API allowlists that origin.
 
-### Visual review URL
+## Platform operator console
 
-Interactive desktop preview:
+One console. One API.
 
-**https://william-athens-echo-revealed.trycloudflare.com/**
+- Console: `https://towncivic.org/platform/`
+- API: `https://api-staging.towncivic.org`
 
-Review paths:
-
-1. Italy → Milano → inspect scenes 1–3 on a wide desktop viewport → Open signal → Close
-2. Germany → Munich → inspect scenes 1–3 → membership completion → member status + completed confirmation remain
+Sign in with email + password on an account granted as platform operator
+(bootstrap CLI or Operators panel). Prefer this URL over Railway public hosts.

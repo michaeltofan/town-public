@@ -57,7 +57,7 @@ echo "== Guardrails =="
 # localStorage is allowed only for the staging owner participate-preview flag.
 # It never grants backend canParticipate and is ignored off staging API.
 if grep -n 'localStorage' index.html script.js membership-recovery.js \
-  | grep -Ev 'PARTICIPATE_PREVIEW|town\.participatePreview|participatePreview|Owner product-testing|staging owner|Staging-only owner'; then
+  | grep -Eiv 'PARTICIPATE_PREVIEW|town\.participatePreview|participatePreview|participate-preview|Owner product-testing|staging owner|Staging-only owner'; then
   echo "FAIL: non-preview localStorage usage present"
   fail=1
 else

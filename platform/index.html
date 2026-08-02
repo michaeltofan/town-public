@@ -88,14 +88,14 @@
           <section class="section is-active" data-panel="status">
             <header class="section-head">
               <h2>Monitor</h2>
-              <p>Operational status for API, database, email, Stripe, automated Postgres backup, and restore-drill attestation, plus uptime samples, in-console alerts, counts, and recent technical errors.</p>
+              <p>Staging ops status for API, database, email, and Stripe, plus operator attestations for PITR backup and restore drills, opportunistic uptime samples, in-console alerts, counts, and recent technical errors.</p>
             </header>
             <div id="status-components" class="stat-grid status-components"></div>
             <div id="status-grid" class="stat-grid"></div>
             <div class="monitor-panel">
               <header class="section-head monitor-head">
                 <h3>Backup</h3>
-                <p>Railway Postgres PITR is the automated backup. Ops admins verify it remains active — no dump workers in the API.</p>
+                <p>Railway Postgres PITR is configured outside this console. Ops admins record an attestation that it remains active — this does not run a backup job.</p>
               </header>
               <div id="status-backup-summary" class="stat-grid uptime-summary"></div>
               <div id="status-backup-actions" class="backup-actions"></div>
