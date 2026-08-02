@@ -78,7 +78,7 @@ Uses the same staging API. Browser auth against staging from `localhost` may fai
 One console. One API.
 
 - Console: `https://towncivic.org/platform/`
-- API: `https://api-staging.towncivic.org`
+- API: `https://api.towncivic.org`
 
 Sign in with email + password on an account granted as platform operator
 (bootstrap CLI or Operators panel). Prefer this URL over Railway public hosts.

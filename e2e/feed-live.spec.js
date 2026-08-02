@@ -20,7 +20,7 @@ test.describe("public feed live signals", () => {
 
     expect(signalResponses.length).toBeGreaterThan(0);
     expect(
-      signalResponses.every((item) => item.url.includes("api-staging.towncivic.org"))
+      signalResponses.every((item) => item.url.includes("api.towncivic.org"))
     ).toBeTruthy();
     expect(signalResponses.some((item) => item.status === 200)).toBeTruthy();
 
