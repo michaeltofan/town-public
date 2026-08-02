@@ -2,7 +2,7 @@
 
 Public web surface for **TOWN**.
 
-## Current phase (staging)
+## Current phase (staging) — Etapa 3 member journey
 
 This is a **staging** product surface, even on `towncivic.org`.
 
@@ -16,16 +16,24 @@ Do not treat this host as a finished production member product.
 
 | Surface | URL | Notes |
 | --- | --- | --- |
-| Public feed | `https://towncivic.org/` | Product-only mode; loads live signals from staging API. Fail-closed when signals are unavailable (no fictional civic feed). |
+| Public feed | `https://towncivic.org/` | Product-only mode; loads live signals from staging API. Fail-closed loading/empty states (no fictional civic feed). |
 | Platform console | `https://towncivic.org/platform/` | Operator email+password; requires platform role on staging API. |
 
-Onboarding / membership / payment screens remain in the codebase and can open from the membership invitation journey. They are not a separate marketed production funnel yet.
+Member journey (Etapa 3) on the public surface:
+
+- HOME → live feed (loading / empty / retry)
+- MEMBERSHIP → auth when needed, then commitment / recovery / profile by membership truth
+- PROFILE / ACTIVITY → session-authenticated destinations
+- CHAT → honest “not available yet” (no fake auth destination)
+- I SEE THIS TOO → invite or API confirmation with visible failure feedback
+- Stripe return → bounded membership recovery; paid-without-participate stays fail-closed
 
 ## Honesty rules (foundation)
 
 - Feed uses live `/v1/communities/:slug/signals` data only
 - No client-side "simulate membership" authority
 - No client-side participate-preview unlock
+- No local fake see-too confirmation when the API signal id is missing
 - Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
 ## Checks
@@ -35,6 +43,7 @@ node scripts/test-api-base.js
 node scripts/test-platform-console.js
 node scripts/test-owner-participate-preview.js
 node scripts/test-see-too-active-all-roles.js
+node scripts/test-etapa3-member-journey.js
 bash scripts/check-product-only-feed.sh
 bash scripts/check-screen-12.sh
 bash scripts/check-screen-13.sh

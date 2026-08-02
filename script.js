@@ -55,6 +55,10 @@
     "city-discovery-panel-template"
   );
   const feedLiveStatus = document.getElementById("feed-live-status");
+  const feedState = document.getElementById("feed-state");
+  const feedStateTitle = document.getElementById("feed-state-title");
+  const feedStateBody = document.getElementById("feed-state-body");
+  const feedStateRetry = document.getElementById("feed-state-retry");
   const appNav = document.getElementById("app-nav");
   const navHome = document.getElementById("nav-home");
   const navMembership = document.getElementById("nav-membership");
@@ -491,6 +495,10 @@
     !feedPanelTemplate ||
     !cityDiscoveryPanelTemplate ||
     !feedLiveStatus ||
+    !feedState ||
+    !feedStateTitle ||
+    !feedStateBody ||
+    !feedStateRetry ||
     !appNav ||
     !navHome ||
     !navMembership ||
@@ -1311,11 +1319,21 @@
         "Couldn't reach TOWN for this session — try again later.",
       sessionLocalOnly:
         "This preview signal has no server session yet.",
+      sessionGated:
+        "Discussion opens with active membership. Confirm this signal first, or continue membership to participate.",
+      sessionLoading: "Loading the discussion session…",
       sessionPublishFailed:
         "Couldn't publish this contribution — try again.",
       sessionNeedText:
         "Write at least a short, concrete contribution before publishing.",
       sessionYou: "You",
+      feedLoadingTitle: "Loading local signals",
+      feedLoadingBody: "TOWN is fetching live civic signals for your cities.",
+      feedEmptyTitle: "No live signals right now",
+      feedEmptyBody: "Couldn't reach TOWN — try again later.",
+      feedRetry: "Try again",
+      seeTooFailed: "Couldn't save this confirmation — try again.",
+      seeTooBusy: "Saving your confirmation…",
       cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
     },
     es: {
@@ -1358,11 +1376,21 @@
         "No se pudo contactar a TOWN para esta sesión — inténtalo de nuevo.",
       sessionLocalOnly:
         "Esta señal de vista previa aún no tiene sesión en el servidor.",
+      sessionGated:
+        "La discusión se abre con membresía activa. Confirma esta señal primero, o continúa la membresía para participar.",
+      sessionLoading: "Cargando la sesión de discusión…",
       sessionPublishFailed:
         "No se pudo publicar esta contribución — inténtalo de nuevo.",
       sessionNeedText:
         "Escribe al menos una contribución breve y concreta antes de publicar.",
       sessionYou: "Tú",
+      feedLoadingTitle: "Cargando señales locales",
+      feedLoadingBody: "TOWN está obteniendo señales cívicas en vivo para tus ciudades.",
+      feedEmptyTitle: "No hay señales en vivo ahora",
+      feedEmptyBody: "No se pudo contactar a TOWN — inténtalo de nuevo.",
+      feedRetry: "Intentar de nuevo",
+      seeTooFailed: "No se pudo guardar esta confirmación — inténtalo de nuevo.",
+      seeTooBusy: "Guardando tu confirmación…",
       cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
     },
     it: {
@@ -1405,11 +1433,21 @@
         "Impossibile raggiungere TOWN per questa sessione — riprova più tardi.",
       sessionLocalOnly:
         "Questo segnale di anteprima non ha ancora una sessione sul server.",
+      sessionGated:
+        "La discussione si apre con l’iscrizione attiva. Conferma prima questo segnale, oppure continua l’iscrizione per partecipare.",
+      sessionLoading: "Caricamento della sessione di discussione…",
       sessionPublishFailed:
         "Impossibile pubblicare questo contributo — riprova.",
       sessionNeedText:
         "Scrivi almeno un contributo breve e concreto prima di pubblicare.",
       sessionYou: "Tu",
+      feedLoadingTitle: "Caricamento segnali locali",
+      feedLoadingBody: "TOWN sta recuperando i segnali civici live per le tue città.",
+      feedEmptyTitle: "Nessun segnale live al momento",
+      feedEmptyBody: "Impossibile raggiungere TOWN — riprova più tardi.",
+      feedRetry: "Riprova",
+      seeTooFailed: "Impossibile salvare questa conferma — riprova.",
+      seeTooBusy: "Salvataggio della conferma…",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -1452,11 +1490,21 @@
         "TOWN ist für diese Sitzung nicht erreichbar — später erneut versuchen.",
       sessionLocalOnly:
         "Dieses Vorschau-Signal hat noch keine Serversitzung.",
+      sessionGated:
+        "Die Diskussion öffnet sich mit aktiver Mitgliedschaft. Bestätige zuerst dieses Signal oder setze die Mitgliedschaft fort, um teilzunehmen.",
+      sessionLoading: "Diskussionssitzung wird geladen…",
       sessionPublishFailed:
         "Dieser Beitrag konnte nicht veröffentlicht werden — erneut versuchen.",
       sessionNeedText:
         "Schreibe mindestens einen kurzen, konkreten Beitrag vor dem Veröffentlichen.",
       sessionYou: "Du",
+      feedLoadingTitle: "Lokale Signale werden geladen",
+      feedLoadingBody: "TOWN holt live-Bürger-Signale für deine Städte.",
+      feedEmptyTitle: "Gerade keine Live-Signale",
+      feedEmptyBody: "TOWN ist nicht erreichbar — später erneut versuchen.",
+      feedRetry: "Erneut versuchen",
+      seeTooFailed: "Diese Bestätigung konnte nicht gespeichert werden — erneut versuchen.",
+      seeTooBusy: "Bestätigung wird gespeichert…",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -1499,11 +1547,21 @@
         "Nu am putut contacta TOWN pentru această sesiune — încearcă din nou.",
       sessionLocalOnly:
         "Acest semnal de previzualizare nu are încă sesiune pe server.",
+      sessionGated:
+        "Discuția se deschide cu membership activ. Confirmă mai întâi acest semnal sau continuă membership-ul ca să participi.",
+      sessionLoading: "Se încarcă sesiunea de discuții…",
       sessionPublishFailed:
         "Nu am putut publica această contribuție — încearcă din nou.",
       sessionNeedText:
         "Scrie cel puțin o contribuție scurtă și concretă înainte de publicare.",
       sessionYou: "Tu",
+      feedLoadingTitle: "Se încarcă semnalele locale",
+      feedLoadingBody: "TOWN preia semnale civice live pentru orașele tale.",
+      feedEmptyTitle: "Niciun semnal live acum",
+      feedEmptyBody: "Nu am putut contacta TOWN — încearcă din nou.",
+      feedRetry: "Încearcă din nou",
+      seeTooFailed: "Nu am putut salva această confirmare — încearcă din nou.",
+      seeTooBusy: "Se salvează confirmarea…",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -1631,7 +1689,7 @@
       privacySecond:
         "Nel flusso approvato non è richiesta una password.",
       prototype:
-        "In questo prototipo il sistema reale di account non è attivo.",
+        "Il passo successivo crea il tuo account con email e passkey.",
       continue: "Continua",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1655,7 +1713,7 @@
       privacySecond:
         "Im genehmigten Ablauf ist kein Passwort erforderlich.",
       prototype:
-        "In diesem Prototyp ist das reale Kontosystem nicht aktiv.",
+        "Als Nächstes erstellst du dein Konto mit E-Mail und Passkey.",
       continue: "Weiter",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
@@ -1679,7 +1737,7 @@
       privacySecond:
         "În fluxul aprobat nu este necesară o parolă.",
       prototype:
-        "În acest prototip sistemul real de conturi nu este activ.",
+        "Următorul pas creează contul cu email și passkey.",
       continue: "Continuă",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
@@ -1921,10 +1979,10 @@
       title: "Dein TOWN-Konto ist bereit.",
       community: "Gemeinschaft: {city}",
       emailLine: "E-Mail: {email}",
-      emailStatus: "E-Mail bestätigt (Prototyp)",
-      accessStatus: "Sicherer Zugang eingerichtet (Prototyp)",
+      emailStatus: "E-Mail bestätigt",
+      accessStatus: "Sicherer Zugang eingerichtet",
       body:
-        "Die Kontoeinrichtung im Prototyp ist abgeschlossen.",
+        "Die Kontoeinrichtung ist abgeschlossen.",
       bodySecond:
         "Als Nächstes aktivierst du deine jährliche TOWN-Mitgliedschaft.",
       inactive:
@@ -1941,10 +1999,10 @@
       title: "Contul tău TOWN este pregătit.",
       community: "Comunitate: {city}",
       emailLine: "Email: {email}",
-      emailStatus: "Email verificat (prototip)",
-      accessStatus: "Acces sigur configurat (prototip)",
+      emailStatus: "Email verificat",
+      accessStatus: "Acces sigur configurat",
       body:
-        "Configurarea contului în prototip este completă.",
+        "Configurarea contului este completă.",
       bodySecond:
         "Următorul pas este activarea abonamentului anual TOWN.",
       inactive:
@@ -2004,8 +2062,10 @@
         "La conferma è ancora in corso. Il pagamento non è indicato come non riuscito — riprova tra poco.",
       confirmingRetry: "Riprova",
       confirmingDismiss: "Torna al feed",
+      paidNoParticipateTitle: "Membership registrata",
       paidNoParticipateStatus:
-        "Membership pagata — partecipazione non ancora disponibile.",
+        "Il pagamento risulta registrato, ma la partecipazione civica non è ancora disponibile. Completa la scelta della comunità se richiesto, oppure riprova tra poco.",
+      continueCommunity: "Scegli la comunità",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     de: {
@@ -2055,8 +2115,10 @@
         "Die Bestätigung läuft noch. Die Zahlung gilt nicht als fehlgeschlagen — bitte versuche es gleich erneut.",
       confirmingRetry: "Erneut versuchen",
       confirmingDismiss: "Zurück zum Feed",
+      paidNoParticipateTitle: "Mitgliedschaft erfasst",
       paidNoParticipateStatus:
-        "Bezahlte Mitgliedschaft — Teilnahme noch nicht verfügbar.",
+        "Die Zahlung ist erfasst, aber die Mitwirkung ist noch nicht verfügbar. Schließe gegebenenfalls die Gemeindewahl ab oder versuche es gleich erneut.",
+      continueCommunity: "Gemeinde wählen",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
     },
     ro: {
@@ -2104,8 +2166,10 @@
         "Confirmarea este încă în curs. Plata nu este indicată ca eșuată — încearcă din nou în curând.",
       confirmingRetry: "Încearcă din nou",
       confirmingDismiss: "Înapoi la feed",
+      paidNoParticipateTitle: "Membership înregistrat",
       paidNoParticipateStatus:
-        "Membership plătit — participarea nu este încă disponibilă.",
+        "Plata este înregistrată, dar participarea civică nu este încă disponibilă. Completează alegerea comunității dacă e nevoie sau încearcă din nou în curând.",
+      continueCommunity: "Alege comunitatea",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
     },
   };
@@ -2287,6 +2351,8 @@
       success: "Signed in. Session active.",
       cancelled: "Sign-in cancelled. You can try again.",
       failed: "Sign-in failed. Please try again.",
+      phoneUnavailable:
+        "Phone sign-in is not available yet. Use email, or Sign in with a passkey.",
     },
     it: {
       signIn: "Usa l’accesso sicuro",
@@ -2294,6 +2360,8 @@
       success: "Accesso effettuato. Sessione attiva.",
       cancelled: "Accesso annullato. Puoi riprovare.",
       failed: "Accesso non riuscito. Riprova.",
+      phoneUnavailable:
+        "L’accesso con telefono non è ancora disponibile. Usa l’email oppure Accedi con una passkey.",
     },
     de: {
       signIn: "Sicheren Zugang verwenden",
@@ -2301,6 +2369,8 @@
       success: "Angemeldet. Sitzung aktiv.",
       cancelled: "Anmeldung abgebrochen. Du kannst es erneut versuchen.",
       failed: "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      phoneUnavailable:
+        "Telefon-Anmeldung ist noch nicht verfügbar. Nutze E-Mail oder melde dich mit einer Passkey an.",
     },
     ro: {
       signIn: "Folosește accesul sigur",
@@ -2308,6 +2378,8 @@
       success: "Autentificare reușită. Sesiune activă.",
       cancelled: "Autentificare anulată. Poți încerca din nou.",
       failed: "Autentificarea a eșuat. Încearcă din nou.",
+      phoneUnavailable:
+        "Autentificarea cu telefon nu este încă disponibilă. Folosește emailul sau Sign in cu o passkey.",
     },
   };
 
@@ -2333,6 +2405,8 @@
       activityTitle: "Civic activity",
       activityEmpty:
         "No confirmations yet. Open a local signal and tap I SEE THIS TOO when you are ready.",
+      activityError:
+        "Couldn't load your civic activity — try again in a moment.",
       activityConfirmed: "You see this too",
       feedCta: "Back to feed",
       membershipCta: "Continue membership",
@@ -2366,6 +2440,8 @@
       activityTitle: "Attività civica",
       activityEmpty:
         "Nessuna conferma ancora. Apri un segnale locale e tocca LO VEDO ANCH’IO quando sei pronto.",
+      activityError:
+        "Impossibile caricare l’attività civica — riprova tra poco.",
       activityConfirmed: "Lo vedi anche tu",
       feedCta: "Torna al feed",
       membershipCta: "Continua l’iscrizione",
@@ -2399,6 +2475,8 @@
       activityTitle: "Bürgerliche Aktivität",
       activityEmpty:
         "Noch keine Bestätigungen. Öffne ein lokales Signal und tippe ICH SEHE DAS AUCH, wenn du bereit bist.",
+      activityError:
+        "Bürgerliche Aktivität konnte nicht geladen werden — bitte gleich erneut versuchen.",
       activityConfirmed: "Du siehst das auch",
       feedCta: "Zurück zum Feed",
       membershipCta: "Mitgliedschaft fortsetzen",
@@ -2432,6 +2510,8 @@
       activityTitle: "Activitate civică",
       activityEmpty:
         "Nicio confirmare încă. Deschide un semnal local și apasă VĂD ȘI EU ASTA când ești gata.",
+      activityError:
+        "Nu am putut încărca activitatea civică — încearcă din nou în curând.",
       activityConfirmed: "Vezi și tu",
       feedCta: "Înapoi la feed",
       membershipCta: "Continuă membership-ul",
@@ -2818,20 +2898,22 @@
 
     const key = signalConfirmationKeyForIndex(feedIndex);
     const apiId = signalApiIdForScene(currentScenes()[feedIndex]);
+    const copy = currentFeedCopy();
 
-    // Legacy simulate path or mock scenes without a live UUID: local done-state only.
-    if (!canTakeCivicAction() || !apiId) {
-      clearPendingSeeTooContext();
-      const prev = getSignalConfirmationState(feedIndex);
-      setSignalConfirmationState(key, {
-        confirmed: true,
-        confirmationCount: Math.max(1, prev.confirmationCount + (prev.confirmed ? 0 : 1)),
-      });
+    // Fail closed: civic confirmation requires a live signal UUID + API write.
+    if (!apiId) {
+      showTransientFeedNotice(
+        copy.seeTooFailed || "Couldn't save this confirmation — try again."
+      );
       syncFeedMemberState();
-      return "confirmed";
+      return "failed";
     }
 
     seeTooConfirmSubmitting = true;
+    showTransientFeedNotice(
+      copy.seeTooBusy || "Saving your confirmation…",
+      { sticky: true }
+    );
     try {
       const result = await putJsonWithCredentials(
         API_BASE +
@@ -2855,17 +2937,25 @@
               ? result.payload.data.confirmationCount
               : 1,
         });
+        clearTransientFeedNotice();
         syncFeedMemberState();
         return "confirmed";
       }
       if (result.response && result.response.status === 403) {
+        clearTransientFeedNotice();
         capturePendingSeeTooContext();
         openInvite();
         return "invite";
       }
+      showTransientFeedNotice(
+        copy.seeTooFailed || "Couldn't save this confirmation — try again."
+      );
       syncFeedMemberState();
       return "failed";
     } catch (_err) {
+      showTransientFeedNotice(
+        copy.seeTooFailed || "Couldn't save this confirmation — try again."
+      );
       syncFeedMemberState();
       return "failed";
     } finally {
@@ -2974,6 +3064,7 @@
     paymentConfirmingBody.textContent = copy.confirmingBody;
     paymentConfirmingDismiss.textContent = copy.confirmingDismiss;
     paymentConfirmingRetry.textContent = copy.confirmingRetry;
+    paymentConfirmingRetry.removeAttribute("data-recovery-action");
     if (mode === "pending") {
       paymentConfirmingStatus.textContent = copy.confirmingPending;
       paymentConfirmingRetry.hidden = false;
@@ -2990,10 +3081,16 @@
     paymentSuccess.hidden = true;
     paymentConfirming.hidden = false;
     paymentConfirmingLabel.textContent = copy.confirmingLabel;
-    paymentConfirmingTitle.textContent = copy.confirmingTitle;
+    paymentConfirmingTitle.textContent =
+      copy.paidNoParticipateTitle || copy.confirmingTitle;
     paymentConfirmingBody.textContent = copy.paidNoParticipateStatus;
     paymentConfirmingStatus.textContent = copy.paidNoParticipateStatus;
-    paymentConfirmingRetry.hidden = true;
+    // Offer community setup when payment landed but participation is blocked.
+    paymentConfirmingRetry.hidden = false;
+    paymentConfirmingRetry.disabled = false;
+    paymentConfirmingRetry.textContent =
+      copy.continueCommunity || copy.confirmingRetry;
+    paymentConfirmingRetry.setAttribute("data-recovery-action", "community");
     paymentConfirmingDismiss.textContent = copy.confirmingDismiss;
   }
 
@@ -3787,17 +3884,88 @@
   function feedUnavailableMessage() {
     const lang = resolvePublicReadingLanguage();
     const copy = FEED_COPY[lang] || FEED_COPY.en || {};
-    return copy.sessionUnavailable || "Couldn't reach TOWN — try again later.";
+    return copy.feedEmptyBody || copy.sessionUnavailable ||
+      "Couldn't reach TOWN — try again later.";
+  }
+
+  function feedSurfaceCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return FEED_COPY[lang] || FEED_COPY.en || {};
+  }
+
+  let feedNoticeTimer = null;
+
+  function clearTransientFeedNotice() {
+    if (feedNoticeTimer) {
+      clearTimeout(feedNoticeTimer);
+      feedNoticeTimer = null;
+    }
+    if (!feedLiveStatus) return;
+    feedLiveStatus.classList.remove("is-surface");
+    if (currentScenes().length) {
+      syncFeedAvailabilityStatus();
+    }
+  }
+
+  function showTransientFeedNotice(message, options) {
+    if (!feedLiveStatus || !message) return;
+    if (feedNoticeTimer) {
+      clearTimeout(feedNoticeTimer);
+      feedNoticeTimer = null;
+    }
+    feedLiveStatus.textContent = message;
+    feedLiveStatus.classList.add("is-surface");
+    if (options && options.sticky) return;
+    feedNoticeTimer = setTimeout(function () {
+      feedNoticeTimer = null;
+      clearTransientFeedNotice();
+    }, 4200);
+  }
+
+  function showFeedSurfaceState(kind) {
+    const copy = feedSurfaceCopy();
+    if (!feedState) return;
+    if (kind === "loading") {
+      feedState.hidden = false;
+      feedStateTitle.textContent =
+        copy.feedLoadingTitle || "Loading local signals";
+      feedStateBody.textContent =
+        copy.feedLoadingBody ||
+        "TOWN is fetching live civic signals for your cities.";
+      feedStateRetry.hidden = true;
+      if (feedLiveStatus) {
+        feedLiveStatus.textContent = copy.feedLoadingTitle || "Loading…";
+        feedLiveStatus.classList.remove("is-surface");
+      }
+      return;
+    }
+    if (kind === "empty") {
+      feedState.hidden = false;
+      feedStateTitle.textContent =
+        copy.feedEmptyTitle || "No live signals right now";
+      feedStateBody.textContent = feedUnavailableMessage();
+      feedStateRetry.hidden = false;
+      feedStateRetry.textContent = copy.feedRetry || "Try again";
+      if (feedLiveStatus) {
+        feedLiveStatus.textContent = feedUnavailableMessage();
+        feedLiveStatus.classList.remove("is-surface");
+      }
+      return;
+    }
+    feedState.hidden = true;
+    feedStateRetry.hidden = true;
   }
 
   function syncFeedAvailabilityStatus() {
     if (!feedLiveStatus) return;
     const scenes = currentScenes();
     if (scenes.length < 1) {
-      feedLiveStatus.textContent = feedUnavailableMessage();
+      showFeedSurfaceState("empty");
       return;
     }
+    showFeedSurfaceState("ready");
     const lang = resolvePublicReadingLanguage();
+    feedLiveStatus.classList.remove("is-surface");
     feedLiveStatus.textContent =
       (window.TownPublicI18n &&
         window.TownPublicI18n.storyLabel(lang, feedIndex + 1, scenes.length)) ||
@@ -3806,6 +3974,7 @@
 
   async function loadProductOnlyLiveFeed() {
     if (!isProductOnlyPublicMode()) return;
+    showFeedSurfaceState("loading");
     await Promise.all(
       PRODUCT_ONLY_CITY_ORDER.map(function (cityId) {
         return loadLiveScenesForCity(cityId);
@@ -3855,6 +4024,13 @@
     if (!i18n) return;
     const lang = resolvePublicReadingLanguage();
     const copy = i18n.feedChromeCopy(lang);
+    // Keep CHAT clickable so visitors get an honest unavailable notice.
+    navChat.classList.add("is-unavailable");
+    navChat.removeAttribute("aria-disabled");
+    if (copy.chatUnavailable) {
+      navChat.setAttribute("title", copy.chatUnavailable);
+      navChat.setAttribute("aria-label", copy.navChat + " — " + copy.chatUnavailable);
+    }
     const map = [
       [navHome, copy.navHome],
       [navMembership, copy.navMembership],
@@ -4869,6 +5045,30 @@
     authWindowStatus.classList.toggle("is-error", kind === "error");
   }
 
+  // Authenticated MEMBERSHIP destination — never invents membership authority.
+  function continueAuthenticatedMembershipDestination() {
+    closeInvite();
+    closeSignalDetail();
+    closeActivityPanel();
+    setNavActive(navMembership);
+    if (canTakeCivicAction()) {
+      openProfilePanel();
+      return;
+    }
+    if (
+      hasAuthoritativePaidMembership() ||
+      (membershipRecoveryApi &&
+        membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot))
+    ) {
+      beginMembershipRecoveryFlow();
+      go("payment");
+      showPaymentPaidNoParticipate();
+      return;
+    }
+    beginInviteMembershipJourney();
+    go("commitment");
+  }
+
   // Post-auth destination for the public Sign-in window. Membership and
   // community-commitment state must already be refreshed from the backend.
   function continueAfterPublicPasskeySignIn() {
@@ -4884,6 +5084,11 @@
       // ACTIVITY nav Sign-in: land on Activity from backend truth.
       syncFeedMemberState();
       openActivityPanel();
+      return;
+    }
+    if (openedFor === "membership") {
+      syncFeedMemberState();
+      continueAuthenticatedMembershipDestination();
       return;
     }
     if (hasAuthoritativePaidMembership()) {
@@ -6025,7 +6230,8 @@
       }
     } catch (_err) {
       profileActivityEmpty.hidden = false;
-      profileActivityEmpty.textContent = copy.activityEmpty;
+      profileActivityEmpty.textContent =
+        copy.activityError || copy.activityEmpty;
     }
   }
 
@@ -7183,6 +7389,25 @@
     }
   }
 
+  function handleMembershipNav() {
+    if (sessionAuthenticated) {
+      continueAuthenticatedMembershipDestination();
+      return;
+    }
+    openAuthWindow(navMembership, "membership");
+  }
+
+  function handleChatNav() {
+    const i18n = window.TownPublicI18n;
+    const lang = resolvePublicReadingLanguage();
+    const copy = (i18n && i18n.feedChromeCopy(lang)) || {};
+    setNavActive(navChat);
+    navChat.classList.add("is-unavailable");
+    showTransientFeedNotice(
+      copy.chatUnavailable || "Chat is not available yet on TOWN."
+    );
+  }
+
   function handleProfileNav() {
     if (sessionAuthenticated) {
       openProfilePanel();
@@ -7650,6 +7875,9 @@
     if (cached.note === "local") {
       return copy.sessionLocalOnly || "";
     }
+    if (cached.note === "gated") {
+      return copy.sessionGated || "";
+    }
     if (cached.note === "publish_failed") {
       return copy.sessionPublishFailed || "";
     }
@@ -7660,7 +7888,19 @@
     if (!copy) return;
     detailSessionLabel.textContent = copy.sessionLabel || "";
     detailSessionBody.textContent = copy.sessionBody || "";
-    detailSessionEmpty.textContent = copy.sessionEmpty || "";
+    const cached = signalSessionCache[signalSessionKey()];
+    if (cached && cached.source === "gated") {
+      detailSessionEmpty.textContent =
+        copy.sessionGated || copy.sessionEmpty || "";
+    } else if (cached && cached.source === "loading") {
+      detailSessionEmpty.textContent =
+        copy.sessionLoading || copy.sessionEmpty || "";
+    } else if (cached && cached.source === "error") {
+      detailSessionEmpty.textContent =
+        copy.sessionUnavailable || copy.sessionEmpty || "";
+    } else {
+      detailSessionEmpty.textContent = copy.sessionEmpty || "";
+    }
     detailSessionComposeTitle.textContent = copy.sessionComposeTitle || "";
     detailSessionComposeGuide.textContent = copy.sessionComposeGuide || "";
     detailSessionIntentLegend.textContent = copy.sessionIntentLegend || "";
@@ -7817,7 +8057,7 @@
         source: "gated",
         session: null,
         contributions: [],
-        note: null,
+        note: "gated",
       };
       renderSignalSession();
       return;
@@ -8467,11 +8707,15 @@
   });
 
   navMembership.addEventListener("click", () => {
-    handleProtectedNav(navMembership, "membership");
+    handleMembershipNav();
   });
 
   navChat.addEventListener("click", () => {
-    handleProtectedNav(navChat, "chat");
+    handleChatNav();
+  });
+
+  feedStateRetry.addEventListener("click", () => {
+    void loadProductOnlyLiveFeed();
   });
 
   navActivity.addEventListener("click", () => {
@@ -8657,6 +8901,12 @@
     event.preventDefault();
 
     if (authChannel === "phone") {
+      const phoneCopy = LOGIN_COPY.en;
+      showAuthWindowStatus(
+        phoneCopy.phoneUnavailable ||
+          "Phone sign-in is not available yet. Use email, or Sign in with a passkey.",
+        "error"
+      );
       return;
     }
 
@@ -9378,6 +9628,14 @@
   });
 
   paymentConfirmingRetry.addEventListener("click", () => {
+    if (
+      paymentConfirmingRetry.getAttribute("data-recovery-action") === "community"
+    ) {
+      endMembershipRecoveryFlow();
+      beginInviteMembershipJourney();
+      go("commitment");
+      return;
+    }
     manualMembershipRecoveryRetry();
   });
 
@@ -9395,7 +9653,7 @@
   activeReturn.addEventListener("click", () => {
     feedIndex = originatingFeedIndex;
     // Returning from active membership: refresh persisted confirmations when
-    // participation is allowed; simulate path keeps local done-state only.
+    // participation is allowed. Never invent local confirmation authority.
     if (canTakeCivicAction()) {
       refreshViewerSignalConfirmations();
     }
