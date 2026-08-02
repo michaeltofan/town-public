@@ -1,0 +1,56 @@
+{
+	admin off
+	persist_config off
+	auto_https off
+
+	log {
+		format json
+	}
+
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:{$PORT:80} {
+	log {
+		format json
+	}
+
+	respond /health 200
+
+	# www → apex (same service; keep one canonical host)
+	@www host www.towncivic.org
+	redir @www https://towncivic.org{uri} permanent
+
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		# Progressive HSTS: long max-age on HTTPS hosts; includeSubDomains later
+		# after www + api + api-staging are confirmed stable on HTTPS.
+		Strict-Transport-Security "max-age=31536000"
+		Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://api.towncivic.org https://api-staging.towncivic.org; media-src 'self' blob: https://api.towncivic.org https://api-staging.towncivic.org; connect-src 'self' https://api.towncivic.org https://api-staging.towncivic.org; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests"
+		-Server
+		-X-XSS-Protection
+	}
+
+	root * .
+
+	file_server {
+		hide .git
+		hide .env*
+	}
+
+	encode {
+		gzip
+		zstd
+	}
+
+	try_files {path} {path}.html {path}/index.html
+
+	handle_errors {
+		rewrite * /{err.status_code}.html
+		file_server
+	}
+}
