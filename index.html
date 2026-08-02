@@ -566,6 +566,21 @@
           </article>
         </template>
         <p class="feed__live" id="feed-live-status" aria-live="polite"></p>
+        <div class="feed__state" id="feed-state" hidden>
+          <div class="feed__state-frame">
+            <p class="feed__state-brand" aria-label="TOWN">TOWN</p>
+            <h1 class="feed__state-title" id="feed-state-title"></h1>
+            <p class="feed__state-body" id="feed-state-body"></p>
+            <button
+              type="button"
+              class="btn btn--secondary"
+              id="feed-state-retry"
+              hidden
+            >
+              Try again
+            </button>
+          </div>
+        </div>
       </main>
 
       <!-- Product navigation: desktop left rail / mobile bottom bar -->
@@ -1686,6 +1701,6 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=foundation-stabilize-1" defer></script>
+    <script src="script.js?v=etapa3-member-1" defer></script>
   </body>
 </html>
