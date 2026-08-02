@@ -15,20 +15,28 @@ jobs:
         with:
           node-version: "24"
           cache: npm
-      - name: Install
+          cache-dependency-path: e2e/package-lock.json
+      - name: Static smoke
+        run: |
+          node scripts/test-api-base.js
+          node scripts/test-platform-console.js
+          node scripts/test-owner-participate-preview.js
+      - name: Install E2E deps
+        working-directory: e2e
         run: npm ci
       - name: Install Chromium
+        working-directory: e2e
         run: npx playwright install --with-deps chromium
-      - name: Static smoke
-        run: npm run test:smoke
       - name: Feed live E2E
+        working-directory: e2e
         env:
           TOWN_PUBLIC_BASE_URL: https://towncivic.org
-        run: npx playwright test e2e/feed-live.spec.js
+        run: npx playwright test feed-live.spec.js
       - name: Platform login E2E
         if: ${{ secrets.TOWN_PLATFORM_EMAIL != '' && secrets.TOWN_PLATFORM_PASSWORD != '' }}
+        working-directory: e2e
         env:
           TOWN_PUBLIC_BASE_URL: https://towncivic.org
           TOWN_PLATFORM_EMAIL: ${{ secrets.TOWN_PLATFORM_EMAIL }}
           TOWN_PLATFORM_PASSWORD: ${{ secrets.TOWN_PLATFORM_PASSWORD }}
-        run: npx playwright test e2e/platform-login.spec.js
+        run: npx playwright test platform-login.spec.js
