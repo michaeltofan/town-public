@@ -270,7 +270,8 @@
         componentCard("Database", components.database) +
         componentCard("Email", components.email) +
         componentCard("Stripe", components.stripe) +
-        componentCard("Backup", components.backup);
+        componentCard("Backup", components.backup) +
+        componentCard("Restore", components.restore);
     }
     var html = "";
     html +=
@@ -303,6 +304,7 @@
       "</strong></div>";
     document.getElementById("status-grid").innerHTML = html;
     await loadBackup();
+    await loadRestore();
     await loadUptime();
     await loadAlerts();
     await loadRecentErrors();
@@ -321,6 +323,10 @@
 
   function canManageBackup() {
     return canManageAlerts();
+  }
+
+  function canManageRestore() {
+    return canManageBackup();
   }
 
   async function loadBackup() {
@@ -420,6 +426,125 @@
     }
     setStatus(consoleStatus, "Backup verification recorded", "is-ok");
     await loadBackup();
+    await loadStatus();
+  }
+
+  async function loadRestore() {
+    var summaryEl = document.getElementById("status-restore-summary");
+    var actionsEl = document.getElementById("status-restore-actions");
+    var historyEl = document.getElementById("status-restore-history");
+    if (!summaryEl || !actionsEl || !historyEl) return;
+    var result = await getJson("/v1/platform/restore");
+    if (result.response.status !== 200) {
+      summaryEl.innerHTML = "";
+      actionsEl.innerHTML = "";
+      historyEl.innerHTML = '<p class="muted">Unable to load restore drill status.</p>';
+      return;
+    }
+    var data = result.payload.data || {};
+    var config = data.config || {};
+    var status = data.status || {};
+    var latest = data.latestAttestation;
+    summaryEl.innerHTML =
+      '<div class="stat"><span>Status</span><strong>' +
+      escapeHtml(status.status || "unknown") +
+      "</strong></div>" +
+      '<div class="stat"><span>Max age</span><strong>' +
+      escapeHtml(
+        config.maxAgeDays === null || config.maxAgeDays === undefined
+          ? "—"
+          : config.maxAgeDays + " days"
+      ) +
+      "</strong></div>" +
+      '<div class="stat"><span>Requires backup</span><strong>' +
+      escapeHtml(config.requiresAutomatedBackup ? "yes" : "no") +
+      "</strong></div>" +
+      '<div class="stat"><span>Latest outcome</span><strong>' +
+      escapeHtml(latest && latest.outcome ? latest.outcome : "—") +
+      "</strong></div>";
+    if (status.detail) {
+      summaryEl.innerHTML +=
+        '<p class="backup-detail">' + escapeHtml(status.detail) + "</p>";
+    }
+    if (canManageRestore()) {
+      actionsEl.innerHTML =
+        '<form id="restore-drill-form" class="restore-drill-form">' +
+        '<label>Method<select id="restore-drill-method" name="method">' +
+        '<option value="railway_pitr_disposable_clone">Disposable clone</option>' +
+        '<option value="railway_pitr_point_in_time">Point in time</option>' +
+        "</select></label>" +
+        '<label>Outcome<select id="restore-drill-outcome" name="outcome">' +
+        '<option value="passed">Passed</option>' +
+        '<option value="failed">Failed</option>' +
+        "</select></label>" +
+        '<button type="submit" class="row-action" id="restore-attest-btn">Record restore drill</button>' +
+        "</form>";
+      var form = document.getElementById("restore-drill-form");
+      if (form) {
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          void attestRestoreDrill();
+        });
+      }
+    } else {
+      actionsEl.innerHTML = latest
+        ? '<p class="muted">Last drilled ' +
+          escapeHtml(latest.drilledAt || "") +
+          "</p>"
+        : '<p class="muted">No restore drill attestation recorded yet.</p>';
+    }
+    var recent = data.recentAttestations || [];
+    if (!recent.length) {
+      historyEl.innerHTML = '<p class="muted">No restore drill history.</p>';
+      return;
+    }
+    historyEl.innerHTML = recent
+      .slice(0, 5)
+      .map(function (row) {
+        return (
+          '<article class="alert-row">' +
+          '<div class="alert-row-top"><strong>' +
+          escapeHtml(row.outcome || "unknown") +
+          "</strong>" +
+          '<time datetime="' +
+          escapeHtml(row.drilledAt || "") +
+          '">' +
+          escapeHtml(row.drilledAt || "") +
+          "</time></div>" +
+          '<p class="alert-detail">' +
+          escapeHtml(row.method || "—") +
+          " · by " +
+          escapeHtml(row.drilledByAccountId || "—") +
+          "</p>" +
+          (row.note
+            ? '<p class="alert-meta">' + escapeHtml(row.note) + "</p>"
+            : "") +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  async function attestRestoreDrill() {
+    var methodEl = document.getElementById("restore-drill-method");
+    var outcomeEl = document.getElementById("restore-drill-outcome");
+    var method = methodEl ? methodEl.value : "railway_pitr_disposable_clone";
+    var outcome = outcomeEl ? outcomeEl.value : "passed";
+    var result = await postJson("/v1/platform/restore/attest", {
+      method: method,
+      outcome: outcome,
+      note: "Out-of-band Railway restore drill attested from platform console",
+    });
+    if (result.response.status !== 200) {
+      setStatus(
+        consoleStatus,
+        "Restore drill attest failed (ops_admin + PITR backup required)",
+        "is-error"
+      );
+      return;
+    }
+    setStatus(consoleStatus, "Restore drill attestation recorded", "is-ok");
+    await loadRestore();
     await loadStatus();
   }
 
