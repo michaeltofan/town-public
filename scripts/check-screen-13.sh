@@ -60,18 +60,11 @@ if grep -qF 'membershipSimulated' script.js || grep -qiE 'solo prototipo|nur Pro
 else
   echo "OK: no prototype membership simulate language"
 fi
-# localStorage allowed only for staging participate-preview keys.
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy' index.html script.js; then
   echo "FAIL: forbidden payment/auth/social/celebration pattern present"
   fail=1
 else
-  echo "OK: no payment, celebration, or dashboard patterns"
-fi
-if grep -n 'localStorage' script.js | grep -viE 'PARTICIPATE_PREVIEW|participate-preview' | grep -q .; then
-  echo "FAIL: localStorage used outside participate-preview"
-  fail=1
-else
-  echo "OK: localStorage limited to participate-preview"
+  echo "OK: no payment, storage, celebration, or dashboard patterns"
 fi
 
 if grep -Eiq 'view-boundary|Screen 14|go\("boundary"\)' index.html script.js; then

@@ -1032,8 +1032,6 @@
   }
   // Owner product-testing only: unlocks canTakeCivicAction while API is staging.
   // Does not invent backend canParticipate; strip after read. Not a production grant.
-  const PARTICIPATE_PREVIEW_STORAGE_KEY = "town.participatePreview";
-  const PARTICIPATE_PREVIEW_QUERY = "townParticipatePreview";
   const CITY_API_SLUG = {
     Milano: "milano-it",
     Munich: "munich-de",
@@ -2699,82 +2697,9 @@
     );
   }
 
-  function isStagingApiBase() {
-    if (
-      apiBaseHelper &&
-      typeof apiBaseHelper.isStagingApiBase === "function"
-    ) {
-      return apiBaseHelper.isStagingApiBase(API_BASE);
-    }
-    return String(API_BASE || "").indexOf("api-staging.towncivic.org") !== -1;
-  }
-
-  function isOwnerParticipatePreviewEnabled() {
-    if (!isStagingApiBase()) return false;
-    try {
-      return (
-        window.localStorage.getItem(PARTICIPATE_PREVIEW_STORAGE_KEY) === "1"
-      );
-    } catch (_err) {
-      return false;
-    }
-  }
-
-  function setOwnerParticipatePreviewEnabled(enabled) {
-    if (!isStagingApiBase()) return false;
-    try {
-      if (enabled) {
-        window.localStorage.setItem(PARTICIPATE_PREVIEW_STORAGE_KEY, "1");
-      } else {
-        window.localStorage.removeItem(PARTICIPATE_PREVIEW_STORAGE_KEY);
-      }
-      return true;
-    } catch (_err) {
-      return false;
-    }
-  }
-
-  // Staging-only owner path: paid (or paid_pending_binding) + signed-in session.
-  // Lets the product owner feel member UX on towncivic.org before backend grant.
-  function ownerParticipatePreviewAllowsCivicAction() {
-    if (!isOwnerParticipatePreviewEnabled()) return false;
-    if (!sessionAuthenticated) return false;
-    if (!membershipRecoveryApi || !membershipSnapshot) return false;
-    return (
-      membershipRecoveryApi.isPaidMembership(membershipSnapshot) ||
-      membershipRecoveryApi.isPaidPendingBinding(membershipSnapshot)
-    );
-  }
-
-  function applyOwnerParticipatePreviewFromUrl() {
-    try {
-      const url = new URL(window.location.href);
-      if (!url.searchParams.has(PARTICIPATE_PREVIEW_QUERY)) return;
-      const raw = String(
-        url.searchParams.get(PARTICIPATE_PREVIEW_QUERY) || ""
-      ).toLowerCase();
-      if (raw === "1" || raw === "true" || raw === "on") {
-        setOwnerParticipatePreviewEnabled(true);
-      } else if (raw === "0" || raw === "false" || raw === "off") {
-        setOwnerParticipatePreviewEnabled(false);
-      }
-      url.searchParams.delete(PARTICIPATE_PREVIEW_QUERY);
-      window.history.replaceState(
-        {},
-        "",
-        url.pathname + url.search + url.hash
-      );
-    } catch (_err) {
-      /* ignore URL helpers */
-    }
-  }
-
   // Civic participation: fail closed unless backend canParticipate is true
   // and status is not paid_pending_binding.
-  // is not used for production auth. Staging owner preview is an explicit
-  // product-test unlock only — never a silent grant.
   function canTakeCivicAction() {
-    if (ownerParticipatePreviewAllowsCivicAction()) return true;
     if (!membershipRecoveryApi) return false;
     return (
       membershipRecoveryApi.enablesCivicParticipation(membershipSnapshot) ===
@@ -2783,7 +2708,6 @@
   }
 
   // Owner moderation UI gate: accounts.is_owner from membership self-read only.
-  // Distinct from staging participate-preview localStorage unlock.
   function canUseOwnerModeration() {
     return !!(
       membershipRecoveryApi &&
@@ -9488,7 +9412,6 @@
   window.addEventListener("hashchange", render);
   window.addEventListener("popstate", render);
   syncCountryContinue();
-  applyOwnerParticipatePreviewFromUrl();
   try {
     const params = new URLSearchParams(window.location.search || "");
     const story = params.get("townStory");

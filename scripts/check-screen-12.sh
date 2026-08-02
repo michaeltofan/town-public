@@ -66,19 +66,12 @@ fi
 # do not treat that API field name as the forbidden checkout.stripe pattern.
 # sessionStorage is forbidden in script.js/index.html; the advisory checkout-pending
 # marker lives only in membership-recovery.js (see check-membership-recovery.sh).
-# localStorage is reserved for staging owner participate-preview only (not payment).
-# Payment/recovery must not use localStorage/sessionStorage (see check-membership-recovery).
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
+# Payment/recovery must not use localStorage/sessionStorage.
+if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
   echo "FAIL: forbidden payment/checkout pattern present"
   fail=1
 else
-  echo "OK: no payment form, hosted Stripe checkout URL, or forbidden storage patterns in index/script"
-fi
-if grep -n 'localStorage' script.js | grep -viE 'PARTICIPATE_PREVIEW|participate-preview' | grep -q .; then
-  echo "FAIL: localStorage used outside participate-preview"
-  fail=1
-else
-  echo "OK: localStorage limited to participate-preview"
+  echo "OK: no payment form, hosted Stripe checkout URL, or storage patterns in index/script"
 fi
 if grep -Eiq '<input[^>]+(card|billing|cvv|cvc)' index.html; then
   echo "FAIL: card/billing inputs present"
