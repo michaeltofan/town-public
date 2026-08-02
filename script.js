@@ -4024,8 +4024,9 @@
     if (!i18n) return;
     const lang = resolvePublicReadingLanguage();
     const copy = i18n.feedChromeCopy(lang);
+    // Keep CHAT clickable so visitors get an honest unavailable notice.
     navChat.classList.add("is-unavailable");
-    navChat.setAttribute("aria-disabled", "true");
+    navChat.removeAttribute("aria-disabled");
     if (copy.chatUnavailable) {
       navChat.setAttribute("title", copy.chatUnavailable);
       navChat.setAttribute("aria-label", copy.navChat + " — " + copy.chatUnavailable);
@@ -7402,7 +7403,6 @@
     const copy = (i18n && i18n.feedChromeCopy(lang)) || {};
     setNavActive(navChat);
     navChat.classList.add("is-unavailable");
-    navChat.setAttribute("aria-disabled", "true");
     showTransientFeedNotice(
       copy.chatUnavailable || "Chat is not available yet on TOWN."
     );

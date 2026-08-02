@@ -32,7 +32,9 @@ test.describe("Etapa 3 member nav + feed states", () => {
     await page.goto("/");
     await page.waitForLoadState("networkidle");
 
-    await page.locator("#nav-chat").click();
+    const chat = page.locator("#nav-chat");
+    await expect(chat).toHaveClass(/is-unavailable/);
+    await chat.click();
     await expect(page.locator("#feed-live-status")).toContainText(
       /not available|noch nicht|non è ancora|nu este încă|aún no/i
     );
