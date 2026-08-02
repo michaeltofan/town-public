@@ -79,8 +79,8 @@ assert(!!TownApiBase, "TownApiBase exported");
 
 const active = TownApiBase.ACTIVE_API_BASE;
 assert(
-  active === "https://api-staging.towncivic.org",
-  "active API is staging for this phase"
+  active === "https://api.towncivic.org",
+  "active API is production"
 );
 
 assert(
@@ -112,21 +112,21 @@ assert(
 assert(
   !TownApiBase.allowApiBaseForHost(
     "towncivic.org",
-    "https://api.towncivic.org"
+    "https://api-staging.towncivic.org"
   ),
-  "inactive production API refused while staging is active"
+  "inactive staging API refused while production is active"
 );
 assert(
   !TownApiBase.allowApiBaseForHost("towncivic.org", ""),
   "empty API refused"
 );
 assert(
-  TownApiBase.isStagingApiBase(active),
-  "active API detected as staging"
+  TownApiBase.isProductionApiBase(active),
+  "active API detected as production"
 );
 assert(
-  !TownApiBase.isProductionApiBase(active),
-  "active staging API is not production"
+  !TownApiBase.isStagingApiBase(active),
+  "active production API is not staging"
 );
 
 console.log("PASSED: " + passed + " api-base assertions");

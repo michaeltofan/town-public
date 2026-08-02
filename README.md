@@ -2,15 +2,11 @@
 
 Public web surface for **TOWN**.
 
-## Current phase (staging) — Etapa 3 member journey
-
-This is a **staging** product surface, even on `towncivic.org`.
+## Current phase — production API cutover
 
 - Site: `https://towncivic.org`
-- API: `https://api-staging.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
-- Production API (`api.towncivic.org`) is **not provisioned** yet
-
-Do not treat this host as a finished production member product.
+- API: `https://api.towncivic.org` (`ACTIVE_API_BASE` in `api-base.js`)
+- Staging API remains at `https://api-staging.towncivic.org` for ops/testing only
 
 ## Live surfaces
 
@@ -37,9 +33,8 @@ Already proven live against `api-staging` (2026-08-02):
 3. Stripe **test** Checkout (`cs_test_…`) with test card `4242…` (0 €)
 4. Webhook → membership `active`, `source: stripe`, `accessUntil` ~+1 year
 
-Next for real €12: provision `api.towncivic.org` + Stripe **live**, then flip
-`ACTIVE_API_BASE` in `api-base.js`. Do not flip while production DNS/API is absent.
-Staging cutover details live in `town-api` → `docs/operations/PRODUCTION_CUTOVER_V1.md`.
+Production API + Stripe live are provisioned. First real €12 membership payment
+is the remaining live proof on `api.towncivic.org`.
 
 ## Honesty rules (foundation)
 
