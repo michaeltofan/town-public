@@ -32,21 +32,14 @@ Member journey (Etapa 3) on the public surface:
 
 Already proven live against `api-staging` (2026-08-02):
 
-1. Community commitment → `canParticipate: true` for the platform **owner** path
-2. `PUT /v1/signals/:id/confirmation` succeeds
-3. Discussion contribution (`next_step`) succeeds and appears in `/v1/account/activity`
-4. `POST /v1/billing/checkout-session` returns a Stripe **test** Checkout URL
+1. Community commitment → participate on the platform **owner** path
+2. Signal confirmation + discussion contribution + activity
+3. Stripe **test** Checkout (`cs_test_…`) with test card `4242…` (0 €)
+4. Webhook → membership `active`, `source: stripe`, `accessUntil` ~+1 year
 
-Still required for a true **paid non-owner** first member:
-
-1. Create a non-owner account (email verification code via Resend)
-2. Passkey + community commitment
-3. Complete Stripe Checkout with a test card and confirm webhook → `active`
-4. Recovery UI → `#/active` / `canParticipate: true`
-5. Confirm + contribute as that non-owner
-
-Honesty: owner participation without payment must not be labeled “Membership: active”.
-Admin membership grant is a participate substitute, not a paid proof.
+Next for real €12: provision `api.towncivic.org` + Stripe **live**, then flip
+`ACTIVE_API_BASE` in `api-base.js`. Do not flip while production DNS/API is absent.
+Staging cutover details live in `town-api` → `docs/operations/PRODUCTION_CUTOVER_V1.md`.
 
 ## Honesty rules (foundation)
 
