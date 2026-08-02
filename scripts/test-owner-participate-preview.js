@@ -93,7 +93,8 @@ assert(
 );
 
 assert(
-  js.includes('indexOf("api-staging.towncivic.org")'),
+  js.includes('indexOf("api-staging.towncivic.org")') ||
+    js.includes("isStagingApiBase"),
   "staging host check present"
 );
 assert(

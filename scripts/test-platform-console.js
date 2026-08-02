@@ -44,6 +44,19 @@ assert(
   "operator-role id is unique for session chip"
 );
 
+assert(
+  html.includes('src="../api-base.js"'),
+  "platform loads shared api-base.js before console script"
+);
+assert(js.includes("resolveApiBaseSafe"), "fail-closed API base resolver");
+assert(
+  js.includes("api_base_misconfigured"),
+  "blocks platform requests when API base is unavailable"
+);
+assert(
+  !js.includes('var API_BASE = "https://api-staging.towncivic.org"'),
+  "does not hardcode staging API base"
+);
 assert(js.includes("/v1/platform/session"), "session path");
 assert(js.includes("/v1/platform/status"), "status path");
 assert(js.includes("components.api"), "status renders API component");

@@ -51,7 +51,17 @@ Operators sign in on `/platform/` with email + password. Access still requires a
 account granted as platform operator on town-api (bootstrap CLI or Operators
 panel). Talks to `/v1/platform/*`.
 
+API host is resolved from the page hostname via shared `api-base.js` (fail-closed):
+
+| Page host | API base |
+| --- | --- |
+| `towncivic.org`, `www.towncivic.org` | `https://api.towncivic.org` |
+| localhost, Railway staging, other non-prod hosts | `https://api-staging.towncivic.org` |
+
+Production pages refuse a staging API base.
+
 ```bash
+node scripts/test-api-base.js
 node scripts/test-platform-console.js
 ```
 
@@ -63,6 +73,7 @@ python3 -m http.server 4173
 
 Open `http://localhost:4173/`.
 Platform console: `http://localhost:4173/platform/`.
+Local preview uses the staging API.
 
 ### Visual review URL
 

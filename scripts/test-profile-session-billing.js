@@ -31,7 +31,7 @@ assert(
 );
 assert(html.includes('id="profile-status"'), "profile status line present");
 assert(
-  html.includes("script.js?v=see-too-signin-continuity-2"),
+  html.includes("script.js?v=api-env-separation-1"),
   "cache buster bumped"
 );
 assert(css.includes(".profile-panel__status"), "profile status styles present");

@@ -1,7 +1,17 @@
 (function () {
   "use strict";
 
-  var API_BASE = "https://api-staging.towncivic.org";
+  var apiBaseHelper = window.TownApiBase || null;
+  var apiBaseResolution =
+    apiBaseHelper && typeof apiBaseHelper.resolveApiBaseSafe === "function"
+      ? apiBaseHelper.resolveApiBaseSafe(window.location.hostname)
+      : {
+          ok: false,
+          apiBase: null,
+          error: "Misconfigured API base: helper missing.",
+        };
+  var API_BASE = apiBaseResolution.ok ? apiBaseResolution.apiBase : null;
+  var API_BASE_ERROR = apiBaseResolution.ok ? null : apiBaseResolution.error;
 
   var gate = document.getElementById("gate");
   var consoleEl = document.getElementById("console");
@@ -36,7 +46,20 @@
     });
   }
 
+  function apiBaseUnavailableResult() {
+    return {
+      response: { status: 0, ok: false },
+      payload: {
+        error: {
+          code: "api_base_misconfigured",
+          message: API_BASE_ERROR || "Misconfigured API base.",
+        },
+      },
+    };
+  }
+
   async function getJson(path) {
+    if (!API_BASE) return apiBaseUnavailableResult();
     var response = await requestJson(API_BASE + path, {
       method: "GET",
       headers: { Accept: "application/json" },
@@ -51,6 +74,7 @@
   }
 
   async function postJson(path, body) {
+    if (!API_BASE) return apiBaseUnavailableResult();
     var response = await requestJson(API_BASE + path, {
       method: "POST",
       headers: {
@@ -129,6 +153,13 @@
   }
 
   async function bootstrap() {
+    if (!API_BASE) {
+      showGate(
+        API_BASE_ERROR || "Misconfigured API base. Operator console is blocked.",
+        "is-error"
+      );
+      return false;
+    }
     setStatus(gateStatus, "Checking operator session…");
     var result = await loadOperatorSession();
     if (result.ok) {
@@ -141,6 +172,13 @@
 
   async function startPlatformPasswordSignIn(email, password) {
     if (signInSubmitting) return;
+    if (!API_BASE) {
+      showGate(
+        API_BASE_ERROR || "Misconfigured API base. Operator console is blocked.",
+        "is-error"
+      );
+      return;
+    }
     setSignInBusy(true);
     setStatus(gateStatus, "Signing in…");
     try {
