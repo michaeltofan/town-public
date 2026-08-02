@@ -1,15 +1,17 @@
 /**
- * Single active API for the public site and /platform/ console.
+ * Host-aware API base for the public site and /platform/ console.
  *
- * Production API is live. Every page host uses it.
- * Rollback emergency: set ACTIVE_API_BASE back to STAGING_API_BASE and
- * temporarily set ALLOW_PRODUCTION_WEB_ORIGIN=true on staging.
+ * - towncivic.org / www → production API
+ * - staging Railway host + localhost → staging API
+ *
+ * Fail-closed: each page host may only call its resolved API base.
  */
 (function (global) {
   "use strict";
 
   var STAGING_API_BASE = "https://api-staging.towncivic.org";
   var PRODUCTION_API_BASE = "https://api.towncivic.org";
+  /** Default for production page hosts. */
   var ACTIVE_API_BASE = PRODUCTION_API_BASE;
 
   function normalizeHost(hostname) {
@@ -38,13 +40,32 @@
     return apiHostname(apiBase) === "api.towncivic.org";
   }
 
-  function resolveApiBase(_hostname) {
+  function isProductionPageHost(hostname) {
+    var host = normalizeHost(hostname);
+    return host === "towncivic.org" || host === "www.towncivic.org";
+  }
+
+  function isStagingPageHost(hostname) {
+    var host = normalizeHost(hostname);
+    if (!host) return false;
+    if (host === "localhost" || host === "127.0.0.1") return true;
+    if (host.indexOf("town-public-staging") === 0) return true;
+    if (host.indexOf(".up.railway.app") !== -1 && host.indexOf("staging") !== -1) {
+      return true;
+    }
+    return false;
+  }
+
+  function resolveApiBase(hostname) {
+    if (isProductionPageHost(hostname)) return PRODUCTION_API_BASE;
+    if (isStagingPageHost(hostname)) return STAGING_API_BASE;
+    // Unknown hosts stay on production default only if not staging-like.
     return ACTIVE_API_BASE;
   }
 
-  /** Fail-closed: only the single active API base is allowed. */
-  function allowApiBaseForHost(_hostname, apiBase) {
-    return !!apiBase && sameApiBase(apiBase, ACTIVE_API_BASE);
+  /** Fail-closed: only the API base resolved for this page host is allowed. */
+  function allowApiBaseForHost(hostname, apiBase) {
+    return !!apiBase && sameApiBase(apiBase, resolveApiBase(hostname));
   }
 
   function resolveApiBaseSafe(hostname) {
@@ -65,6 +86,8 @@
     ACTIVE_API_BASE: ACTIVE_API_BASE,
     isStagingApiBase: isStagingApiBase,
     isProductionApiBase: isProductionApiBase,
+    isProductionPageHost: isProductionPageHost,
+    isStagingPageHost: isStagingPageHost,
     allowApiBaseForHost: allowApiBaseForHost,
     resolveApiBase: resolveApiBase,
     resolveApiBaseSafe: resolveApiBaseSafe,
