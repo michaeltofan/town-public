@@ -52,6 +52,10 @@ assert(
   productJs.includes("resolveApiBaseSafe"),
   "product uses fail-closed resolver"
 );
+assert(
+  source.includes("PRODUCTION_PAGE_API_BASE"),
+  "cutover constant present"
+);
 
 const sandbox = { window: {}, globalThis: {} };
 sandbox.globalThis = sandbox;
@@ -59,15 +63,18 @@ vm.runInNewContext(source, sandbox);
 const TownApiBase = sandbox.window.TownApiBase || sandbox.TownApiBase;
 assert(!!TownApiBase, "TownApiBase exported");
 
+const configuredProductionPageApi = TownApiBase.PRODUCTION_PAGE_API_BASE;
 assert(
-  TownApiBase.resolveApiBase("towncivic.org") ===
-    "https://api.towncivic.org",
-  "production host → production API"
+  !!configuredProductionPageApi,
+  "production-page API base configured"
 );
 assert(
-  TownApiBase.resolveApiBase("www.towncivic.org") ===
-    "https://api.towncivic.org",
-  "www production host → production API"
+  TownApiBase.resolveApiBase("towncivic.org") === configuredProductionPageApi,
+  "production host → configured production-page API"
+);
+assert(
+  TownApiBase.resolveApiBase("www.towncivic.org") === configuredProductionPageApi,
+  "www production host → configured production-page API"
 );
 assert(
   TownApiBase.resolveApiBase("localhost") ===
@@ -75,16 +82,17 @@ assert(
   "localhost → staging API"
 );
 assert(
-  TownApiBase.resolveApiBase("town-public-staging.up.railway.app") ===
-    "https://api-staging.towncivic.org",
+  TownApiBase.resolveApiBase(
+    "town-public-staging-staging.up.railway.app"
+  ) === "https://api-staging.towncivic.org",
   "railway staging host → staging API"
 );
 
 const prodSafe = TownApiBase.resolveApiBaseSafe("towncivic.org");
 assert(prodSafe.ok === true, "production host resolves safely");
 assert(
-  prodSafe.apiBase === "https://api.towncivic.org",
-  "production safe base is production API"
+  prodSafe.apiBase === configuredProductionPageApi,
+  "production safe base matches cutover config"
 );
 
 const stagingSafe = TownApiBase.resolveApiBaseSafe("localhost");
@@ -111,19 +119,25 @@ assert(
   "production API is not staging"
 );
 
+// Pre-cutover: production pages intentionally still use staging until
+// api.towncivic.org is live.
+assert(
+  TownApiBase.productionPageUsesStagingApi() === true,
+  "pre-cutover production pages still target staging"
+);
 assert(
   TownApiBase.allowApiBaseForHost(
     "towncivic.org",
-    "https://api.towncivic.org"
+    "https://api-staging.towncivic.org"
   ),
-  "production host allows production API"
+  "production host allows configured staging cutover API"
 );
 assert(
   !TownApiBase.allowApiBaseForHost(
     "towncivic.org",
-    "https://api-staging.towncivic.org"
+    "https://api.towncivic.org"
   ),
-  "production host refuses staging API"
+  "pre-cutover production host refuses unset production API"
 );
 assert(
   !TownApiBase.allowApiBaseForHost("towncivic.org", ""),

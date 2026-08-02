@@ -152,6 +152,19 @@
     await loadSection("status");
   }
 
+  function apiTargetNote() {
+    if (
+      apiBaseHelper &&
+      typeof apiBaseHelper.isProductionHost === "function" &&
+      typeof apiBaseHelper.productionPageUsesStagingApi === "function" &&
+      apiBaseHelper.isProductionHost(window.location.hostname) &&
+      apiBaseHelper.productionPageUsesStagingApi()
+    ) {
+      return " Using staging API until production API cutover.";
+    }
+    return "";
+  }
+
   async function bootstrap() {
     if (!API_BASE) {
       showGate(
@@ -166,7 +179,10 @@
       await enterConsoleFromSession();
       return true;
     }
-    showGate("Sign in with an authorized platform operator account.", null);
+    showGate(
+      "Sign in with an authorized platform operator account." + apiTargetNote(),
+      null
+    );
     return false;
   }
 
