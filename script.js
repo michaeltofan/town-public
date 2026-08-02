@@ -1026,7 +1026,20 @@
     ],
   };
 
-  const API_BASE = "https://api-staging.towncivic.org";
+  const apiBaseHelper = window.TownApiBase || null;
+  const apiBaseResolution =
+    apiBaseHelper && typeof apiBaseHelper.resolveApiBaseSafe === "function"
+      ? apiBaseHelper.resolveApiBaseSafe(window.location.hostname)
+      : {
+          ok: false,
+          apiBase: null,
+          error: "Misconfigured API base: helper missing.",
+        };
+  const API_BASE = apiBaseResolution.ok ? apiBaseResolution.apiBase : "";
+  const API_BASE_ERROR = apiBaseResolution.ok ? null : apiBaseResolution.error;
+  if (!API_BASE && typeof console !== "undefined" && console.error) {
+    console.error(API_BASE_ERROR || "Misconfigured API base.");
+  }
   // Owner product-testing only: unlocks canTakeCivicAction while API is staging.
   // Does not invent backend canParticipate; strip after read. Not a production grant.
   const PARTICIPATE_PREVIEW_STORAGE_KEY = "town.participatePreview";
@@ -2707,6 +2720,12 @@
   }
 
   function isStagingApiBase() {
+    if (
+      apiBaseHelper &&
+      typeof apiBaseHelper.isStagingApiBase === "function"
+    ) {
+      return apiBaseHelper.isStagingApiBase(API_BASE);
+    }
     return String(API_BASE || "").indexOf("api-staging.towncivic.org") !== -1;
   }
 
