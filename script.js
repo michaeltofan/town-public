@@ -244,6 +244,15 @@
   const detailProcessProposalsNote = document.getElementById(
     "detail-process-proposals-note"
   );
+  const detailProcessDeliberation = document.getElementById(
+    "detail-process-deliberation"
+  );
+  const detailProcessDeliberationState = document.getElementById(
+    "detail-process-deliberation-state"
+  );
+  const detailProcessDeliberationList = document.getElementById(
+    "detail-process-deliberation-list"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -689,6 +698,9 @@
     !detailProcessProposalsSubmit ||
     !detailProcessProposalsCancel ||
     !detailProcessProposalsNote ||
+    !detailProcessDeliberation ||
+    !detailProcessDeliberationState ||
+    !detailProcessDeliberationList ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3164,6 +3176,7 @@
       started: "Process started",
       deliberation: "Deliberation",
       ballotPreparation: "Ballot preparation",
+      voting: "Voting",
       proposalsCanAdd: "You can add a structured proposal.",
       proposalsSubmitted: "You have submitted a proposal for this process.",
       proposalsLoading: "Loading proposals…",
@@ -3180,6 +3193,23 @@
       proposalsErrorGeneric: "Something went wrong. Try again.",
       proposalsErrorClosed: "This stage is closed.",
       proposalsErrorDuplicate: "You already submitted a proposal for this process.",
+      deliberationLoading: "Loading deliberation…",
+      deliberationUnavailable: "Deliberation is temporarily unavailable.",
+      deliberationCanContribute: "You can add a structured contribution to any proposal.",
+      deliberationEmpty: "No proposals to deliberate yet.",
+      contributionsEmpty: "No contributions yet.",
+      addContribution: "Add a contribution",
+      intentObservation: "Observation",
+      intentProposal: "Proposal",
+      intentNextStep: "Next step",
+      intentLegend: "Type",
+      contributionLabel: "Contribution",
+      contributionSubmit: "Submit contribution",
+      contributionNeedText: "Write at least 12 characters.",
+      contributionNeedIntent: "Choose a type.",
+      contributionErrorGeneric: "Something went wrong. Try again.",
+      contributionErrorClosed: "This stage is closed.",
+      deliberationContributionMine: "Yours",
     },
     es: {
       label: "Proceso cívico",
@@ -3197,6 +3227,7 @@
       started: "Proceso iniciado",
       deliberation: "Deliberación",
       ballotPreparation: "Preparación de la votación",
+      voting: "Votación",
       proposalsCanAdd: "Puedes añadir una propuesta estructurada.",
       proposalsSubmitted: "Has enviado una propuesta para este proceso.",
       proposalsLoading: "Cargando propuestas…",
@@ -3213,6 +3244,24 @@
       proposalsErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       proposalsErrorClosed: "Esta etapa está cerrada.",
       proposalsErrorDuplicate: "Ya has enviado una propuesta para este proceso.",
+      deliberationLoading: "Cargando la deliberación…",
+      deliberationUnavailable: "La deliberación no está disponible temporalmente.",
+      deliberationCanContribute:
+        "Puedes añadir una contribución estructurada a cualquier propuesta.",
+      deliberationEmpty: "Todavía no hay propuestas para deliberar.",
+      contributionsEmpty: "Todavía no hay contribuciones.",
+      addContribution: "Añadir una contribución",
+      intentObservation: "Observación",
+      intentProposal: "Propuesta",
+      intentNextStep: "Siguiente paso",
+      intentLegend: "Tipo",
+      contributionLabel: "Contribución",
+      contributionSubmit: "Enviar contribución",
+      contributionNeedText: "Escribe al menos 12 caracteres.",
+      contributionNeedIntent: "Elige un tipo.",
+      contributionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      contributionErrorClosed: "Esta etapa está cerrada.",
+      deliberationContributionMine: "Tuya",
     },
     it: {
       label: "Processo civico",
@@ -3230,6 +3279,7 @@
       started: "Processo avviato",
       deliberation: "Deliberazione",
       ballotPreparation: "Preparazione del voto",
+      voting: "Votazione",
       proposalsCanAdd: "Puoi aggiungere una proposta strutturata.",
       proposalsSubmitted: "Hai inviato una proposta per questo processo.",
       proposalsLoading: "Caricamento delle proposte…",
@@ -3246,6 +3296,23 @@
       proposalsErrorGeneric: "Qualcosa è andato storto. Riprova.",
       proposalsErrorClosed: "Questa fase è chiusa.",
       proposalsErrorDuplicate: "Hai già inviato una proposta per questo processo.",
+      deliberationLoading: "Caricamento della deliberazione…",
+      deliberationUnavailable: "La deliberazione non è temporaneamente disponibile.",
+      deliberationCanContribute: "Puoi aggiungere un contributo strutturato a qualsiasi proposta.",
+      deliberationEmpty: "Nessuna proposta da deliberare ancora.",
+      contributionsEmpty: "Nessun contributo ancora.",
+      addContribution: "Aggiungi un contributo",
+      intentObservation: "Osservazione",
+      intentProposal: "Proposta",
+      intentNextStep: "Prossimo passo",
+      intentLegend: "Tipo",
+      contributionLabel: "Contributo",
+      contributionSubmit: "Invia contributo",
+      contributionNeedText: "Scrivi almeno 12 caratteri.",
+      contributionNeedIntent: "Scegli un tipo.",
+      contributionErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      contributionErrorClosed: "Questa fase è chiusa.",
+      deliberationContributionMine: "Tuo",
     },
     de: {
       label: "Bürgerprozess",
@@ -3263,6 +3330,7 @@
       started: "Prozess gestartet",
       deliberation: "Beratung",
       ballotPreparation: "Abstimmungsvorbereitung",
+      voting: "Abstimmung",
       proposalsCanAdd: "Du kannst einen strukturierten Vorschlag hinzufügen.",
       proposalsSubmitted: "Du hast einen Vorschlag für diesen Prozess eingereicht.",
       proposalsLoading: "Vorschläge werden geladen…",
@@ -3279,6 +3347,24 @@
       proposalsErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       proposalsErrorClosed: "Diese Phase ist geschlossen.",
       proposalsErrorDuplicate: "Du hast bereits einen Vorschlag für diesen Prozess eingereicht.",
+      deliberationLoading: "Beratung wird geladen…",
+      deliberationUnavailable: "Die Beratung ist vorübergehend nicht verfügbar.",
+      deliberationCanContribute:
+        "Du kannst zu jedem Vorschlag einen strukturierten Beitrag hinzufügen.",
+      deliberationEmpty: "Noch keine Vorschläge zur Beratung.",
+      contributionsEmpty: "Noch keine Beiträge.",
+      addContribution: "Beitrag hinzufügen",
+      intentObservation: "Beobachtung",
+      intentProposal: "Vorschlag",
+      intentNextStep: "Nächster Schritt",
+      intentLegend: "Art",
+      contributionLabel: "Beitrag",
+      contributionSubmit: "Beitrag einreichen",
+      contributionNeedText: "Schreibe mindestens 12 Zeichen.",
+      contributionNeedIntent: "Wähle eine Art.",
+      contributionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      contributionErrorClosed: "Diese Phase ist geschlossen.",
+      deliberationContributionMine: "Deins",
     },
     ro: {
       label: "Proces civic",
@@ -3296,6 +3382,7 @@
       started: "Proces început",
       deliberation: "Deliberare",
       ballotPreparation: "Pregătirea scrutinului",
+      voting: "Vot",
       proposalsCanAdd: "Poți adăuga o propunere structurată.",
       proposalsSubmitted: "Ai trimis o propunere pentru acest proces.",
       proposalsLoading: "Se încarcă propunerile…",
@@ -3312,6 +3399,23 @@
       proposalsErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       proposalsErrorClosed: "Această etapă este închisă.",
       proposalsErrorDuplicate: "Ai trimis deja o propunere pentru acest proces.",
+      deliberationLoading: "Se încarcă deliberarea…",
+      deliberationUnavailable: "Deliberarea este temporar indisponibilă.",
+      deliberationCanContribute: "Poți adăuga o contribuție structurată la orice propunere.",
+      deliberationEmpty: "Nu există încă propuneri de deliberat.",
+      contributionsEmpty: "Nu există încă contribuții.",
+      addContribution: "Adaugă o contribuție",
+      intentObservation: "Observație",
+      intentProposal: "Propunere",
+      intentNextStep: "Pas următor",
+      intentLegend: "Tip",
+      contributionLabel: "Contribuție",
+      contributionSubmit: "Trimite contribuția",
+      contributionNeedText: "Scrie cel puțin 12 caractere.",
+      contributionNeedIntent: "Alege un tip.",
+      contributionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      contributionErrorClosed: "Această etapă este închisă.",
+      deliberationContributionMine: "A ta",
     },
   };
 
@@ -3338,6 +3442,8 @@
     detailProcessTimeline.hidden = true;
     detailProcessProposals.hidden = true;
     resetCivicProposalsPanel();
+    detailProcessDeliberation.hidden = true;
+    resetCivicDeliberationPanel();
   }
 
   function renderCivicProcessUnavailable() {
@@ -3351,6 +3457,8 @@
     detailProcessTimeline.hidden = true;
     detailProcessProposals.hidden = true;
     resetCivicProposalsPanel();
+    detailProcessDeliberation.hidden = true;
+    resetCivicDeliberationPanel();
   }
 
   function formatCivicProcessTime(value) {
@@ -3373,22 +3481,26 @@
     applyCivicProcessLabels(copy);
     const isProposalsStage = data.currentStage === "proposals";
     const isDeliberationStage = data.currentStage === "deliberation";
+    const isBallotPreparationStage = data.currentStage === "ballot_preparation";
     detailProcessStage.textContent = isProposalsStage
       ? copy.proposals
       : isDeliberationStage
         ? copy.deliberation
-        : copy.stage;
+        : isBallotPreparationStage
+          ? copy.ballotPreparation
+          : copy.stage;
     detailProcessStage.hidden = false;
-    detailProcessState.hidden = isProposalsStage;
-    detailProcessState.textContent = isProposalsStage
-      ? ""
-      : isDeliberationStage
-        ? copy.readOnly
-        : data.hasConfirmed
-          ? copy.confirmed
-          : data.canConfirm
-            ? copy.canConfirm
-            : copy.readOnly;
+    detailProcessState.hidden = isProposalsStage || isDeliberationStage;
+    detailProcessState.textContent =
+      isProposalsStage || isDeliberationStage
+        ? ""
+        : isBallotPreparationStage
+          ? copy.readOnly
+          : data.hasConfirmed
+            ? copy.confirmed
+            : data.canConfirm
+              ? copy.canConfirm
+              : copy.readOnly;
     detailProcessConfirmations.textContent = String(data.confirmationCount);
     detailProcessNext.textContent =
       data.nextStage === "proposals"
@@ -3397,7 +3509,9 @@
           ? copy.deliberation
           : data.nextStage === "ballot_preparation"
             ? copy.ballotPreparation
-            : "";
+            : data.nextStage === "voting"
+              ? copy.voting
+              : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3419,6 +3533,13 @@
     } else {
       detailProcessProposals.hidden = true;
       resetCivicProposalsPanel();
+    }
+    if (isDeliberationStage) {
+      detailProcessDeliberation.hidden = false;
+      void loadSignalCivicDeliberation();
+    } else {
+      detailProcessDeliberation.hidden = true;
+      resetCivicDeliberationPanel();
     }
   }
 
@@ -3446,14 +3567,17 @@
         data.signalId !== signalId ||
         (data.currentStage !== "confirmation" &&
           data.currentStage !== "proposals" &&
-          data.currentStage !== "deliberation") ||
+          data.currentStage !== "deliberation" &&
+          data.currentStage !== "ballot_preparation") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
         (data.currentStage === "proposals" &&
           data.nextStage !== "deliberation") ||
         (data.currentStage === "deliberation" &&
-          data.nextStage !== "ballot_preparation")
+          data.nextStage !== "ballot_preparation") ||
+        (data.currentStage === "ballot_preparation" &&
+          data.nextStage !== "voting")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -3665,6 +3789,325 @@
     } finally {
       civicProposalSubmitting = false;
       detailProcessProposalsSubmit.disabled = false;
+    }
+  }
+
+  let civicDeliberationLoadToken = 0;
+  let civicDeliberationSubmitting = false;
+
+  function resetCivicDeliberationPanel() {
+    civicDeliberationLoadToken += 1;
+    detailProcessDeliberationState.textContent = "";
+    detailProcessDeliberationList.textContent = "";
+  }
+
+  async function fetchSignalCivicDeliberation(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/deliberation"
+    );
+  }
+
+  async function submitSignalCivicDeliberationContribution(
+    signalId,
+    proposalId,
+    intent,
+    text
+  ) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/deliberation/proposals/" +
+        encodeURIComponent(proposalId) +
+        "/contributions",
+      { intent: intent, text: text }
+    );
+  }
+
+  function renderCivicDeliberationLoading() {
+    const copy = civicProcessCopy();
+    detailProcessDeliberationState.textContent = copy.deliberationLoading;
+    detailProcessDeliberationList.textContent = "";
+  }
+
+  function renderCivicDeliberationUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessDeliberationState.textContent = copy.deliberationUnavailable;
+    detailProcessDeliberationList.textContent = "";
+  }
+
+  function deliberationIntentLabel(copy, intent) {
+    return intent === "observation"
+      ? copy.intentObservation
+      : intent === "proposal"
+        ? copy.intentProposal
+        : intent === "next_step"
+          ? copy.intentNextStep
+          : "";
+  }
+
+  function buildDeliberationContributionItem(copy, contribution) {
+    const li = document.createElement("li");
+    li.className = "signal-detail__process-deliberation-contribution";
+    const meta = document.createElement("p");
+    meta.className = "signal-detail__process-deliberation-contribution-meta";
+    meta.textContent = contribution.authorDisplayName || "";
+    const intentBadge = document.createElement("span");
+    intentBadge.className = "signal-detail__process-deliberation-intent-badge";
+    intentBadge.textContent = deliberationIntentLabel(copy, contribution.intent);
+    meta.appendChild(intentBadge);
+    if (contribution.isMine) {
+      const mineBadge = document.createElement("span");
+      mineBadge.className = "signal-detail__process-deliberation-badge";
+      mineBadge.textContent = copy.deliberationContributionMine;
+      meta.appendChild(mineBadge);
+    }
+    const text = document.createElement("p");
+    text.className = "signal-detail__process-deliberation-contribution-text";
+    text.textContent = contribution.text || "";
+    li.appendChild(meta);
+    li.appendChild(text);
+    return li;
+  }
+
+  function buildDeliberationComposeForm(copy, proposal) {
+    const contributeButton = document.createElement("button");
+    contributeButton.type = "button";
+    contributeButton.className = "feed__secondary";
+    contributeButton.textContent = copy.addContribution;
+
+    const compose = document.createElement("div");
+    compose.className = "signal-detail__process-deliberation-compose";
+    compose.hidden = true;
+
+    const fieldset = document.createElement("fieldset");
+    fieldset.className = "signal-detail__session-intent";
+    const legend = document.createElement("legend");
+    legend.className = "signal-detail__session-intent-legend";
+    legend.textContent = copy.intentLegend;
+    fieldset.appendChild(legend);
+
+    const intentGroupName = "deliberation-intent-" + proposal.id;
+    const intents = ["observation", "proposal", "next_step"];
+    for (let i = 0; i < intents.length; i++) {
+      const value = intents[i];
+      const label = document.createElement("label");
+      label.className = "signal-detail__session-intent-option";
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = intentGroupName;
+      input.value = value;
+      const span = document.createElement("span");
+      span.textContent = deliberationIntentLabel(copy, value);
+      label.appendChild(input);
+      label.appendChild(span);
+      fieldset.appendChild(label);
+    }
+    compose.appendChild(fieldset);
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "signal-detail__session-input";
+    textarea.maxLength = 480;
+    textarea.rows = 3;
+    textarea.setAttribute("aria-label", copy.contributionLabel);
+    compose.appendChild(textarea);
+
+    const actions = document.createElement("div");
+    actions.className = "signal-detail__session-compose-actions";
+    const submitButton = document.createElement("button");
+    submitButton.type = "button";
+    submitButton.className = "feed__primary";
+    submitButton.textContent = copy.contributionSubmit;
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "feed__secondary";
+    cancelButton.textContent = copy.cancel;
+    actions.appendChild(submitButton);
+    actions.appendChild(cancelButton);
+    compose.appendChild(actions);
+
+    const note = document.createElement("p");
+    note.className = "signal-detail__process-deliberation-note";
+    note.hidden = true;
+    compose.appendChild(note);
+
+    function resetCompose() {
+      compose.hidden = true;
+      contributeButton.hidden = false;
+      textarea.value = "";
+      const inputs = fieldset.querySelectorAll('input[type="radio"]');
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].checked = false;
+      }
+      note.hidden = true;
+      note.textContent = "";
+    }
+
+    contributeButton.addEventListener("click", function () {
+      compose.hidden = false;
+      contributeButton.hidden = true;
+      textarea.focus();
+    });
+    cancelButton.addEventListener("click", resetCompose);
+    submitButton.addEventListener("click", function () {
+      void submitCivicDeliberationContribution({
+        proposalId: proposal.id,
+        fieldset: fieldset,
+        textarea: textarea,
+        submitButton: submitButton,
+        note: note,
+      });
+    });
+
+    return { contributeButton: contributeButton, compose: compose };
+  }
+
+  function buildDeliberationProposalItem(copy, canContribute, proposal) {
+    const li = document.createElement("li");
+    li.className = "signal-detail__process-deliberation-item";
+
+    const proposalMeta = document.createElement("p");
+    proposalMeta.className = "signal-detail__process-deliberation-proposal-meta";
+    proposalMeta.textContent = proposal.authorDisplayName || "";
+    if (proposal.isMine) {
+      const badge = document.createElement("span");
+      badge.className = "signal-detail__process-deliberation-badge";
+      badge.textContent = copy.proposalsMine;
+      proposalMeta.appendChild(badge);
+    }
+    const proposalTitle = document.createElement("p");
+    proposalTitle.className = "signal-detail__process-deliberation-proposal-title";
+    proposalTitle.textContent = proposal.title || "";
+    const proposalBody = document.createElement("p");
+    proposalBody.className = "signal-detail__process-deliberation-proposal-body";
+    proposalBody.textContent = proposal.body || "";
+    li.appendChild(proposalMeta);
+    li.appendChild(proposalTitle);
+    li.appendChild(proposalBody);
+
+    const contributions = Array.isArray(proposal.contributions)
+      ? proposal.contributions
+      : [];
+    const contributionsList = document.createElement("ol");
+    contributionsList.className = "signal-detail__process-deliberation-contributions";
+    for (let i = 0; i < contributions.length; i++) {
+      contributionsList.appendChild(
+        buildDeliberationContributionItem(copy, contributions[i])
+      );
+    }
+    li.appendChild(contributionsList);
+
+    if (contributions.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "signal-detail__process-deliberation-contributions-empty";
+      empty.textContent = copy.contributionsEmpty;
+      li.appendChild(empty);
+    }
+
+    if (canContribute) {
+      const form = buildDeliberationComposeForm(copy, proposal);
+      li.appendChild(form.contributeButton);
+      li.appendChild(form.compose);
+    }
+
+    return li;
+  }
+
+  function renderCivicDeliberation(data) {
+    const copy = civicProcessCopy();
+    const proposals = Array.isArray(data.proposals) ? data.proposals : [];
+    detailProcessDeliberationState.textContent =
+      proposals.length === 0
+        ? copy.deliberationEmpty
+        : data.canContribute
+          ? copy.deliberationCanContribute
+          : copy.readOnly;
+    detailProcessDeliberationList.textContent = "";
+    const canContribute = data.canContribute === true;
+    for (let i = 0; i < proposals.length; i++) {
+      detailProcessDeliberationList.appendChild(
+        buildDeliberationProposalItem(copy, canContribute, proposals[i])
+      );
+    }
+  }
+
+  async function loadSignalCivicDeliberation() {
+    const signalId = currentSignalApiId();
+    const token = ++civicDeliberationLoadToken;
+    renderCivicDeliberationLoading();
+    if (!signalId) {
+      if (token === civicDeliberationLoadToken) renderCivicDeliberationUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicDeliberation(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicDeliberationLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        data.currentStage !== "deliberation" ||
+        !Array.isArray(data.proposals)
+      ) {
+        if (token === civicDeliberationLoadToken) renderCivicDeliberationUnavailable();
+        return;
+      }
+      renderCivicDeliberation(data);
+    } catch (_err) {
+      if (token === civicDeliberationLoadToken) renderCivicDeliberationUnavailable();
+    }
+  }
+
+  async function submitCivicDeliberationContribution(context) {
+    if (civicDeliberationSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const checked = context.fieldset.querySelector('input[type="radio"]:checked');
+    const intent = checked && checked.value ? String(checked.value) : "";
+    if (intent !== "observation" && intent !== "proposal" && intent !== "next_step") {
+      context.note.textContent = copy.contributionNeedIntent;
+      context.note.hidden = false;
+      return;
+    }
+    const text = (context.textarea.value || "").trim();
+    if (text.length < 12 || text.length > 480) {
+      context.note.textContent = copy.contributionNeedText;
+      context.note.hidden = false;
+      context.textarea.focus();
+      return;
+    }
+    civicDeliberationSubmitting = true;
+    context.submitButton.disabled = true;
+    try {
+      const result = await submitSignalCivicDeliberationContribution(
+        signalId,
+        context.proposalId,
+        intent,
+        text
+      );
+      if (result.response && result.response.status === 201) {
+        await loadSignalCivicDeliberation();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      context.note.textContent =
+        code === "CIVIC_DELIBERATION_STAGE_CLOSED"
+          ? copy.contributionErrorClosed
+          : copy.contributionErrorGeneric;
+      context.note.hidden = false;
+    } catch (_err) {
+      context.note.textContent = copy.contributionErrorGeneric;
+      context.note.hidden = false;
+    } finally {
+      civicDeliberationSubmitting = false;
+      context.submitButton.disabled = false;
     }
   }
 
@@ -8690,6 +9133,7 @@
     if (signalDetail.hidden) return;
     civicProcessLoadToken += 1;
     resetCivicProposalsPanel();
+    resetCivicDeliberationPanel();
     closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";

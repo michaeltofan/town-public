@@ -57,17 +57,26 @@ assert(
   js.includes('data.currentStage !== "confirmation"') &&
     js.includes('data.currentStage !== "proposals"') &&
     js.includes('data.currentStage !== "deliberation"') &&
+    js.includes('data.currentStage !== "ballot_preparation"') &&
     js.includes('data.currentStage === "confirmation" &&') &&
     js.includes('data.nextStage !== "proposals"') &&
     js.includes('data.currentStage === "proposals" &&') &&
     js.includes('data.nextStage !== "deliberation"') &&
     js.includes('data.currentStage === "deliberation" &&') &&
-    js.includes('data.nextStage !== "ballot_preparation"'),
-  "client accepts only the truthful confirmation, proposals, and deliberation stage contract"
+    js.includes('data.nextStage !== "ballot_preparation"') &&
+    js.includes('data.currentStage === "ballot_preparation" &&') &&
+    js.includes('data.nextStage !== "voting"'),
+  "client accepts only the truthful confirmation, proposals, deliberation, and ballot_preparation stage contract"
 );
 assert(
-  js.includes("isDeliberationStage = data.currentStage === \"deliberation\";"),
+  js.includes('isDeliberationStage = data.currentStage === "deliberation";'),
   "deliberation stage renders without falling back to unavailable"
+);
+assert(
+  js.includes(
+    'isBallotPreparationStage = data.currentStage === "ballot_preparation";',
+  ),
+  "ballot_preparation stage renders without falling back to unavailable"
 );
 assert(
   js.includes("void loadSignalCivicProcess();"),
@@ -80,7 +89,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-deliberation-guard-1"),
+  html.includes("script.js?v=civic-process-deliberation-panel-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -113,6 +122,56 @@ assert(
     !js.includes("deliberationThreshold") &&
     !js.includes("proposalsProgressPercent"),
   "client does not invent proposal thresholds or progress percentages"
+);
+
+assert(
+  html.includes('id="detail-process-deliberation"'),
+  "civic deliberation panel markup present",
+);
+assert(
+  html.includes('id="detail-process-deliberation-list"'),
+  "civic deliberation list markup present",
+);
+assert(
+  css.includes(".signal-detail__process-deliberation"),
+  "civic deliberation panel styles present",
+);
+assert(
+  js.includes('"/civic-process/deliberation"') &&
+    js.includes("async function loadSignalCivicDeliberation()") &&
+    js.includes("async function submitCivicDeliberationContribution("),
+  "signal detail reads and writes the canonical civic deliberation endpoint",
+);
+assert(
+  js.includes("void loadSignalCivicDeliberation();"),
+  "reaching the deliberation stage loads its deliberation",
+);
+assert(
+  js.includes('data.currentStage !== "deliberation" ||') &&
+    js.includes("!Array.isArray(data.proposals)") &&
+    js.includes("data.processId == null"),
+  "client fails closed when the deliberation contract does not match",
+);
+assert(
+  js.includes("canContribute = data.canContribute === true;") &&
+    !js.includes("canContribute = true;"),
+  "deliberation contribute visibility follows backend canContribute truth only",
+);
+assert(
+  js.includes("/contributions\"") &&
+    js.includes(
+      '"/civic-process/deliberation/proposals/" +\n        encodeURIComponent(proposalId) +',
+    ),
+  "deliberation contribution submits scoped to a specific proposal",
+);
+assert(
+  (function () {
+    const fn = js.match(
+      /function intentLabel\(copy, intent\)[\s\S]*?\n {2}\}/,
+    );
+    return !!fn && fn[0].includes("sessionIntent");
+  })(),
+  "discussion-session intent label helper is untouched (no name collision with deliberation)",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
