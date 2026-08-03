@@ -88,6 +88,23 @@ assert(
   "membership CTA hidden when already able to participate"
 );
 assert(
+  !body.includes("else if (selectedCity)"),
+  "explored city cannot become the profile community"
+);
+assert(
+  body.includes('copy.publishInCommunity.replace("{community}", communityName)'),
+  "publish CTA names the committed community"
+);
+assert(
+  html.includes('id="profile-platform-console"') &&
+    !html.includes('id="profile-moderation"'),
+  "profile exposes the platform console instead of generic moderation"
+);
+assert(
+  js.includes('window.location.href = "/platform/"'),
+  "owner console CTA opens the dedicated platform surface"
+);
+assert(
   !body.includes("subscribers") && !body.includes("Substack"),
   "profile does not invent Substack social fields"
 );
