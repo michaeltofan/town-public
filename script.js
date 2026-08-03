@@ -3305,8 +3305,14 @@
   // A 403 is never interpreted as missing membership.
   async function activateSeeTooAction(options) {
     const closeDetail = !!(options && options.closeDetail);
-    if (closeDetail) closeSignalDetail();
-    else closeSignalSheet();
+    const keepEligibleDetailOpen = !!(
+      closeDetail &&
+      options &&
+      options.keepEligibleDetailOpen &&
+      canConfirmSeeTooAction()
+    );
+    if (closeDetail && !keepEligibleDetailOpen) closeSignalDetail();
+    else if (!closeDetail) closeSignalSheet();
     originatingFeedIndex = feedIndex;
     const scenes = currentScenes();
     const scene = scenes[feedIndex];
@@ -3384,6 +3390,13 @@
         });
         clearTransientFeedNotice();
         syncFeedMemberState();
+        if (
+          keepEligibleDetailOpen &&
+          !signalDetail.hidden &&
+          currentSignalApiId() === apiId
+        ) {
+          await loadSignalCivicProcess();
+        }
         return "confirmed";
       }
       if (result.response && result.response.status === 403) {
@@ -9085,7 +9098,10 @@
 
   detailSeeToo.addEventListener("click", () => {
     if (detailSeeToo.disabled) return;
-    activateSeeTooAction({ closeDetail: true });
+    activateSeeTooAction({
+      closeDetail: true,
+      keepEligibleDetailOpen: true,
+    });
   });
 
   // Discussion session CTA:
