@@ -43,6 +43,36 @@ assert(html.includes('id="feed-state-retry"'), "feed retry control present");
 assert(css.includes(".feed__state"), "feed state styles present");
 assert(css.includes(".feed__live.is-surface"), "transient notice surface styles present");
 
+assert(html.includes('id="detail-civic-process"'), "civic-process panel markup present");
+assert(html.includes('id="detail-process-confirmations"'), "civic confirmation total present");
+assert(html.includes('id="detail-process-timeline"'), "civic timeline markup present");
+assert(css.includes(".signal-detail__process-facts"), "civic-process panel styles present");
+assert(
+  js.includes('"/civic-process"') &&
+    js.includes("async function loadSignalCivicProcess()") &&
+    js.includes("getJsonWithCredentials"),
+  "signal detail reads the canonical civic-process endpoint"
+);
+assert(
+  js.includes('data.currentStage !== "confirmation"') &&
+    js.includes('data.nextStage !== "proposals"'),
+  "client accepts only the truthful confirmation-stage contract"
+);
+assert(
+  js.includes("void loadSignalCivicProcess();"),
+  "opening signal detail loads its civic process"
+);
+assert(
+  !js.includes("confirmationThreshold") &&
+    !js.includes("transitionThreshold") &&
+    !js.includes("confirmationProgressPercent"),
+  "client does not invent thresholds or progress percentages"
+);
+assert(
+  html.includes("script.js?v=civic-process-panel-1"),
+  "civic-process UI has a fresh browser cache key"
+);
+
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
 assert(js.includes("function handleChatNav"), "chat nav honesty handler exists");
 assert(
@@ -154,3 +184,4 @@ if (failed > 0) {
   process.exit(1);
 }
 console.log("PASSED: " + passed + " Etapa 3 member journey assertions");
+

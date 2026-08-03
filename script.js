@@ -180,6 +180,34 @@
   const detailUpdate = document.getElementById("detail-update");
   const detailStatusLabel = document.getElementById("detail-status-label");
   const detailStatusNote = document.getElementById("detail-status-note");
+  const detailCivicProcess = document.getElementById("detail-civic-process");
+  const detailProcessLabel = document.getElementById("detail-process-label");
+  const detailProcessStage = document.getElementById("detail-process-stage");
+  const detailProcessState = document.getElementById("detail-process-state");
+  const detailProcessFacts = document.getElementById("detail-process-facts");
+  const detailProcessConfirmationsLabel = document.getElementById(
+    "detail-process-confirmations-label"
+  );
+  const detailProcessConfirmations = document.getElementById(
+    "detail-process-confirmations"
+  );
+  const detailProcessNextLabel = document.getElementById(
+    "detail-process-next-label"
+  );
+  const detailProcessNext = document.getElementById("detail-process-next");
+  const detailProcessClosingLabel = document.getElementById(
+    "detail-process-closing-label"
+  );
+  const detailProcessClosing = document.getElementById("detail-process-closing");
+  const detailProcessTimeline = document.getElementById(
+    "detail-process-timeline"
+  );
+  const detailProcessEventLabel = document.getElementById(
+    "detail-process-event-label"
+  );
+  const detailProcessEventTime = document.getElementById(
+    "detail-process-event-time"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -599,6 +627,20 @@
     !detailUpdate ||
     !detailStatusLabel ||
     !detailStatusNote ||
+    !detailCivicProcess ||
+    !detailProcessLabel ||
+    !detailProcessStage ||
+    !detailProcessState ||
+    !detailProcessFacts ||
+    !detailProcessConfirmationsLabel ||
+    !detailProcessConfirmations ||
+    !detailProcessNextLabel ||
+    !detailProcessNext ||
+    !detailProcessClosingLabel ||
+    !detailProcessClosing ||
+    !detailProcessTimeline ||
+    !detailProcessEventLabel ||
+    !detailProcessEventTime ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3057,6 +3099,203 @@
     el.hidden = false;
   }
 
+  const CIVIC_PROCESS_COPY = {
+    en: {
+      label: "Civic process",
+      stage: "Confirmation",
+      loading: "Loading the civic process…",
+      unavailable: "The civic process is temporarily unavailable.",
+      confirmed: "You have confirmed this signal.",
+      canConfirm: "You can add your confirmation.",
+      readOnly: "You can follow this process. Participation follows your community access.",
+      confirmations: "Confirmations",
+      next: "Next stage",
+      proposals: "Proposals",
+      closing: "Closes",
+      notScheduled: "Not scheduled",
+      started: "Process started",
+    },
+    es: {
+      label: "Proceso cívico",
+      stage: "Confirmación",
+      loading: "Cargando el proceso cívico…",
+      unavailable: "El proceso cívico no está disponible temporalmente.",
+      confirmed: "Has confirmado esta señal.",
+      canConfirm: "Puedes añadir tu confirmación.",
+      readOnly: "Puedes seguir este proceso. La participación depende del acceso de tu comunidad.",
+      confirmations: "Confirmaciones",
+      next: "Siguiente etapa",
+      proposals: "Propuestas",
+      closing: "Cierre",
+      notScheduled: "Sin fecha programada",
+      started: "Proceso iniciado",
+    },
+    it: {
+      label: "Processo civico",
+      stage: "Conferma",
+      loading: "Caricamento del processo civico…",
+      unavailable: "Il processo civico è temporaneamente non disponibile.",
+      confirmed: "Hai confermato questo segnale.",
+      canConfirm: "Puoi aggiungere la tua conferma.",
+      readOnly: "Puoi seguire questo processo. La partecipazione dipende dall’accesso alla tua comunità.",
+      confirmations: "Conferme",
+      next: "Fase successiva",
+      proposals: "Proposte",
+      closing: "Chiusura",
+      notScheduled: "Non programmata",
+      started: "Processo avviato",
+    },
+    de: {
+      label: "Bürgerprozess",
+      stage: "Bestätigung",
+      loading: "Bürgerprozess wird geladen…",
+      unavailable: "Der Bürgerprozess ist vorübergehend nicht verfügbar.",
+      confirmed: "Du hast dieses Signal bestätigt.",
+      canConfirm: "Du kannst deine Bestätigung hinzufügen.",
+      readOnly: "Du kannst diesen Prozess verfolgen. Die Teilnahme richtet sich nach deinem Gemeinschaftszugang.",
+      confirmations: "Bestätigungen",
+      next: "Nächste Phase",
+      proposals: "Vorschläge",
+      closing: "Ende",
+      notScheduled: "Nicht terminiert",
+      started: "Prozess gestartet",
+    },
+    ro: {
+      label: "Proces civic",
+      stage: "Confirmare",
+      loading: "Se încarcă procesul civic…",
+      unavailable: "Procesul civic este temporar indisponibil.",
+      confirmed: "Ai confirmat acest semnal.",
+      canConfirm: "Poți adăuga confirmarea ta.",
+      readOnly: "Poți urmări acest proces. Participarea depinde de accesul în comunitatea ta.",
+      confirmations: "Confirmări",
+      next: "Etapa următoare",
+      proposals: "Propuneri",
+      closing: "Închidere",
+      notScheduled: "Nu este programată",
+      started: "Proces început",
+    },
+  };
+
+  function civicProcessCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return CIVIC_PROCESS_COPY[lang] || CIVIC_PROCESS_COPY.en;
+  }
+
+  function applyCivicProcessLabels(copy) {
+    detailProcessLabel.textContent = copy.label;
+    detailProcessConfirmationsLabel.textContent = copy.confirmations;
+    detailProcessNextLabel.textContent = copy.next;
+    detailProcessClosingLabel.textContent = copy.closing;
+  }
+
+  function renderCivicProcessLoading() {
+    const copy = civicProcessCopy();
+    applyCivicProcessLabels(copy);
+    detailProcessStage.textContent = "";
+    detailProcessStage.hidden = true;
+    detailProcessState.textContent = copy.loading;
+    detailProcessFacts.hidden = true;
+    detailProcessTimeline.hidden = true;
+  }
+
+  function renderCivicProcessUnavailable() {
+    const copy = civicProcessCopy();
+    applyCivicProcessLabels(copy);
+    detailProcessStage.textContent = "";
+    detailProcessStage.hidden = true;
+    detailProcessState.textContent = copy.unavailable;
+    detailProcessFacts.hidden = true;
+    detailProcessTimeline.hidden = true;
+  }
+
+  function formatCivicProcessTime(value) {
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+    try {
+      return new Intl.DateTimeFormat(resolvePublicReadingLanguage(), {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }).format(date);
+    } catch (_err) {
+      return date.toISOString().slice(0, 10);
+    }
+  }
+
+  function renderCivicProcess(data) {
+    const copy = civicProcessCopy();
+    applyCivicProcessLabels(copy);
+    detailProcessStage.textContent = copy.stage;
+    detailProcessStage.hidden = false;
+    detailProcessState.textContent = data.hasConfirmed
+      ? copy.confirmed
+      : data.canConfirm
+        ? copy.canConfirm
+        : copy.readOnly;
+    detailProcessConfirmations.textContent = String(data.confirmationCount);
+    detailProcessNext.textContent =
+      data.nextStage === "proposals" ? copy.proposals : "";
+    detailProcessClosing.textContent =
+      data.closingAt === null
+        ? copy.notScheduled
+        : formatCivicProcessTime(data.closingAt);
+    const firstEvent =
+      Array.isArray(data.timeline) && data.timeline.length > 0
+        ? data.timeline[0]
+        : null;
+    detailProcessEventLabel.textContent = copy.started;
+    detailProcessEventTime.textContent =
+      firstEvent && firstEvent.type === "process_created"
+        ? formatCivicProcessTime(firstEvent.occurredAt)
+        : "";
+    detailProcessFacts.hidden = false;
+    detailProcessTimeline.hidden = !firstEvent;
+  }
+
+  async function loadSignalCivicProcess() {
+    const signalId = currentSignalApiId();
+    const token = ++civicProcessLoadToken;
+    renderCivicProcessLoading();
+    if (!signalId) {
+      renderCivicProcessUnavailable();
+      return false;
+    }
+    try {
+      const result = await getJsonWithCredentials(
+        API_BASE +
+          "/v1/signals/" +
+          encodeURIComponent(signalId) +
+          "/civic-process"
+      );
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicProcessLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.signalId !== signalId ||
+        data.currentStage !== "confirmation" ||
+        typeof data.confirmationCount !== "number" ||
+        data.nextStage !== "proposals"
+      ) {
+        if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
+        return false;
+      }
+      setSignalConfirmationState(signalId, {
+        confirmed: data.hasConfirmed === true,
+        confirmationCount: data.confirmationCount,
+      });
+      renderCivicProcess(data);
+      syncFeedMemberState();
+      return true;
+    } catch (_err) {
+      if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
+      return false;
+    }
+  }
+
   // Shared feed/detail activation: confirm when eligible, otherwise open the
   // existing membership boundary invite only for true non-members.
   // Invite paths capture pending see-too context so public Sign-in can restore
@@ -3504,6 +3743,7 @@
   // Per-signal confirmation state from API (or local fallback for mock scenes).
   // Keyed by signal UUID / scene id: { confirmed, confirmationCount }.
   const signalConfirmationState = Object.create(null);
+  let civicProcessLoadToken = 0;
   let seeTooConfirmSubmitting = false;
   // Optional pending media for the compose surface (local preview until publish).
   // On publish, bytes are uploaded to town-api private object storage.
@@ -4859,6 +5099,7 @@
     closeSessionCompose({ keepDraft: false });
     renderSignalSession();
     loadSignalDiscussionSession();
+    void loadSignalCivicProcess();
     syncFeedMemberState();
   }
 
@@ -8062,6 +8303,7 @@
 
   function closeSignalDetail() {
     if (signalDetail.hidden) return;
+    civicProcessLoadToken += 1;
     closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";

@@ -769,6 +769,41 @@
               <p class="signal-detail__text" id="detail-status-note"></p>
             </section>
 
+            <section
+              class="signal-detail__section signal-detail__process"
+              id="detail-civic-process"
+              aria-labelledby="detail-process-label"
+            >
+              <div class="signal-detail__process-heading">
+                <h2 class="signal-detail__label" id="detail-process-label"></h2>
+                <span class="signal-detail__process-stage" id="detail-process-stage"></span>
+              </div>
+              <p class="signal-detail__process-state" id="detail-process-state" role="status" aria-live="polite"></p>
+              <dl class="signal-detail__process-facts" id="detail-process-facts" hidden>
+                <div>
+                  <dt id="detail-process-confirmations-label"></dt>
+                  <dd id="detail-process-confirmations"></dd>
+                </div>
+                <div>
+                  <dt id="detail-process-next-label"></dt>
+                  <dd id="detail-process-next"></dd>
+                </div>
+                <div>
+                  <dt id="detail-process-closing-label"></dt>
+                  <dd id="detail-process-closing"></dd>
+                </div>
+              </dl>
+              <ol class="signal-detail__process-timeline" id="detail-process-timeline" hidden>
+                <li>
+                  <span class="signal-detail__process-marker" aria-hidden="true"></span>
+                  <span>
+                    <strong id="detail-process-event-label"></strong>
+                    <small id="detail-process-event-time"></small>
+                  </span>
+                </li>
+              </ol>
+            </section>
+
             <!-- Paying members: civic discussion session toward a local solution — not chat. -->
             <section
               class="signal-detail__section signal-detail__session"
@@ -1706,6 +1741,7 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=post-passkey-profile-1" defer></script>
+    <script src="script.js?v=civic-process-panel-1" defer></script>
   </body>
 </html>
+
