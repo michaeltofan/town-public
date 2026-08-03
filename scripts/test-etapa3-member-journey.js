@@ -56,11 +56,18 @@ assert(
 assert(
   js.includes('data.currentStage !== "confirmation"') &&
     js.includes('data.currentStage !== "proposals"') &&
+    js.includes('data.currentStage !== "deliberation"') &&
     js.includes('data.currentStage === "confirmation" &&') &&
     js.includes('data.nextStage !== "proposals"') &&
     js.includes('data.currentStage === "proposals" &&') &&
-    js.includes('data.nextStage !== "deliberation"'),
-  "client accepts only the truthful confirmation and proposals stage contract"
+    js.includes('data.nextStage !== "deliberation"') &&
+    js.includes('data.currentStage === "deliberation" &&') &&
+    js.includes('data.nextStage !== "ballot_preparation"'),
+  "client accepts only the truthful confirmation, proposals, and deliberation stage contract"
+);
+assert(
+  js.includes("isDeliberationStage = data.currentStage === \"deliberation\";"),
+  "deliberation stage renders without falling back to unavailable"
 );
 assert(
   js.includes("void loadSignalCivicProcess();"),
@@ -73,7 +80,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-proposals-1"),
+  html.includes("script.js?v=civic-process-deliberation-guard-1"),
   "civic-process UI has a fresh browser cache key"
 );
 

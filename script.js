@@ -3163,6 +3163,7 @@
       notScheduled: "Not scheduled",
       started: "Process started",
       deliberation: "Deliberation",
+      ballotPreparation: "Ballot preparation",
       proposalsCanAdd: "You can add a structured proposal.",
       proposalsSubmitted: "You have submitted a proposal for this process.",
       proposalsLoading: "Loading proposals…",
@@ -3195,6 +3196,7 @@
       notScheduled: "Sin fecha programada",
       started: "Proceso iniciado",
       deliberation: "Deliberación",
+      ballotPreparation: "Preparación de la votación",
       proposalsCanAdd: "Puedes añadir una propuesta estructurada.",
       proposalsSubmitted: "Has enviado una propuesta para este proceso.",
       proposalsLoading: "Cargando propuestas…",
@@ -3227,6 +3229,7 @@
       notScheduled: "Non programmata",
       started: "Processo avviato",
       deliberation: "Deliberazione",
+      ballotPreparation: "Preparazione del voto",
       proposalsCanAdd: "Puoi aggiungere una proposta strutturata.",
       proposalsSubmitted: "Hai inviato una proposta per questo processo.",
       proposalsLoading: "Caricamento delle proposte…",
@@ -3259,6 +3262,7 @@
       notScheduled: "Nicht terminiert",
       started: "Prozess gestartet",
       deliberation: "Beratung",
+      ballotPreparation: "Abstimmungsvorbereitung",
       proposalsCanAdd: "Du kannst einen strukturierten Vorschlag hinzufügen.",
       proposalsSubmitted: "Du hast einen Vorschlag für diesen Prozess eingereicht.",
       proposalsLoading: "Vorschläge werden geladen…",
@@ -3291,6 +3295,7 @@
       notScheduled: "Nu este programată",
       started: "Proces început",
       deliberation: "Deliberare",
+      ballotPreparation: "Pregătirea scrutinului",
       proposalsCanAdd: "Poți adăuga o propunere structurată.",
       proposalsSubmitted: "Ai trimis o propunere pentru acest proces.",
       proposalsLoading: "Se încarcă propunerile…",
@@ -3367,23 +3372,32 @@
     const copy = civicProcessCopy();
     applyCivicProcessLabels(copy);
     const isProposalsStage = data.currentStage === "proposals";
-    detailProcessStage.textContent = isProposalsStage ? copy.proposals : copy.stage;
+    const isDeliberationStage = data.currentStage === "deliberation";
+    detailProcessStage.textContent = isProposalsStage
+      ? copy.proposals
+      : isDeliberationStage
+        ? copy.deliberation
+        : copy.stage;
     detailProcessStage.hidden = false;
     detailProcessState.hidden = isProposalsStage;
     detailProcessState.textContent = isProposalsStage
       ? ""
-      : data.hasConfirmed
-        ? copy.confirmed
-        : data.canConfirm
-          ? copy.canConfirm
-          : copy.readOnly;
+      : isDeliberationStage
+        ? copy.readOnly
+        : data.hasConfirmed
+          ? copy.confirmed
+          : data.canConfirm
+            ? copy.canConfirm
+            : copy.readOnly;
     detailProcessConfirmations.textContent = String(data.confirmationCount);
     detailProcessNext.textContent =
       data.nextStage === "proposals"
         ? copy.proposals
         : data.nextStage === "deliberation"
           ? copy.deliberation
-          : "";
+          : data.nextStage === "ballot_preparation"
+            ? copy.ballotPreparation
+            : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3431,12 +3445,15 @@
         !data ||
         data.signalId !== signalId ||
         (data.currentStage !== "confirmation" &&
-          data.currentStage !== "proposals") ||
+          data.currentStage !== "proposals" &&
+          data.currentStage !== "deliberation") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
         (data.currentStage === "proposals" &&
-          data.nextStage !== "deliberation")
+          data.nextStage !== "deliberation") ||
+        (data.currentStage === "deliberation" &&
+          data.nextStage !== "ballot_preparation")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
