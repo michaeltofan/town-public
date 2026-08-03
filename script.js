@@ -208,6 +208,42 @@
   const detailProcessEventTime = document.getElementById(
     "detail-process-event-time"
   );
+  const detailProcessProposals = document.getElementById(
+    "detail-process-proposals"
+  );
+  const detailProcessProposalsState = document.getElementById(
+    "detail-process-proposals-state"
+  );
+  const detailProcessProposalsEmpty = document.getElementById(
+    "detail-process-proposals-empty"
+  );
+  const detailProcessProposalsList = document.getElementById(
+    "detail-process-proposals-list"
+  );
+  const detailProcessProposalsContribute = document.getElementById(
+    "detail-process-proposals-contribute"
+  );
+  const detailProcessProposalsCompose = document.getElementById(
+    "detail-process-proposals-compose"
+  );
+  const detailProcessProposalsComposeTitle = document.getElementById(
+    "detail-process-proposals-compose-title"
+  );
+  const detailProcessProposalsTitleInput = document.getElementById(
+    "detail-process-proposals-title-input"
+  );
+  const detailProcessProposalsBodyInput = document.getElementById(
+    "detail-process-proposals-body-input"
+  );
+  const detailProcessProposalsSubmit = document.getElementById(
+    "detail-process-proposals-submit"
+  );
+  const detailProcessProposalsCancel = document.getElementById(
+    "detail-process-proposals-cancel"
+  );
+  const detailProcessProposalsNote = document.getElementById(
+    "detail-process-proposals-note"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -641,6 +677,18 @@
     !detailProcessTimeline ||
     !detailProcessEventLabel ||
     !detailProcessEventTime ||
+    !detailProcessProposals ||
+    !detailProcessProposalsState ||
+    !detailProcessProposalsEmpty ||
+    !detailProcessProposalsList ||
+    !detailProcessProposalsContribute ||
+    !detailProcessProposalsCompose ||
+    !detailProcessProposalsComposeTitle ||
+    !detailProcessProposalsTitleInput ||
+    !detailProcessProposalsBodyInput ||
+    !detailProcessProposalsSubmit ||
+    !detailProcessProposalsCancel ||
+    !detailProcessProposalsNote ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3114,6 +3162,23 @@
       closing: "Closes",
       notScheduled: "Not scheduled",
       started: "Process started",
+      deliberation: "Deliberation",
+      proposalsCanAdd: "You can add a structured proposal.",
+      proposalsSubmitted: "You have submitted a proposal for this process.",
+      proposalsLoading: "Loading proposals…",
+      proposalsUnavailable: "Proposals are temporarily unavailable.",
+      proposalsEmpty: "No proposals yet.",
+      proposalsAdd: "Add a proposal",
+      proposalsTitleLabel: "Proposal title",
+      proposalsBodyLabel: "Proposal details",
+      proposalsSubmit: "Submit proposal",
+      cancel: "Cancel",
+      proposalsMine: "Your proposal",
+      proposalsNeedTitle: "Add a short title.",
+      proposalsNeedBody: "Describe the proposal.",
+      proposalsErrorGeneric: "Something went wrong. Try again.",
+      proposalsErrorClosed: "This stage is closed.",
+      proposalsErrorDuplicate: "You already submitted a proposal for this process.",
     },
     es: {
       label: "Proceso cívico",
@@ -3129,6 +3194,23 @@
       closing: "Cierre",
       notScheduled: "Sin fecha programada",
       started: "Proceso iniciado",
+      deliberation: "Deliberación",
+      proposalsCanAdd: "Puedes añadir una propuesta estructurada.",
+      proposalsSubmitted: "Has enviado una propuesta para este proceso.",
+      proposalsLoading: "Cargando propuestas…",
+      proposalsUnavailable: "Las propuestas no están disponibles temporalmente.",
+      proposalsEmpty: "Todavía no hay propuestas.",
+      proposalsAdd: "Añadir una propuesta",
+      proposalsTitleLabel: "Título de la propuesta",
+      proposalsBodyLabel: "Detalles de la propuesta",
+      proposalsSubmit: "Enviar propuesta",
+      cancel: "Cancelar",
+      proposalsMine: "Tu propuesta",
+      proposalsNeedTitle: "Añade un título breve.",
+      proposalsNeedBody: "Describe la propuesta.",
+      proposalsErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      proposalsErrorClosed: "Esta etapa está cerrada.",
+      proposalsErrorDuplicate: "Ya has enviado una propuesta para este proceso.",
     },
     it: {
       label: "Processo civico",
@@ -3144,6 +3226,23 @@
       closing: "Chiusura",
       notScheduled: "Non programmata",
       started: "Processo avviato",
+      deliberation: "Deliberazione",
+      proposalsCanAdd: "Puoi aggiungere una proposta strutturata.",
+      proposalsSubmitted: "Hai inviato una proposta per questo processo.",
+      proposalsLoading: "Caricamento delle proposte…",
+      proposalsUnavailable: "Le proposte non sono temporaneamente disponibili.",
+      proposalsEmpty: "Nessuna proposta ancora.",
+      proposalsAdd: "Aggiungi una proposta",
+      proposalsTitleLabel: "Titolo della proposta",
+      proposalsBodyLabel: "Dettagli della proposta",
+      proposalsSubmit: "Invia proposta",
+      cancel: "Annulla",
+      proposalsMine: "La tua proposta",
+      proposalsNeedTitle: "Aggiungi un titolo breve.",
+      proposalsNeedBody: "Descrivi la proposta.",
+      proposalsErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      proposalsErrorClosed: "Questa fase è chiusa.",
+      proposalsErrorDuplicate: "Hai già inviato una proposta per questo processo.",
     },
     de: {
       label: "Bürgerprozess",
@@ -3159,6 +3258,23 @@
       closing: "Ende",
       notScheduled: "Nicht terminiert",
       started: "Prozess gestartet",
+      deliberation: "Beratung",
+      proposalsCanAdd: "Du kannst einen strukturierten Vorschlag hinzufügen.",
+      proposalsSubmitted: "Du hast einen Vorschlag für diesen Prozess eingereicht.",
+      proposalsLoading: "Vorschläge werden geladen…",
+      proposalsUnavailable: "Vorschläge sind vorübergehend nicht verfügbar.",
+      proposalsEmpty: "Noch keine Vorschläge.",
+      proposalsAdd: "Vorschlag hinzufügen",
+      proposalsTitleLabel: "Titel des Vorschlags",
+      proposalsBodyLabel: "Details des Vorschlags",
+      proposalsSubmit: "Vorschlag einreichen",
+      cancel: "Abbrechen",
+      proposalsMine: "Dein Vorschlag",
+      proposalsNeedTitle: "Füge einen kurzen Titel hinzu.",
+      proposalsNeedBody: "Beschreibe den Vorschlag.",
+      proposalsErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      proposalsErrorClosed: "Diese Phase ist geschlossen.",
+      proposalsErrorDuplicate: "Du hast bereits einen Vorschlag für diesen Prozess eingereicht.",
     },
     ro: {
       label: "Proces civic",
@@ -3174,6 +3290,23 @@
       closing: "Închidere",
       notScheduled: "Nu este programată",
       started: "Proces început",
+      deliberation: "Deliberare",
+      proposalsCanAdd: "Poți adăuga o propunere structurată.",
+      proposalsSubmitted: "Ai trimis o propunere pentru acest proces.",
+      proposalsLoading: "Se încarcă propunerile…",
+      proposalsUnavailable: "Propunerile sunt temporar indisponibile.",
+      proposalsEmpty: "Nu există încă propuneri.",
+      proposalsAdd: "Adaugă o propunere",
+      proposalsTitleLabel: "Titlul propunerii",
+      proposalsBodyLabel: "Detaliile propunerii",
+      proposalsSubmit: "Trimite propunerea",
+      cancel: "Anulează",
+      proposalsMine: "Propunerea ta",
+      proposalsNeedTitle: "Adaugă un titlu scurt.",
+      proposalsNeedBody: "Descrie propunerea.",
+      proposalsErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      proposalsErrorClosed: "Această etapă este închisă.",
+      proposalsErrorDuplicate: "Ai trimis deja o propunere pentru acest proces.",
     },
   };
 
@@ -3194,9 +3327,12 @@
     applyCivicProcessLabels(copy);
     detailProcessStage.textContent = "";
     detailProcessStage.hidden = true;
+    detailProcessState.hidden = false;
     detailProcessState.textContent = copy.loading;
     detailProcessFacts.hidden = true;
     detailProcessTimeline.hidden = true;
+    detailProcessProposals.hidden = true;
+    resetCivicProposalsPanel();
   }
 
   function renderCivicProcessUnavailable() {
@@ -3204,9 +3340,12 @@
     applyCivicProcessLabels(copy);
     detailProcessStage.textContent = "";
     detailProcessStage.hidden = true;
+    detailProcessState.hidden = false;
     detailProcessState.textContent = copy.unavailable;
     detailProcessFacts.hidden = true;
     detailProcessTimeline.hidden = true;
+    detailProcessProposals.hidden = true;
+    resetCivicProposalsPanel();
   }
 
   function formatCivicProcessTime(value) {
@@ -3227,16 +3366,24 @@
   function renderCivicProcess(data) {
     const copy = civicProcessCopy();
     applyCivicProcessLabels(copy);
-    detailProcessStage.textContent = copy.stage;
+    const isProposalsStage = data.currentStage === "proposals";
+    detailProcessStage.textContent = isProposalsStage ? copy.proposals : copy.stage;
     detailProcessStage.hidden = false;
-    detailProcessState.textContent = data.hasConfirmed
-      ? copy.confirmed
-      : data.canConfirm
-        ? copy.canConfirm
-        : copy.readOnly;
+    detailProcessState.hidden = isProposalsStage;
+    detailProcessState.textContent = isProposalsStage
+      ? ""
+      : data.hasConfirmed
+        ? copy.confirmed
+        : data.canConfirm
+          ? copy.canConfirm
+          : copy.readOnly;
     detailProcessConfirmations.textContent = String(data.confirmationCount);
     detailProcessNext.textContent =
-      data.nextStage === "proposals" ? copy.proposals : "";
+      data.nextStage === "proposals"
+        ? copy.proposals
+        : data.nextStage === "deliberation"
+          ? copy.deliberation
+          : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3252,6 +3399,13 @@
         : "";
     detailProcessFacts.hidden = false;
     detailProcessTimeline.hidden = !firstEvent;
+    if (isProposalsStage) {
+      detailProcessProposals.hidden = false;
+      void loadSignalCivicProposals();
+    } else {
+      detailProcessProposals.hidden = true;
+      resetCivicProposalsPanel();
+    }
   }
 
   async function loadSignalCivicProcess() {
@@ -3276,9 +3430,13 @@
         result.response.status !== 200 ||
         !data ||
         data.signalId !== signalId ||
-        data.currentStage !== "confirmation" ||
+        (data.currentStage !== "confirmation" &&
+          data.currentStage !== "proposals") ||
         typeof data.confirmationCount !== "number" ||
-        data.nextStage !== "proposals"
+        (data.currentStage === "confirmation" &&
+          data.nextStage !== "proposals") ||
+        (data.currentStage === "proposals" &&
+          data.nextStage !== "deliberation")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -3293,6 +3451,203 @@
     } catch (_err) {
       if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
       return false;
+    }
+  }
+
+  let civicProposalsLoadToken = 0;
+  let civicProposalSubmitting = false;
+  let civicProposalsCanProposeCache = false;
+
+  function resetCivicProposalsPanel() {
+    civicProposalsLoadToken += 1;
+    civicProposalsCanProposeCache = false;
+    detailProcessProposalsState.textContent = "";
+    detailProcessProposalsEmpty.hidden = true;
+    detailProcessProposalsList.textContent = "";
+    detailProcessProposalsContribute.hidden = true;
+    closeCivicProposalsCompose();
+  }
+
+  async function fetchSignalCivicProposals(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/proposals"
+    );
+  }
+
+  async function submitSignalCivicProposal(signalId, title, body) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/proposals",
+      { title: title, body: body }
+    );
+  }
+
+  function renderCivicProposalsLoading() {
+    const copy = civicProcessCopy();
+    detailProcessProposalsState.textContent = copy.proposalsLoading;
+    detailProcessProposalsEmpty.hidden = true;
+    detailProcessProposalsList.textContent = "";
+    detailProcessProposalsContribute.hidden = true;
+    closeCivicProposalsCompose();
+  }
+
+  function renderCivicProposalsUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessProposalsState.textContent = copy.proposalsUnavailable;
+    detailProcessProposalsEmpty.hidden = true;
+    detailProcessProposalsList.textContent = "";
+    detailProcessProposalsContribute.hidden = true;
+    closeCivicProposalsCompose();
+  }
+
+  function renderCivicProposals(data) {
+    const copy = civicProcessCopy();
+    const proposals = Array.isArray(data.proposals) ? data.proposals : [];
+    const mine = proposals.some(function (proposal) {
+      return proposal.isMine === true;
+    });
+    detailProcessProposalsState.textContent = data.canPropose
+      ? copy.proposalsCanAdd
+      : mine
+        ? copy.proposalsSubmitted
+        : copy.readOnly;
+    detailProcessProposalsEmpty.hidden = proposals.length > 0;
+    detailProcessProposalsEmpty.textContent =
+      proposals.length > 0 ? "" : copy.proposalsEmpty;
+    detailProcessProposalsList.textContent = "";
+    proposals.forEach(function (proposal) {
+      const li = document.createElement("li");
+      li.className = "signal-detail__process-proposals-item";
+      const meta = document.createElement("p");
+      meta.className = "signal-detail__process-proposals-meta";
+      meta.textContent = proposal.authorDisplayName || "";
+      if (proposal.isMine) {
+        const badge = document.createElement("span");
+        badge.className = "signal-detail__process-proposals-badge";
+        badge.textContent = copy.proposalsMine;
+        meta.appendChild(badge);
+      }
+      const title = document.createElement("p");
+      title.className = "signal-detail__process-proposals-title";
+      title.textContent = proposal.title || "";
+      const body = document.createElement("p");
+      body.className = "signal-detail__process-proposals-body";
+      body.textContent = proposal.body || "";
+      li.appendChild(meta);
+      li.appendChild(title);
+      li.appendChild(body);
+      detailProcessProposalsList.appendChild(li);
+    });
+    civicProposalsCanProposeCache = data.canPropose === true;
+    detailProcessProposalsContribute.hidden = !civicProposalsCanProposeCache;
+    if (!civicProposalsCanProposeCache) closeCivicProposalsCompose();
+  }
+
+  async function loadSignalCivicProposals() {
+    const signalId = currentSignalApiId();
+    const token = ++civicProposalsLoadToken;
+    renderCivicProposalsLoading();
+    if (!signalId) {
+      if (token === civicProposalsLoadToken) renderCivicProposalsUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicProposals(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicProposalsLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        data.currentStage !== "proposals" ||
+        !Array.isArray(data.proposals)
+      ) {
+        if (token === civicProposalsLoadToken) renderCivicProposalsUnavailable();
+        return;
+      }
+      renderCivicProposals(data);
+    } catch (_err) {
+      if (token === civicProposalsLoadToken) renderCivicProposalsUnavailable();
+    }
+  }
+
+  function openCivicProposalsCompose() {
+    const copy = civicProcessCopy();
+    detailProcessProposalsComposeTitle.textContent = copy.proposalsAdd;
+    detailProcessProposalsTitleInput.setAttribute(
+      "aria-label",
+      copy.proposalsTitleLabel
+    );
+    detailProcessProposalsBodyInput.setAttribute(
+      "aria-label",
+      copy.proposalsBodyLabel
+    );
+    detailProcessProposalsSubmit.textContent = copy.proposalsSubmit;
+    detailProcessProposalsCancel.textContent = copy.cancel;
+    detailProcessProposalsNote.hidden = true;
+    detailProcessProposalsNote.textContent = "";
+    detailProcessProposalsCompose.hidden = false;
+    detailProcessProposalsContribute.hidden = true;
+    detailProcessProposalsTitleInput.focus();
+  }
+
+  function closeCivicProposalsCompose() {
+    detailProcessProposalsCompose.hidden = true;
+    detailProcessProposalsTitleInput.value = "";
+    detailProcessProposalsBodyInput.value = "";
+    detailProcessProposalsNote.hidden = true;
+    detailProcessProposalsNote.textContent = "";
+  }
+
+  async function submitCivicProposal() {
+    if (civicProposalSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const title = (detailProcessProposalsTitleInput.value || "").trim();
+    const body = (detailProcessProposalsBodyInput.value || "").trim();
+    if (!title || title.length > 160) {
+      detailProcessProposalsNote.textContent = copy.proposalsNeedTitle;
+      detailProcessProposalsNote.hidden = false;
+      detailProcessProposalsTitleInput.focus();
+      return;
+    }
+    if (!body || body.length > 2000) {
+      detailProcessProposalsNote.textContent = copy.proposalsNeedBody;
+      detailProcessProposalsNote.hidden = false;
+      detailProcessProposalsBodyInput.focus();
+      return;
+    }
+    civicProposalSubmitting = true;
+    detailProcessProposalsSubmit.disabled = true;
+    try {
+      const result = await submitSignalCivicProposal(signalId, title, body);
+      if (result.response && result.response.status === 201) {
+        closeCivicProposalsCompose();
+        await loadSignalCivicProposals();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessProposalsNote.textContent =
+        code === "CIVIC_PROPOSAL_ALREADY_SUBMITTED"
+          ? copy.proposalsErrorDuplicate
+          : code === "CIVIC_PROPOSAL_STAGE_CLOSED"
+            ? copy.proposalsErrorClosed
+            : copy.proposalsErrorGeneric;
+      detailProcessProposalsNote.hidden = false;
+    } catch (_err) {
+      detailProcessProposalsNote.textContent = copy.proposalsErrorGeneric;
+      detailProcessProposalsNote.hidden = false;
+    } finally {
+      civicProposalSubmitting = false;
+      detailProcessProposalsSubmit.disabled = false;
     }
   }
 
@@ -8317,6 +8672,7 @@
   function closeSignalDetail() {
     if (signalDetail.hidden) return;
     civicProcessLoadToken += 1;
+    resetCivicProposalsPanel();
     closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";
@@ -9169,6 +9525,23 @@
 
   detailSessionCancel.addEventListener("click", () => {
     closeSessionCompose({ keepDraft: false });
+  });
+
+  detailProcessProposalsContribute.addEventListener("click", () => {
+    openCivicProposalsCompose();
+  });
+
+  detailProcessProposalsCancel.addEventListener("click", () => {
+    detailProcessProposalsCompose.hidden = true;
+    detailProcessProposalsTitleInput.value = "";
+    detailProcessProposalsBodyInput.value = "";
+    detailProcessProposalsNote.hidden = true;
+    detailProcessProposalsNote.textContent = "";
+    detailProcessProposalsContribute.hidden = !civicProposalsCanProposeCache;
+  });
+
+  detailProcessProposalsSubmit.addEventListener("click", () => {
+    submitCivicProposal();
   });
 
   detailTestimonyInput.addEventListener("change", () => {

@@ -802,6 +802,80 @@
                   </span>
                 </li>
               </ol>
+              <div
+                class="signal-detail__process-proposals"
+                id="detail-process-proposals"
+                hidden
+              >
+                <p
+                  class="signal-detail__process-proposals-state"
+                  id="detail-process-proposals-state"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+                <p
+                  class="signal-detail__process-proposals-empty"
+                  id="detail-process-proposals-empty"
+                  hidden
+                ></p>
+                <ol
+                  class="signal-detail__process-proposals-list"
+                  id="detail-process-proposals-list"
+                ></ol>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-process-proposals-contribute"
+                  hidden
+                >
+                  Add a proposal
+                </button>
+                <div
+                  class="signal-detail__process-proposals-compose"
+                  id="detail-process-proposals-compose"
+                  hidden
+                >
+                  <p
+                    class="signal-detail__session-compose-title"
+                    id="detail-process-proposals-compose-title"
+                  ></p>
+                  <input
+                    type="text"
+                    class="signal-detail__process-proposals-title-input"
+                    id="detail-process-proposals-title-input"
+                    maxlength="160"
+                    aria-label="Proposal title"
+                  />
+                  <textarea
+                    class="signal-detail__session-input"
+                    id="detail-process-proposals-body-input"
+                    maxlength="2000"
+                    rows="4"
+                    aria-label="Proposal details"
+                  ></textarea>
+                  <div class="signal-detail__session-compose-actions">
+                    <button
+                      type="button"
+                      class="feed__primary"
+                      id="detail-process-proposals-submit"
+                    >
+                      Submit proposal
+                    </button>
+                    <button
+                      type="button"
+                      class="feed__secondary"
+                      id="detail-process-proposals-cancel"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <p
+                    class="signal-detail__process-proposals-note"
+                    id="detail-process-proposals-note"
+                    hidden
+                  ></p>
+                </div>
+              </div>
             </section>
 
             <!-- Paying members: civic discussion session toward a local solution — not chat. -->
@@ -1741,7 +1815,7 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=civic-confirmation-continuity-1" defer></script>
+    <script src="script.js?v=civic-process-proposals-1" defer></script>
   </body>
 </html>
 

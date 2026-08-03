@@ -55,8 +55,12 @@ assert(
 );
 assert(
   js.includes('data.currentStage !== "confirmation"') &&
-    js.includes('data.nextStage !== "proposals"'),
-  "client accepts only the truthful confirmation-stage contract"
+    js.includes('data.currentStage !== "proposals"') &&
+    js.includes('data.currentStage === "confirmation" &&') &&
+    js.includes('data.nextStage !== "proposals"') &&
+    js.includes('data.currentStage === "proposals" &&') &&
+    js.includes('data.nextStage !== "deliberation"'),
+  "client accepts only the truthful confirmation and proposals stage contract"
 );
 assert(
   js.includes("void loadSignalCivicProcess();"),
@@ -69,8 +73,39 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-confirmation-continuity-1"),
+  html.includes("script.js?v=civic-process-proposals-1"),
   "civic-process UI has a fresh browser cache key"
+);
+
+assert(html.includes('id="detail-process-proposals"'), "civic proposals panel markup present");
+assert(html.includes('id="detail-process-proposals-list"'), "civic proposals list markup present");
+assert(html.includes('id="detail-process-proposals-compose"'), "civic proposals compose markup present");
+assert(css.includes(".signal-detail__process-proposals"), "civic proposals panel styles present");
+assert(
+  js.includes('"/civic-process/proposals"') &&
+    js.includes("async function loadSignalCivicProposals()") &&
+    js.includes("async function submitCivicProposal()"),
+  "signal detail reads and writes the canonical civic proposals endpoint"
+);
+assert(
+  js.includes("void loadSignalCivicProposals();"),
+  "reaching the proposals stage loads its proposals"
+);
+assert(
+  js.includes('data.currentStage !== "proposals" ||') &&
+    js.includes("!Array.isArray(data.proposals)"),
+  "client fails closed when the proposals contract does not match"
+);
+assert(
+  js.includes("civicProposalsCanProposeCache = data.canPropose === true;") &&
+    js.includes("detailProcessProposalsContribute.hidden = !civicProposalsCanProposeCache;"),
+  "proposal compose visibility follows backend canPropose truth only"
+);
+assert(
+  !js.includes("proposalThreshold") &&
+    !js.includes("deliberationThreshold") &&
+    !js.includes("proposalsProgressPercent"),
+  "client does not invent proposal thresholds or progress percentages"
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
