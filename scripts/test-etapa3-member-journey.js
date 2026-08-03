@@ -69,7 +69,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-panel-1"),
+  html.includes("script.js?v=civic-confirmation-continuity-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -112,6 +112,15 @@ assert(
 );
 
 const activate = fnBody("activateSeeTooAction");
+assert(
+  activate.includes("keepEligibleDetailOpen") &&
+    activate.includes("await loadSignalCivicProcess()"),
+  "eligible detail confirmation stays visible and refreshes canonical process truth"
+);
+assert(
+  js.includes("keepEligibleDetailOpen: true"),
+  "detail confirmation opts into in-place civic-process continuity"
+);
 assert(
   !activate.includes("Legacy simulate") &&
     activate.includes("showTransientFeedNotice") &&
