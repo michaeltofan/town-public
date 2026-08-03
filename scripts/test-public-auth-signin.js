@@ -133,6 +133,20 @@ assert(
   "does not initiate Checkout"
 );
 
+const inertMatch = js.match(
+  /function setAuthFeedInert\(isInert\)\s*\{([\s\S]*?)\n  \}/
+);
+assert(!!inertMatch, "setAuthFeedInert helper exists");
+const inertBody = inertMatch ? inertMatch[1] : "";
+assert(
+  inertBody.includes("profilePanel.inert = isInert && authWindowOpen"),
+  "closing auth always restores Profile interaction before post-auth routing"
+);
+assert(
+  html.includes('script.js?v=post-passkey-profile-1'),
+  "post-passkey interaction fix has a fresh browser cache key"
+);
+
 assert(
   js.includes("const PRODUCT_ONLY_PUBLIC_MODE = true"),
   "product-only mode remains enabled"

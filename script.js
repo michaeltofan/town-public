@@ -7567,8 +7567,9 @@
     if (feedMain) feedMain.inert = isInert;
     if (signalDetail) signalDetail.inert = isInert;
     if (membershipInvite) membershipInvite.inert = isInert;
-    if (profilePanel && authWindow && !authWindow.hidden) {
-      profilePanel.inert = isInert;
+    if (profilePanel) {
+      const authWindowOpen = authWindow && !authWindow.hidden;
+      profilePanel.inert = isInert && authWindowOpen;
     }
   }
 
