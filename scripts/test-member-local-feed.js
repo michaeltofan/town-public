@@ -35,6 +35,11 @@ assert(
   "noticeNotYourCommunity helper exists"
 );
 assert(
+  js.includes("Your community is {home}. You can explore {explored}") &&
+    js.includes("Comunitatea ta este {home}. Poți explora {explored}"),
+  "wrong-community notice names home and explored communities"
+);
+assert(
   js.includes("function shouldOfferMembershipInvite("),
   "shouldOfferMembershipInvite helper exists"
 );

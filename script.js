@@ -102,7 +102,9 @@
   const profileActivityList = document.getElementById("profile-activity-list");
   const profileFeed = document.getElementById("profile-feed");
   const profileCreateSignal = document.getElementById("profile-create-signal");
-  const profileModeration = document.getElementById("profile-moderation");
+  const profilePlatformConsole = document.getElementById(
+    "profile-platform-console"
+  );
   const profileMembershipCta = document.getElementById("profile-membership-cta");
   const profileManageBilling = document.getElementById("profile-manage-billing");
   const profileSignOut = document.getElementById("profile-sign-out");
@@ -542,7 +544,7 @@
     !profileActivityList ||
     !profileFeed ||
     !profileCreateSignal ||
-    !profileModeration ||
+    !profilePlatformConsole ||
     !profileMembershipCta ||
     !profileManageBilling ||
     !profileSignOut ||
@@ -2422,6 +2424,8 @@
         "Couldn't load your civic activity — try again in a moment.",
       activityConfirmed: "You see this too",
       feedCta: "Back to feed",
+      publishInCommunity: "Publish in {community}",
+      platformConsoleCta: "Open platform console",
       membershipCta: "Continue membership",
       manageBillingCta: "Manage membership",
       signOutCta: "Sign out",
@@ -2460,6 +2464,8 @@
         "Impossibile caricare l’attività civica — riprova tra poco.",
       activityConfirmed: "Lo vedi anche tu",
       feedCta: "Torna al feed",
+      publishInCommunity: "Pubblica a {community}",
+      platformConsoleCta: "Apri la console della piattaforma",
       membershipCta: "Continua l’iscrizione",
       manageBillingCta: "Gestisci l’iscrizione",
       signOutCta: "Esci",
@@ -2498,6 +2504,8 @@
         "Bürgerliche Aktivität konnte nicht geladen werden — bitte gleich erneut versuchen.",
       activityConfirmed: "Du siehst das auch",
       feedCta: "Zurück zum Feed",
+      publishInCommunity: "In {community} veröffentlichen",
+      platformConsoleCta: "Plattformkonsole öffnen",
       membershipCta: "Mitgliedschaft fortsetzen",
       manageBillingCta: "Mitgliedschaft verwalten",
       signOutCta: "Abmelden",
@@ -2536,6 +2544,8 @@
         "Nu am putut încărca activitatea civică — încearcă din nou în curând.",
       activityConfirmed: "Vezi și tu",
       feedCta: "Înapoi la feed",
+      publishInCommunity: "Publică în {community}",
+      platformConsoleCta: "Deschide consola platformei",
       membershipCta: "Continuă membership-ul",
       manageBillingCta: "Gestionează membership-ul",
       signOutCta: "Deconectare",
@@ -2701,11 +2711,42 @@
     return sceneCityId === homeCityId;
   }
 
-  function noticeNotYourCommunity() {
+  const WRONG_COMMUNITY_COPY = {
+    en: "Your community is {home}. You can explore {explored}, but you can participate only in {home}.",
+    es: "Tu comunidad es {home}. Puedes explorar {explored}, pero solo puedes participar en {home}.",
+    it: "La tua comunità è {home}. Puoi esplorare {explored}, ma puoi partecipare solo a {home}.",
+    de: "Deine Gemeinschaft ist {home}. Du kannst {explored} erkunden, aber nur in {home} teilnehmen.",
+    ro: "Comunitatea ta este {home}. Poți explora {explored}, dar poți participa doar în {home}.",
+  };
+
+  function cityNameForReadingLanguage(cityId, lang) {
+    const i18nCopy =
+      window.TownPublicI18n &&
+      typeof window.TownPublicI18n.feedChromeCopy === "function"
+        ? window.TownPublicI18n.feedChromeCopy(lang)
+        : null;
+    if (i18nCopy && i18nCopy.cityNames && i18nCopy.cityNames[cityId]) {
+      return i18nCopy.cityNames[cityId];
+    }
+    const fallback = FEED_COPY[lang] || FEED_COPY.en;
+    return (fallback.cityNames && fallback.cityNames[cityId]) || cityId || "";
+  }
+
+  function noticeNotYourCommunity(scene) {
+    const lang = resolvePublicReadingLanguage();
+    const homeCityId = memberHomeCityId();
+    const exploredCityId = cityIdFromScene(
+      scene || currentScenes()[feedIndex]
+    );
+    const template = WRONG_COMMUNITY_COPY[lang] || WRONG_COMMUNITY_COPY.en;
+    const home = cityNameForReadingLanguage(homeCityId, lang);
+    const explored = cityNameForReadingLanguage(exploredCityId, lang);
     const copy = currentFeedCopy();
     showTransientFeedNotice(
-      copy.notYourCommunity ||
-        "You can explore, but participation is reserved for the local community."
+      home && explored
+        ? template.replace(/\{home\}/g, home).replace("{explored}", explored)
+        : copy.notYourCommunity ||
+            "You can explore, but participation is reserved for the local community."
     );
   }
 
@@ -5529,7 +5570,8 @@
   let signalCreateSubmitting = false;
 
   function signalCreateCopy() {
-    return SIGNAL_CREATE_COPY[membershipLang()] || SIGNAL_CREATE_COPY.en;
+    const lang = resolvePublicReadingLanguage();
+    return SIGNAL_CREATE_COPY[lang] || SIGNAL_CREATE_COPY.en;
   }
 
   function currentCommunitySlug() {
@@ -5540,22 +5582,15 @@
     ) {
       return String(commitmentSnapshot.community.slug);
     }
-    const city =
-      (commitmentSnapshot &&
-        commitmentSnapshot.community &&
-        (commitmentSnapshot.community.cityName ||
-          commitmentSnapshot.community.displayName)) ||
-      selectedCity ||
-      "";
-    if (CITY_API_SLUG[city]) return CITY_API_SLUG[city];
-    if (city === "München") return CITY_API_SLUG.Munich;
-    return CITY_API_SLUG[selectedCity] || null;
+    // Member publishing is always scoped by the authoritative commitment.
+    // The city currently being explored is presentation state, never authority.
+    return null;
   }
 
   function fillSignalCreateCategories() {
-    const city = selectedCity || "Milano";
+    const city = memberHomeCityId();
     const categories =
-      SIGNAL_CREATE_CATEGORIES[city] || SIGNAL_CREATE_CATEGORIES.Milano;
+      SIGNAL_CREATE_CATEGORIES[city] || [];
     signalCreateCategory.innerHTML = "";
     for (let i = 0; i < categories.length; i++) {
       const option = document.createElement("option");
@@ -6374,8 +6409,6 @@
       communityName =
         commitmentSnapshot.community.displayName ||
         commitmentSnapshot.community.cityName;
-    } else if (selectedCity) {
-      communityName = selectedCity;
     }
 
     profileLabel.textContent = copy.label;
@@ -6401,16 +6434,12 @@
     profileSignOut.disabled =
       profileBillingSubmitting || profileSignOutSubmitting;
     clearProfileStatus();
-    profileCreateSignal.hidden = !canTakeCivicAction();
-    profileCreateSignal.textContent =
-      (SIGNAL_CREATE_COPY[membershipLang()] &&
-        SIGNAL_CREATE_COPY[membershipLang()].profileCta) ||
-      "Publish a civic signal";
-    profileModeration.hidden = !canUseOwnerModeration();
-    profileModeration.textContent =
-      (OWNER_MODERATION_COPY[membershipLang()] &&
-        OWNER_MODERATION_COPY[membershipLang()].profileCta) ||
-      "Moderation";
+    profileCreateSignal.hidden = !civicOk || !communityName;
+    profileCreateSignal.textContent = communityName
+      ? copy.publishInCommunity.replace("{community}", communityName)
+      : copy.publishInCommunity.replace("{community}", "");
+    profilePlatformConsole.hidden = !ownerAccount;
+    profilePlatformConsole.textContent = copy.platformConsoleCta;
 
     profileActivityList.innerHTML = "";
     profileActivityEmpty.hidden = true;
@@ -9072,8 +9101,8 @@
     openSignalCreate();
   });
 
-  profileModeration.addEventListener("click", () => {
-    openOwnerModeration();
+  profilePlatformConsole.addEventListener("click", () => {
+    window.location.href = "/platform/";
   });
 
   ownerModerationClose.addEventListener("click", () => {

@@ -29,6 +29,20 @@ assert(html.includes('id="signal-create-accept"'), "responsibility checkbox pres
 assert(html.includes('accept="image/jpeg,image/png,image/webp"'), "photo accept types");
 assert(js.includes("function openSignalCreate"), "open helper");
 assert(js.includes("function publishMemberSignal"), "publish helper");
+assert(
+  js.includes("const city = memberHomeCityId();"),
+  "categories come from the committed community"
+);
+const slugHelper = js.match(
+  /function currentCommunitySlug\(\)\s*\{([\s\S]*?)\n  \}/
+);
+assert(!!slugHelper, "community slug helper readable");
+assert(
+  slugHelper &&
+    slugHelper[1].includes("commitmentSnapshot.community.slug") &&
+    !slugHelper[1].includes("selectedCity"),
+  "publishing scope never falls back to explored city"
+);
 assert(js.includes("/signals/media"), "media upload path");
 assert(js.includes('acceptedResponsibility: true'), "reaffirms existing responsibility");
 assert(js.includes("realName: realName"), "publishes real name");

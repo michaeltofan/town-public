@@ -22,7 +22,14 @@ function assert(cond, message) {
 }
 
 assert(html.includes('id="owner-moderation"'), "moderation sheet present");
-assert(html.includes('id="profile-moderation"'), "profile moderation CTA present");
+assert(
+  !html.includes('id="profile-moderation"'),
+  "generic moderation CTA removed from profile"
+);
+assert(
+  html.includes('id="profile-platform-console"'),
+  "profile has dedicated platform console CTA"
+);
 assert(html.includes('id="owner-moderation-reason"'), "reason select present");
 assert(html.includes('id="owner-moderation-signals-list"'), "signals list present");
 assert(html.includes('id="owner-moderation-accounts-list"'), "suspended accounts list present");
@@ -42,6 +49,10 @@ assert(
 assert(js.includes("/v1/moderation/accounts/suspended"), "suspended inventory path");
 assert(js.includes('"immoral"'), "fixed reason categories");
 assert(js.includes("isOwnerAccount"), "uses membership isOwner");
+assert(
+  js.includes('window.location.href = "/platform/"'),
+  "owner CTA routes to dedicated platform console"
+);
 assert(!js.includes("pending_review"), "does not introduce approval queue");
 assert(!js.includes("/report"), "does not introduce report UI");
 
