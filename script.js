@@ -287,6 +287,43 @@
   const detailProcessMandateTally = document.getElementById(
     "detail-process-mandate-tally"
   );
+  const detailProcessAction = document.getElementById("detail-process-action");
+  const detailProcessActionState = document.getElementById(
+    "detail-process-action-state"
+  );
+  const detailProcessActionWinner = document.getElementById(
+    "detail-process-action-winner"
+  );
+  const detailProcessActionAuthor = document.getElementById(
+    "detail-process-action-author"
+  );
+  const detailProcessActionTitle = document.getElementById(
+    "detail-process-action-title"
+  );
+  const detailProcessActionBody = document.getElementById(
+    "detail-process-action-body"
+  );
+  const detailProcessActionList = document.getElementById(
+    "detail-process-action-list"
+  );
+  const detailProcessActionContribute = document.getElementById(
+    "detail-process-action-contribute"
+  );
+  const detailProcessActionCompose = document.getElementById(
+    "detail-process-action-compose"
+  );
+  const detailProcessActionInput = document.getElementById(
+    "detail-process-action-input"
+  );
+  const detailProcessActionSubmit = document.getElementById(
+    "detail-process-action-submit"
+  );
+  const detailProcessActionCancel = document.getElementById(
+    "detail-process-action-cancel"
+  );
+  const detailProcessActionNote = document.getElementById(
+    "detail-process-action-note"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -747,6 +784,19 @@
     !detailProcessMandateTitle ||
     !detailProcessMandateBody ||
     !detailProcessMandateTally ||
+    !detailProcessAction ||
+    !detailProcessActionState ||
+    !detailProcessActionWinner ||
+    !detailProcessActionAuthor ||
+    !detailProcessActionTitle ||
+    !detailProcessActionBody ||
+    !detailProcessActionList ||
+    !detailProcessActionContribute ||
+    !detailProcessActionCompose ||
+    !detailProcessActionInput ||
+    !detailProcessActionSubmit ||
+    !detailProcessActionCancel ||
+    !detailProcessActionNote ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3274,6 +3324,17 @@
       mandateUnavailable: "The mandate is temporarily unavailable.",
       mandateContested: "No winner: the top proposals tied.",
       mandatePending: "The vote has not closed yet.",
+      verification: "Verification",
+      actionLoading: "Loading the action…",
+      actionUnavailable: "Action is temporarily unavailable.",
+      actionPending: "The mandate is not yet decided.",
+      actionCanPost: "You can add a status update.",
+      actionMine: "Yours",
+      actionInputLabel: "Status update",
+      actionSubmit: "Submit status update",
+      actionNeedText: "Write at least 12 characters.",
+      actionErrorGeneric: "Something went wrong. Try again.",
+      actionErrorClosed: "This stage is closed.",
       mandateTotalVotesLabel: "{count} total votes",
     },
     es: {
@@ -3345,6 +3406,17 @@
       mandateUnavailable: "El mandato no está disponible temporalmente.",
       mandateContested: "Sin ganador: las propuestas principales empataron.",
       mandatePending: "La votación aún no ha cerrado.",
+      verification: "Verificación",
+      actionLoading: "Cargando la acción…",
+      actionUnavailable: "La acción no está disponible temporalmente.",
+      actionPending: "El mandato aún no está decidido.",
+      actionCanPost: "Puedes añadir una actualización de estado.",
+      actionMine: "Tuya",
+      actionInputLabel: "Actualización de estado",
+      actionSubmit: "Enviar actualización",
+      actionNeedText: "Escribe al menos 12 caracteres.",
+      actionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      actionErrorClosed: "Esta etapa está cerrada.",
       mandateTotalVotesLabel: "{count} votos en total",
     },
     it: {
@@ -3415,6 +3487,17 @@
       mandateUnavailable: "Il mandato non è temporaneamente disponibile.",
       mandateContested: "Nessun vincitore: le proposte principali sono in parità.",
       mandatePending: "Il voto non è ancora chiuso.",
+      verification: "Verifica",
+      actionLoading: "Caricamento dell'azione…",
+      actionUnavailable: "L'azione non è temporaneamente disponibile.",
+      actionPending: "Il mandato non è ancora deciso.",
+      actionCanPost: "Puoi aggiungere un aggiornamento di stato.",
+      actionMine: "Tuo",
+      actionInputLabel: "Aggiornamento di stato",
+      actionSubmit: "Invia aggiornamento",
+      actionNeedText: "Scrivi almeno 12 caratteri.",
+      actionErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      actionErrorClosed: "Questa fase è chiusa.",
       mandateTotalVotesLabel: "{count} voti totali",
     },
     de: {
@@ -3487,6 +3570,17 @@
       mandateUnavailable: "Das Mandat ist vorübergehend nicht verfügbar.",
       mandateContested: "Kein Sieger: die führenden Vorschläge sind gleichauf.",
       mandatePending: "Die Abstimmung ist noch nicht geschlossen.",
+      verification: "Überprüfung",
+      actionLoading: "Umsetzung wird geladen…",
+      actionUnavailable: "Die Umsetzung ist vorübergehend nicht verfügbar.",
+      actionPending: "Das Mandat ist noch nicht entschieden.",
+      actionCanPost: "Du kannst ein Status-Update hinzufügen.",
+      actionMine: "Deins",
+      actionInputLabel: "Status-Update",
+      actionSubmit: "Status-Update einreichen",
+      actionNeedText: "Schreibe mindestens 12 Zeichen.",
+      actionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      actionErrorClosed: "Diese Phase ist geschlossen.",
       mandateTotalVotesLabel: "{count} Stimmen insgesamt",
     },
     ro: {
@@ -3557,6 +3651,17 @@
       mandateUnavailable: "Mandatul este temporar indisponibil.",
       mandateContested: "Niciun câștigător: propunerile de top au fost la egalitate.",
       mandatePending: "Votul nu s-a închis încă.",
+      verification: "Verificare",
+      actionLoading: "Se încarcă acțiunea…",
+      actionUnavailable: "Acțiunea este temporar indisponibilă.",
+      actionPending: "Mandatul nu este încă decis.",
+      actionCanPost: "Poți adăuga o actualizare de stare.",
+      actionMine: "A ta",
+      actionInputLabel: "Actualizare de stare",
+      actionSubmit: "Trimite actualizarea",
+      actionNeedText: "Scrie cel puțin 12 caractere.",
+      actionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      actionErrorClosed: "Această etapă este închisă.",
       mandateTotalVotesLabel: "{count} voturi în total",
     },
   };
@@ -3590,6 +3695,8 @@
     resetCivicVotingPanel();
     detailProcessMandate.hidden = true;
     resetCivicMandatePanel();
+    detailProcessAction.hidden = true;
+    resetCivicActionPanel();
   }
 
   function renderCivicProcessUnavailable() {
@@ -3609,6 +3716,8 @@
     resetCivicVotingPanel();
     detailProcessMandate.hidden = true;
     resetCivicMandatePanel();
+    detailProcessAction.hidden = true;
+    resetCivicActionPanel();
   }
 
   function formatCivicProcessTime(value) {
@@ -3634,12 +3743,14 @@
     const isBallotPreparationStage = data.currentStage === "ballot_preparation";
     const isVotingStage = data.currentStage === "voting";
     const isMandateStage = data.currentStage === "mandate";
+    const isActionStage = data.currentStage === "action";
     const isOpenStage =
       isProposalsStage ||
       isDeliberationStage ||
       isBallotPreparationStage ||
       isVotingStage ||
-      isMandateStage;
+      isMandateStage ||
+      isActionStage;
     detailProcessStage.textContent = isProposalsStage
       ? copy.proposals
       : isDeliberationStage
@@ -3650,7 +3761,9 @@
             ? copy.voting
             : isMandateStage
               ? copy.mandate
-              : copy.stage;
+              : isActionStage
+                ? copy.action
+                : copy.stage;
     detailProcessStage.hidden = false;
     detailProcessState.hidden = isOpenStage;
     detailProcessState.textContent = isOpenStage
@@ -3674,7 +3787,9 @@
                 ? copy.mandate
                 : data.nextStage === "action"
                   ? copy.action
-                  : "";
+                  : data.nextStage === "verification"
+                    ? copy.verification
+                    : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3718,6 +3833,13 @@
       detailProcessMandate.hidden = true;
       resetCivicMandatePanel();
     }
+    if (isActionStage) {
+      detailProcessAction.hidden = false;
+      void loadSignalCivicAction();
+    } else {
+      detailProcessAction.hidden = true;
+      resetCivicActionPanel();
+    }
   }
 
   async function loadSignalCivicProcess() {
@@ -3747,7 +3869,8 @@
           data.currentStage !== "deliberation" &&
           data.currentStage !== "ballot_preparation" &&
           data.currentStage !== "voting" &&
-          data.currentStage !== "mandate") ||
+          data.currentStage !== "mandate" &&
+          data.currentStage !== "action") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
@@ -3758,7 +3881,8 @@
         (data.currentStage === "ballot_preparation" &&
           data.nextStage !== "voting") ||
         (data.currentStage === "voting" && data.nextStage !== "mandate") ||
-        (data.currentStage === "mandate" && data.nextStage !== "action")
+        (data.currentStage === "mandate" && data.nextStage !== "action") ||
+        (data.currentStage === "action" && data.nextStage !== "verification")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -4572,6 +4696,193 @@
       renderCivicMandate(data);
     } catch (_err) {
       if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
+    }
+  }
+
+  let civicActionLoadToken = 0;
+  let civicActionSubmitting = false;
+  let civicActionCanPostCache = false;
+
+  function closeCivicActionCompose() {
+    detailProcessActionCompose.hidden = true;
+    detailProcessActionInput.value = "";
+    detailProcessActionNote.hidden = true;
+    detailProcessActionNote.textContent = "";
+  }
+
+  function resetCivicActionPanel() {
+    civicActionLoadToken += 1;
+    civicActionCanPostCache = false;
+    detailProcessActionState.textContent = "";
+    detailProcessActionWinner.hidden = true;
+    detailProcessActionAuthor.textContent = "";
+    detailProcessActionTitle.textContent = "";
+    detailProcessActionBody.textContent = "";
+    detailProcessActionList.textContent = "";
+    detailProcessActionContribute.hidden = true;
+    closeCivicActionCompose();
+  }
+
+  async function fetchSignalCivicAction(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/action"
+    );
+  }
+
+  async function submitSignalCivicActionUpdate(signalId, text) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/action/updates",
+      { text: text }
+    );
+  }
+
+  function renderCivicActionLoading() {
+    const copy = civicProcessCopy();
+    detailProcessActionState.textContent = copy.actionLoading;
+    detailProcessActionWinner.hidden = true;
+    detailProcessActionList.textContent = "";
+    detailProcessActionContribute.hidden = true;
+    closeCivicActionCompose();
+  }
+
+  function renderCivicActionUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessActionState.textContent = copy.actionUnavailable;
+    detailProcessActionWinner.hidden = true;
+    detailProcessActionList.textContent = "";
+    detailProcessActionContribute.hidden = true;
+    closeCivicActionCompose();
+  }
+
+  function buildActionUpdateItem(copy, update) {
+    const li = document.createElement("li");
+    li.className = "signal-detail__process-action-item";
+    const meta = document.createElement("p");
+    meta.className = "signal-detail__process-action-meta";
+    meta.textContent = update.authorDisplayName || "";
+    if (update.isMine) {
+      const badge = document.createElement("span");
+      badge.className = "signal-detail__process-action-badge";
+      badge.textContent = copy.actionMine;
+      meta.appendChild(badge);
+    }
+    const text = document.createElement("p");
+    text.className = "signal-detail__process-action-text";
+    text.textContent = update.text || "";
+    li.appendChild(meta);
+    li.appendChild(text);
+    return li;
+  }
+
+  function renderCivicAction(data) {
+    const copy = civicProcessCopy();
+    const winner = data.winner;
+    if (winner) {
+      detailProcessActionWinner.hidden = false;
+      detailProcessActionAuthor.textContent = winner.authorDisplayName || "";
+      detailProcessActionTitle.textContent = winner.title || "";
+      detailProcessActionBody.textContent = winner.body || "";
+    } else {
+      detailProcessActionWinner.hidden = true;
+    }
+    const updates = Array.isArray(data.updates) ? data.updates : [];
+    detailProcessActionState.textContent =
+      data.currentStage !== "action"
+        ? copy.actionPending
+        : data.canPost
+          ? copy.actionCanPost
+          : copy.readOnly;
+    detailProcessActionList.textContent = "";
+    for (let i = 0; i < updates.length; i++) {
+      detailProcessActionList.appendChild(buildActionUpdateItem(copy, updates[i]));
+    }
+    civicActionCanPostCache = data.canPost === true;
+    detailProcessActionContribute.hidden = !civicActionCanPostCache;
+    if (!civicActionCanPostCache) closeCivicActionCompose();
+  }
+
+  async function loadSignalCivicAction() {
+    const signalId = currentSignalApiId();
+    const token = ++civicActionLoadToken;
+    renderCivicActionLoading();
+    if (!signalId) {
+      if (token === civicActionLoadToken) renderCivicActionUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicAction(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicActionLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        (data.currentStage !== "mandate" && data.currentStage !== "action") ||
+        typeof data.canPost !== "boolean" ||
+        !Array.isArray(data.updates)
+      ) {
+        if (token === civicActionLoadToken) renderCivicActionUnavailable();
+        return;
+      }
+      renderCivicAction(data);
+    } catch (_err) {
+      if (token === civicActionLoadToken) renderCivicActionUnavailable();
+    }
+  }
+
+  function openCivicActionCompose() {
+    const copy = civicProcessCopy();
+    detailProcessActionInput.setAttribute("aria-label", copy.actionInputLabel);
+    detailProcessActionSubmit.textContent = copy.actionSubmit;
+    detailProcessActionCancel.textContent = copy.cancel;
+    detailProcessActionNote.hidden = true;
+    detailProcessActionNote.textContent = "";
+    detailProcessActionCompose.hidden = false;
+    detailProcessActionContribute.hidden = true;
+    detailProcessActionInput.focus();
+  }
+
+  async function submitCivicActionUpdate() {
+    if (civicActionSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const text = (detailProcessActionInput.value || "").trim();
+    if (text.length < 12 || text.length > 480) {
+      detailProcessActionNote.textContent = copy.actionNeedText;
+      detailProcessActionNote.hidden = false;
+      detailProcessActionInput.focus();
+      return;
+    }
+    civicActionSubmitting = true;
+    detailProcessActionSubmit.disabled = true;
+    try {
+      const result = await submitSignalCivicActionUpdate(signalId, text);
+      if (result.response && result.response.status === 201) {
+        closeCivicActionCompose();
+        await loadSignalCivicAction();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessActionNote.textContent =
+        code === "CIVIC_ACTION_STAGE_CLOSED"
+          ? copy.actionErrorClosed
+          : copy.actionErrorGeneric;
+      detailProcessActionNote.hidden = false;
+    } catch (_err) {
+      detailProcessActionNote.textContent = copy.actionErrorGeneric;
+      detailProcessActionNote.hidden = false;
+    } finally {
+      civicActionSubmitting = false;
+      detailProcessActionSubmit.disabled = false;
     }
   }
 
@@ -10472,6 +10783,22 @@
 
   detailProcessVotingSubmit.addEventListener("click", () => {
     submitCivicVote();
+  });
+
+  detailProcessActionContribute.addEventListener("click", () => {
+    openCivicActionCompose();
+  });
+
+  detailProcessActionCancel.addEventListener("click", () => {
+    detailProcessActionCompose.hidden = true;
+    detailProcessActionInput.value = "";
+    detailProcessActionNote.hidden = true;
+    detailProcessActionNote.textContent = "";
+    detailProcessActionContribute.hidden = !civicActionCanPostCache;
+  });
+
+  detailProcessActionSubmit.addEventListener("click", () => {
+    submitCivicActionUpdate();
   });
 
   detailTestimonyInput.addEventListener("change", () => {
