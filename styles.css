@@ -2859,6 +2859,151 @@ body.page-feed {
   display: none !important;
 }
 
+.signal-detail__process-deliberation {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(244, 239, 230, 0.14);
+}
+
+.signal-detail__process-deliberation[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-deliberation-state {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(244, 239, 230, 0.82);
+}
+
+.signal-detail__process-deliberation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.signal-detail__process-deliberation-list:empty {
+  display: none;
+}
+
+.signal-detail__process-deliberation-item {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(244, 239, 230, 0.16);
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.signal-detail__process-deliberation-proposal-meta {
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__process-deliberation-proposal-title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #faf6ef;
+}
+
+.signal-detail__process-deliberation-proposal-body {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #f4efe6;
+}
+
+.signal-detail__process-deliberation-badge,
+.signal-detail__process-deliberation-intent-badge {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.signal-detail__process-deliberation-badge {
+  color: #f7d968;
+}
+
+.signal-detail__process-deliberation-intent-badge {
+  color: rgba(232, 119, 46, 0.95);
+}
+
+.signal-detail__process-deliberation-contributions {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0 0 0 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.signal-detail__process-deliberation-contributions:empty {
+  display: none;
+}
+
+.signal-detail__process-deliberation-contribution {
+  margin: 0;
+  padding: 0 0 0 0.85rem;
+  border-left: 2px solid rgba(232, 119, 46, 0.4);
+}
+
+.signal-detail__process-deliberation-contribution-meta {
+  margin: 0 0 0.2rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.6);
+}
+
+.signal-detail__process-deliberation-contribution-text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #f4efe6;
+}
+
+.signal-detail__process-deliberation-contributions-empty {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(244, 239, 230, 0.55);
+}
+
+.signal-detail__process-deliberation-compose {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+}
+
+.signal-detail__process-deliberation-compose[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-deliberation-note {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(247, 158, 105, 0.92);
+}
+
+.signal-detail__process-deliberation-note[hidden] {
+  display: none !important;
+}
+
 /* Civic discussion session on a signal — solution-oriented, not chat. */
 .signal-detail__session {
   animation: town-session-in 0.55s ease both;
