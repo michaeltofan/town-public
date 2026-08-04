@@ -892,6 +892,35 @@
                   id="detail-process-deliberation-list"
                 ></ol>
               </div>
+              <div
+                class="signal-detail__process-voting"
+                id="detail-process-voting"
+                hidden
+              >
+                <p
+                  class="signal-detail__process-voting-state"
+                  id="detail-process-voting-state"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+                <ol
+                  class="signal-detail__process-voting-list"
+                  id="detail-process-voting-list"
+                ></ol>
+                <button
+                  type="button"
+                  class="feed__primary"
+                  id="detail-process-voting-submit"
+                  hidden
+                >
+                  Submit vote
+                </button>
+                <p
+                  class="signal-detail__process-voting-note"
+                  id="detail-process-voting-note"
+                  hidden
+                ></p>
+              </div>
             </section>
 
             <!-- Paying members: civic discussion session toward a local solution — not chat. -->
@@ -1831,7 +1860,7 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=civic-process-ballot-preparation-1" defer></script>
+    <script src="script.js?v=civic-process-voting-1" defer></script>
   </body>
 </html>
 

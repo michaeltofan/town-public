@@ -3004,6 +3004,115 @@ body.page-feed {
   display: none !important;
 }
 
+.signal-detail__process-voting {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(244, 239, 230, 0.14);
+}
+
+.signal-detail__process-voting[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-voting-state {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(244, 239, 230, 0.82);
+}
+
+.signal-detail__process-voting-list {
+  list-style: none;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.signal-detail__process-voting-list:empty {
+  display: none;
+}
+
+.signal-detail__process-voting-item {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(244, 239, 230, 0.16);
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.signal-detail__process-voting-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  cursor: pointer;
+}
+
+.signal-detail__process-voting-option input {
+  margin-top: 0.35rem;
+  accent-color: #e8772e;
+  flex: 0 0 auto;
+}
+
+.signal-detail__process-voting-option-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.signal-detail__process-voting-meta {
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__process-voting-badge {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #f7d968;
+}
+
+.signal-detail__process-voting-title {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #faf6ef;
+}
+
+.signal-detail__process-voting-body {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #f4efe6;
+}
+
+.signal-detail__process-voting-count {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(232, 119, 46, 0.95);
+}
+
+.signal-detail__process-voting-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(247, 158, 105, 0.92);
+}
+
+.signal-detail__process-voting-note[hidden] {
+  display: none !important;
+}
+
 /* Civic discussion session on a signal — solution-oriented, not chat. */
 .signal-detail__session {
   animation: town-session-in 0.55s ease both;

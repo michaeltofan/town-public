@@ -89,7 +89,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-ballot-preparation-1"),
+  html.includes("script.js?v=civic-process-voting-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -178,6 +178,52 @@ assert(
     return !!fn && fn[0].includes("sessionIntent");
   })(),
   "discussion-session intent label helper is untouched (no name collision with deliberation)",
+);
+
+assert(
+  html.includes('id="detail-process-voting"'),
+  "civic voting panel markup present",
+);
+assert(
+  html.includes('id="detail-process-voting-list"'),
+  "civic voting list markup present",
+);
+assert(
+  css.includes(".signal-detail__process-voting"),
+  "civic voting panel styles present",
+);
+assert(
+  js.includes('"/civic-process/voting"') &&
+    js.includes('"/civic-process/voting/vote"') &&
+    js.includes("async function loadSignalCivicVoting()") &&
+    js.includes("async function submitCivicVote()"),
+  "signal detail reads and writes the canonical civic voting endpoint",
+);
+assert(
+  js.includes("void loadSignalCivicVoting();"),
+  "reaching the voting stage loads the vote",
+);
+assert(
+  js.includes(
+    '(data.currentStage !== "ballot_preparation" &&\n          data.currentStage !== "voting") ||',
+  ) && js.includes("!Array.isArray(data.options)"),
+  "client fails closed when the voting contract does not match",
+);
+assert(
+  js.includes("detailProcessVotingSubmit.hidden = !data.canVote;") &&
+    !js.includes("detailProcessVotingSubmit.hidden = false;"),
+  "vote submission visibility follows backend canVote truth only",
+);
+assert(
+  js.includes('option.proposalId === data.myChoice') &&
+    js.includes("copy.yourVote"),
+  "voting marks the caller's own choice without exposing who else voted",
+);
+assert(
+  !js.includes("voteThreshold") &&
+    !js.includes("quorumCount") &&
+    !js.includes("winningProposal"),
+  "client does not invent a quorum, threshold, or winner",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
