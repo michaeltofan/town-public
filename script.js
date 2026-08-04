@@ -3196,6 +3196,7 @@
       deliberationLoading: "Loading deliberation…",
       deliberationUnavailable: "Deliberation is temporarily unavailable.",
       deliberationCanContribute: "You can add a structured contribution to any proposal.",
+      ballotFinalOptions: "These are the final ballot options from deliberation.",
       deliberationEmpty: "No proposals to deliberate yet.",
       contributionsEmpty: "No contributions yet.",
       addContribution: "Add a contribution",
@@ -3248,6 +3249,7 @@
       deliberationUnavailable: "La deliberación no está disponible temporalmente.",
       deliberationCanContribute:
         "Puedes añadir una contribución estructurada a cualquier propuesta.",
+      ballotFinalOptions: "Estas son las opciones finales de la votación tras la deliberación.",
       deliberationEmpty: "Todavía no hay propuestas para deliberar.",
       contributionsEmpty: "Todavía no hay contribuciones.",
       addContribution: "Añadir una contribución",
@@ -3299,6 +3301,7 @@
       deliberationLoading: "Caricamento della deliberazione…",
       deliberationUnavailable: "La deliberazione non è temporaneamente disponibile.",
       deliberationCanContribute: "Puoi aggiungere un contributo strutturato a qualsiasi proposta.",
+      ballotFinalOptions: "Queste sono le opzioni finali del voto dopo la deliberazione.",
       deliberationEmpty: "Nessuna proposta da deliberare ancora.",
       contributionsEmpty: "Nessun contributo ancora.",
       addContribution: "Aggiungi un contributo",
@@ -3351,6 +3354,8 @@
       deliberationUnavailable: "Die Beratung ist vorübergehend nicht verfügbar.",
       deliberationCanContribute:
         "Du kannst zu jedem Vorschlag einen strukturierten Beitrag hinzufügen.",
+      ballotFinalOptions:
+        "Dies sind die endgültigen Abstimmungsoptionen nach der Beratung.",
       deliberationEmpty: "Noch keine Vorschläge zur Beratung.",
       contributionsEmpty: "Noch keine Beiträge.",
       addContribution: "Beitrag hinzufügen",
@@ -3402,6 +3407,7 @@
       deliberationLoading: "Se încarcă deliberarea…",
       deliberationUnavailable: "Deliberarea este temporar indisponibilă.",
       deliberationCanContribute: "Poți adăuga o contribuție structurată la orice propunere.",
+      ballotFinalOptions: "Acestea sunt opțiunile finale de vot rezultate din deliberare.",
       deliberationEmpty: "Nu există încă propuneri de deliberat.",
       contributionsEmpty: "Nu există încă contribuții.",
       addContribution: "Adaugă o contribuție",
@@ -3490,17 +3496,16 @@
           ? copy.ballotPreparation
           : copy.stage;
     detailProcessStage.hidden = false;
-    detailProcessState.hidden = isProposalsStage || isDeliberationStage;
+    detailProcessState.hidden =
+      isProposalsStage || isDeliberationStage || isBallotPreparationStage;
     detailProcessState.textContent =
-      isProposalsStage || isDeliberationStage
+      isProposalsStage || isDeliberationStage || isBallotPreparationStage
         ? ""
-        : isBallotPreparationStage
-          ? copy.readOnly
-          : data.hasConfirmed
-            ? copy.confirmed
-            : data.canConfirm
-              ? copy.canConfirm
-              : copy.readOnly;
+        : data.hasConfirmed
+          ? copy.confirmed
+          : data.canConfirm
+            ? copy.canConfirm
+            : copy.readOnly;
     detailProcessConfirmations.textContent = String(data.confirmationCount);
     detailProcessNext.textContent =
       data.nextStage === "proposals"
@@ -3534,7 +3539,7 @@
       detailProcessProposals.hidden = true;
       resetCivicProposalsPanel();
     }
-    if (isDeliberationStage) {
+    if (isDeliberationStage || isBallotPreparationStage) {
       detailProcessDeliberation.hidden = false;
       void loadSignalCivicDeliberation();
     } else {
@@ -4019,12 +4024,15 @@
   function renderCivicDeliberation(data) {
     const copy = civicProcessCopy();
     const proposals = Array.isArray(data.proposals) ? data.proposals : [];
+    const isBallotPreparation = data.currentStage === "ballot_preparation";
     detailProcessDeliberationState.textContent =
       proposals.length === 0
         ? copy.deliberationEmpty
-        : data.canContribute
-          ? copy.deliberationCanContribute
-          : copy.readOnly;
+        : isBallotPreparation
+          ? copy.ballotFinalOptions
+          : data.canContribute
+            ? copy.deliberationCanContribute
+            : copy.readOnly;
     detailProcessDeliberationList.textContent = "";
     const canContribute = data.canContribute === true;
     for (let i = 0; i < proposals.length; i++) {
@@ -4051,7 +4059,8 @@
         result.response.status !== 200 ||
         !data ||
         data.processId == null ||
-        data.currentStage !== "deliberation" ||
+        (data.currentStage !== "deliberation" &&
+          data.currentStage !== "ballot_preparation") ||
         !Array.isArray(data.proposals)
       ) {
         if (token === civicDeliberationLoadToken) renderCivicDeliberationUnavailable();
