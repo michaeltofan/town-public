@@ -253,6 +253,19 @@
   const detailProcessDeliberationList = document.getElementById(
     "detail-process-deliberation-list"
   );
+  const detailProcessVoting = document.getElementById("detail-process-voting");
+  const detailProcessVotingState = document.getElementById(
+    "detail-process-voting-state"
+  );
+  const detailProcessVotingList = document.getElementById(
+    "detail-process-voting-list"
+  );
+  const detailProcessVotingSubmit = document.getElementById(
+    "detail-process-voting-submit"
+  );
+  const detailProcessVotingNote = document.getElementById(
+    "detail-process-voting-note"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -701,6 +714,11 @@
     !detailProcessDeliberation ||
     !detailProcessDeliberationState ||
     !detailProcessDeliberationList ||
+    !detailProcessVoting ||
+    !detailProcessVotingState ||
+    !detailProcessVotingList ||
+    !detailProcessVotingSubmit ||
+    !detailProcessVotingNote ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3177,6 +3195,18 @@
       deliberation: "Deliberation",
       ballotPreparation: "Ballot preparation",
       voting: "Voting",
+      mandate: "Mandate",
+      votingLoading: "Loading the vote…",
+      votingUnavailable: "The vote is temporarily unavailable.",
+      votingCanVote: "Choose one option and submit your vote.",
+      votingHasVoted: "You voted. Results update live.",
+      voteCountLabel: "{count} votes",
+      voteSubmit: "Submit vote",
+      yourVote: "Your vote",
+      voteNeedChoice: "Select one option first.",
+      voteErrorGeneric: "Something went wrong. Try again.",
+      voteErrorClosed: "Voting is closed.",
+      voteErrorAlready: "You have already voted.",
       proposalsCanAdd: "You can add a structured proposal.",
       proposalsSubmitted: "You have submitted a proposal for this process.",
       proposalsLoading: "Loading proposals…",
@@ -3229,6 +3259,18 @@
       deliberation: "Deliberación",
       ballotPreparation: "Preparación de la votación",
       voting: "Votación",
+      mandate: "Mandato",
+      votingLoading: "Cargando la votación…",
+      votingUnavailable: "La votación no está disponible temporalmente.",
+      votingCanVote: "Elige una opción y envía tu voto.",
+      votingHasVoted: "Has votado. Los resultados se actualizan en vivo.",
+      voteCountLabel: "{count} votos",
+      voteSubmit: "Enviar voto",
+      yourVote: "Tu voto",
+      voteNeedChoice: "Selecciona una opción primero.",
+      voteErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      voteErrorClosed: "La votación está cerrada.",
+      voteErrorAlready: "Ya has votado.",
       proposalsCanAdd: "Puedes añadir una propuesta estructurada.",
       proposalsSubmitted: "Has enviado una propuesta para este proceso.",
       proposalsLoading: "Cargando propuestas…",
@@ -3282,6 +3324,18 @@
       deliberation: "Deliberazione",
       ballotPreparation: "Preparazione del voto",
       voting: "Votazione",
+      mandate: "Mandato",
+      votingLoading: "Caricamento del voto…",
+      votingUnavailable: "Il voto non è temporaneamente disponibile.",
+      votingCanVote: "Scegli un'opzione e invia il tuo voto.",
+      votingHasVoted: "Hai votato. I risultati si aggiornano in tempo reale.",
+      voteCountLabel: "{count} voti",
+      voteSubmit: "Invia voto",
+      yourVote: "Il tuo voto",
+      voteNeedChoice: "Seleziona prima un'opzione.",
+      voteErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      voteErrorClosed: "Il voto è chiuso.",
+      voteErrorAlready: "Hai già votato.",
       proposalsCanAdd: "Puoi aggiungere una proposta strutturata.",
       proposalsSubmitted: "Hai inviato una proposta per questo processo.",
       proposalsLoading: "Caricamento delle proposte…",
@@ -3334,6 +3388,18 @@
       deliberation: "Beratung",
       ballotPreparation: "Abstimmungsvorbereitung",
       voting: "Abstimmung",
+      mandate: "Mandat",
+      votingLoading: "Abstimmung wird geladen…",
+      votingUnavailable: "Die Abstimmung ist vorübergehend nicht verfügbar.",
+      votingCanVote: "Wähle eine Option und gib deine Stimme ab.",
+      votingHasVoted: "Du hast abgestimmt. Die Ergebnisse werden live aktualisiert.",
+      voteCountLabel: "{count} Stimmen",
+      voteSubmit: "Stimme abgeben",
+      yourVote: "Deine Stimme",
+      voteNeedChoice: "Wähle zuerst eine Option.",
+      voteErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      voteErrorClosed: "Die Abstimmung ist geschlossen.",
+      voteErrorAlready: "Du hast bereits abgestimmt.",
       proposalsCanAdd: "Du kannst einen strukturierten Vorschlag hinzufügen.",
       proposalsSubmitted: "Du hast einen Vorschlag für diesen Prozess eingereicht.",
       proposalsLoading: "Vorschläge werden geladen…",
@@ -3388,6 +3454,18 @@
       deliberation: "Deliberare",
       ballotPreparation: "Pregătirea scrutinului",
       voting: "Vot",
+      mandate: "Mandat",
+      votingLoading: "Se încarcă votul…",
+      votingUnavailable: "Votul este temporar indisponibil.",
+      votingCanVote: "Alege o opțiune și trimite votul tău.",
+      votingHasVoted: "Ai votat. Rezultatele se actualizează live.",
+      voteCountLabel: "{count} voturi",
+      voteSubmit: "Trimite votul",
+      yourVote: "Votul tău",
+      voteNeedChoice: "Selectează o opțiune mai întâi.",
+      voteErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      voteErrorClosed: "Votul este închis.",
+      voteErrorAlready: "Ai votat deja.",
       proposalsCanAdd: "Poți adăuga o propunere structurată.",
       proposalsSubmitted: "Ai trimis o propunere pentru acest proces.",
       proposalsLoading: "Se încarcă propunerile…",
@@ -3488,18 +3566,21 @@
     const isProposalsStage = data.currentStage === "proposals";
     const isDeliberationStage = data.currentStage === "deliberation";
     const isBallotPreparationStage = data.currentStage === "ballot_preparation";
+    const isVotingStage = data.currentStage === "voting";
     detailProcessStage.textContent = isProposalsStage
       ? copy.proposals
       : isDeliberationStage
         ? copy.deliberation
         : isBallotPreparationStage
           ? copy.ballotPreparation
-          : copy.stage;
+          : isVotingStage
+            ? copy.voting
+            : copy.stage;
     detailProcessStage.hidden = false;
     detailProcessState.hidden =
-      isProposalsStage || isDeliberationStage || isBallotPreparationStage;
+      isProposalsStage || isDeliberationStage || isBallotPreparationStage || isVotingStage;
     detailProcessState.textContent =
-      isProposalsStage || isDeliberationStage || isBallotPreparationStage
+      isProposalsStage || isDeliberationStage || isBallotPreparationStage || isVotingStage
         ? ""
         : data.hasConfirmed
           ? copy.confirmed
@@ -3516,7 +3597,9 @@
             ? copy.ballotPreparation
             : data.nextStage === "voting"
               ? copy.voting
-              : "";
+              : data.nextStage === "mandate"
+                ? copy.mandate
+                : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3546,6 +3629,13 @@
       detailProcessDeliberation.hidden = true;
       resetCivicDeliberationPanel();
     }
+    if (isVotingStage) {
+      detailProcessVoting.hidden = false;
+      void loadSignalCivicVoting();
+    } else {
+      detailProcessVoting.hidden = true;
+      resetCivicVotingPanel();
+    }
   }
 
   async function loadSignalCivicProcess() {
@@ -3573,7 +3663,8 @@
         (data.currentStage !== "confirmation" &&
           data.currentStage !== "proposals" &&
           data.currentStage !== "deliberation" &&
-          data.currentStage !== "ballot_preparation") ||
+          data.currentStage !== "ballot_preparation" &&
+          data.currentStage !== "voting") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
@@ -3582,7 +3673,8 @@
         (data.currentStage === "deliberation" &&
           data.nextStage !== "ballot_preparation") ||
         (data.currentStage === "ballot_preparation" &&
-          data.nextStage !== "voting")
+          data.nextStage !== "voting") ||
+        (data.currentStage === "voting" && data.nextStage !== "mandate")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -4117,6 +4209,192 @@
     } finally {
       civicDeliberationSubmitting = false;
       context.submitButton.disabled = false;
+    }
+  }
+
+  let civicVotingLoadToken = 0;
+  let civicVoteSubmitting = false;
+
+  function resetCivicVotingPanel() {
+    civicVotingLoadToken += 1;
+    detailProcessVotingState.textContent = "";
+    detailProcessVotingList.textContent = "";
+    detailProcessVotingSubmit.hidden = true;
+    detailProcessVotingNote.hidden = true;
+    detailProcessVotingNote.textContent = "";
+  }
+
+  async function fetchSignalCivicVoting(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/voting"
+    );
+  }
+
+  async function submitSignalCivicVote(signalId, proposalId) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/voting/vote",
+      { proposalId: proposalId }
+    );
+  }
+
+  function renderCivicVotingLoading() {
+    const copy = civicProcessCopy();
+    detailProcessVotingState.textContent = copy.votingLoading;
+    detailProcessVotingList.textContent = "";
+    detailProcessVotingSubmit.hidden = true;
+  }
+
+  function renderCivicVotingUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessVotingState.textContent = copy.votingUnavailable;
+    detailProcessVotingList.textContent = "";
+    detailProcessVotingSubmit.hidden = true;
+  }
+
+  function formatVoteCountLabel(copy, count) {
+    return (copy.voteCountLabel || "{count} votes").replace(
+      "{count}",
+      String(count)
+    );
+  }
+
+  function appendVoteOptionContent(container, copy, option, isMine) {
+    const meta = document.createElement("p");
+    meta.className = "signal-detail__process-voting-meta";
+    meta.textContent = option.authorDisplayName || "";
+    if (isMine) {
+      const badge = document.createElement("span");
+      badge.className = "signal-detail__process-voting-badge";
+      badge.textContent = copy.yourVote;
+      meta.appendChild(badge);
+    }
+    const title = document.createElement("p");
+    title.className = "signal-detail__process-voting-title";
+    title.textContent = option.title || "";
+    const body = document.createElement("p");
+    body.className = "signal-detail__process-voting-body";
+    body.textContent = option.body || "";
+    const count = document.createElement("p");
+    count.className = "signal-detail__process-voting-count";
+    count.textContent = formatVoteCountLabel(
+      copy,
+      typeof option.voteCount === "number" ? option.voteCount : 0
+    );
+    container.appendChild(meta);
+    container.appendChild(title);
+    container.appendChild(body);
+    container.appendChild(count);
+  }
+
+  function renderCivicVoting(data) {
+    const copy = civicProcessCopy();
+    const options = Array.isArray(data.options) ? data.options : [];
+    detailProcessVotingState.textContent = data.canVote
+      ? copy.votingCanVote
+      : data.hasVoted
+        ? copy.votingHasVoted
+        : copy.readOnly;
+    detailProcessVotingList.textContent = "";
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
+      const li = document.createElement("li");
+      li.className = "signal-detail__process-voting-item";
+      if (data.canVote) {
+        const label = document.createElement("label");
+        label.className = "signal-detail__process-voting-option";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "civic-vote-choice";
+        input.value = option.proposalId;
+        label.appendChild(input);
+        const text = document.createElement("span");
+        text.className = "signal-detail__process-voting-option-text";
+        appendVoteOptionContent(text, copy, option, false);
+        label.appendChild(text);
+        li.appendChild(label);
+      } else {
+        appendVoteOptionContent(li, copy, option, option.proposalId === data.myChoice);
+      }
+      detailProcessVotingList.appendChild(li);
+    }
+    detailProcessVotingSubmit.hidden = !data.canVote;
+    detailProcessVotingSubmit.textContent = copy.voteSubmit;
+    detailProcessVotingNote.hidden = true;
+  }
+
+  async function loadSignalCivicVoting() {
+    const signalId = currentSignalApiId();
+    const token = ++civicVotingLoadToken;
+    renderCivicVotingLoading();
+    if (!signalId) {
+      if (token === civicVotingLoadToken) renderCivicVotingUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicVoting(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicVotingLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        (data.currentStage !== "ballot_preparation" &&
+          data.currentStage !== "voting") ||
+        !Array.isArray(data.options)
+      ) {
+        if (token === civicVotingLoadToken) renderCivicVotingUnavailable();
+        return;
+      }
+      renderCivicVoting(data);
+    } catch (_err) {
+      if (token === civicVotingLoadToken) renderCivicVotingUnavailable();
+    }
+  }
+
+  async function submitCivicVote() {
+    if (civicVoteSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const checked = detailProcessVotingList.querySelector(
+      'input[name="civic-vote-choice"]:checked'
+    );
+    const proposalId = checked && checked.value ? String(checked.value) : "";
+    if (!proposalId) {
+      detailProcessVotingNote.textContent = copy.voteNeedChoice;
+      detailProcessVotingNote.hidden = false;
+      return;
+    }
+    civicVoteSubmitting = true;
+    detailProcessVotingSubmit.disabled = true;
+    try {
+      const result = await submitSignalCivicVote(signalId, proposalId);
+      if (result.response && result.response.status === 201) {
+        await loadSignalCivicVoting();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessVotingNote.textContent =
+        code === "CIVIC_VOTE_ALREADY_CAST"
+          ? copy.voteErrorAlready
+          : code === "CIVIC_VOTING_STAGE_CLOSED"
+            ? copy.voteErrorClosed
+            : copy.voteErrorGeneric;
+      detailProcessVotingNote.hidden = false;
+    } catch (_err) {
+      detailProcessVotingNote.textContent = copy.voteErrorGeneric;
+      detailProcessVotingNote.hidden = false;
+    } finally {
+      civicVoteSubmitting = false;
+      detailProcessVotingSubmit.disabled = false;
     }
   }
 
@@ -9143,6 +9421,7 @@
     civicProcessLoadToken += 1;
     resetCivicProposalsPanel();
     resetCivicDeliberationPanel();
+    resetCivicVotingPanel();
     closeSessionCompose({ keepDraft: false });
     signalDetail.hidden = true;
     document.body.style.overflow = "";
@@ -10012,6 +10291,10 @@
 
   detailProcessProposalsSubmit.addEventListener("click", () => {
     submitCivicProposal();
+  });
+
+  detailProcessVotingSubmit.addEventListener("click", () => {
+    submitCivicVote();
   });
 
   detailTestimonyInput.addEventListener("change", () => {
