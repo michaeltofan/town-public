@@ -70,6 +70,10 @@
   const activityLabel = document.getElementById("activity-label");
   const activityTitle = document.getElementById("activity-title");
   const activityLead = document.getElementById("activity-lead");
+  const activityInboxLabel = document.getElementById("activity-inbox-label");
+  const activityInboxEmpty = document.getElementById("activity-inbox-empty");
+  const activityInboxList = document.getElementById("activity-inbox-list");
+  const activityRecentLabel = document.getElementById("activity-recent-label");
   const activityStatus = document.getElementById("activity-status");
   const activityEmpty = document.getElementById("activity-empty");
   const activityList = document.getElementById("activity-list");
@@ -716,6 +720,10 @@
     !activityLabel ||
     !activityTitle ||
     !activityLead ||
+    !activityInboxLabel ||
+    !activityInboxEmpty ||
+    !activityInboxList ||
+    !activityRecentLabel ||
     !activityStatus ||
     !activityEmpty ||
     !activityList ||
@@ -4038,6 +4046,20 @@
     }
   }
 
+  // Civic Inbox bookkeeping only — private per-account marker, never affects
+  // the civic process itself. Best-effort; a failure here must not disrupt
+  // the signal detail view the member is already looking at.
+  function markCivicProcessViewed(signalId) {
+    if (!sessionAuthenticated || !signalId) return;
+    postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/viewed",
+      {}
+    ).catch(function (_err) {});
+  }
+
   async function loadSignalCivicProcess() {
     const signalId = currentSignalApiId();
     const token = ++civicProcessLoadToken;
@@ -4093,6 +4115,7 @@
       });
       renderCivicProcess(data);
       syncFeedMemberState();
+      markCivicProcessViewed(signalId);
       return true;
     } catch (_err) {
       if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
@@ -8912,6 +8935,12 @@
       close: "Close",
       feedCta: "Back to feed",
       whenUnknown: "",
+      inboxLabel: "Your civic processes",
+      inboxEmpty:
+        "No civic processes yet. Participate in a signal to see it here.",
+      inboxNew: "New",
+      inboxContinue: "Continue participation",
+      recentLabel: "Recent activity",
       kinds: {
         confirmation: "You confirmed this signal",
         contribution: "You published a contribution",
@@ -8936,6 +8965,12 @@
       close: "Chiudi",
       feedCta: "Torna al feed",
       whenUnknown: "",
+      inboxLabel: "I tuoi processi civici",
+      inboxEmpty:
+        "Nessun processo civico ancora. Partecipa a un segnale per vederlo qui.",
+      inboxNew: "Nuovo",
+      inboxContinue: "Continua la partecipazione",
+      recentLabel: "Attività recente",
       kinds: {
         confirmation: "Hai confermato questo segnale",
         contribution: "Hai pubblicato un contributo",
@@ -8960,6 +8995,12 @@
       close: "Schließen",
       feedCta: "Zurück zum Feed",
       whenUnknown: "",
+      inboxLabel: "Deine zivilen Prozesse",
+      inboxEmpty:
+        "Noch keine zivilen Prozesse. Nimm an einem Signal teil, um es hier zu sehen.",
+      inboxNew: "Neu",
+      inboxContinue: "Teilnahme fortsetzen",
+      recentLabel: "Letzte Aktivität",
       kinds: {
         confirmation: "Du hast dieses Signal bestätigt",
         contribution: "Du hast einen Beitrag veröffentlicht",
@@ -8984,6 +9025,12 @@
       close: "Închide",
       feedCta: "Înapoi la feed",
       whenUnknown: "",
+      inboxLabel: "Procesele tale civice",
+      inboxEmpty:
+        "Niciun proces civic încă. Participă la un semnal ca să îl vezi aici.",
+      inboxNew: "Nou",
+      inboxContinue: "Continuă participarea",
+      recentLabel: "Activitate recentă",
       kinds: {
         confirmation: "Ai confirmat acest semnal",
         contribution: "Ai publicat o contribuție",
@@ -9103,7 +9150,89 @@
     if (!items) {
       throw makeApiError("failed");
     }
-    return items;
+    const processes =
+      result.payload &&
+      result.payload.data &&
+      Array.isArray(result.payload.data.processes)
+        ? result.payload.data.processes
+        : [];
+    return { items: items, processes: processes };
+  }
+
+  function civicInboxStageLabel(stage, processCopy) {
+    switch (stage) {
+      case "confirmation":
+        return processCopy.stage;
+      case "proposals":
+        return processCopy.proposals;
+      case "deliberation":
+        return processCopy.deliberation;
+      case "ballot_preparation":
+        return processCopy.ballotPreparation;
+      case "voting":
+        return processCopy.voting;
+      case "mandate":
+        return processCopy.mandate;
+      case "action":
+        return processCopy.action;
+      case "verification":
+        return processCopy.verification;
+      case "archived":
+        return processCopy.archived;
+      default:
+        return stage || "";
+    }
+  }
+
+  // Civic Inbox: only processes the member actually participated in, from
+  // GET /v1/account/activity — never a general community feed.
+  function renderCivicInbox(processes) {
+    const copy = activityCopy();
+    const processCopy = civicProcessCopy();
+    activityInboxList.innerHTML = "";
+    const list = Array.isArray(processes) ? processes : [];
+    if (!list.length) {
+      activityInboxEmpty.hidden = false;
+      activityInboxEmpty.textContent = copy.inboxEmpty;
+      return;
+    }
+    activityInboxEmpty.hidden = true;
+    for (let i = 0; i < list.length; i++) {
+      const process = list[i];
+      if (!process || !process.signalId) continue;
+      const li = document.createElement("li");
+      li.className = "activity-panel__inbox-item";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "activity-panel__inbox-item-btn";
+      btn.setAttribute("data-inbox-signal-id", process.signalId);
+      if (process.isNew) {
+        const badge = document.createElement("span");
+        badge.className = "activity-panel__inbox-badge";
+        badge.textContent = copy.inboxNew;
+        btn.appendChild(badge);
+      }
+      const stage = document.createElement("span");
+      stage.className = "activity-panel__inbox-stage";
+      stage.textContent = civicInboxStageLabel(process.currentStage, processCopy);
+      const headline = document.createElement("span");
+      headline.className = "activity-panel__inbox-headline";
+      headline.textContent = process.headline || process.signalSlug || "";
+      btn.appendChild(stage);
+      btn.appendChild(headline);
+      if (process.community && process.community.displayName) {
+        const community = document.createElement("span");
+        community.className = "activity-panel__inbox-community";
+        community.textContent = process.community.displayName;
+        btn.appendChild(community);
+      }
+      const cta = document.createElement("span");
+      cta.className = "activity-panel__inbox-cta";
+      cta.textContent = copy.inboxContinue;
+      btn.appendChild(cta);
+      li.appendChild(btn);
+      activityInboxList.appendChild(li);
+    }
   }
 
   async function refreshActivityPanel() {
@@ -9114,17 +9243,21 @@
     activityStatus.textContent = copy.loading;
     activityEmpty.hidden = true;
     activityList.innerHTML = "";
+    activityInboxEmpty.hidden = true;
+    activityInboxList.innerHTML = "";
     try {
-      const items = await fetchAccountActivity();
+      const result = await fetchAccountActivity();
       activityStatus.hidden = true;
       activityStatus.textContent = "";
-      renderActivityItems(items);
+      renderActivityItems(result.items);
+      renderCivicInbox(result.processes);
     } catch (_err) {
       activityStatus.hidden = false;
       activityStatus.textContent = copy.error;
       activityEmpty.hidden = true;
       activityList.innerHTML = "";
       activityItemsCache = [];
+      renderCivicInbox([]);
     } finally {
       activityLoading = false;
     }
@@ -9135,6 +9268,8 @@
     activityLabel.textContent = copy.label;
     activityTitle.textContent = copy.title;
     activityLead.textContent = copy.lead;
+    activityInboxLabel.textContent = copy.inboxLabel;
+    activityRecentLabel.textContent = copy.recentLabel;
     activityClose.textContent = copy.close;
     activityFeed.textContent = copy.feedCta;
   }
@@ -11518,6 +11653,15 @@
     const btn = target.closest("[data-activity-signal-id]");
     if (!btn) return;
     openActivitySignal(btn.getAttribute("data-activity-signal-id"));
+  });
+
+  activityInboxList.addEventListener("click", (event) => {
+    let target = event.target;
+    if (target && target.nodeType === 3) target = target.parentElement;
+    if (!target || !target.closest) return;
+    const btn = target.closest("[data-inbox-signal-id]");
+    if (!btn) return;
+    openActivitySignal(btn.getAttribute("data-inbox-signal-id"));
   });
 
   navProfile.addEventListener("click", () => {

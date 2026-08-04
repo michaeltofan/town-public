@@ -1925,6 +1925,98 @@ body.page-feed {
   color: rgba(244, 239, 230, 0.62);
 }
 
+.activity-panel__inbox-label,
+.activity-panel__recent-label {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.55);
+}
+
+.activity-panel__recent-label {
+  margin-top: 0.4rem;
+}
+
+.activity-panel__inbox-list {
+  list-style: none;
+  margin: 0 0 1.3rem;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.activity-panel__inbox-item {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(232, 119, 46, 0.35);
+  border-radius: 0.75rem;
+  background: rgba(232, 119, 46, 0.08);
+}
+
+.activity-panel__inbox-item-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.activity-panel__inbox-item-btn:focus-visible {
+  outline: 2px solid #e8772e;
+  outline-offset: 3px;
+}
+
+.activity-panel__inbox-badge {
+  display: inline-block;
+  margin: 0 0 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #e8772e;
+  color: #1c1814;
+}
+
+.activity-panel__inbox-stage {
+  display: block;
+  margin: 0 0 0.28rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: rgba(244, 239, 230, 0.5);
+  text-transform: uppercase;
+}
+
+.activity-panel__inbox-headline {
+  display: block;
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: #f7f1e8;
+}
+
+.activity-panel__inbox-community {
+  display: block;
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(244, 239, 230, 0.6);
+}
+
+.activity-panel__inbox-cta {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e8772e;
+}
+
 .activity-panel__list {
   list-style: none;
   margin: 0 0 1.4rem;

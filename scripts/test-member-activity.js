@@ -42,4 +42,18 @@ assert(!js.includes("localStorage") || !/activity.*localStorage|localStorage.*ac
 assert(css.includes(".activity-panel"), "activity styles present");
 assert(js.includes("refreshProfileActivityFromBackend"), "profile confirmations also use backend");
 
+// Civic Inbox — ACTIVITY evolved to show current stage, what's new, and a
+// continue CTA per process the member actually participated in.
+assert(html.includes('id="activity-inbox-list"'), "civic inbox list present");
+assert(html.includes('id="activity-inbox-empty"'), "civic inbox empty state present");
+assert(html.includes('id="activity-inbox-label"'), "civic inbox label present");
+assert(js.includes("function renderCivicInbox"), "civic inbox render helper");
+assert(js.includes("function markCivicProcessViewed"), "mark-viewed helper");
+assert(js.includes("/civic-process/viewed"), "uses mark-viewed endpoint");
+assert(js.includes("result.payload.data.processes") || js.includes("data.processes"), "reads processes from activity response");
+assert(js.includes("process.isNew"), "renders isNew freshness marker");
+assert(js.includes("data-inbox-signal-id"), "continue CTA deep-links to signal detail");
+assert(js.includes("civicInboxStageLabel"), "reuses civic process stage labels");
+assert(css.includes(".activity-panel__inbox-item"), "civic inbox item styles present");
+
 console.log("PASSED: " + passed + " member activity assertions");
