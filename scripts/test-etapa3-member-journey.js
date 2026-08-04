@@ -89,7 +89,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-deliberation-panel-1"),
+  html.includes("script.js?v=civic-process-ballot-preparation-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -147,10 +147,16 @@ assert(
   "reaching the deliberation stage loads its deliberation",
 );
 assert(
-  js.includes('data.currentStage !== "deliberation" ||') &&
+  js.includes('data.currentStage !== "deliberation" &&') &&
+    js.includes('data.currentStage !== "ballot_preparation")') &&
     js.includes("!Array.isArray(data.proposals)") &&
     js.includes("data.processId == null"),
-  "client fails closed when the deliberation contract does not match",
+  "client fails closed when the deliberation/ballot_preparation contract does not match",
+);
+assert(
+  js.includes("isDeliberationStage || isBallotPreparationStage") &&
+    js.includes("ballotFinalOptions"),
+  "ballot_preparation reuses the deliberation panel as the final read-only ballot",
 );
 assert(
   js.includes("canContribute = data.canContribute === true;") &&

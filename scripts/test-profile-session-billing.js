@@ -31,7 +31,7 @@ assert(
 );
 assert(html.includes('id="profile-status"'), "profile status line present");
 assert(
-  /script\.js\?v=civic-process-deliberation-panel-1/.test(html),
+  /script\.js\?v=civic-process-ballot-preparation-1/.test(html),
   "cache buster bumped"
 );
 assert(css.includes(".profile-panel__status"), "profile status styles present");
