@@ -69,6 +69,18 @@ assert(
   "client accepts only the truthful confirmation, proposals, deliberation, and ballot_preparation stage contract"
 );
 assert(
+  js.includes(
+    'data.currentStage !== "voting" &&\n          data.currentStage !== "mandate") ||',
+  ) &&
+    js.includes(
+      '(data.currentStage === "voting" && data.nextStage !== "mandate") ||',
+    ) &&
+    js.includes(
+      '(data.currentStage === "mandate" && data.nextStage !== "action")',
+    ),
+  "client accepts the mandate stage and its honest next stage of action",
+);
+assert(
   js.includes('isDeliberationStage = data.currentStage === "deliberation";'),
   "deliberation stage renders without falling back to unavailable"
 );
@@ -89,7 +101,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-voting-1"),
+  html.includes("script.js?v=civic-process-mandate-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -224,6 +236,47 @@ assert(
     !js.includes("quorumCount") &&
     !js.includes("winningProposal"),
   "client does not invent a quorum, threshold, or winner",
+);
+
+assert(
+  html.includes('id="detail-process-mandate"'),
+  "civic mandate panel markup present",
+);
+assert(
+  html.includes('id="detail-process-mandate-winner"'),
+  "civic mandate winner markup present",
+);
+assert(
+  css.includes(".signal-detail__process-mandate"),
+  "civic mandate panel styles present",
+);
+assert(
+  js.includes('"/civic-process/mandate"') &&
+    js.includes("async function loadSignalCivicMandate()"),
+  "signal detail reads the canonical civic mandate endpoint",
+);
+assert(
+  js.includes("void loadSignalCivicMandate();"),
+  "reaching the mandate stage loads the mandate result",
+);
+assert(
+  js.includes(
+    '(data.currentStage !== "voting" && data.currentStage !== "mandate") ||',
+  ) &&
+    js.includes('typeof data.decided !== "boolean"') &&
+    js.includes('typeof data.contested !== "boolean"'),
+  "client fails closed when the mandate contract does not match",
+);
+assert(
+  js.includes("data.contested\n        ? copy.mandateContested") &&
+    js.includes(": copy.mandatePending"),
+  "mandate panel reports a tie as contested with no invented tie-break",
+);
+assert(
+  !js.includes("mandateTieBreak") &&
+    !js.includes("coinFlip") &&
+    !js.includes("earliestVoteWins"),
+  "client does not invent a tie-break rule for the mandate",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");

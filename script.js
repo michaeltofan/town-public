@@ -266,6 +266,27 @@
   const detailProcessVotingNote = document.getElementById(
     "detail-process-voting-note"
   );
+  const detailProcessMandate = document.getElementById(
+    "detail-process-mandate"
+  );
+  const detailProcessMandateState = document.getElementById(
+    "detail-process-mandate-state"
+  );
+  const detailProcessMandateWinner = document.getElementById(
+    "detail-process-mandate-winner"
+  );
+  const detailProcessMandateAuthor = document.getElementById(
+    "detail-process-mandate-author"
+  );
+  const detailProcessMandateTitle = document.getElementById(
+    "detail-process-mandate-title"
+  );
+  const detailProcessMandateBody = document.getElementById(
+    "detail-process-mandate-body"
+  );
+  const detailProcessMandateTally = document.getElementById(
+    "detail-process-mandate-tally"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -719,6 +740,13 @@
     !detailProcessVotingList ||
     !detailProcessVotingSubmit ||
     !detailProcessVotingNote ||
+    !detailProcessMandate ||
+    !detailProcessMandateState ||
+    !detailProcessMandateWinner ||
+    !detailProcessMandateAuthor ||
+    !detailProcessMandateTitle ||
+    !detailProcessMandateBody ||
+    !detailProcessMandateTally ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3241,6 +3269,12 @@
       contributionErrorGeneric: "Something went wrong. Try again.",
       contributionErrorClosed: "This stage is closed.",
       deliberationContributionMine: "Yours",
+      action: "Action",
+      mandateLoading: "Loading the mandate…",
+      mandateUnavailable: "The mandate is temporarily unavailable.",
+      mandateContested: "No winner: the top proposals tied.",
+      mandatePending: "The vote has not closed yet.",
+      mandateTotalVotesLabel: "{count} total votes",
     },
     es: {
       label: "Proceso cívico",
@@ -3306,6 +3340,12 @@
       contributionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       contributionErrorClosed: "Esta etapa está cerrada.",
       deliberationContributionMine: "Tuya",
+      action: "Acción",
+      mandateLoading: "Cargando el mandato…",
+      mandateUnavailable: "El mandato no está disponible temporalmente.",
+      mandateContested: "Sin ganador: las propuestas principales empataron.",
+      mandatePending: "La votación aún no ha cerrado.",
+      mandateTotalVotesLabel: "{count} votos en total",
     },
     it: {
       label: "Processo civico",
@@ -3370,6 +3410,12 @@
       contributionErrorGeneric: "Qualcosa è andato storto. Riprova.",
       contributionErrorClosed: "Questa fase è chiusa.",
       deliberationContributionMine: "Tuo",
+      action: "Azione",
+      mandateLoading: "Caricamento del mandato…",
+      mandateUnavailable: "Il mandato non è temporaneamente disponibile.",
+      mandateContested: "Nessun vincitore: le proposte principali sono in parità.",
+      mandatePending: "Il voto non è ancora chiuso.",
+      mandateTotalVotesLabel: "{count} voti totali",
     },
     de: {
       label: "Bürgerprozess",
@@ -3436,6 +3482,12 @@
       contributionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       contributionErrorClosed: "Diese Phase ist geschlossen.",
       deliberationContributionMine: "Deins",
+      action: "Umsetzung",
+      mandateLoading: "Mandat wird geladen…",
+      mandateUnavailable: "Das Mandat ist vorübergehend nicht verfügbar.",
+      mandateContested: "Kein Sieger: die führenden Vorschläge sind gleichauf.",
+      mandatePending: "Die Abstimmung ist noch nicht geschlossen.",
+      mandateTotalVotesLabel: "{count} Stimmen insgesamt",
     },
     ro: {
       label: "Proces civic",
@@ -3500,6 +3552,12 @@
       contributionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       contributionErrorClosed: "Această etapă este închisă.",
       deliberationContributionMine: "A ta",
+      action: "Acțiune",
+      mandateLoading: "Se încarcă mandatul…",
+      mandateUnavailable: "Mandatul este temporar indisponibil.",
+      mandateContested: "Niciun câștigător: propunerile de top au fost la egalitate.",
+      mandatePending: "Votul nu s-a închis încă.",
+      mandateTotalVotesLabel: "{count} voturi în total",
     },
   };
 
@@ -3528,6 +3586,10 @@
     resetCivicProposalsPanel();
     detailProcessDeliberation.hidden = true;
     resetCivicDeliberationPanel();
+    detailProcessVoting.hidden = true;
+    resetCivicVotingPanel();
+    detailProcessMandate.hidden = true;
+    resetCivicMandatePanel();
   }
 
   function renderCivicProcessUnavailable() {
@@ -3543,6 +3605,10 @@
     resetCivicProposalsPanel();
     detailProcessDeliberation.hidden = true;
     resetCivicDeliberationPanel();
+    detailProcessVoting.hidden = true;
+    resetCivicVotingPanel();
+    detailProcessMandate.hidden = true;
+    resetCivicMandatePanel();
   }
 
   function formatCivicProcessTime(value) {
@@ -3567,6 +3633,13 @@
     const isDeliberationStage = data.currentStage === "deliberation";
     const isBallotPreparationStage = data.currentStage === "ballot_preparation";
     const isVotingStage = data.currentStage === "voting";
+    const isMandateStage = data.currentStage === "mandate";
+    const isOpenStage =
+      isProposalsStage ||
+      isDeliberationStage ||
+      isBallotPreparationStage ||
+      isVotingStage ||
+      isMandateStage;
     detailProcessStage.textContent = isProposalsStage
       ? copy.proposals
       : isDeliberationStage
@@ -3575,18 +3648,18 @@
           ? copy.ballotPreparation
           : isVotingStage
             ? copy.voting
-            : copy.stage;
+            : isMandateStage
+              ? copy.mandate
+              : copy.stage;
     detailProcessStage.hidden = false;
-    detailProcessState.hidden =
-      isProposalsStage || isDeliberationStage || isBallotPreparationStage || isVotingStage;
-    detailProcessState.textContent =
-      isProposalsStage || isDeliberationStage || isBallotPreparationStage || isVotingStage
-        ? ""
-        : data.hasConfirmed
-          ? copy.confirmed
-          : data.canConfirm
-            ? copy.canConfirm
-            : copy.readOnly;
+    detailProcessState.hidden = isOpenStage;
+    detailProcessState.textContent = isOpenStage
+      ? ""
+      : data.hasConfirmed
+        ? copy.confirmed
+        : data.canConfirm
+          ? copy.canConfirm
+          : copy.readOnly;
     detailProcessConfirmations.textContent = String(data.confirmationCount);
     detailProcessNext.textContent =
       data.nextStage === "proposals"
@@ -3599,7 +3672,9 @@
               ? copy.voting
               : data.nextStage === "mandate"
                 ? copy.mandate
-                : "";
+                : data.nextStage === "action"
+                  ? copy.action
+                  : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3636,6 +3711,13 @@
       detailProcessVoting.hidden = true;
       resetCivicVotingPanel();
     }
+    if (isMandateStage) {
+      detailProcessMandate.hidden = false;
+      void loadSignalCivicMandate();
+    } else {
+      detailProcessMandate.hidden = true;
+      resetCivicMandatePanel();
+    }
   }
 
   async function loadSignalCivicProcess() {
@@ -3664,7 +3746,8 @@
           data.currentStage !== "proposals" &&
           data.currentStage !== "deliberation" &&
           data.currentStage !== "ballot_preparation" &&
-          data.currentStage !== "voting") ||
+          data.currentStage !== "voting" &&
+          data.currentStage !== "mandate") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
@@ -3674,7 +3757,8 @@
           data.nextStage !== "ballot_preparation") ||
         (data.currentStage === "ballot_preparation" &&
           data.nextStage !== "voting") ||
-        (data.currentStage === "voting" && data.nextStage !== "mandate")
+        (data.currentStage === "voting" && data.nextStage !== "mandate") ||
+        (data.currentStage === "mandate" && data.nextStage !== "action")
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -4395,6 +4479,99 @@
     } finally {
       civicVoteSubmitting = false;
       detailProcessVotingSubmit.disabled = false;
+    }
+  }
+
+  let civicMandateLoadToken = 0;
+
+  function resetCivicMandatePanel() {
+    civicMandateLoadToken += 1;
+    detailProcessMandateState.textContent = "";
+    detailProcessMandateWinner.hidden = true;
+    detailProcessMandateAuthor.textContent = "";
+    detailProcessMandateTitle.textContent = "";
+    detailProcessMandateBody.textContent = "";
+    detailProcessMandateTally.textContent = "";
+  }
+
+  async function fetchSignalCivicMandate(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/mandate"
+    );
+  }
+
+  function renderCivicMandateLoading() {
+    const copy = civicProcessCopy();
+    detailProcessMandateState.textContent = copy.mandateLoading;
+    detailProcessMandateWinner.hidden = true;
+    detailProcessMandateTally.textContent = "";
+  }
+
+  function renderCivicMandateUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessMandateState.textContent = copy.mandateUnavailable;
+    detailProcessMandateWinner.hidden = true;
+    detailProcessMandateTally.textContent = "";
+  }
+
+  function formatTotalVotesLabel(copy, count) {
+    return (copy.mandateTotalVotesLabel || "{count} total votes").replace(
+      "{count}",
+      String(count)
+    );
+  }
+
+  function renderCivicMandate(data) {
+    const copy = civicProcessCopy();
+    const winner = data.winner;
+    if (winner) {
+      detailProcessMandateState.textContent = "";
+      detailProcessMandateWinner.hidden = false;
+      detailProcessMandateAuthor.textContent = winner.authorDisplayName || "";
+      detailProcessMandateTitle.textContent = winner.title || "";
+      detailProcessMandateBody.textContent = winner.body || "";
+    } else {
+      detailProcessMandateState.textContent = data.contested
+        ? copy.mandateContested
+        : copy.mandatePending;
+      detailProcessMandateWinner.hidden = true;
+    }
+    detailProcessMandateTally.textContent = formatTotalVotesLabel(
+      copy,
+      typeof data.totalVotes === "number" ? data.totalVotes : 0
+    );
+  }
+
+  async function loadSignalCivicMandate() {
+    const signalId = currentSignalApiId();
+    const token = ++civicMandateLoadToken;
+    renderCivicMandateLoading();
+    if (!signalId) {
+      if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicMandate(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicMandateLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        (data.currentStage !== "voting" && data.currentStage !== "mandate") ||
+        typeof data.decided !== "boolean" ||
+        typeof data.contested !== "boolean"
+      ) {
+        if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
+        return;
+      }
+      renderCivicMandate(data);
+    } catch (_err) {
+      if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
     }
   }
 
