@@ -324,6 +324,66 @@
   const detailProcessActionNote = document.getElementById(
     "detail-process-action-note"
   );
+  const detailProcessVerification = document.getElementById(
+    "detail-process-verification"
+  );
+  const detailProcessVerificationState = document.getElementById(
+    "detail-process-verification-state"
+  );
+  const detailProcessVerificationWinner = document.getElementById(
+    "detail-process-verification-winner"
+  );
+  const detailProcessVerificationAuthor = document.getElementById(
+    "detail-process-verification-author"
+  );
+  const detailProcessVerificationTitle = document.getElementById(
+    "detail-process-verification-title"
+  );
+  const detailProcessVerificationBody = document.getElementById(
+    "detail-process-verification-body"
+  );
+  const detailProcessVerificationReady = document.getElementById(
+    "detail-process-verification-ready"
+  );
+  const detailProcessVerificationOutcome = document.getElementById(
+    "detail-process-verification-outcome"
+  );
+  const detailProcessVerificationTally = document.getElementById(
+    "detail-process-verification-tally"
+  );
+  const detailProcessVerificationConfirm = document.getElementById(
+    "detail-process-verification-confirm"
+  );
+  const detailProcessVerificationConfirmDelivered = document.getElementById(
+    "detail-process-verification-confirm-delivered"
+  );
+  const detailProcessVerificationConfirmNotDelivered = document.getElementById(
+    "detail-process-verification-confirm-not-delivered"
+  );
+  const detailProcessVerificationEvidenceList = document.getElementById(
+    "detail-process-verification-evidence-list"
+  );
+  const detailProcessVerificationEvidenceContribute = document.getElementById(
+    "detail-process-verification-evidence-contribute"
+  );
+  const detailProcessVerificationEvidenceCompose = document.getElementById(
+    "detail-process-verification-evidence-compose"
+  );
+  const detailProcessVerificationEvidenceInput = document.getElementById(
+    "detail-process-verification-evidence-input"
+  );
+  const detailProcessVerificationEvidenceUrlInput = document.getElementById(
+    "detail-process-verification-evidence-url-input"
+  );
+  const detailProcessVerificationEvidenceSubmit = document.getElementById(
+    "detail-process-verification-evidence-submit"
+  );
+  const detailProcessVerificationEvidenceCancel = document.getElementById(
+    "detail-process-verification-evidence-cancel"
+  );
+  const detailProcessVerificationEvidenceNote = document.getElementById(
+    "detail-process-verification-evidence-note"
+  );
   const detailSeeToo = document.getElementById("detail-see-too");
   const detailSeeTooDone = document.getElementById("detail-see-too-done");
   const detailDoneTitle = document.getElementById("detail-done-title");
@@ -797,6 +857,26 @@
     !detailProcessActionSubmit ||
     !detailProcessActionCancel ||
     !detailProcessActionNote ||
+    !detailProcessVerification ||
+    !detailProcessVerificationState ||
+    !detailProcessVerificationWinner ||
+    !detailProcessVerificationAuthor ||
+    !detailProcessVerificationTitle ||
+    !detailProcessVerificationBody ||
+    !detailProcessVerificationReady ||
+    !detailProcessVerificationOutcome ||
+    !detailProcessVerificationTally ||
+    !detailProcessVerificationConfirm ||
+    !detailProcessVerificationConfirmDelivered ||
+    !detailProcessVerificationConfirmNotDelivered ||
+    !detailProcessVerificationEvidenceList ||
+    !detailProcessVerificationEvidenceContribute ||
+    !detailProcessVerificationEvidenceCompose ||
+    !detailProcessVerificationEvidenceInput ||
+    !detailProcessVerificationEvidenceUrlInput ||
+    !detailProcessVerificationEvidenceSubmit ||
+    !detailProcessVerificationEvidenceCancel ||
+    !detailProcessVerificationEvidenceNote ||
     !detailSeeToo ||
     !detailSeeTooDone ||
     !detailDoneTitle ||
@@ -3320,6 +3400,7 @@
       contributionErrorClosed: "This stage is closed.",
       deliberationContributionMine: "Yours",
       action: "Action",
+      archived: "Archived",
       mandateLoading: "Loading the mandate…",
       mandateUnavailable: "The mandate is temporarily unavailable.",
       mandateContested: "No winner: the top proposals tied.",
@@ -3335,6 +3416,24 @@
       actionNeedText: "Write at least 12 characters.",
       actionErrorGeneric: "Something went wrong. Try again.",
       actionErrorClosed: "This stage is closed.",
+      verificationLoading: "Loading verification…",
+      verificationUnavailable: "Verification is temporarily unavailable.",
+      verificationPendingReady: "Not yet marked ready for verification.",
+      verificationCanMarkReady: "You can mark this action ready for verification.",
+      verificationCanConfirm: "You can confirm whether this was delivered.",
+      verificationConfirmedDelivered: "You confirmed: delivered.",
+      verificationConfirmedNotDelivered: "You confirmed: not delivered.",
+      verificationTallyLabel: "{delivered} confirmed delivered · {notDelivered} confirmed not delivered",
+      verificationOutcomeDelivered: "Verified: delivered.",
+      verificationOutcomeNotDelivered: "Verified: not delivered.",
+      verificationEvidenceUrlLabel: "Supporting link (optional)",
+      verificationEvidenceSubmit: "Submit evidence",
+      verificationEvidenceNeedText: "Write at least 12 characters.",
+      verificationEvidenceInvalidUrl: "Enter a valid http(s) link, or leave it blank.",
+      verificationEvidenceMine: "Yours",
+      verificationErrorGeneric: "Something went wrong. Try again.",
+      verificationErrorClosed: "This stage is closed.",
+      verificationAlreadyConfirmed: "You have already confirmed.",
       mandateTotalVotesLabel: "{count} total votes",
     },
     es: {
@@ -3402,6 +3501,7 @@
       contributionErrorClosed: "Esta etapa está cerrada.",
       deliberationContributionMine: "Tuya",
       action: "Acción",
+      archived: "Archivado",
       mandateLoading: "Cargando el mandato…",
       mandateUnavailable: "El mandato no está disponible temporalmente.",
       mandateContested: "Sin ganador: las propuestas principales empataron.",
@@ -3417,6 +3517,24 @@
       actionNeedText: "Escribe al menos 12 caracteres.",
       actionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       actionErrorClosed: "Esta etapa está cerrada.",
+      verificationLoading: "Cargando la verificación…",
+      verificationUnavailable: "La verificación no está disponible temporalmente.",
+      verificationPendingReady: "Aún no se ha marcado como lista para verificación.",
+      verificationCanMarkReady: "Puedes marcar esta acción como lista para verificación.",
+      verificationCanConfirm: "Puedes confirmar si esto se entregó.",
+      verificationConfirmedDelivered: "Confirmaste: entregado.",
+      verificationConfirmedNotDelivered: "Confirmaste: no entregado.",
+      verificationTallyLabel: "{delivered} confirmaron entregado · {notDelivered} confirmaron no entregado",
+      verificationOutcomeDelivered: "Verificado: entregado.",
+      verificationOutcomeNotDelivered: "Verificado: no entregado.",
+      verificationEvidenceUrlLabel: "Enlace de apoyo (opcional)",
+      verificationEvidenceSubmit: "Enviar evidencia",
+      verificationEvidenceNeedText: "Escribe al menos 12 caracteres.",
+      verificationEvidenceInvalidUrl: "Introduce un enlace http(s) válido o déjalo en blanco.",
+      verificationEvidenceMine: "Tuya",
+      verificationErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      verificationErrorClosed: "Esta etapa está cerrada.",
+      verificationAlreadyConfirmed: "Ya has confirmado.",
       mandateTotalVotesLabel: "{count} votos en total",
     },
     it: {
@@ -3483,6 +3601,7 @@
       contributionErrorClosed: "Questa fase è chiusa.",
       deliberationContributionMine: "Tuo",
       action: "Azione",
+      archived: "Archiviato",
       mandateLoading: "Caricamento del mandato…",
       mandateUnavailable: "Il mandato non è temporaneamente disponibile.",
       mandateContested: "Nessun vincitore: le proposte principali sono in parità.",
@@ -3498,6 +3617,24 @@
       actionNeedText: "Scrivi almeno 12 caratteri.",
       actionErrorGeneric: "Qualcosa è andato storto. Riprova.",
       actionErrorClosed: "Questa fase è chiusa.",
+      verificationLoading: "Caricamento della verifica…",
+      verificationUnavailable: "La verifica non è temporaneamente disponibile.",
+      verificationPendingReady: "Non ancora contrassegnata come pronta per la verifica.",
+      verificationCanMarkReady: "Puoi contrassegnare questa azione come pronta per la verifica.",
+      verificationCanConfirm: "Puoi confermare se è stata consegnata.",
+      verificationConfirmedDelivered: "Hai confermato: consegnata.",
+      verificationConfirmedNotDelivered: "Hai confermato: non consegnata.",
+      verificationTallyLabel: "{delivered} hanno confermato consegnata · {notDelivered} hanno confermato non consegnata",
+      verificationOutcomeDelivered: "Verificato: consegnata.",
+      verificationOutcomeNotDelivered: "Verificato: non consegnata.",
+      verificationEvidenceUrlLabel: "Link di supporto (facoltativo)",
+      verificationEvidenceSubmit: "Invia prova",
+      verificationEvidenceNeedText: "Scrivi almeno 12 caratteri.",
+      verificationEvidenceInvalidUrl: "Inserisci un link http(s) valido, oppure lascia vuoto.",
+      verificationEvidenceMine: "Tua",
+      verificationErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      verificationErrorClosed: "Questa fase è chiusa.",
+      verificationAlreadyConfirmed: "Hai già confermato.",
       mandateTotalVotesLabel: "{count} voti totali",
     },
     de: {
@@ -3566,6 +3703,7 @@
       contributionErrorClosed: "Diese Phase ist geschlossen.",
       deliberationContributionMine: "Deins",
       action: "Umsetzung",
+      archived: "Archiviert",
       mandateLoading: "Mandat wird geladen…",
       mandateUnavailable: "Das Mandat ist vorübergehend nicht verfügbar.",
       mandateContested: "Kein Sieger: die führenden Vorschläge sind gleichauf.",
@@ -3581,6 +3719,24 @@
       actionNeedText: "Schreibe mindestens 12 Zeichen.",
       actionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       actionErrorClosed: "Diese Phase ist geschlossen.",
+      verificationLoading: "Überprüfung wird geladen…",
+      verificationUnavailable: "Die Überprüfung ist vorübergehend nicht verfügbar.",
+      verificationPendingReady: "Noch nicht als bereit zur Überprüfung markiert.",
+      verificationCanMarkReady: "Du kannst diese Umsetzung als bereit zur Überprüfung markieren.",
+      verificationCanConfirm: "Du kannst bestätigen, ob dies umgesetzt wurde.",
+      verificationConfirmedDelivered: "Du hast bestätigt: umgesetzt.",
+      verificationConfirmedNotDelivered: "Du hast bestätigt: nicht umgesetzt.",
+      verificationTallyLabel: "{delivered} bestätigten umgesetzt · {notDelivered} bestätigten nicht umgesetzt",
+      verificationOutcomeDelivered: "Bestätigt: umgesetzt.",
+      verificationOutcomeNotDelivered: "Bestätigt: nicht umgesetzt.",
+      verificationEvidenceUrlLabel: "Unterstützender Link (optional)",
+      verificationEvidenceSubmit: "Nachweis einreichen",
+      verificationEvidenceNeedText: "Schreibe mindestens 12 Zeichen.",
+      verificationEvidenceInvalidUrl: "Gib einen gültigen http(s)-Link ein oder lasse das Feld leer.",
+      verificationEvidenceMine: "Deins",
+      verificationErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      verificationErrorClosed: "Diese Phase ist geschlossen.",
+      verificationAlreadyConfirmed: "Du hast bereits bestätigt.",
       mandateTotalVotesLabel: "{count} Stimmen insgesamt",
     },
     ro: {
@@ -3647,6 +3803,7 @@
       contributionErrorClosed: "Această etapă este închisă.",
       deliberationContributionMine: "A ta",
       action: "Acțiune",
+      archived: "Arhivat",
       mandateLoading: "Se încarcă mandatul…",
       mandateUnavailable: "Mandatul este temporar indisponibil.",
       mandateContested: "Niciun câștigător: propunerile de top au fost la egalitate.",
@@ -3662,6 +3819,24 @@
       actionNeedText: "Scrie cel puțin 12 caractere.",
       actionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       actionErrorClosed: "Această etapă este închisă.",
+      verificationLoading: "Se încarcă verificarea…",
+      verificationUnavailable: "Verificarea este temporar indisponibilă.",
+      verificationPendingReady: "Nu a fost încă marcată gata pentru verificare.",
+      verificationCanMarkReady: "Poți marca această acțiune gata pentru verificare.",
+      verificationCanConfirm: "Poți confirma dacă acest lucru a fost livrat.",
+      verificationConfirmedDelivered: "Ai confirmat: livrat.",
+      verificationConfirmedNotDelivered: "Ai confirmat: nelivrat.",
+      verificationTallyLabel: "{delivered} au confirmat livrat · {notDelivered} au confirmat nelivrat",
+      verificationOutcomeDelivered: "Verificat: livrat.",
+      verificationOutcomeNotDelivered: "Verificat: nelivrat.",
+      verificationEvidenceUrlLabel: "Link justificativ (opțional)",
+      verificationEvidenceSubmit: "Trimite dovada",
+      verificationEvidenceNeedText: "Scrie cel puțin 12 caractere.",
+      verificationEvidenceInvalidUrl: "Introdu un link http(s) valid sau lasă gol.",
+      verificationEvidenceMine: "A ta",
+      verificationErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      verificationErrorClosed: "Această etapă este închisă.",
+      verificationAlreadyConfirmed: "Ai confirmat deja.",
       mandateTotalVotesLabel: "{count} voturi în total",
     },
   };
@@ -3697,6 +3872,8 @@
     resetCivicMandatePanel();
     detailProcessAction.hidden = true;
     resetCivicActionPanel();
+    detailProcessVerification.hidden = true;
+    resetCivicVerificationPanel();
   }
 
   function renderCivicProcessUnavailable() {
@@ -3718,6 +3895,8 @@
     resetCivicMandatePanel();
     detailProcessAction.hidden = true;
     resetCivicActionPanel();
+    detailProcessVerification.hidden = true;
+    resetCivicVerificationPanel();
   }
 
   function formatCivicProcessTime(value) {
@@ -3744,13 +3923,17 @@
     const isVotingStage = data.currentStage === "voting";
     const isMandateStage = data.currentStage === "mandate";
     const isActionStage = data.currentStage === "action";
+    const isVerificationStage = data.currentStage === "verification";
+    const isArchivedStage = data.currentStage === "archived";
     const isOpenStage =
       isProposalsStage ||
       isDeliberationStage ||
       isBallotPreparationStage ||
       isVotingStage ||
       isMandateStage ||
-      isActionStage;
+      isActionStage ||
+      isVerificationStage ||
+      isArchivedStage;
     detailProcessStage.textContent = isProposalsStage
       ? copy.proposals
       : isDeliberationStage
@@ -3763,7 +3946,11 @@
               ? copy.mandate
               : isActionStage
                 ? copy.action
-                : copy.stage;
+                : isVerificationStage
+                  ? copy.verification
+                  : isArchivedStage
+                    ? copy.archived
+                    : copy.stage;
     detailProcessStage.hidden = false;
     detailProcessState.hidden = isOpenStage;
     detailProcessState.textContent = isOpenStage
@@ -3789,7 +3976,9 @@
                   ? copy.action
                   : data.nextStage === "verification"
                     ? copy.verification
-                    : "";
+                    : data.nextStage === "archived"
+                      ? copy.archived
+                      : "";
     detailProcessClosing.textContent =
       data.closingAt === null
         ? copy.notScheduled
@@ -3833,12 +4022,19 @@
       detailProcessMandate.hidden = true;
       resetCivicMandatePanel();
     }
-    if (isActionStage) {
+    if (isActionStage || isVerificationStage || isArchivedStage) {
       detailProcessAction.hidden = false;
       void loadSignalCivicAction();
     } else {
       detailProcessAction.hidden = true;
       resetCivicActionPanel();
+    }
+    if (isActionStage || isVerificationStage || isArchivedStage) {
+      detailProcessVerification.hidden = false;
+      void loadSignalCivicVerification();
+    } else {
+      detailProcessVerification.hidden = true;
+      resetCivicVerificationPanel();
     }
   }
 
@@ -3870,7 +4066,9 @@
           data.currentStage !== "ballot_preparation" &&
           data.currentStage !== "voting" &&
           data.currentStage !== "mandate" &&
-          data.currentStage !== "action") ||
+          data.currentStage !== "action" &&
+          data.currentStage !== "verification" &&
+          data.currentStage !== "archived") ||
         typeof data.confirmationCount !== "number" ||
         (data.currentStage === "confirmation" &&
           data.nextStage !== "proposals") ||
@@ -3882,7 +4080,9 @@
           data.nextStage !== "voting") ||
         (data.currentStage === "voting" && data.nextStage !== "mandate") ||
         (data.currentStage === "mandate" && data.nextStage !== "action") ||
-        (data.currentStage === "action" && data.nextStage !== "verification")
+        (data.currentStage === "action" && data.nextStage !== "verification") ||
+        (data.currentStage === "verification" && data.nextStage !== "archived") ||
+        (data.currentStage === "archived" && data.nextStage !== null)
       ) {
         if (token === civicProcessLoadToken) renderCivicProcessUnavailable();
         return false;
@@ -4883,6 +5083,343 @@
     } finally {
       civicActionSubmitting = false;
       detailProcessActionSubmit.disabled = false;
+    }
+  }
+
+  let civicVerificationLoadToken = 0;
+  let civicVerificationReadySubmitting = false;
+  let civicVerificationConfirmSubmitting = false;
+  let civicVerificationEvidenceSubmitting = false;
+  let civicVerificationCanPostEvidenceCache = false;
+
+  function closeCivicVerificationEvidenceCompose() {
+    detailProcessVerificationEvidenceCompose.hidden = true;
+    detailProcessVerificationEvidenceInput.value = "";
+    detailProcessVerificationEvidenceUrlInput.value = "";
+    detailProcessVerificationEvidenceNote.hidden = true;
+    detailProcessVerificationEvidenceNote.textContent = "";
+  }
+
+  function resetCivicVerificationPanel() {
+    civicVerificationLoadToken += 1;
+    civicVerificationCanPostEvidenceCache = false;
+    detailProcessVerificationState.textContent = "";
+    detailProcessVerificationWinner.hidden = true;
+    detailProcessVerificationAuthor.textContent = "";
+    detailProcessVerificationTitle.textContent = "";
+    detailProcessVerificationBody.textContent = "";
+    detailProcessVerificationReady.hidden = true;
+    detailProcessVerificationOutcome.hidden = true;
+    detailProcessVerificationOutcome.textContent = "";
+    detailProcessVerificationTally.hidden = true;
+    detailProcessVerificationTally.textContent = "";
+    detailProcessVerificationConfirm.hidden = true;
+    detailProcessVerificationEvidenceList.textContent = "";
+    detailProcessVerificationEvidenceContribute.hidden = true;
+    closeCivicVerificationEvidenceCompose();
+  }
+
+  async function fetchSignalCivicVerification(signalId) {
+    return getJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/verification"
+    );
+  }
+
+  async function submitSignalCivicVerificationReady(signalId) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/verification/ready",
+      {}
+    );
+  }
+
+  async function submitSignalCivicVerificationEvidence(signalId, text, url) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/verification/evidence",
+      { text: text, url: url }
+    );
+  }
+
+  async function submitSignalCivicVerificationConfirm(signalId, outcome) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/verification/confirm",
+      { outcome: outcome }
+    );
+  }
+
+  function renderCivicVerificationLoading() {
+    const copy = civicProcessCopy();
+    detailProcessVerificationState.textContent = copy.verificationLoading;
+    detailProcessVerificationWinner.hidden = true;
+    detailProcessVerificationReady.hidden = true;
+    detailProcessVerificationOutcome.hidden = true;
+    detailProcessVerificationTally.hidden = true;
+    detailProcessVerificationConfirm.hidden = true;
+    detailProcessVerificationEvidenceList.textContent = "";
+    detailProcessVerificationEvidenceContribute.hidden = true;
+    closeCivicVerificationEvidenceCompose();
+  }
+
+  function renderCivicVerificationUnavailable() {
+    const copy = civicProcessCopy();
+    detailProcessVerificationState.textContent = copy.verificationUnavailable;
+    detailProcessVerificationWinner.hidden = true;
+    detailProcessVerificationReady.hidden = true;
+    detailProcessVerificationOutcome.hidden = true;
+    detailProcessVerificationTally.hidden = true;
+    detailProcessVerificationConfirm.hidden = true;
+    detailProcessVerificationEvidenceList.textContent = "";
+    detailProcessVerificationEvidenceContribute.hidden = true;
+    closeCivicVerificationEvidenceCompose();
+  }
+
+  function formatVerificationTallyLabel(copy, delivered, notDelivered) {
+    return (
+      copy.verificationTallyLabel ||
+      "{delivered} confirmed delivered · {notDelivered} confirmed not delivered"
+    )
+      .replace("{delivered}", String(delivered))
+      .replace("{notDelivered}", String(notDelivered));
+  }
+
+  function buildVerificationEvidenceItem(copy, item) {
+    const li = document.createElement("li");
+    li.className = "signal-detail__process-verification-evidence-item";
+    const meta = document.createElement("p");
+    meta.className = "signal-detail__process-verification-meta";
+    meta.textContent = item.authorDisplayName || "";
+    if (item.isMine) {
+      const badge = document.createElement("span");
+      badge.className = "signal-detail__process-verification-badge";
+      badge.textContent = copy.verificationEvidenceMine;
+      meta.appendChild(badge);
+    }
+    const text = document.createElement("p");
+    text.className = "signal-detail__process-verification-evidence-text";
+    text.textContent = item.text || "";
+    li.appendChild(meta);
+    li.appendChild(text);
+    if (item.url) {
+      const link = document.createElement("a");
+      link.className = "signal-detail__process-verification-evidence-link";
+      link.href = item.url;
+      link.textContent = item.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      li.appendChild(link);
+    }
+    return li;
+  }
+
+  function renderCivicVerification(data) {
+    const copy = civicProcessCopy();
+    const winner = data.winner;
+    if (winner) {
+      detailProcessVerificationWinner.hidden = false;
+      detailProcessVerificationAuthor.textContent = winner.authorDisplayName || "";
+      detailProcessVerificationTitle.textContent = winner.title || "";
+      detailProcessVerificationBody.textContent = winner.body || "";
+    } else {
+      detailProcessVerificationWinner.hidden = true;
+    }
+
+    const isAction = data.currentStage === "action";
+    const isVerification = data.currentStage === "verification";
+    const isArchived = data.currentStage === "archived";
+
+    detailProcessVerificationState.textContent = isAction
+      ? data.canMarkReady
+        ? copy.verificationCanMarkReady
+        : copy.verificationPendingReady
+      : isVerification
+        ? data.hasConfirmed
+          ? data.myOutcome === "delivered"
+            ? copy.verificationConfirmedDelivered
+            : copy.verificationConfirmedNotDelivered
+          : data.canConfirm
+            ? copy.verificationCanConfirm
+            : copy.readOnly
+        : "";
+    detailProcessVerificationReady.hidden = !data.canMarkReady;
+
+    if (isArchived && data.outcome) {
+      detailProcessVerificationOutcome.hidden = false;
+      detailProcessVerificationOutcome.textContent =
+        data.outcome === "delivered"
+          ? copy.verificationOutcomeDelivered
+          : copy.verificationOutcomeNotDelivered;
+    } else {
+      detailProcessVerificationOutcome.hidden = true;
+    }
+
+    if (isVerification || isArchived) {
+      detailProcessVerificationTally.hidden = false;
+      detailProcessVerificationTally.textContent = formatVerificationTallyLabel(
+        copy,
+        typeof data.deliveredCount === "number" ? data.deliveredCount : 0,
+        typeof data.notDeliveredCount === "number" ? data.notDeliveredCount : 0
+      );
+    } else {
+      detailProcessVerificationTally.hidden = true;
+    }
+
+    detailProcessVerificationConfirm.hidden = !data.canConfirm;
+
+    const evidence = Array.isArray(data.evidence) ? data.evidence : [];
+    detailProcessVerificationEvidenceList.textContent = "";
+    for (let i = 0; i < evidence.length; i++) {
+      detailProcessVerificationEvidenceList.appendChild(
+        buildVerificationEvidenceItem(copy, evidence[i])
+      );
+    }
+    civicVerificationCanPostEvidenceCache =
+      isVerification && (data.canConfirm === true || data.hasConfirmed === true);
+    detailProcessVerificationEvidenceContribute.hidden =
+      !civicVerificationCanPostEvidenceCache;
+    if (!civicVerificationCanPostEvidenceCache) closeCivicVerificationEvidenceCompose();
+  }
+
+  async function loadSignalCivicVerification() {
+    const signalId = currentSignalApiId();
+    const token = ++civicVerificationLoadToken;
+    renderCivicVerificationLoading();
+    if (!signalId) {
+      if (token === civicVerificationLoadToken) renderCivicVerificationUnavailable();
+      return;
+    }
+    try {
+      const result = await fetchSignalCivicVerification(signalId);
+      const data = result.payload && result.payload.data;
+      if (
+        token !== civicVerificationLoadToken ||
+        !result.response ||
+        result.response.status !== 200 ||
+        !data ||
+        data.processId == null ||
+        (data.currentStage !== "action" &&
+          data.currentStage !== "verification" &&
+          data.currentStage !== "archived") ||
+        typeof data.canMarkReady !== "boolean" ||
+        typeof data.canConfirm !== "boolean" ||
+        !Array.isArray(data.evidence)
+      ) {
+        if (token === civicVerificationLoadToken) renderCivicVerificationUnavailable();
+        return;
+      }
+      renderCivicVerification(data);
+    } catch (_err) {
+      if (token === civicVerificationLoadToken) renderCivicVerificationUnavailable();
+    }
+  }
+
+  async function submitCivicVerificationReady() {
+    if (civicVerificationReadySubmitting) return;
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    civicVerificationReadySubmitting = true;
+    detailProcessVerificationReady.disabled = true;
+    try {
+      const result = await submitSignalCivicVerificationReady(signalId);
+      if (result.response && result.response.status === 200) {
+        await loadSignalCivicVerification();
+      }
+    } catch (_err) {
+      // Read-refresh on the next poll will reflect the true state either way.
+    } finally {
+      civicVerificationReadySubmitting = false;
+      detailProcessVerificationReady.disabled = false;
+    }
+  }
+
+  async function submitCivicVerificationConfirm(outcome) {
+    if (civicVerificationConfirmSubmitting) return;
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    civicVerificationConfirmSubmitting = true;
+    detailProcessVerificationConfirmDelivered.disabled = true;
+    detailProcessVerificationConfirmNotDelivered.disabled = true;
+    try {
+      const result = await submitSignalCivicVerificationConfirm(signalId, outcome);
+      if (result.response && result.response.status === 201) {
+        await loadSignalCivicVerification();
+      }
+    } catch (_err) {
+      // Read-refresh on the next poll will reflect the true state either way.
+    } finally {
+      civicVerificationConfirmSubmitting = false;
+      detailProcessVerificationConfirmDelivered.disabled = false;
+      detailProcessVerificationConfirmNotDelivered.disabled = false;
+    }
+  }
+
+  function openCivicVerificationEvidenceCompose() {
+    const copy = civicProcessCopy();
+    detailProcessVerificationEvidenceUrlInput.setAttribute(
+      "aria-label",
+      copy.verificationEvidenceUrlLabel
+    );
+    detailProcessVerificationEvidenceSubmit.textContent = copy.verificationEvidenceSubmit;
+    detailProcessVerificationEvidenceCancel.textContent = copy.cancel;
+    detailProcessVerificationEvidenceNote.hidden = true;
+    detailProcessVerificationEvidenceNote.textContent = "";
+    detailProcessVerificationEvidenceCompose.hidden = false;
+    detailProcessVerificationEvidenceContribute.hidden = true;
+    detailProcessVerificationEvidenceInput.focus();
+  }
+
+  async function submitCivicVerificationEvidence() {
+    if (civicVerificationEvidenceSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const text = (detailProcessVerificationEvidenceInput.value || "").trim();
+    if (text.length < 12 || text.length > 480) {
+      detailProcessVerificationEvidenceNote.textContent = copy.verificationEvidenceNeedText;
+      detailProcessVerificationEvidenceNote.hidden = false;
+      detailProcessVerificationEvidenceInput.focus();
+      return;
+    }
+    const rawUrl = (detailProcessVerificationEvidenceUrlInput.value || "").trim();
+    const url = rawUrl.length > 0 ? rawUrl : null;
+    if (url && (url.length > 500 || !/^https?:\/\//.test(url))) {
+      detailProcessVerificationEvidenceNote.textContent = copy.verificationEvidenceInvalidUrl;
+      detailProcessVerificationEvidenceNote.hidden = false;
+      detailProcessVerificationEvidenceUrlInput.focus();
+      return;
+    }
+    civicVerificationEvidenceSubmitting = true;
+    detailProcessVerificationEvidenceSubmit.disabled = true;
+    try {
+      const result = await submitSignalCivicVerificationEvidence(signalId, text, url);
+      if (result.response && result.response.status === 201) {
+        closeCivicVerificationEvidenceCompose();
+        await loadSignalCivicVerification();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessVerificationEvidenceNote.textContent =
+        code === "CIVIC_VERIFICATION_STAGE_CLOSED"
+          ? copy.verificationErrorClosed
+          : copy.verificationErrorGeneric;
+      detailProcessVerificationEvidenceNote.hidden = false;
+    } catch (_err) {
+      detailProcessVerificationEvidenceNote.textContent = copy.verificationErrorGeneric;
+      detailProcessVerificationEvidenceNote.hidden = false;
+    } finally {
+      civicVerificationEvidenceSubmitting = false;
+      detailProcessVerificationEvidenceSubmit.disabled = false;
     }
   }
 
@@ -10799,6 +11336,36 @@
 
   detailProcessActionSubmit.addEventListener("click", () => {
     submitCivicActionUpdate();
+  });
+
+  detailProcessVerificationReady.addEventListener("click", () => {
+    submitCivicVerificationReady();
+  });
+
+  detailProcessVerificationConfirmDelivered.addEventListener("click", () => {
+    submitCivicVerificationConfirm("delivered");
+  });
+
+  detailProcessVerificationConfirmNotDelivered.addEventListener("click", () => {
+    submitCivicVerificationConfirm("not_delivered");
+  });
+
+  detailProcessVerificationEvidenceContribute.addEventListener("click", () => {
+    openCivicVerificationEvidenceCompose();
+  });
+
+  detailProcessVerificationEvidenceCancel.addEventListener("click", () => {
+    detailProcessVerificationEvidenceCompose.hidden = true;
+    detailProcessVerificationEvidenceInput.value = "";
+    detailProcessVerificationEvidenceUrlInput.value = "";
+    detailProcessVerificationEvidenceNote.hidden = true;
+    detailProcessVerificationEvidenceNote.textContent = "";
+    detailProcessVerificationEvidenceContribute.hidden =
+      !civicVerificationCanPostEvidenceCache;
+  });
+
+  detailProcessVerificationEvidenceSubmit.addEventListener("click", () => {
+    submitCivicVerificationEvidence();
   });
 
   detailTestimonyInput.addEventListener("change", () => {

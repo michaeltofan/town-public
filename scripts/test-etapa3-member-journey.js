@@ -79,12 +79,19 @@ assert(
 );
 assert(
   js.includes(
-    'data.currentStage !== "mandate" &&\n          data.currentStage !== "action") ||',
+    '(data.currentStage === "action" && data.nextStage !== "verification")',
+  ),
+  "client accepts the action stage and its honest next stage of verification",
+);
+assert(
+  js.includes(
+    'data.currentStage !== "action" &&\n          data.currentStage !== "verification" &&\n          data.currentStage !== "archived") ||',
   ) &&
     js.includes(
-      '(data.currentStage === "action" && data.nextStage !== "verification")',
-    ),
-  "client accepts the action stage and its honest next stage of verification",
+      '(data.currentStage === "verification" && data.nextStage !== "archived")',
+    ) &&
+    js.includes('(data.currentStage === "archived" && data.nextStage !== null)'),
+  "client accepts verification and archived as valid stages, with archived as a truly terminal stage (nextStage null)",
 );
 assert(
   js.includes('isDeliberationStage = data.currentStage === "deliberation";'),
@@ -107,7 +114,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-action-1"),
+  html.includes("script.js?v=civic-process-verification-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -330,6 +337,78 @@ assert(
     !js.includes("completionThreshold") &&
     !js.includes("progressPercent"),
   "client does not invent a completion percentage or threshold for action",
+);
+assert(
+  js.includes("isActionStage || isVerificationStage || isArchivedStage") &&
+    js.includes("void loadSignalCivicAction();"),
+  "action status log remains a readable historical record through verification and archived",
+);
+
+assert(
+  html.includes('id="detail-process-verification"'),
+  "civic verification panel markup present",
+);
+assert(
+  html.includes('id="detail-process-verification-evidence-list"'),
+  "civic verification evidence list markup present",
+);
+assert(
+  html.includes('id="detail-process-verification-evidence-compose"'),
+  "civic verification evidence compose markup present",
+);
+assert(
+  html.includes('id="detail-process-verification-ready"'),
+  "civic verification mark-ready control present",
+);
+assert(
+  html.includes('id="detail-process-verification-confirm-delivered"') &&
+    html.includes('id="detail-process-verification-confirm-not-delivered"'),
+  "civic verification delivered/not-delivered confirm controls present",
+);
+assert(
+  css.includes(".signal-detail__process-verification"),
+  "civic verification panel styles present",
+);
+assert(
+  js.includes('"/civic-process/verification"') &&
+    js.includes('"/civic-process/verification/ready"') &&
+    js.includes('"/civic-process/verification/evidence"') &&
+    js.includes('"/civic-process/verification/confirm"') &&
+    js.includes("async function loadSignalCivicVerification()") &&
+    js.includes("async function submitCivicVerificationReady()") &&
+    js.includes("async function submitCivicVerificationEvidence()") &&
+    js.includes("async function submitCivicVerificationConfirm("),
+  "signal detail reads and writes the canonical civic verification endpoints",
+);
+assert(
+  js.includes("void loadSignalCivicVerification();"),
+  "reaching the action stage loads the verification status",
+);
+assert(
+  js.includes(
+    '(data.currentStage !== "action" &&\n          data.currentStage !== "verification" &&\n          data.currentStage !== "archived") ||',
+  ) &&
+    js.includes('typeof data.canMarkReady !== "boolean"') &&
+    js.includes('typeof data.canConfirm !== "boolean"') &&
+    js.includes("!Array.isArray(data.evidence)"),
+  "client fails closed when the verification contract does not match",
+);
+assert(
+  js.includes("detailProcessVerificationReady.hidden = !data.canMarkReady;") &&
+    js.includes("detailProcessVerificationConfirm.hidden = !data.canConfirm;"),
+  "mark-ready and confirm controls follow backend canMarkReady/canConfirm truth only",
+);
+assert(
+  js.includes(
+    "civicVerificationCanPostEvidenceCache =\n      isVerification && (data.canConfirm === true || data.hasConfirmed === true);",
+  ),
+  "evidence compose visibility is derived from an eligible actor in the verification stage only",
+);
+assert(
+  !js.includes("verificationTieBreak") &&
+    !js.includes("majorityOf") &&
+    !js.includes("autoResolve"),
+  "client does not invent a resolution for an unconfirmed verification dispute",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
