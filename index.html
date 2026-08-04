@@ -1031,6 +1031,127 @@
                   ></p>
                 </div>
               </div>
+              <div
+                class="signal-detail__process-verification"
+                id="detail-process-verification"
+                hidden
+              >
+                <p
+                  class="signal-detail__process-verification-state"
+                  id="detail-process-verification-state"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+                <div
+                  class="signal-detail__process-verification-winner"
+                  id="detail-process-verification-winner"
+                  hidden
+                >
+                  <p
+                    class="signal-detail__process-verification-meta"
+                    id="detail-process-verification-author"
+                  ></p>
+                  <p
+                    class="signal-detail__process-verification-title"
+                    id="detail-process-verification-title"
+                  ></p>
+                  <p
+                    class="signal-detail__process-verification-body"
+                    id="detail-process-verification-body"
+                  ></p>
+                </div>
+                <button
+                  type="button"
+                  class="feed__primary"
+                  id="detail-process-verification-ready"
+                  hidden
+                >
+                  Mark ready for verification
+                </button>
+                <p
+                  class="signal-detail__process-verification-outcome"
+                  id="detail-process-verification-outcome"
+                  hidden
+                ></p>
+                <p
+                  class="signal-detail__process-verification-tally"
+                  id="detail-process-verification-tally"
+                  hidden
+                ></p>
+                <div
+                  class="signal-detail__process-verification-confirm"
+                  id="detail-process-verification-confirm"
+                  hidden
+                >
+                  <button
+                    type="button"
+                    class="feed__primary"
+                    id="detail-process-verification-confirm-delivered"
+                  >
+                    Confirm delivered
+                  </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-verification-confirm-not-delivered"
+                  >
+                    Confirm not delivered
+                  </button>
+                </div>
+                <ol
+                  class="signal-detail__process-verification-evidence-list"
+                  id="detail-process-verification-evidence-list"
+                ></ol>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-process-verification-evidence-contribute"
+                  hidden
+                >
+                  Add evidence
+                </button>
+                <div
+                  class="signal-detail__process-verification-evidence-compose"
+                  id="detail-process-verification-evidence-compose"
+                  hidden
+                >
+                  <textarea
+                    class="signal-detail__session-input"
+                    id="detail-process-verification-evidence-input"
+                    maxlength="480"
+                    rows="3"
+                    aria-label="Evidence"
+                  ></textarea>
+                  <input
+                    type="url"
+                    class="signal-detail__process-proposals-title-input"
+                    id="detail-process-verification-evidence-url-input"
+                    maxlength="500"
+                    aria-label="Supporting link (optional)"
+                  />
+                  <div class="signal-detail__session-compose-actions">
+                    <button
+                      type="button"
+                      class="feed__primary"
+                      id="detail-process-verification-evidence-submit"
+                    >
+                      Submit evidence
+                    </button>
+                    <button
+                      type="button"
+                      class="feed__secondary"
+                      id="detail-process-verification-evidence-cancel"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <p
+                    class="signal-detail__process-verification-evidence-note"
+                    id="detail-process-verification-evidence-note"
+                    hidden
+                  ></p>
+                </div>
+              </div>
             </section>
 
             <!-- Paying members: civic discussion session toward a local solution — not chat. -->
@@ -1970,7 +2091,7 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=civic-process-action-1" defer></script>
+    <script src="script.js?v=civic-process-verification-1" defer></script>
   </body>
 </html>
 
