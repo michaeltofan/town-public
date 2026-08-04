@@ -70,15 +70,21 @@ assert(
 );
 assert(
   js.includes(
-    'data.currentStage !== "voting" &&\n          data.currentStage !== "mandate") ||',
+    '(data.currentStage === "voting" && data.nextStage !== "mandate") ||',
   ) &&
-    js.includes(
-      '(data.currentStage === "voting" && data.nextStage !== "mandate") ||',
-    ) &&
     js.includes(
       '(data.currentStage === "mandate" && data.nextStage !== "action")',
     ),
   "client accepts the mandate stage and its honest next stage of action",
+);
+assert(
+  js.includes(
+    'data.currentStage !== "mandate" &&\n          data.currentStage !== "action") ||',
+  ) &&
+    js.includes(
+      '(data.currentStage === "action" && data.nextStage !== "verification")',
+    ),
+  "client accepts the action stage and its honest next stage of verification",
 );
 assert(
   js.includes('isDeliberationStage = data.currentStage === "deliberation";'),
@@ -101,7 +107,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-mandate-1"),
+  html.includes("script.js?v=civic-process-action-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -277,6 +283,53 @@ assert(
     !js.includes("coinFlip") &&
     !js.includes("earliestVoteWins"),
   "client does not invent a tie-break rule for the mandate",
+);
+
+assert(
+  html.includes('id="detail-process-action"'),
+  "civic action panel markup present",
+);
+assert(
+  html.includes('id="detail-process-action-list"'),
+  "civic action status update list markup present",
+);
+assert(
+  html.includes('id="detail-process-action-compose"'),
+  "civic action compose markup present",
+);
+assert(
+  css.includes(".signal-detail__process-action"),
+  "civic action panel styles present",
+);
+assert(
+  js.includes('"/civic-process/action"') &&
+    js.includes('"/civic-process/action/updates"') &&
+    js.includes("async function loadSignalCivicAction()") &&
+    js.includes("async function submitCivicActionUpdate()"),
+  "signal detail reads and writes the canonical civic action endpoint",
+);
+assert(
+  js.includes("void loadSignalCivicAction();"),
+  "reaching the action stage loads the action status log",
+);
+assert(
+  js.includes(
+    '(data.currentStage !== "mandate" && data.currentStage !== "action") ||',
+  ) &&
+    js.includes('typeof data.canPost !== "boolean"') &&
+    js.includes("!Array.isArray(data.updates)"),
+  "client fails closed when the action contract does not match",
+);
+assert(
+  js.includes("civicActionCanPostCache = data.canPost === true;") &&
+    js.includes("detailProcessActionContribute.hidden = !civicActionCanPostCache;"),
+  "action compose visibility follows backend canPost truth only",
+);
+assert(
+  !js.includes("completionPercent") &&
+    !js.includes("completionThreshold") &&
+    !js.includes("progressPercent"),
+  "client does not invent a completion percentage or threshold for action",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");

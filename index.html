@@ -955,6 +955,82 @@
                   id="detail-process-mandate-tally"
                 ></p>
               </div>
+              <div
+                class="signal-detail__process-action"
+                id="detail-process-action"
+                hidden
+              >
+                <p
+                  class="signal-detail__process-action-state"
+                  id="detail-process-action-state"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+                <div
+                  class="signal-detail__process-action-winner"
+                  id="detail-process-action-winner"
+                  hidden
+                >
+                  <p
+                    class="signal-detail__process-action-meta"
+                    id="detail-process-action-author"
+                  ></p>
+                  <p
+                    class="signal-detail__process-action-title"
+                    id="detail-process-action-title"
+                  ></p>
+                  <p
+                    class="signal-detail__process-action-body"
+                    id="detail-process-action-body"
+                  ></p>
+                </div>
+                <ol
+                  class="signal-detail__process-action-list"
+                  id="detail-process-action-list"
+                ></ol>
+                <button
+                  type="button"
+                  class="feed__secondary"
+                  id="detail-process-action-contribute"
+                  hidden
+                >
+                  Add a status update
+                </button>
+                <div
+                  class="signal-detail__process-action-compose"
+                  id="detail-process-action-compose"
+                  hidden
+                >
+                  <textarea
+                    class="signal-detail__session-input"
+                    id="detail-process-action-input"
+                    maxlength="480"
+                    rows="3"
+                    aria-label="Status update"
+                  ></textarea>
+                  <div class="signal-detail__session-compose-actions">
+                    <button
+                      type="button"
+                      class="feed__primary"
+                      id="detail-process-action-submit"
+                    >
+                      Submit status update
+                    </button>
+                    <button
+                      type="button"
+                      class="feed__secondary"
+                      id="detail-process-action-cancel"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <p
+                    class="signal-detail__process-action-note"
+                    id="detail-process-action-note"
+                    hidden
+                  ></p>
+                </div>
+              </div>
             </section>
 
             <!-- Paying members: civic discussion session toward a local solution — not chat. -->
@@ -1894,7 +1970,7 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=civic-process-mandate-1" defer></script>
+    <script src="script.js?v=civic-process-action-1" defer></script>
   </body>
 </html>
 
