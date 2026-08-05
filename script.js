@@ -3968,7 +3968,12 @@
         : data.canConfirm
           ? copy.canConfirm
           : copy.readOnly;
-    detailProcessConfirmations.textContent = String(data.confirmationCount);
+    detailProcessConfirmations.textContent =
+      data.transitionRule &&
+      data.transitionRule.type === "confirmation_count" &&
+      typeof data.transitionRule.requiredConfirmations === "number"
+        ? data.confirmationCount + " / " + data.transitionRule.requiredConfirmations
+        : String(data.confirmationCount);
     detailProcessNext.textContent =
       data.nextStage === "proposals"
         ? copy.proposals
