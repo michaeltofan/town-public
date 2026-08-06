@@ -3430,6 +3430,13 @@
       intentObservation: "Observation",
       intentProposal: "Proposal",
       intentNextStep: "Next step",
+      intentArgumentFor: "Argument for",
+      intentRiskOrObjection: "Risk or objection",
+      intentQuestion: "Question",
+      intentAuthorResponse: "Author response",
+      intentEvidence: "Evidence",
+      intentAmendmentSuggestion: "Amendment suggestion",
+      intentMinorityPosition: "Minority position",
       intentLegend: "Type",
       contributionLabel: "Contribution",
       contributionSubmit: "Submit contribution",
@@ -3437,6 +3444,11 @@
       contributionNeedIntent: "Choose a type.",
       contributionErrorGeneric: "Something went wrong. Try again.",
       contributionErrorClosed: "This stage is closed.",
+      contributionErrorInvalidReplyTarget:
+        "That contribution can no longer be replied to.",
+      replyAction: "Reply",
+      replyingToLabel: "Replying to {author}",
+      replyCancel: "Cancel reply",
       deliberationContributionMine: "Yours",
       action: "Action",
       archived: "Archived",
@@ -3546,6 +3558,13 @@
       intentObservation: "Observación",
       intentProposal: "Propuesta",
       intentNextStep: "Siguiente paso",
+      intentArgumentFor: "Argumento a favor",
+      intentRiskOrObjection: "Riesgo u objeción",
+      intentQuestion: "Pregunta",
+      intentAuthorResponse: "Respuesta del autor",
+      intentEvidence: "Evidencia",
+      intentAmendmentSuggestion: "Sugerencia de enmienda",
+      intentMinorityPosition: "Posición minoritaria",
       intentLegend: "Tipo",
       contributionLabel: "Contribución",
       contributionSubmit: "Enviar contribución",
@@ -3553,6 +3572,11 @@
       contributionNeedIntent: "Elige un tipo.",
       contributionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       contributionErrorClosed: "Esta etapa está cerrada.",
+      contributionErrorInvalidReplyTarget:
+        "Ya no se puede responder a esa contribución.",
+      replyAction: "Responder",
+      replyingToLabel: "Respondiendo a {author}",
+      replyCancel: "Cancelar respuesta",
       deliberationContributionMine: "Tuya",
       action: "Acción",
       archived: "Archivado",
@@ -3661,6 +3685,13 @@
       intentObservation: "Osservazione",
       intentProposal: "Proposta",
       intentNextStep: "Prossimo passo",
+      intentArgumentFor: "Argomento a favore",
+      intentRiskOrObjection: "Rischio od obiezione",
+      intentQuestion: "Domanda",
+      intentAuthorResponse: "Risposta dell'autore",
+      intentEvidence: "Prova",
+      intentAmendmentSuggestion: "Proposta di emendamento",
+      intentMinorityPosition: "Posizione di minoranza",
       intentLegend: "Tipo",
       contributionLabel: "Contributo",
       contributionSubmit: "Invia contributo",
@@ -3668,6 +3699,11 @@
       contributionNeedIntent: "Scegli un tipo.",
       contributionErrorGeneric: "Qualcosa è andato storto. Riprova.",
       contributionErrorClosed: "Questa fase è chiusa.",
+      contributionErrorInvalidReplyTarget:
+        "Non è più possibile rispondere a quel contributo.",
+      replyAction: "Rispondi",
+      replyingToLabel: "In risposta a {author}",
+      replyCancel: "Annulla risposta",
       deliberationContributionMine: "Tuo",
       action: "Azione",
       archived: "Archiviato",
@@ -3779,6 +3815,13 @@
       intentObservation: "Beobachtung",
       intentProposal: "Vorschlag",
       intentNextStep: "Nächster Schritt",
+      intentArgumentFor: "Argument dafür",
+      intentRiskOrObjection: "Risiko oder Einwand",
+      intentQuestion: "Frage",
+      intentAuthorResponse: "Antwort des Autors",
+      intentEvidence: "Beleg",
+      intentAmendmentSuggestion: "Änderungsvorschlag",
+      intentMinorityPosition: "Minderheitsposition",
       intentLegend: "Art",
       contributionLabel: "Beitrag",
       contributionSubmit: "Beitrag einreichen",
@@ -3786,6 +3829,11 @@
       contributionNeedIntent: "Wähle eine Art.",
       contributionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       contributionErrorClosed: "Diese Phase ist geschlossen.",
+      contributionErrorInvalidReplyTarget:
+        "Auf diesen Beitrag kann nicht mehr geantwortet werden.",
+      replyAction: "Antworten",
+      replyingToLabel: "Antwort an {author}",
+      replyCancel: "Antwort abbrechen",
       deliberationContributionMine: "Deins",
       action: "Umsetzung",
       archived: "Archiviert",
@@ -3894,6 +3942,13 @@
       intentObservation: "Observație",
       intentProposal: "Propunere",
       intentNextStep: "Pas următor",
+      intentArgumentFor: "Argument pro",
+      intentRiskOrObjection: "Risc sau obiecție",
+      intentQuestion: "Întrebare",
+      intentAuthorResponse: "Răspunsul autorului",
+      intentEvidence: "Dovadă",
+      intentAmendmentSuggestion: "Sugestie de amendament",
+      intentMinorityPosition: "Poziție minoritară",
       intentLegend: "Tip",
       contributionLabel: "Contribuție",
       contributionSubmit: "Trimite contribuția",
@@ -3901,6 +3956,11 @@
       contributionNeedIntent: "Alege un tip.",
       contributionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       contributionErrorClosed: "Această etapă este închisă.",
+      contributionErrorInvalidReplyTarget:
+        "Nu se mai poate răspunde la acea contribuție.",
+      replyAction: "Răspunde",
+      replyingToLabel: "Răspuns către {author}",
+      replyCancel: "Anulează răspunsul",
       deliberationContributionMine: "A ta",
       action: "Acțiune",
       archived: "Arhivat",
@@ -4640,8 +4700,11 @@
     signalId,
     proposalId,
     intent,
-    text
+    text,
+    replyToContributionId
   ) {
+    const body = { intent: intent, text: text };
+    if (replyToContributionId) body.replyToContributionId = replyToContributionId;
     return postJsonWithCredentials(
       API_BASE +
         "/v1/signals/" +
@@ -4649,7 +4712,7 @@
         "/civic-process/deliberation/proposals/" +
         encodeURIComponent(proposalId) +
         "/contributions",
-      { intent: intent, text: text }
+      body
     );
   }
 
@@ -4665,17 +4728,47 @@
     detailProcessDeliberationList.textContent = "";
   }
 
+  const DELIBERATION_INTENT_COPY_KEYS = {
+    observation: "intentObservation",
+    proposal: "intentProposal",
+    next_step: "intentNextStep",
+    argument_for: "intentArgumentFor",
+    risk_or_objection: "intentRiskOrObjection",
+    question: "intentQuestion",
+    author_response: "intentAuthorResponse",
+    evidence: "intentEvidence",
+    amendment_suggestion: "intentAmendmentSuggestion",
+    minority_position: "intentMinorityPosition",
+  };
+  const DELIBERATION_INTENTS = Object.keys(DELIBERATION_INTENT_COPY_KEYS);
+
   function deliberationIntentLabel(copy, intent) {
-    return intent === "observation"
-      ? copy.intentObservation
-      : intent === "proposal"
-        ? copy.intentProposal
-        : intent === "next_step"
-          ? copy.intentNextStep
-          : "";
+    const key = DELIBERATION_INTENT_COPY_KEYS[intent];
+    return key ? copy[key] || "" : "";
   }
 
-  function buildDeliberationContributionItem(copy, contribution) {
+  function groupDeliberationContributionsByParent(contributions) {
+    const byParent = new Map();
+    for (let i = 0; i < contributions.length; i++) {
+      const contribution = contributions[i];
+      const key = contribution.replyToContributionId || null;
+      const bucket = byParent.get(key);
+      if (bucket) {
+        bucket.push(contribution);
+      } else {
+        byParent.set(key, [contribution]);
+      }
+    }
+    return byParent;
+  }
+
+  function buildDeliberationContributionItem(
+    copy,
+    byParent,
+    contribution,
+    canContribute,
+    onReply
+  ) {
     const li = document.createElement("li");
     li.className = "signal-detail__process-deliberation-contribution";
     const meta = document.createElement("p");
@@ -4696,6 +4789,37 @@
     text.textContent = contribution.text || "";
     li.appendChild(meta);
     li.appendChild(text);
+
+    if (canContribute) {
+      const replyButton = document.createElement("button");
+      replyButton.type = "button";
+      replyButton.className = "signal-detail__process-deliberation-reply-button";
+      replyButton.textContent = copy.replyAction;
+      replyButton.addEventListener("click", function () {
+        onReply(contribution);
+      });
+      li.appendChild(replyButton);
+    }
+
+    const replies = byParent.get(contribution.id) || [];
+    if (replies.length > 0) {
+      const repliesList = document.createElement("ol");
+      repliesList.className =
+        "signal-detail__process-deliberation-contributions signal-detail__process-deliberation-replies";
+      for (let i = 0; i < replies.length; i++) {
+        repliesList.appendChild(
+          buildDeliberationContributionItem(
+            copy,
+            byParent,
+            replies[i],
+            canContribute,
+            onReply
+          )
+        );
+      }
+      li.appendChild(repliesList);
+    }
+
     return li;
   }
 
@@ -4717,9 +4841,8 @@
     fieldset.appendChild(legend);
 
     const intentGroupName = "deliberation-intent-" + proposal.id;
-    const intents = ["observation", "proposal", "next_step"];
-    for (let i = 0; i < intents.length; i++) {
-      const value = intents[i];
+    for (let i = 0; i < DELIBERATION_INTENTS.length; i++) {
+      const value = DELIBERATION_INTENTS[i];
       const label = document.createElement("label");
       label.className = "signal-detail__session-intent-option";
       const input = document.createElement("input");
@@ -4733,6 +4856,18 @@
       fieldset.appendChild(label);
     }
     compose.appendChild(fieldset);
+
+    const replyBanner = document.createElement("p");
+    replyBanner.className = "signal-detail__process-deliberation-reply-banner";
+    replyBanner.hidden = true;
+    const replyBannerText = document.createElement("span");
+    replyBanner.appendChild(replyBannerText);
+    const replyBannerCancel = document.createElement("button");
+    replyBannerCancel.type = "button";
+    replyBannerCancel.className = "signal-detail__process-deliberation-reply-cancel";
+    replyBannerCancel.textContent = copy.replyCancel;
+    replyBanner.appendChild(replyBannerCancel);
+    compose.appendChild(replyBanner);
 
     const textarea = document.createElement("textarea");
     textarea.className = "signal-detail__session-input";
@@ -4760,6 +4895,14 @@
     note.hidden = true;
     compose.appendChild(note);
 
+    let replyTarget = null;
+
+    function clearReplyTarget() {
+      replyTarget = null;
+      replyBanner.hidden = true;
+      replyBannerText.textContent = "";
+    }
+
     function resetCompose() {
       compose.hidden = true;
       contributeButton.hidden = false;
@@ -4770,17 +4913,34 @@
       }
       note.hidden = true;
       note.textContent = "";
+      clearReplyTarget();
+    }
+
+    function openCompose(target) {
+      compose.hidden = false;
+      contributeButton.hidden = true;
+      if (target) {
+        replyTarget = target;
+        replyBannerText.textContent = (copy.replyingToLabel || "").replace(
+          "{author}",
+          target.authorDisplayName || ""
+        );
+        replyBanner.hidden = false;
+      } else {
+        clearReplyTarget();
+      }
+      textarea.focus();
     }
 
     contributeButton.addEventListener("click", function () {
-      compose.hidden = false;
-      contributeButton.hidden = true;
-      textarea.focus();
+      openCompose(null);
     });
+    replyBannerCancel.addEventListener("click", clearReplyTarget);
     cancelButton.addEventListener("click", resetCompose);
     submitButton.addEventListener("click", function () {
       void submitCivicDeliberationContribution({
         proposalId: proposal.id,
+        replyToContributionId: replyTarget ? replyTarget.id : null,
         fieldset: fieldset,
         textarea: textarea,
         submitButton: submitButton,
@@ -4788,7 +4948,11 @@
       });
     });
 
-    return { contributeButton: contributeButton, compose: compose };
+    return {
+      contributeButton: contributeButton,
+      compose: compose,
+      openForReply: openCompose,
+    };
   }
 
   function buildDeliberationProposalItem(copy, canContribute, proposal) {
@@ -4817,11 +4981,22 @@
     const contributions = Array.isArray(proposal.contributions)
       ? proposal.contributions
       : [];
+    const form = canContribute ? buildDeliberationComposeForm(copy, proposal) : null;
+    const byParent = groupDeliberationContributionsByParent(contributions);
+    const roots = byParent.get(null) || [];
     const contributionsList = document.createElement("ol");
     contributionsList.className = "signal-detail__process-deliberation-contributions";
-    for (let i = 0; i < contributions.length; i++) {
+    for (let i = 0; i < roots.length; i++) {
       contributionsList.appendChild(
-        buildDeliberationContributionItem(copy, contributions[i])
+        buildDeliberationContributionItem(
+          copy,
+          byParent,
+          roots[i],
+          canContribute,
+          function (contribution) {
+            if (form) form.openForReply(contribution);
+          }
+        )
       );
     }
     li.appendChild(contributionsList);
@@ -4833,8 +5008,7 @@
       li.appendChild(empty);
     }
 
-    if (canContribute) {
-      const form = buildDeliberationComposeForm(copy, proposal);
+    if (form) {
       li.appendChild(form.contributeButton);
       li.appendChild(form.compose);
     }
@@ -4900,7 +5074,7 @@
     if (!signalId) return;
     const checked = context.fieldset.querySelector('input[type="radio"]:checked');
     const intent = checked && checked.value ? String(checked.value) : "";
-    if (intent !== "observation" && intent !== "proposal" && intent !== "next_step") {
+    if (DELIBERATION_INTENTS.indexOf(intent) === -1) {
       context.note.textContent = copy.contributionNeedIntent;
       context.note.hidden = false;
       return;
@@ -4919,7 +5093,8 @@
         signalId,
         context.proposalId,
         intent,
-        text
+        text,
+        context.replyToContributionId
       );
       if (result.response && result.response.status === 201) {
         await loadSignalCivicDeliberation();
@@ -4930,7 +5105,9 @@
       context.note.textContent =
         code === "CIVIC_DELIBERATION_STAGE_CLOSED"
           ? copy.contributionErrorClosed
-          : copy.contributionErrorGeneric;
+          : code === "CIVIC_DELIBERATION_INVALID_REPLY_TARGET"
+            ? copy.contributionErrorInvalidReplyTarget
+            : copy.contributionErrorGeneric;
       context.note.hidden = false;
     } catch (_err) {
       context.note.textContent = copy.contributionErrorGeneric;
