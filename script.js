@@ -239,6 +239,18 @@
   const detailProcessProposalsBodyInput = document.getElementById(
     "detail-process-proposals-body-input"
   );
+  const detailProcessProposalsOutcomeInput = document.getElementById(
+    "detail-process-proposals-outcome-input"
+  );
+  const detailProcessProposalsInstitutionInput = document.getElementById(
+    "detail-process-proposals-institution-input"
+  );
+  const detailProcessProposalsResourcesInput = document.getElementById(
+    "detail-process-proposals-resources-input"
+  );
+  const detailProcessProposalsDeadlineInput = document.getElementById(
+    "detail-process-proposals-deadline-input"
+  );
   const detailProcessProposalsSubmit = document.getElementById(
     "detail-process-proposals-submit"
   );
@@ -834,6 +846,10 @@
     !detailProcessProposalsComposeTitle ||
     !detailProcessProposalsTitleInput ||
     !detailProcessProposalsBodyInput ||
+    !detailProcessProposalsOutcomeInput ||
+    !detailProcessProposalsInstitutionInput ||
+    !detailProcessProposalsResourcesInput ||
+    !detailProcessProposalsDeadlineInput ||
     !detailProcessProposalsSubmit ||
     !detailProcessProposalsCancel ||
     !detailProcessProposalsNote ||
@@ -3389,6 +3405,21 @@
       proposalsErrorGeneric: "Something went wrong. Try again.",
       proposalsErrorClosed: "This stage is closed.",
       proposalsErrorDuplicate: "You already submitted a proposal for this process.",
+      proposalsOutcomeLabel: "Expected outcome",
+      proposalsInstitutionLabel: "Target institution (optional)",
+      proposalsResourcesLabel: "Estimated resources (optional)",
+      proposalsDeadlineLabel: "Indicative deadline (optional)",
+      proposalsNeedOutcome: "Describe the expected outcome.",
+      proposalsRevise: "Revise",
+      proposalsWithdraw: "Withdraw",
+      proposalsWithdrawConfirm: "Withdraw this proposal? This cannot be undone.",
+      proposalsRevisedBadge: "Revised",
+      proposalsWithdrawnBadge: "Withdrawn",
+      proposalsEditTitle: "Revise your proposal",
+      proposalsSaveRevision: "Save revision",
+      proposalsErrorNotAuthor: "Only the author can do this.",
+      proposalsErrorAlreadyRevised: "This proposal has already been revised once.",
+      proposalsErrorAlreadyWithdrawn: "This proposal has already been withdrawn.",
       deliberationLoading: "Loading deliberation…",
       deliberationUnavailable: "Deliberation is temporarily unavailable.",
       deliberationCanContribute: "You can add a structured contribution to any proposal.",
@@ -3489,6 +3520,21 @@
       proposalsErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       proposalsErrorClosed: "Esta etapa está cerrada.",
       proposalsErrorDuplicate: "Ya has enviado una propuesta para este proceso.",
+      proposalsOutcomeLabel: "Resultado esperado",
+      proposalsInstitutionLabel: "Institución destinataria (opcional)",
+      proposalsResourcesLabel: "Recursos estimados (opcional)",
+      proposalsDeadlineLabel: "Plazo orientativo (opcional)",
+      proposalsNeedOutcome: "Describe el resultado esperado.",
+      proposalsRevise: "Revisar",
+      proposalsWithdraw: "Retirar",
+      proposalsWithdrawConfirm: "¿Retirar esta propuesta? No se puede deshacer.",
+      proposalsRevisedBadge: "Revisada",
+      proposalsWithdrawnBadge: "Retirada",
+      proposalsEditTitle: "Revisa tu propuesta",
+      proposalsSaveRevision: "Guardar revisión",
+      proposalsErrorNotAuthor: "Solo el autor puede hacer esto.",
+      proposalsErrorAlreadyRevised: "Esta propuesta ya ha sido revisada una vez.",
+      proposalsErrorAlreadyWithdrawn: "Esta propuesta ya ha sido retirada.",
       deliberationLoading: "Cargando la deliberación…",
       deliberationUnavailable: "La deliberación no está disponible temporalmente.",
       deliberationCanContribute:
@@ -3590,6 +3636,21 @@
       proposalsErrorGeneric: "Qualcosa è andato storto. Riprova.",
       proposalsErrorClosed: "Questa fase è chiusa.",
       proposalsErrorDuplicate: "Hai già inviato una proposta per questo processo.",
+      proposalsOutcomeLabel: "Risultato atteso",
+      proposalsInstitutionLabel: "Istituzione destinataria (facoltativo)",
+      proposalsResourcesLabel: "Risorse stimate (facoltativo)",
+      proposalsDeadlineLabel: "Termine indicativo (facoltativo)",
+      proposalsNeedOutcome: "Descrivi il risultato atteso.",
+      proposalsRevise: "Rivedi",
+      proposalsWithdraw: "Ritira",
+      proposalsWithdrawConfirm: "Ritirare questa proposta? Non può essere annullato.",
+      proposalsRevisedBadge: "Rivista",
+      proposalsWithdrawnBadge: "Ritirata",
+      proposalsEditTitle: "Rivedi la tua proposta",
+      proposalsSaveRevision: "Salva la revisione",
+      proposalsErrorNotAuthor: "Solo l'autore può farlo.",
+      proposalsErrorAlreadyRevised: "Questa proposta è già stata rivista una volta.",
+      proposalsErrorAlreadyWithdrawn: "Questa proposta è già stata ritirata.",
       deliberationLoading: "Caricamento della deliberazione…",
       deliberationUnavailable: "La deliberazione non è temporaneamente disponibile.",
       deliberationCanContribute: "Puoi aggiungere un contributo strutturato a qualsiasi proposta.",
@@ -3690,6 +3751,22 @@
       proposalsErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       proposalsErrorClosed: "Diese Phase ist geschlossen.",
       proposalsErrorDuplicate: "Du hast bereits einen Vorschlag für diesen Prozess eingereicht.",
+      proposalsOutcomeLabel: "Erwartetes Ergebnis",
+      proposalsInstitutionLabel: "Zuständige Institution (optional)",
+      proposalsResourcesLabel: "Geschätzte Ressourcen (optional)",
+      proposalsDeadlineLabel: "Voraussichtlicher Termin (optional)",
+      proposalsNeedOutcome: "Beschreibe das erwartete Ergebnis.",
+      proposalsRevise: "Überarbeiten",
+      proposalsWithdraw: "Zurückziehen",
+      proposalsWithdrawConfirm:
+        "Diesen Vorschlag zurückziehen? Das kann nicht rückgängig gemacht werden.",
+      proposalsRevisedBadge: "Überarbeitet",
+      proposalsWithdrawnBadge: "Zurückgezogen",
+      proposalsEditTitle: "Überarbeite deinen Vorschlag",
+      proposalsSaveRevision: "Überarbeitung speichern",
+      proposalsErrorNotAuthor: "Nur der Autor kann das tun.",
+      proposalsErrorAlreadyRevised: "Dieser Vorschlag wurde bereits einmal überarbeitet.",
+      proposalsErrorAlreadyWithdrawn: "Dieser Vorschlag wurde bereits zurückgezogen.",
       deliberationLoading: "Beratung wird geladen…",
       deliberationUnavailable: "Die Beratung ist vorübergehend nicht verfügbar.",
       deliberationCanContribute:
@@ -3792,6 +3869,21 @@
       proposalsErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       proposalsErrorClosed: "Această etapă este închisă.",
       proposalsErrorDuplicate: "Ai trimis deja o propunere pentru acest proces.",
+      proposalsOutcomeLabel: "Rezultatul așteptat",
+      proposalsInstitutionLabel: "Instituția vizată (opțional)",
+      proposalsResourcesLabel: "Resurse estimate (opțional)",
+      proposalsDeadlineLabel: "Termen orientativ (opțional)",
+      proposalsNeedOutcome: "Descrie rezultatul așteptat.",
+      proposalsRevise: "Revizuiește",
+      proposalsWithdraw: "Retrage",
+      proposalsWithdrawConfirm: "Retragi această propunere? Nu poate fi anulat.",
+      proposalsRevisedBadge: "Revizuită",
+      proposalsWithdrawnBadge: "Retrasă",
+      proposalsEditTitle: "Revizuiește-ți propunerea",
+      proposalsSaveRevision: "Salvează revizuirea",
+      proposalsErrorNotAuthor: "Doar autorul poate face asta.",
+      proposalsErrorAlreadyRevised: "Această propunere a fost deja revizuită o dată.",
+      proposalsErrorAlreadyWithdrawn: "Această propunere a fost deja retrasă.",
       deliberationLoading: "Se încarcă deliberarea…",
       deliberationUnavailable: "Deliberarea este temporar indisponibilă.",
       deliberationCanContribute: "Poți adăuga o contribuție structurată la orice propunere.",
@@ -4151,13 +4243,48 @@
     );
   }
 
-  async function submitSignalCivicProposal(signalId, title, body) {
+  function civicProposalPayload(fields) {
+    const payload = {
+      title: fields.title,
+      body: fields.body,
+      expectedOutcome: fields.expectedOutcome,
+    };
+    if (fields.targetInstitution) payload.targetInstitution = fields.targetInstitution;
+    if (fields.estimatedResources) payload.estimatedResources = fields.estimatedResources;
+    if (fields.indicativeDeadline) payload.indicativeDeadline = fields.indicativeDeadline;
+    return payload;
+  }
+
+  async function submitSignalCivicProposal(signalId, fields) {
     return postJsonWithCredentials(
       API_BASE +
         "/v1/signals/" +
         encodeURIComponent(signalId) +
         "/civic-process/proposals",
-      { title: title, body: body }
+      civicProposalPayload(fields)
+    );
+  }
+
+  async function reviseSignalCivicProposal(signalId, proposalId, fields) {
+    return putJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/proposals/" +
+        encodeURIComponent(proposalId),
+      civicProposalPayload(fields)
+    );
+  }
+
+  async function withdrawSignalCivicProposal(signalId, proposalId) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/proposals/" +
+        encodeURIComponent(proposalId) +
+        "/withdraw",
+      {}
     );
   }
 
@@ -4177,6 +4304,17 @@
     detailProcessProposalsList.textContent = "";
     detailProcessProposalsContribute.hidden = true;
     closeCivicProposalsCompose();
+  }
+
+  function appendCivicProposalFact(li, label, value) {
+    if (!value) return;
+    const fact = document.createElement("p");
+    fact.className = "signal-detail__process-proposals-fact";
+    const strong = document.createElement("strong");
+    strong.textContent = label + ": ";
+    fact.appendChild(strong);
+    fact.appendChild(document.createTextNode(value));
+    li.appendChild(fact);
   }
 
   function renderCivicProposals(data) {
@@ -4206,6 +4344,17 @@
         badge.textContent = copy.proposalsMine;
         meta.appendChild(badge);
       }
+      if (proposal.lifecycleState === "revised") {
+        const badge = document.createElement("span");
+        badge.className = "signal-detail__process-proposals-badge";
+        badge.textContent = copy.proposalsRevisedBadge;
+        meta.appendChild(badge);
+      } else if (proposal.lifecycleState === "withdrawn") {
+        const badge = document.createElement("span");
+        badge.className = "signal-detail__process-proposals-badge";
+        badge.textContent = copy.proposalsWithdrawnBadge;
+        meta.appendChild(badge);
+      }
       const title = document.createElement("p");
       title.className = "signal-detail__process-proposals-title";
       title.textContent = proposal.title || "";
@@ -4215,6 +4364,39 @@
       li.appendChild(meta);
       li.appendChild(title);
       li.appendChild(body);
+      appendCivicProposalFact(li, copy.proposalsOutcomeLabel, proposal.expectedOutcome);
+      appendCivicProposalFact(li, copy.proposalsInstitutionLabel, proposal.targetInstitution);
+      appendCivicProposalFact(li, copy.proposalsResourcesLabel, proposal.estimatedResources);
+      appendCivicProposalFact(
+        li,
+        copy.proposalsDeadlineLabel,
+        formatCivicProcessTime(proposal.indicativeDeadline)
+      );
+      if (proposal.canRevise || proposal.canWithdraw) {
+        const actions = document.createElement("div");
+        actions.className = "signal-detail__process-proposals-item-actions";
+        if (proposal.canRevise) {
+          const reviseButton = document.createElement("button");
+          reviseButton.type = "button";
+          reviseButton.className = "feed__secondary";
+          reviseButton.textContent = copy.proposalsRevise;
+          reviseButton.addEventListener("click", function () {
+            openCivicProposalsCompose(proposal);
+          });
+          actions.appendChild(reviseButton);
+        }
+        if (proposal.canWithdraw) {
+          const withdrawButton = document.createElement("button");
+          withdrawButton.type = "button";
+          withdrawButton.className = "feed__secondary";
+          withdrawButton.textContent = copy.proposalsWithdraw;
+          withdrawButton.addEventListener("click", function () {
+            void withdrawCivicProposalAction(proposal.id);
+          });
+          actions.appendChild(withdrawButton);
+        }
+        li.appendChild(actions);
+      }
       detailProcessProposalsList.appendChild(li);
     });
     civicProposalsCanProposeCache = data.canPropose === true;
@@ -4251,9 +4433,14 @@
     }
   }
 
-  function openCivicProposalsCompose() {
+  let civicProposalEditingId = null;
+
+  function openCivicProposalsCompose(proposal) {
     const copy = civicProcessCopy();
-    detailProcessProposalsComposeTitle.textContent = copy.proposalsAdd;
+    civicProposalEditingId = proposal ? proposal.id : null;
+    detailProcessProposalsComposeTitle.textContent = civicProposalEditingId
+      ? copy.proposalsEditTitle
+      : copy.proposalsAdd;
     detailProcessProposalsTitleInput.setAttribute(
       "aria-label",
       copy.proposalsTitleLabel
@@ -4262,7 +4449,44 @@
       "aria-label",
       copy.proposalsBodyLabel
     );
-    detailProcessProposalsSubmit.textContent = copy.proposalsSubmit;
+    detailProcessProposalsOutcomeInput.setAttribute(
+      "aria-label",
+      copy.proposalsOutcomeLabel
+    );
+    detailProcessProposalsOutcomeInput.placeholder = copy.proposalsOutcomeLabel;
+    detailProcessProposalsInstitutionInput.setAttribute(
+      "aria-label",
+      copy.proposalsInstitutionLabel
+    );
+    detailProcessProposalsInstitutionInput.placeholder =
+      copy.proposalsInstitutionLabel;
+    detailProcessProposalsResourcesInput.setAttribute(
+      "aria-label",
+      copy.proposalsResourcesLabel
+    );
+    detailProcessProposalsResourcesInput.placeholder =
+      copy.proposalsResourcesLabel;
+    detailProcessProposalsDeadlineInput.setAttribute(
+      "aria-label",
+      copy.proposalsDeadlineLabel
+    );
+    detailProcessProposalsTitleInput.value = proposal ? proposal.title || "" : "";
+    detailProcessProposalsBodyInput.value = proposal ? proposal.body || "" : "";
+    detailProcessProposalsOutcomeInput.value = proposal
+      ? proposal.expectedOutcome || ""
+      : "";
+    detailProcessProposalsInstitutionInput.value = proposal
+      ? proposal.targetInstitution || ""
+      : "";
+    detailProcessProposalsResourcesInput.value = proposal
+      ? proposal.estimatedResources || ""
+      : "";
+    detailProcessProposalsDeadlineInput.value = proposal
+      ? proposal.indicativeDeadline || ""
+      : "";
+    detailProcessProposalsSubmit.textContent = civicProposalEditingId
+      ? copy.proposalsSaveRevision
+      : copy.proposalsSubmit;
     detailProcessProposalsCancel.textContent = copy.cancel;
     detailProcessProposalsNote.hidden = true;
     detailProcessProposalsNote.textContent = "";
@@ -4272,11 +4496,30 @@
   }
 
   function closeCivicProposalsCompose() {
+    civicProposalEditingId = null;
     detailProcessProposalsCompose.hidden = true;
     detailProcessProposalsTitleInput.value = "";
     detailProcessProposalsBodyInput.value = "";
+    detailProcessProposalsOutcomeInput.value = "";
+    detailProcessProposalsInstitutionInput.value = "";
+    detailProcessProposalsResourcesInput.value = "";
+    detailProcessProposalsDeadlineInput.value = "";
     detailProcessProposalsNote.hidden = true;
     detailProcessProposalsNote.textContent = "";
+  }
+
+  function civicProposalErrorCopy(copy, code) {
+    return code === "CIVIC_PROPOSAL_ALREADY_SUBMITTED"
+      ? copy.proposalsErrorDuplicate
+      : code === "CIVIC_PROPOSAL_STAGE_CLOSED"
+        ? copy.proposalsErrorClosed
+        : code === "CIVIC_PROPOSAL_NOT_AUTHOR"
+          ? copy.proposalsErrorNotAuthor
+          : code === "CIVIC_PROPOSAL_ALREADY_REVISED"
+            ? copy.proposalsErrorAlreadyRevised
+            : code === "CIVIC_PROPOSAL_ALREADY_WITHDRAWN"
+              ? copy.proposalsErrorAlreadyWithdrawn
+              : copy.proposalsErrorGeneric;
   }
 
   async function submitCivicProposal() {
@@ -4286,6 +4529,18 @@
     if (!signalId) return;
     const title = (detailProcessProposalsTitleInput.value || "").trim();
     const body = (detailProcessProposalsBodyInput.value || "").trim();
+    const expectedOutcome = (
+      detailProcessProposalsOutcomeInput.value || ""
+    ).trim();
+    const targetInstitution = (
+      detailProcessProposalsInstitutionInput.value || ""
+    ).trim();
+    const estimatedResources = (
+      detailProcessProposalsResourcesInput.value || ""
+    ).trim();
+    const indicativeDeadline = (
+      detailProcessProposalsDeadlineInput.value || ""
+    ).trim();
     if (!title || title.length > 160) {
       detailProcessProposalsNote.textContent = copy.proposalsNeedTitle;
       detailProcessProposalsNote.hidden = false;
@@ -4298,23 +4553,36 @@
       detailProcessProposalsBodyInput.focus();
       return;
     }
+    if (!expectedOutcome || expectedOutcome.length > 500) {
+      detailProcessProposalsNote.textContent = copy.proposalsNeedOutcome;
+      detailProcessProposalsNote.hidden = false;
+      detailProcessProposalsOutcomeInput.focus();
+      return;
+    }
+    const fields = {
+      title: title,
+      body: body,
+      expectedOutcome: expectedOutcome,
+      targetInstitution: targetInstitution,
+      estimatedResources: estimatedResources,
+      indicativeDeadline: indicativeDeadline,
+    };
     civicProposalSubmitting = true;
     detailProcessProposalsSubmit.disabled = true;
     try {
-      const result = await submitSignalCivicProposal(signalId, title, body);
-      if (result.response && result.response.status === 201) {
+      const editingId = civicProposalEditingId;
+      const result = editingId
+        ? await reviseSignalCivicProposal(signalId, editingId, fields)
+        : await submitSignalCivicProposal(signalId, fields);
+      const okStatus = editingId ? 200 : 201;
+      if (result.response && result.response.status === okStatus) {
         closeCivicProposalsCompose();
         await loadSignalCivicProposals();
         return;
       }
       const code =
         result.payload && result.payload.error && result.payload.error.code;
-      detailProcessProposalsNote.textContent =
-        code === "CIVIC_PROPOSAL_ALREADY_SUBMITTED"
-          ? copy.proposalsErrorDuplicate
-          : code === "CIVIC_PROPOSAL_STAGE_CLOSED"
-            ? copy.proposalsErrorClosed
-            : copy.proposalsErrorGeneric;
+      detailProcessProposalsNote.textContent = civicProposalErrorCopy(copy, code);
       detailProcessProposalsNote.hidden = false;
     } catch (_err) {
       detailProcessProposalsNote.textContent = copy.proposalsErrorGeneric;
@@ -4322,6 +4590,31 @@
     } finally {
       civicProposalSubmitting = false;
       detailProcessProposalsSubmit.disabled = false;
+    }
+  }
+
+  async function withdrawCivicProposalAction(proposalId) {
+    if (civicProposalSubmitting) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    if (!window.confirm(copy.proposalsWithdrawConfirm)) return;
+    civicProposalSubmitting = true;
+    try {
+      const result = await withdrawSignalCivicProposal(signalId, proposalId);
+      if (result.response && result.response.status === 200) {
+        await loadSignalCivicProposals();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessProposalsNote.textContent = civicProposalErrorCopy(copy, code);
+      detailProcessProposalsNote.hidden = false;
+    } catch (_err) {
+      detailProcessProposalsNote.textContent = copy.proposalsErrorGeneric;
+      detailProcessProposalsNote.hidden = false;
+    } finally {
+      civicProposalSubmitting = false;
     }
   }
 

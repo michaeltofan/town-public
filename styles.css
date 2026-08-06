@@ -2930,6 +2930,25 @@ body.page-feed {
   color: #f4efe6;
 }
 
+.signal-detail__process-proposals-fact {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(244, 239, 230, 0.82);
+}
+
+.signal-detail__process-proposals-fact strong {
+  color: rgba(244, 239, 230, 0.62);
+  font-weight: 600;
+}
+
+.signal-detail__process-proposals-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+}
+
 .signal-detail__process-proposals-compose {
   display: flex;
   flex-direction: column;
