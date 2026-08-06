@@ -2513,6 +2513,26 @@ body.page-feed {
   }
 }
 
+/* Desktop: civic process is a persistent right-side panel, not a section
+   that scrolls out of view once the discussion composer opens. */
+@media (min-width: 1100px) {
+  .signal-detail__process {
+    position: fixed;
+    top: clamp(5.5rem, 14vh, 7.5rem);
+    right: clamp(1.5rem, 4vw, 3.5rem);
+    z-index: 2;
+    width: min(23rem, 30vw);
+    max-height: calc(100dvh - clamp(7.5rem, 20vh, 10.5rem));
+    overflow-y: auto;
+    background: rgba(15, 12, 10, 0.74);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, 0.4);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(244, 239, 230, 0.28) transparent;
+  }
+}
+
 .signal-detail__top {
   display: flex;
   align-items: flex-start;
