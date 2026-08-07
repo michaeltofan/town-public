@@ -436,6 +436,7 @@ assert(
   ) &&
     js.includes('typeof data.canMarkReady !== "boolean"') &&
     js.includes('typeof data.canConfirm !== "boolean"') &&
+    js.includes('typeof data.disputeEscalated !== "boolean"') &&
     js.includes("!Array.isArray(data.evidence)"),
   "client fails closed when the verification contract does not match",
 );
@@ -455,6 +456,12 @@ assert(
     !js.includes("majorityOf") &&
     !js.includes("autoResolve"),
   "client does not invent a resolution for an unconfirmed verification dispute",
+);
+assert(
+  html.includes('id="detail-process-verification-dispute-escalated"') &&
+    js.includes("isVerification && data.disputeEscalated") &&
+    js.includes("copy.verificationDisputeEscalated"),
+  "verification honestly flags a dispute open more than 14 days, with no invented resolution (§13)",
 );
 
 assert(js.includes("function handleMembershipNav"), "membership nav handler exists");
