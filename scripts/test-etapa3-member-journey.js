@@ -274,15 +274,17 @@ assert(
   "reaching the mandate stage loads the mandate result",
 );
 assert(
-  js.includes(
-    '(data.currentStage !== "voting" && data.currentStage !== "mandate") ||',
-  ) &&
+  js.includes('data.currentStage !== "voting" &&') &&
+    js.includes('data.currentStage !== "mandate" &&') &&
+    js.includes('data.currentStage !== "action" &&') &&
+    js.includes('data.currentStage !== "verification" &&') &&
+    js.includes('data.currentStage !== "archived") ||') &&
     js.includes('typeof data.decided !== "boolean"') &&
     js.includes('typeof data.contested !== "boolean"'),
   "client fails closed when the mandate contract does not match",
 );
 assert(
-  js.includes("data.contested\n        ? copy.mandateContested") &&
+  js.includes("data.contested\n          ? copy.mandateContested") &&
     js.includes(": copy.mandatePending"),
   "mandate panel reports a tie as contested with no invented tie-break",
 );
@@ -291,6 +293,21 @@ assert(
     !js.includes("coinFlip") &&
     !js.includes("earliestVoteWins"),
   "client does not invent a tie-break rule for the mandate",
+);
+assert(
+  js.includes("async function submitCivicMandateContest()") &&
+    js.includes('"/civic-process/mandate/contest"'),
+  "mandate contestation (§10) is filed via the canonical contest endpoint",
+);
+assert(
+  js.includes("renderCivicMandateMinorityPositions") &&
+    js.includes("data.minorityPositions"),
+  "mandate surfaces minority positions as a permanent record (§11)",
+);
+assert(
+  js.includes("data.canContest === true") &&
+    !js.includes("civicContestCanContestCache = true;"),
+  "contestation form visibility follows backend canContest truth only",
 );
 
 assert(

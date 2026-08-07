@@ -3344,6 +3344,103 @@ body.page-feed {
   color: rgba(232, 119, 46, 0.95);
 }
 
+.signal-detail__process-mandate-minority-list {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.signal-detail__process-mandate-minority-list[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-mandate-minority-item {
+  margin: 0;
+  padding: 0 0 0 0.85rem;
+  border-left: 2px solid rgba(240, 196, 25, 0.5);
+}
+
+.signal-detail__process-mandate-minority-author {
+  margin: 0 0 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__process-mandate-minority-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #f4efe6;
+}
+
+.signal-detail__process-mandate-contest {
+  margin-top: 0.9rem;
+}
+
+.signal-detail__process-mandate-contest[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-mandate-contest-status {
+  margin: 0 0 0.7rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(244, 239, 230, 0.82);
+}
+
+.signal-detail__process-mandate-contest-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.signal-detail__process-mandate-contest-form[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-mandate-contest-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
+.signal-detail__process-mandate-contest-reason,
+.signal-detail__process-mandate-contest-elaboration {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(244, 239, 230, 0.24);
+  background: rgba(0, 0, 0, 0.16);
+  color: #f4efe6;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.signal-detail__process-mandate-contest-elaboration {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.signal-detail__process-mandate-contest-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(247, 158, 105, 0.92);
+}
+
+.signal-detail__process-mandate-contest-note[hidden] {
+  display: none !important;
+}
+
 .signal-detail__process-action {
   margin-top: 0.9rem;
   padding-top: 0.9rem;
