@@ -114,7 +114,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=city-expansion-ro-1"),
+  html.includes("script.js?v=city-expansion-de-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -625,6 +625,82 @@ assert(
     fs.existsSync(path.join(root, "assets", "cities", "iasi.svg")) &&
     fs.existsSync(path.join(root, "assets", "cities", "timisoara.svg")),
   "placeholder city thumbnails exist for every new Romanian city"
+);
+
+// City expansion — Germany: Köln, Dortmund, Stuttgart, Frankfurt join Munich.
+// Austria is a genuinely new country (Salzburg is not German).
+const germanyCityIds = ["Koln", "Dortmund", "Stuttgart", "Frankfurt"];
+assert(
+  /Germany:\s*\[\s*\{\s*id:\s*"Munich"/.test(js),
+  "CITY_BY_COUNTRY.Germany is an array starting with Munich"
+);
+for (const cityId of germanyCityIds) {
+  assert(
+    js.includes('{ id: "' + cityId + '", image: "assets/cities/'),
+    "CITY_BY_COUNTRY includes " + cityId
+  );
+  assert(js.includes("\n    " + cityId + ": ["), cityId + " has a FEED_SCENES entry");
+  assert(
+    js.includes('if (cityId === "' + cityId + '") return "de";'),
+    "languageForCityId resolves " + cityId + " to German"
+  );
+}
+assert(
+  /Austria:\s*\[\s*\{\s*id:\s*"Salzburg"/.test(js),
+  "CITY_BY_COUNTRY.Austria exists and starts with Salzburg"
+);
+assert(
+  js.includes('{ id: "Salzburg", image: "assets/cities/salzburg.svg"'),
+  "CITY_BY_COUNTRY includes Salzburg"
+);
+assert(js.includes("\n    Salzburg: ["), "Salzburg has a FEED_SCENES entry");
+assert(
+  js.includes('if (cityId === "Salzburg") return "de";'),
+  "languageForCityId resolves Salzburg to German"
+);
+assert(
+  js.includes('Koln: "koln-de"') &&
+    js.includes('Dortmund: "dortmund-de"') &&
+    js.includes('Stuttgart: "stuttgart-de"') &&
+    js.includes('Frankfurt: "frankfurt-de"') &&
+    js.includes('Salzburg: "salzburg-at"'),
+  "CITY_API_SLUG maps every new German/Austrian city"
+);
+assert(
+  js.includes('"Koln",') &&
+    js.includes('"Dortmund",') &&
+    js.includes('"Stuttgart",') &&
+    js.includes('"Frankfurt",') &&
+    js.includes('"Salzburg",'),
+  "PRODUCT_ONLY_CITY_ORDER references every new German/Austrian city"
+);
+assert(
+  js.includes("Koln: \"Germany\",") &&
+    js.includes("Dortmund: \"Germany\",") &&
+    js.includes("Stuttgart: \"Germany\",") &&
+    js.includes("Frankfurt: \"Germany\",") &&
+    js.includes("Salzburg: \"Austria\","),
+  "PRODUCT_ONLY_COUNTRY_BY_CITY maps Salzburg to Austria, not Germany"
+);
+assert(
+  html.includes('id="country-austria"') && html.includes('value="Austria"'),
+  "country picker offers Austria alongside Italy, Germany, and Romania"
+);
+assert(
+  html.includes('id="commitment-country-austria"'),
+  "membership commitment country picker also offers Austria"
+);
+assert(
+  fs.existsSync(path.join(root, "assets", "cities", "koln.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "dortmund.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "stuttgart.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "frankfurt.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "salzburg.svg")),
+  "placeholder city thumbnails exist for every new German/Austrian city"
+);
+assert(
+  fs.existsSync(path.join(root, "assets", "flags", "austria.svg")),
+  "Austria flag asset exists"
 );
 
 if (failed > 0) {

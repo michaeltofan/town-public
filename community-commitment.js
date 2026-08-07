@@ -13,7 +13,13 @@
 
   const CITY_BY_COUNTRY = {
     Italy: [{ id: "Milano", slug: "milano-it" }],
-    Germany: [{ id: "Munich", slug: "munich-de" }],
+    Germany: [
+      { id: "Munich", slug: "munich-de" },
+      { id: "Koln", slug: "koln-de" },
+      { id: "Dortmund", slug: "dortmund-de" },
+      { id: "Stuttgart", slug: "stuttgart-de" },
+      { id: "Frankfurt", slug: "frankfurt-de" },
+    ],
     Romania: [
       { id: "Arad", slug: "arad-ro" },
       { id: "ClujNapoca", slug: "cluj-napoca-ro" },
@@ -21,6 +27,7 @@
       { id: "Iasi", slug: "iasi-ro" },
       { id: "Timisoara", slug: "timisoara-ro" },
     ],
+    Austria: [{ id: "Salzburg", slug: "salzburg-at" }],
   };
 
   const COUNTRY_BY_CITY_ID = {};
