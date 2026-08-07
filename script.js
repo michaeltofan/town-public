@@ -430,6 +430,9 @@
   const detailProcessVerificationTally = document.getElementById(
     "detail-process-verification-tally"
   );
+  const detailProcessVerificationDisputeEscalated = document.getElementById(
+    "detail-process-verification-dispute-escalated"
+  );
   const detailProcessVerificationConfirm = document.getElementById(
     "detail-process-verification-confirm"
   );
@@ -965,6 +968,7 @@
     !detailProcessVerificationReady ||
     !detailProcessVerificationOutcome ||
     !detailProcessVerificationTally ||
+    !detailProcessVerificationDisputeEscalated ||
     !detailProcessVerificationConfirm ||
     !detailProcessVerificationConfirmDelivered ||
     !detailProcessVerificationConfirmNotDelivered ||
@@ -3906,6 +3910,8 @@
       verificationConfirmedDelivered: "You confirmed: delivered.",
       verificationConfirmedNotDelivered: "You confirmed: not delivered.",
       verificationTallyLabel: "{delivered} confirmed delivered · {notDelivered} confirmed not delivered",
+      verificationDisputeEscalated:
+        "This dispute has been open for more than 14 days and is now flagged for operator review.",
       verificationOutcomeDelivered: "Verified: delivered.",
       verificationOutcomeNotDelivered: "Verified: not delivered.",
       verificationEvidenceUrlLabel: "Supporting link (optional)",
@@ -4078,6 +4084,8 @@
       verificationConfirmedDelivered: "Confirmaste: entregado.",
       verificationConfirmedNotDelivered: "Confirmaste: no entregado.",
       verificationTallyLabel: "{delivered} confirmaron entregado · {notDelivered} confirmaron no entregado",
+      verificationDisputeEscalated:
+        "Esta disputa lleva abierta más de 14 días y ahora está señalada para revisión por un operador.",
       verificationOutcomeDelivered: "Verificado: entregado.",
       verificationOutcomeNotDelivered: "Verificado: no entregado.",
       verificationEvidenceUrlLabel: "Enlace de apoyo (opcional)",
@@ -4249,6 +4257,8 @@
       verificationConfirmedDelivered: "Hai confermato: consegnata.",
       verificationConfirmedNotDelivered: "Hai confermato: non consegnata.",
       verificationTallyLabel: "{delivered} hanno confermato consegnata · {notDelivered} hanno confermato non consegnata",
+      verificationDisputeEscalated:
+        "Questa controversia è aperta da più di 14 giorni ed è ora segnalata per la revisione di un operatore.",
       verificationOutcomeDelivered: "Verificato: consegnata.",
       verificationOutcomeNotDelivered: "Verificato: non consegnata.",
       verificationEvidenceUrlLabel: "Link di supporto (facoltativo)",
@@ -4423,6 +4433,8 @@
       verificationConfirmedDelivered: "Du hast bestätigt: umgesetzt.",
       verificationConfirmedNotDelivered: "Du hast bestätigt: nicht umgesetzt.",
       verificationTallyLabel: "{delivered} bestätigten umgesetzt · {notDelivered} bestätigten nicht umgesetzt",
+      verificationDisputeEscalated:
+        "Dieser Streitfall ist seit mehr als 14 Tagen offen und wurde nun zur Prüfung durch eine Betreiberin markiert.",
       verificationOutcomeDelivered: "Bestätigt: umgesetzt.",
       verificationOutcomeNotDelivered: "Bestätigt: nicht umgesetzt.",
       verificationEvidenceUrlLabel: "Unterstützender Link (optional)",
@@ -4594,6 +4606,8 @@
       verificationConfirmedDelivered: "Ai confirmat: livrat.",
       verificationConfirmedNotDelivered: "Ai confirmat: nelivrat.",
       verificationTallyLabel: "{delivered} au confirmat livrat · {notDelivered} au confirmat nelivrat",
+      verificationDisputeEscalated:
+        "Această dispută este deschisă de peste 14 zile și este acum semnalată pentru revizuire de către un operator.",
       verificationOutcomeDelivered: "Verificat: livrat.",
       verificationOutcomeNotDelivered: "Verificat: nelivrat.",
       verificationEvidenceUrlLabel: "Link justificativ (opțional)",
@@ -6597,6 +6611,8 @@
     detailProcessVerificationOutcome.textContent = "";
     detailProcessVerificationTally.hidden = true;
     detailProcessVerificationTally.textContent = "";
+    detailProcessVerificationDisputeEscalated.hidden = true;
+    detailProcessVerificationDisputeEscalated.textContent = "";
     detailProcessVerificationConfirm.hidden = true;
     detailProcessVerificationEvidenceList.textContent = "";
     detailProcessVerificationEvidenceContribute.hidden = true;
@@ -6649,6 +6665,7 @@
     detailProcessVerificationReady.hidden = true;
     detailProcessVerificationOutcome.hidden = true;
     detailProcessVerificationTally.hidden = true;
+    detailProcessVerificationDisputeEscalated.hidden = true;
     detailProcessVerificationConfirm.hidden = true;
     detailProcessVerificationEvidenceList.textContent = "";
     detailProcessVerificationEvidenceContribute.hidden = true;
@@ -6662,6 +6679,7 @@
     detailProcessVerificationReady.hidden = true;
     detailProcessVerificationOutcome.hidden = true;
     detailProcessVerificationTally.hidden = true;
+    detailProcessVerificationDisputeEscalated.hidden = true;
     detailProcessVerificationConfirm.hidden = true;
     detailProcessVerificationEvidenceList.textContent = "";
     detailProcessVerificationEvidenceContribute.hidden = true;
@@ -6758,6 +6776,14 @@
       detailProcessVerificationTally.hidden = true;
     }
 
+    if (isVerification && data.disputeEscalated) {
+      detailProcessVerificationDisputeEscalated.hidden = false;
+      detailProcessVerificationDisputeEscalated.textContent =
+        copy.verificationDisputeEscalated;
+    } else {
+      detailProcessVerificationDisputeEscalated.hidden = true;
+    }
+
     detailProcessVerificationConfirm.hidden = !data.canConfirm;
 
     const evidence = Array.isArray(data.evidence) ? data.evidence : [];
@@ -6796,6 +6822,7 @@
           data.currentStage !== "archived") ||
         typeof data.canMarkReady !== "boolean" ||
         typeof data.canConfirm !== "boolean" ||
+        typeof data.disputeEscalated !== "boolean" ||
         !Array.isArray(data.evidence)
       ) {
         if (token === civicVerificationLoadToken) renderCivicVerificationUnavailable();

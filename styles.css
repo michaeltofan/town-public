@@ -3718,6 +3718,21 @@ body.page-feed {
   display: none !important;
 }
 
+.signal-detail__process-verification-dispute-escalated {
+  margin: 0 0 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba(247, 158, 105, 0.4);
+  background: rgba(0, 0, 0, 0.16);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(247, 158, 105, 0.95);
+}
+
+.signal-detail__process-verification-dispute-escalated[hidden] {
+  display: none !important;
+}
+
 .signal-detail__process-verification-confirm {
   display: flex;
   gap: 0.7rem;
