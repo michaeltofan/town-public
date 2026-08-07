@@ -1035,19 +1035,86 @@
                     class="signal-detail__process-action-body"
                     id="detail-process-action-body"
                   ></p>
+                  <p
+                    class="signal-detail__process-action-institution"
+                    id="detail-process-action-institution"
+                    hidden
+                  ></p>
+                  <p
+                    class="signal-detail__process-action-objective"
+                    id="detail-process-action-objective"
+                    hidden
+                  ></p>
+                  <p
+                    class="signal-detail__process-action-deadline"
+                    id="detail-process-action-deadline"
+                    hidden
+                  ></p>
                 </div>
+                <p
+                  class="signal-detail__process-action-status"
+                  id="detail-process-action-status"
+                  hidden
+                ></p>
+                <p
+                  class="signal-detail__process-action-responsible"
+                  id="detail-process-action-responsible"
+                  hidden
+                ></p>
+                <p
+                  class="signal-detail__process-action-collaborators"
+                  id="detail-process-action-collaborators"
+                  hidden
+                ></p>
                 <ol
                   class="signal-detail__process-action-list"
                   id="detail-process-action-list"
                 ></ol>
-                <button
-                  type="button"
-                  class="feed__secondary"
-                  id="detail-process-action-contribute"
-                  hidden
+                <div
+                  class="signal-detail__process-action-quick-actions"
+                  id="detail-process-action-quick-actions"
                 >
-                  Add a status update
-                </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-action-take-step"
+                    hidden
+                  >
+                    Take a step
+                  </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-action-offer-help"
+                    hidden
+                  >
+                    Offer help
+                  </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-action-contribute"
+                    hidden
+                  >
+                    Add a status update
+                  </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-action-add-evidence"
+                    hidden
+                  >
+                    Add evidence
+                  </button>
+                  <button
+                    type="button"
+                    class="feed__secondary"
+                    id="detail-process-action-institution-response"
+                    hidden
+                  >
+                    Record the institution's response
+                  </button>
+                </div>
                 <div
                   class="signal-detail__process-action-compose"
                   id="detail-process-action-compose"
@@ -1060,6 +1127,19 @@
                     rows="3"
                     aria-label="Status update"
                   ></textarea>
+                  <select
+                    class="signal-detail__process-action-blocked-reason"
+                    id="detail-process-action-blocked-reason"
+                    hidden
+                  ></select>
+                  <input
+                    type="url"
+                    class="signal-detail__process-proposals-title-input"
+                    id="detail-process-action-url-input"
+                    maxlength="500"
+                    aria-label="Supporting link (optional)"
+                    hidden
+                  />
                   <div class="signal-detail__session-compose-actions">
                     <button
                       type="button"

@@ -361,6 +361,34 @@ assert(
     js.includes("void loadSignalCivicAction();"),
   "action status log remains a readable historical record through verification and archived",
 );
+assert(
+  js.includes("civicActionCanTakeStepCache = data.canTakeStep === true;") &&
+    js.includes("detailProcessActionTakeStep.hidden = !civicActionCanTakeStepCache;"),
+  "responsible-actor claim visibility follows backend canTakeStep truth only (§12)",
+);
+assert(
+  js.includes("data.responsibleActor") && js.includes("data.collaborators"),
+  "action surfaces the derived responsible actor and collaborators, never a stored assignment (§12)",
+);
+assert(
+  js.includes('civicActionKindBadgeLabel(copy, kind)') &&
+    js.includes("take_step") &&
+    js.includes("offer_help") &&
+    js.includes("institution_response"),
+  "action updates support the owner's typed contextual kinds as subtypes, not new tables (§12)",
+);
+assert(
+  js.includes("civicActionStatusLabel(copy, actionStatus)") &&
+    js.includes('actionStatus === "blocked"') &&
+    js.includes('actionStatus === "completed"'),
+  "action status (not_started/in_progress/blocked/completed) is derived, never a stored field (§12)",
+);
+assert(
+  html.includes('id="detail-process-action-institution"') &&
+    html.includes('id="detail-process-action-objective"') &&
+    html.includes('id="detail-process-action-deadline"'),
+  "action surfaces target institution, objective, and indicative deadline from the winning proposal (§12)",
+);
 
 assert(
   html.includes('id="detail-process-verification"'),
