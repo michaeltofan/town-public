@@ -1169,9 +1169,15 @@
   }
 
   const CITY_BY_COUNTRY = {
-    Italy: { id: "Milano", image: "assets/cities/milano.png" },
-    Germany: { id: "Munich", image: "assets/cities/munich.png" },
-    Romania: { id: "Arad", image: "assets/cities/arad.png" },
+    Italy: [{ id: "Milano", image: "assets/cities/milano.png" }],
+    Germany: [{ id: "Munich", image: "assets/cities/munich.png" }],
+    Romania: [
+      { id: "Arad", image: "assets/cities/arad.png" },
+      { id: "ClujNapoca", image: "assets/cities/cluj-napoca.svg" },
+      { id: "Sibiu", image: "assets/cities/sibiu.svg" },
+      { id: "Iasi", image: "assets/cities/iasi.svg" },
+      { id: "Timisoara", image: "assets/cities/timisoara.svg" },
+    ],
   };
 
   // Approved Experience Prototype V1 scenes (fictional content).
@@ -1401,6 +1407,304 @@
           "Semnalul privește o obligație stabilită printr-o hotărâre judecătorească definitivă, a cărei executare este încă în curs.",
       },
     ],
+    ClujNapoca: [
+      {
+        id: "cluj-napoca-signal-1",
+        category: "MEDIU",
+        authorName: "Redacția TOWN Cluj-Napoca",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "3 august 2026",
+        area: "Zorilor",
+        headline: "Spațiul verde din Parcul Rozelor, năpădit de vegetație necontrolată",
+        summary:
+          "Iarba și tufișurile netunse de peste două luni acoperă aleile secundare. Locuitorii cer reluarea programului de întreținere.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "În Parcul Rozelor din cartierul Zorilor, aleile secundare sunt acoperite de vegetație netunsă încă de la începutul verii. Băncile și coșurile de gunoi devin greu accesibile, iar iarba înaltă ascunde denivelările terenului.",
+        whyMatters:
+          "Parcul Rozelor este unul dintre puținele spații verzi extinse din Zorilor, folosit zilnic de familii, sportivi și persoane în vârstă. Lipsa întreținerii reduce siguranța și utilitatea unui spațiu public esențial pentru cartier.",
+        whoAffected:
+          "Familii cu copii, persoane în vârstă, sportivi și locuitorii cartierului Zorilor care folosesc parcul pentru plimbări zilnice.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu există încă o confirmare a reluării programului de întreținere.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+      {
+        id: "cluj-napoca-signal-2",
+        category: "INFRASTRUCTURĂ",
+        authorName: "Redacția TOWN Cluj-Napoca",
+        observedTime: "Semnalat acum două zile",
+        observedDate: "1 august 2026",
+        area: "Mănăștur",
+        headline: "Carosabilul de pe strada Fabricii de Zahăr rămâne plin de gropi",
+        summary:
+          "Denivelările s-au adâncit după ploile din iulie. Autobuzele de transport public evită acum banda din dreapta.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: semnalat — monitorizare locală",
+        description:
+          "Pe strada Fabricii de Zahăr, în Mănăștur, mai multe gropi extinse afectează ambele benzi de circulație. Ploile din iulie au adâncit denivelările existente, iar șoferii de autobuz raportează că evită banda din dreapta pe tot traseul.",
+        whyMatters:
+          "Strada este un traseu zilnic pentru transportul public și pentru mii de locuitori ai celui mai populat cartier al orașului. Gropile adânci cresc riscul de accidente și uzura prematură a vehiculelor.",
+        whoAffected:
+          "Locuitorii cartierului Mănăștur, pasagerii liniilor de autobuz care circulă pe strada Fabricii de Zahăr, bicicliști și șoferi.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu a fost confirmată încă o dată pentru lucrări de reparație.",
+        statusNote:
+          "„Semnalat” indică faptul că problema a fost adusă la cunoștința comunității locale. Nu confirmă reparație, preluare formală sau termene de intervenție.",
+      },
+      {
+        id: "cluj-napoca-signal-3",
+        category: "SPAȚIU PUBLIC",
+        authorName: "Redacția TOWN Cluj-Napoca",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "4 august 2026",
+        area: "Centrul Vechi",
+        headline:
+          "Zona pietonală din jurul Bisericii Sfântul Mihail, blocată de terase neautorizate",
+        summary:
+          "Mese și scaune ocupă trotuarul pe o lățime de peste doi metri. Persoanele cu cărucior sau cu mobilitate redusă sunt nevoite să coboare pe carosabil.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: deschis — necesită clarificare locală",
+        description:
+          "În jurul Pieței Unirii, mai multe terase depășesc perimetrul autorizat și ocupă trotuarul aproape în întregime, în special seara. Spațiul pietonal rămas este insuficient pentru fluxul de trecere, mai ales în zilele de weekend.",
+        whyMatters:
+          "Centrul Vechi este cea mai circulată zonă pietonală a orașului. Un trotuar blocat afectează direct accesibilitatea pentru persoane cu cărucioare, cărucioare de copii sau mobilitate redusă.",
+        whoAffected:
+          "Persoane cu mobilitate redusă, părinți cu cărucioare, turiști și locuitorii care traversează zilnic Piața Unirii pe jos.",
+        latestUpdate:
+          "Semnalul rămâne deschis. Nu există încă o verificare confirmată a respectării perimetrelor autorizate.",
+        statusNote:
+          "„Deschis” înseamnă că situația rămâne de clarificat pentru comunitate. Nu implică o decizie administrativă deja încheiată.",
+      },
+    ],
+    Sibiu: [
+      {
+        id: "sibiu-signal-1",
+        category: "SPAȚIU PUBLIC",
+        authorName: "Redacția TOWN Sibiu",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "2 august 2026",
+        area: "Piața Mică",
+        headline: "Pavajul istoric din Piața Mică s-a deplasat lângă Pasajul Scărilor",
+        summary:
+          "Câteva zeci de pietre de pavaj s-au ridicat și s-au deplasat. Zona rămâne instabilă la pas, mai ales pe timp de ploaie.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "Lângă intrarea în Pasajul Scărilor, o porțiune din pavajul istoric al Pieței Mici s-a deplasat, lăsând pietre ridicate și goluri între ele. Traficul pietonal intens din zonă, combinat cu ploile de vară, a accelerat degradarea.",
+        whyMatters:
+          "Piața Mică este inima turistică și pietonală a orașului, traversată zilnic de mii de locuitori și vizitatori. Pavajul instabil crește riscul de accidentare, în special pentru persoanele în vârstă.",
+        whoAffected:
+          "Locuitorii din Centrul Istoric, comercianții din piață, turiștii și persoanele în vârstă care traversează zona zilnic.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o intervenție de refacere a pavajului.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+      {
+        id: "sibiu-signal-2",
+        category: "INFRASTRUCTURĂ",
+        authorName: "Redacția TOWN Sibiu",
+        observedTime: "Semnalat acum trei săptămâni",
+        observedDate: "17 iulie 2026",
+        area: "Hipodrom",
+        headline: "Stâlpii de iluminat din cartierul Hipodrom III rămân stinși de trei săptămâni",
+        summary:
+          "Un tronson de aproape un kilometru pe strada Ceferiștilor este întunecat seara. Locuitorii au depus deja o sesizare la Primărie.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: semnalat — monitorizare locală",
+        description:
+          "Pe strada Ceferiștilor, în cartierul Hipodrom III, un tronson de aproape un kilometru rămâne fără iluminat public de la începutul lunii. Locuitorii spun că problema a fost deja semnalată furnizorului de energie, fără o dată clară de remediere.",
+        whyMatters:
+          "Iluminatul public face parte din siguranța zilnică a unui cartier rezidențial dens. Un tronson întunecat afectează atât siguranța pietonilor, cât și percepția generală de siguranță a zonei.",
+        whoAffected:
+          "Locuitorii cartierului Hipodrom III, elevi care se întorc seara de la activități, persoane care folosesc strada Ceferiștilor pentru a ajunge la stațiile de transport public.",
+        latestUpdate:
+          "Locuitorii confirmă că au depus deja o sesizare. Semnalul rămâne în monitorizare locală.",
+        statusNote:
+          "„Semnalat” indică faptul că problema a fost adusă la cunoștința comunității locale. Nu confirmă reparație, preluare formală sau termene de intervenție.",
+      },
+      {
+        id: "sibiu-signal-3",
+        category: "MEDIU",
+        authorName: "Redacția TOWN Sibiu",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "5 august 2026",
+        area: "Pădurea Dumbrava",
+        headline: "Cărările din Pădurea Dumbrava, blocate de crengi căzute după furtuna din iulie",
+        summary:
+          "Mai multe cărări principale spre Zoo și Muzeul Astra rămân impracticabile. Curățarea nu a fost încă anunțată.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "Furtuna puternică din a doua jumătate a lunii iulie a doborât mai multe crengi mari pe cărările principale din Pădurea Dumbrava, blocând accesul pietonal spre zona Zoo și spre traseele care duc către Muzeul Astra.",
+        whyMatters:
+          "Pădurea Dumbrava este cea mai folosită zonă de agrement din apropierea orașului, vizitată zilnic de familii, alergători și turiști. Cărările blocate reduc accesul la un spațiu natural esențial pentru comunitate.",
+        whoAffected:
+          "Familii care vizitează Zoo, alergători, turiști care merg spre Muzeul Astra și locuitorii din apropiere care folosesc pădurea pentru plimbări zilnice.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu a fost anunțată încă o dată pentru curățarea cărărilor afectate.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+    ],
+    Iasi: [
+      {
+        id: "iasi-signal-1",
+        category: "INFRASTRUCTURĂ",
+        authorName: "Redacția TOWN Iași",
+        observedTime: "Semnalat ieri",
+        observedDate: "6 august 2026",
+        area: "Tătărași",
+        headline: "Asfaltul de pe strada Moara de Vânt s-a surpat pe o porțiune de zece metri",
+        summary:
+          "O conductă de apă spartă a subminat carosabilul. Circulația pe bandă unică este dirijată manual de un agent de pază local.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: semnalat — monitorizare locală",
+        description:
+          "Pe strada Moara de Vânt, în Tătărași, o avarie la conducta de apă a dus la surparea asfaltului pe o porțiune de aproximativ zece metri. Circulația se desfășoară pe o singură bandă, iar în orele de vârf apar ambuteiaje.",
+        whyMatters:
+          "Strada Moara de Vânt este un traseu principal de acces spre zona rezidențială Tătărași. Surparea carosabilului reprezintă un pericol real pentru vehicule și pietoni deopotrivă.",
+        whoAffected:
+          "Locuitorii cartierului Tătărași, șoferii care folosesc strada ca rută zilnică, pietonii care traversează zona.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o dată pentru repararea conductei și a carosabilului.",
+        statusNote:
+          "„Semnalat” indică faptul că problema a fost adusă la cunoștința comunității locale. Nu confirmă reparație, preluare formală sau termene de intervenție.",
+      },
+      {
+        id: "iasi-signal-2",
+        category: "SPAȚIU PUBLIC",
+        authorName: "Redacția TOWN Iași",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "4 august 2026",
+        area: "Copou",
+        headline: "Aleea principală din Parcul Copou rămâne fără bănci funcționale",
+        summary:
+          "Majoritatea băncilor de pe aleea centrală au scândurile rupte sau lipsă. Vizitatorii se așază pe marginea aleii.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "Pe aleea principală a Parcului Copou, aproape de Teiul lui Eminescu, majoritatea băncilor au scândurile rupte sau complet lipsă. Vizitatorii, mai ales persoanele în vârstă, se văd nevoiți să se așeze pe marginea aleii sau pe iarbă.",
+        whyMatters:
+          "Parcul Copou este un reper istoric și un spațiu de recreere folosit zilnic de mii de ieșeni. Lipsa mobilierului urban funcțional reduce accesibilitatea unui spațiu public esențial pentru oraș.",
+        whoAffected:
+          "Persoane în vârstă, familii cu copii, studenți din campusurile din apropiere și turiști care vizitează Teiul lui Eminescu.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu există încă o confirmare a înlocuirii mobilierului urban.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+      {
+        id: "iasi-signal-3",
+        category: "MEDIU",
+        authorName: "Redacția TOWN Iași",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "5 august 2026",
+        area: "Nicolina",
+        headline: "Malul Bahluiului din Nicolina, acoperit de deșeuri aduse de apele mari",
+        summary:
+          "Apele crescute din iulie au împins gunoaie și resturi vegetale pe mal. Mirosul afectează blocurile din apropiere.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "Pe malul Bahluiului, în dreptul cartierului Nicolina, creșterea nivelului apei din iulie a împins pe mal cantități mari de deșeuri plutitoare și resturi vegetale. Zona nu a fost curățată de la momentul retragerii apelor.",
+        whyMatters:
+          "Malul Bahluiului este folosit ca traseu pietonal și de agrement pentru locuitorii din Nicolina. Deșeurile acumulate afectează atât mediul, cât și calitatea vieții în blocurile din apropiere.",
+        whoAffected:
+          "Locuitorii blocurilor din apropierea malului, persoane care folosesc traseul pietonal de-a lungul Bahluiului, familii cu copii.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o dată pentru operațiunea de curățare.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+    ],
+    Timisoara: [
+      {
+        id: "timisoara-signal-1",
+        category: "SPAȚIU PUBLIC",
+        authorName: "Redacția TOWN Timișoara",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "3 august 2026",
+        area: "Iosefin",
+        headline: "Trotuarul din fața Gării de Nord rămâne blocat de biciclete abandonate",
+        summary:
+          "Peste zece biciclete fără roți sau șa stau prinse de gard de luni de zile. Spațiul pietonal s-a redus la jumătate.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "În fața Gării de Nord, dinspre Iosefin, mai multe biciclete abandonate — unele fără roți, altele fără șa — ocupă gardul și trotuarul de câteva luni. Spațiul rămas pentru pietoni s-a redus considerabil, mai ales în orele de vârf ale traficului feroviar.",
+        whyMatters:
+          "Zona Gării de Nord este un punct intens de tranzit zilnic pentru navetiști și călători. Un trotuar blocat afectează direct fluxul pietonal într-una dintre cele mai aglomerate zone ale orașului.",
+        whoAffected:
+          "Navetiști, călători cu bagaje, persoane cu mobilitate redusă și locuitorii din Iosefin care trec zilnic prin zonă.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o operațiune de ridicare a bicicletelor abandonate.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+      {
+        id: "timisoara-signal-2",
+        category: "INFRASTRUCTURĂ",
+        authorName: "Redacția TOWN Timișoara",
+        observedTime: "Semnalat acum o săptămână",
+        observedDate: "31 iulie 2026",
+        area: "Fabric",
+        headline:
+          "Pista de biciclete de pe strada Take Ionescu se întrerupe brusc lângă intersecția cu Circumvalațiunii",
+        summary:
+          "Marcajul dispare fără avertisment, iar bicicliștii sunt nevoiți să intre direct în traficul auto.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: semnalat — monitorizare locală",
+        description:
+          "Pe strada Take Ionescu, în apropierea intersecției cu Circumvalațiunii, pista de biciclete se întrerupe brusc, fără o zonă de tranziție marcată. Bicicliștii care circulă spre centru sunt nevoiți să intre direct pe banda auto, fără avertisment vizual pentru șoferi.",
+        whyMatters:
+          "Take Ionescu este una dintre principalele artere folosite de bicicliști pentru a ajunge în centrul orașului. O întrerupere neclară a pistei crește riscul de accident chiar la intrarea într-o intersecție aglomerată.",
+        whoAffected:
+          "Bicicliști navetiști, elevi și studenți care folosesc bicicleta zilnic, șoferii care circulă pe Take Ionescu.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o soluție de continuare sau marcare a pistei.",
+        statusNote:
+          "„Semnalat” indică faptul că problema a fost adusă la cunoștința comunității locale. Nu confirmă reparație, preluare formală sau termene de intervenție.",
+      },
+      {
+        id: "timisoara-signal-3",
+        category: "MEDIU",
+        authorName: "Redacția TOWN Timișoara",
+        observedTime: "Observat săptămâna aceasta",
+        observedDate: "6 august 2026",
+        area: "Pădurea Verde",
+        headline: "Zona de picnic din Pădurea Verde rămâne fără coșuri de gunoi funcționale",
+        summary:
+          "Coșurile existente sunt pline sau răsturnate de câteva săptămâni. Deșeurile se acumulează în jurul meselor de picnic.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Stare civică: observat — în așteptarea atenției locale",
+        description:
+          "În zona de picnic din Pădurea Verde, coșurile de gunoi existente sunt fie pline la capacitate, fie răsturnate, de câteva săptămâni. Deșeurile se acumulează în jurul meselor de picnic, mai ales după weekendurile aglomerate.",
+        whyMatters:
+          "Pădurea Verde este principalul spațiu de agrement de la marginea orașului, folosit intens vara de familii și grupuri. Lipsa gestionării deșeurilor afectează atât igiena, cât și atractivitatea zonei.",
+        whoAffected:
+          "Familii care vin la picnic, alergători și cicliști care folosesc traseele din pădure, locuitorii din apropiere.",
+        latestUpdate:
+          "Semnalul rămâne local și deschis. Nu este confirmată încă o dată pentru golirea și înlocuirea coșurilor.",
+        statusNote:
+          "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
+      },
+    ],
   };
 
   const apiBaseHelper = window.TownApiBase || null;
@@ -1423,6 +1727,10 @@
     Milano: "milano-it",
     Munich: "munich-de",
     Arad: "arad-ro",
+    ClujNapoca: "cluj-napoca-ro",
+    Sibiu: "sibiu-ro",
+    Iasi: "iasi-ro",
+    Timisoara: "timisoara-ro",
   };
   const KNOWN_FEED_IMAGES = {
     "assets/feed/signal_citta_studi_pavement.jpg": true,
@@ -1434,6 +1742,10 @@
     Milano: null,
     Munich: null,
     Arad: null,
+    ClujNapoca: null,
+    Sibiu: null,
+    Iasi: null,
+    Timisoara: null,
   };
 
   const CITY_COPY = {
@@ -1443,7 +1755,7 @@
       cityLegend: "City",
       back: "Back",
       continue: "Continue",
-      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       context: {
         Italy: "Country: Italy",
         Germany: "Country: Germany",
@@ -1456,7 +1768,7 @@
       cityLegend: "Ciudad",
       back: "Atrás",
       continue: "Continuar",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       context: {
         Italy: "País: Italia",
         Germany: "País: Alemania",
@@ -1469,7 +1781,7 @@
       cityLegend: "Città",
       back: "Indietro",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       context: {
         Italy: "Paese: Italia",
         Germany: "Paese: Germania",
@@ -1482,7 +1794,7 @@
       cityLegend: "Stadt",
       back: "Zurück",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       context: {
         Italy: "Land: Italien",
         Germany: "Land: Deutschland",
@@ -1495,7 +1807,7 @@
       cityLegend: "Oraș",
       back: "Înapoi",
       continue: "Continuă",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       context: {
         Italy: "Țară: Italia",
         Germany: "Țară: Germania",
@@ -1531,7 +1843,7 @@
       errorTimeout: "Timed out while getting location. Try again.",
       errorUnsupported:
         "Location verification is not available in this context. Use a secure connection and try again.",
-      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     es: {
       back: "Atrás",
@@ -1559,7 +1871,7 @@
       errorTimeout: "Se agotó el tiempo para obtener la ubicación. Inténtalo de nuevo.",
       errorUnsupported:
         "La verificación de ubicación no está disponible en este contexto. Usa una conexión segura e inténtalo de nuevo.",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     it: {
       back: "Indietro",
@@ -1587,7 +1899,7 @@
       errorTimeout: "Tempo scaduto per ottenere la posizione. Riprova.",
       errorUnsupported:
         "La verifica di posizione non è disponibile in questo contesto. Usa una connessione sicura e riprova.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       back: "Zurück",
@@ -1616,7 +1928,7 @@
         "Zeitüberschreitung bei der Standortabfrage. Bitte erneut versuchen.",
       errorUnsupported:
         "Standortprüfung ist in diesem Kontext nicht verfügbar. Bitte eine sichere Verbindung nutzen und erneut versuchen.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       back: "Înapoi",
@@ -1645,7 +1957,7 @@
         "Timpul pentru obținerea locației a expirat. Încearcă din nou.",
       errorUnsupported:
         "Verificarea locației nu este disponibilă în acest context. Folosește o conexiune sigură și încearcă din nou.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -1715,7 +2027,7 @@
       seeTooBusy: "Saving your confirmation…",
       notYourCommunity:
         "You can explore, but participation is reserved for the local community.",
-      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     es: {
       back: "Atrás",
@@ -1774,7 +2086,7 @@
       seeTooBusy: "Guardando tu confirmación…",
       notYourCommunity:
         "Puedes explorar, pero la participación está reservada a la comunidad local.",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     it: {
       back: "Indietro",
@@ -1833,7 +2145,7 @@
       seeTooBusy: "Salvataggio della conferma…",
       notYourCommunity:
         "Puoi esplorare, ma la partecipazione è riservata alla comunità locale.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       back: "Zurück",
@@ -1892,7 +2204,7 @@
       seeTooBusy: "Bestätigung wird gespeichert…",
       notYourCommunity:
         "Du kannst erkunden, aber die Teilnahme ist der lokalen Gemeinschaft vorbehalten.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       back: "Înapoi",
@@ -1951,7 +2263,7 @@
       seeTooBusy: "Se salvează confirmarea…",
       notYourCommunity:
         "Poți explora, dar participarea este rezervată comunității locale.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -1987,7 +2299,7 @@
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
       endedReturn: "Torna all’ingresso TOWN",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
@@ -2021,7 +2333,7 @@
       endedBody:
         "Du kannst zurückkehren, wenn du bereit bist, ein Teil davon zu sein.",
       endedReturn: "Zurück zum TOWN-Eingang",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       inviteTitle: "Îți pasă de ceea ce se întâmplă în comunitatea ta.",
@@ -2054,7 +2366,7 @@
         "TOWN este pentru cei gata să participe în comunitatea lor.",
       endedBody: "Poți reveni când ești pregătit să faci parte din ea.",
       endedReturn: "Înapoi la intrarea TOWN",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2081,7 +2393,7 @@
         "Il passo successivo crea il tuo account con email e passkey.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "PERSÖNLICHES KONTO",
@@ -2105,7 +2417,7 @@
         "Als Nächstes erstellst du dein Konto mit E-Mail und Passkey.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "CONT PERSONAL",
@@ -2129,7 +2441,7 @@
         "Următorul pas creează contul cu email și passkey.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2150,7 +2462,7 @@
       failed: "Non è stato possibile continuare. Riprova.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "KONTO ERSTELLEN",
@@ -2169,7 +2481,7 @@
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "CREEAZĂ-ȚI CONTUL",
@@ -2187,7 +2499,7 @@
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2203,7 +2515,7 @@
       failed: "Non è stato possibile continuare. Riprova.",
       verify: "Verifica",
       changeEmail: "Cambia email",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "E-MAIL BESTÄTIGEN",
@@ -2217,7 +2529,7 @@
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       verify: "Bestätigen",
       changeEmail: "E-Mail-Adresse ändern",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "VERIFICARE EMAIL",
@@ -2230,7 +2542,7 @@
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
       verify: "Verifică",
       changeEmail: "Schimbă emailul",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2268,7 +2580,7 @@
         "La finestra di configurazione è scaduta. Riparti dall’inserimento dell’email.",
       cancelled: "Creazione annullata. Puoi riprovare.",
       failed: "Non è stato possibile creare la passkey. Riprova.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "SICHERER ZUGANG",
@@ -2303,7 +2615,7 @@
         "Das Einrichtungsfenster ist abgelaufen. Starte erneut bei der E-Mail-Eingabe.",
       cancelled: "Erstellung abgebrochen. Du kannst es erneut versuchen.",
       failed: "Der Passkey konnte nicht erstellt werden. Bitte versuche es erneut.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "ACCES SIGUR",
@@ -2338,7 +2650,7 @@
         "Fereastra de configurare a expirat. Repornește de la introducerea emailului.",
       cancelled: "Creare anulată. Poți încerca din nou.",
       failed: "Nu a fost posibil să creezi passkey-ul. Încearcă din nou.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2361,7 +2673,7 @@
         "Il passo successivo è Stripe Checkout per la membership annuale.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "KONTO BEREIT",
@@ -2381,7 +2693,7 @@
         "Der nächste Schritt ist Stripe Checkout für die jährliche Mitgliedschaft.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "CONT PREGĂTIT",
@@ -2401,7 +2713,7 @@
         "Următorul pas este Stripe Checkout pentru membership-ul anual.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2455,7 +2767,7 @@
       paidNoParticipateStatus:
         "Il pagamento risulta registrato, ma la partecipazione civica non è ancora disponibile. Completa la scelta della comunità se richiesto, oppure riprova tra poco.",
       continueCommunity: "Scegli la comunità",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "JÄHRLICHE MITGLIEDSCHAFT",
@@ -2508,7 +2820,7 @@
       paidNoParticipateStatus:
         "Die Zahlung ist erfasst, aber die Mitwirkung ist noch nicht verfügbar. Schließe gegebenenfalls die Gemeindewahl ab oder versuche es gleich erneut.",
       continueCommunity: "Gemeinde wählen",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "MEMBERSHIP ANUAL",
@@ -2559,7 +2871,7 @@
       paidNoParticipateStatus:
         "Plata este înregistrată, dar participarea civică nu este încă disponibilă. Completează alegerea comunității dacă e nevoie sau încearcă din nou în curând.",
       continueCommunity: "Alege comunitatea",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2577,7 +2889,7 @@
         "Gestisci l’abbonamento dal profilo quando Stripe lo consente per questo account.",
       returnSignal: "Torna al segnale",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     de: {
       label: "MITGLIEDSCHAFT AKTIV",
@@ -2592,7 +2904,7 @@
         "Verwalte das Abonnement im Profil, wenn Stripe das für dieses Konto erlaubt.",
       returnSignal: "Zurück zum Signal",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
     ro: {
       label: "MEMBERSHIP ACTIV",
@@ -2607,7 +2919,7 @@
         "Gestionează abonamentul din profil când Stripe o permite pentru acest cont.",
       returnSignal: "Înapoi la semnal",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
     },
   };
 
@@ -2624,7 +2936,7 @@
         Germany: "Germania",
         Romania: "Romania",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       reviewLabel: "Rivedi la comunità selezionata",
       reviewCountry: "Paese: {country}",
       reviewCity: "Città: {city}",
@@ -2661,7 +2973,7 @@
         Germany: "Deutschland",
         Romania: "Rumänien",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       reviewLabel: "Ausgewählte Gemeinschaft prüfen",
       reviewCountry: "Land: {country}",
       reviewCity: "Stadt: {city}",
@@ -2701,7 +3013,7 @@
         Germany: "Germania",
         Romania: "România",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
       reviewLabel: "Revizuiește comunitatea selectată",
       reviewCountry: "Țară: {country}",
       reviewCity: "Oraș: {city}",
@@ -2944,11 +3256,23 @@
   // path may open the existing approved membership/account-entry journey.
   const PRODUCT_ONLY_PUBLIC_MODE = true;
   const PRODUCT_ONLY_FEED_ROUTE = "feed";
-  const PRODUCT_ONLY_CITY_ORDER = ["Milano", "Munich", "Arad"];
+  const PRODUCT_ONLY_CITY_ORDER = [
+    "Milano",
+    "Munich",
+    "Arad",
+    "ClujNapoca",
+    "Sibiu",
+    "Iasi",
+    "Timisoara",
+  ];
   const PRODUCT_ONLY_COUNTRY_BY_CITY = {
     Milano: "Italy",
     Munich: "Germany",
     Arad: "Romania",
+    ClujNapoca: "Romania",
+    Sibiu: "Romania",
+    Iasi: "Romania",
+    Timisoara: "Romania",
   };
   const NON_PRODUCT_ROUTES = {
     entry: true,
@@ -3066,6 +3390,10 @@
     if (scene.id.indexOf("milano-") === 0) return "Milano";
     if (scene.id.indexOf("munich-") === 0) return "Munich";
     if (scene.id.indexOf("arad-") === 0) return "Arad";
+    if (scene.id.indexOf("cluj-napoca-") === 0) return "ClujNapoca";
+    if (scene.id.indexOf("sibiu-") === 0) return "Sibiu";
+    if (scene.id.indexOf("iasi-") === 0) return "Iasi";
+    if (scene.id.indexOf("timisoara-") === 0) return "Timisoara";
     return null;
   }
 
@@ -7135,16 +7463,22 @@
   }
 
   function communityLanguage() {
-    if (selectedCountry === "Italy" && selectedCity === "Milano") return "it";
-    if (selectedCountry === "Germany" && selectedCity === "Munich") return "de";
-    if (selectedCountry === "Romania" && selectedCity === "Arad") return "ro";
-    return "en";
+    const lang = languageForCityId(selectedCity);
+    if (!lang || !CITY_BY_COUNTRY[selectedCountry]) return "en";
+    const validForCountry = CITY_BY_COUNTRY[selectedCountry].some(
+      (city) => city.id === selectedCity
+    );
+    return validForCountry ? lang : "en";
   }
 
   function languageForCityId(cityId) {
     if (cityId === "Milano") return "it";
     if (cityId === "Munich") return "de";
     if (cityId === "Arad") return "ro";
+    if (cityId === "ClujNapoca") return "ro";
+    if (cityId === "Sibiu") return "ro";
+    if (cityId === "Iasi") return "ro";
+    if (cityId === "Timisoara") return "ro";
     return null;
   }
 
@@ -7306,14 +7640,11 @@
     return resolveSceneImage(detail && detail.imageKey, cityId);
   }
 
+  const LOCALE_TAG_BY_LANG = { it: "it-IT", de: "de-DE", ro: "ro-RO" };
+
   function mapSignalDetailToScene(detail, cityId) {
     const localeTag =
-      detail.locale ||
-      (cityId === "Munich"
-        ? "de-DE"
-        : cityId === "Arad"
-          ? "ro-RO"
-          : "it-IT");
+      detail.locale || LOCALE_TAG_BY_LANG[languageForCityId(cityId)] || "it-IT";
     const focusX =
       detail.imageFocus && typeof detail.imageFocus.x === "number"
         ? detail.imageFocus.x
@@ -7838,10 +8169,15 @@
       cityContext.textContent = "";
     }
 
-    const label = cityOptions.querySelector(".country__option-label");
-    if (label && selectedCountry) {
-      const cityId = CITY_BY_COUNTRY[selectedCountry].id;
-      label.textContent = copy.cityNames[cityId];
+    if (selectedCountry && CITY_BY_COUNTRY[selectedCountry]) {
+      const inputs = cityOptions.querySelectorAll('input[name="city"]');
+      for (let i = 0; i < inputs.length; i++) {
+        const label = inputs[i].closest(".country__option");
+        const nameEl = label && label.querySelector(".country__option-label");
+        if (nameEl) {
+          nameEl.textContent = copy.cityNames[inputs[i].value] || inputs[i].value;
+        }
+      }
     }
   }
 
@@ -8740,40 +9076,44 @@
       return;
     }
 
-    const city = CITY_BY_COUNTRY[selectedCountry];
+    const cities = CITY_BY_COUNTRY[selectedCountry];
     const copy = CITY_COPY[communityLanguage()];
-    const optionId = "city-" + city.id.toLowerCase();
 
-    const label = document.createElement("label");
-    label.className = "country__option";
-    label.innerHTML =
-      '<input type="radio" name="city" value="' +
-      city.id +
-      '" id="' +
-      optionId +
-      '" />' +
-      '<span class="country__option-face">' +
-      '<img class="country__flag city__thumb" src="' +
-      city.image +
-      '" alt="" width="28" height="20" decoding="async" />' +
-      '<span class="country__option-label">' +
-      copy.cityNames[city.id] +
-      "</span>" +
-      "</span>";
+    for (let i = 0; i < cities.length; i++) {
+      const city = cities[i];
+      const optionId = "city-" + city.id.toLowerCase();
 
-    cityOptions.appendChild(label);
+      const label = document.createElement("label");
+      label.className = "country__option";
+      label.innerHTML =
+        '<input type="radio" name="city" value="' +
+        city.id +
+        '" id="' +
+        optionId +
+        '" />' +
+        '<span class="country__option-face">' +
+        '<img class="country__flag city__thumb" src="' +
+        city.image +
+        '" alt="" width="28" height="20" decoding="async" />' +
+        '<span class="country__option-label">' +
+        (copy.cityNames[city.id] || city.id) +
+        "</span>" +
+        "</span>";
 
-    const input = label.querySelector("input");
-    input.addEventListener("change", () => {
-      selectedCity = input.checked ? input.value : null;
-      continueCity.disabled = !selectedCity;
-      applyCityCopy();
-    });
+      cityOptions.appendChild(label);
 
-    if (preserve && previousCity === city.id) {
-      input.checked = true;
-      selectedCity = previousCity;
-      continueCity.disabled = false;
+      const input = label.querySelector("input");
+      input.addEventListener("change", () => {
+        selectedCity = input.checked ? input.value : null;
+        continueCity.disabled = !selectedCity;
+        applyCityCopy();
+      });
+
+      if (preserve && previousCity === city.id) {
+        input.checked = true;
+        selectedCity = previousCity;
+        continueCity.disabled = false;
+      }
     }
   }
 
@@ -9017,6 +9357,10 @@
     Milano: ["SPAZIO PUBBLICO", "ILLUMINAZIONE", "LAVORI PUBBLICI"],
     Munich: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
     Arad: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+    ClujNapoca: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+    Sibiu: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+    Iasi: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+    Timisoara: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
   };
 
   const SIGNAL_CREATE_COPY = {

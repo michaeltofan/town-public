@@ -114,7 +114,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=civic-process-inbox-1"),
+  html.includes("script.js?v=city-expansion-ro-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -570,6 +570,54 @@ assert(
   js.includes('feedStateRetry.addEventListener("click"') &&
     js.includes("loadProductOnlyLiveFeed"),
   "feed retry reloads live signals"
+);
+
+// City expansion — Romania: Cluj-Napoca, Sibiu, Iași, Timișoara join Arad.
+// A country can now offer more than one city in the picker, feed, and copy.
+const romaniaCityIds = ["ClujNapoca", "Sibiu", "Iasi", "Timisoara"];
+assert(
+  /Romania:\s*\[\s*\{\s*id:\s*"Arad"/.test(js),
+  "CITY_BY_COUNTRY.Romania is an array starting with Arad"
+);
+for (const cityId of romaniaCityIds) {
+  assert(
+    js.includes('{ id: "' + cityId + '", image: "assets/cities/'),
+    "CITY_BY_COUNTRY includes " + cityId
+  );
+  assert(js.includes("\n    " + cityId + ": ["), cityId + " has a FEED_SCENES entry");
+  assert(
+    js.includes('if (cityId === "' + cityId + '") return "ro";'),
+    "languageForCityId resolves " + cityId + " to Romanian"
+  );
+}
+assert(
+  js.includes('ClujNapoca: "cluj-napoca-ro"') &&
+    js.includes('Sibiu: "sibiu-ro"') &&
+    js.includes('Iasi: "iasi-ro"') &&
+    js.includes('Timisoara: "timisoara-ro"'),
+  "CITY_API_SLUG maps every new Romanian city"
+);
+assert(
+  js.includes('"ClujNapoca",') &&
+    js.includes('"Sibiu",') &&
+    js.includes('"Iasi",') &&
+    js.includes('"Timisoara",'),
+  "PRODUCT_ONLY_CITY_ORDER references every new Romanian city"
+);
+assert(
+  js.includes("for (let i = 0; i < cities.length; i++) {"),
+  "renderCityOptions iterates every city in the selected country, not just one"
+);
+assert(
+  !/const city = CITY_BY_COUNTRY\[selectedCountry\];\s*\n\s*const copy = CITY_COPY/.test(js),
+  "renderCityOptions no longer assumes exactly one city per country"
+);
+assert(
+  fs.existsSync(path.join(root, "assets", "cities", "cluj-napoca.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "sibiu.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "iasi.svg")) &&
+    fs.existsSync(path.join(root, "assets", "cities", "timisoara.svg")),
+  "placeholder city thumbnails exist for every new Romanian city"
 );
 
 if (failed > 0) {
