@@ -303,6 +303,33 @@
   const detailProcessMandateTally = document.getElementById(
     "detail-process-mandate-tally"
   );
+  const detailProcessMandateMinorityList = document.getElementById(
+    "detail-process-mandate-minority-list"
+  );
+  const detailProcessMandateContest = document.getElementById(
+    "detail-process-mandate-contest"
+  );
+  const detailProcessMandateContestStatus = document.getElementById(
+    "detail-process-mandate-contest-status"
+  );
+  const detailProcessMandateContestForm = document.getElementById(
+    "detail-process-mandate-contest-form"
+  );
+  const detailProcessMandateContestLabel = document.getElementById(
+    "detail-process-mandate-contest-label"
+  );
+  const detailProcessMandateContestReason = document.getElementById(
+    "detail-process-mandate-contest-reason"
+  );
+  const detailProcessMandateContestElaboration = document.getElementById(
+    "detail-process-mandate-contest-elaboration"
+  );
+  const detailProcessMandateContestSubmit = document.getElementById(
+    "detail-process-mandate-contest-submit"
+  );
+  const detailProcessMandateContestNote = document.getElementById(
+    "detail-process-mandate-contest-note"
+  );
   const detailProcessAction = document.getElementById("detail-process-action");
   const detailProcessActionState = document.getElementById(
     "detail-process-action-state"
@@ -3486,6 +3513,22 @@
       verificationErrorClosed: "This stage is closed.",
       verificationAlreadyConfirmed: "You have already confirmed.",
       mandateTotalVotesLabel: "{count} total votes",
+      mandateMinorityHeading: "Minority positions",
+      contestStatusPending: "You filed a contestation. Status: pending review.",
+      contestStatusUpheld: "You filed a contestation. Status: upheld.",
+      contestStatusRejected: "You filed a contestation. Status: rejected.",
+      contestPendingOther: "A contestation has been filed and is pending review.",
+      contestReasonLabel: "Reason",
+      contestReasonEligibilityError: "Eligibility error",
+      contestReasonBallotTampering: "Suspected ballot tampering",
+      contestReasonCountDiscrepancy: "Vote count discrepancy",
+      contestSubmit: "File a contestation",
+      contestElaborationPlaceholder: "Optional details",
+      contestErrorGeneric: "Something went wrong. Try again.",
+      contestErrorAlready: "You have already filed a contestation for this mandate.",
+      contestErrorWindowClosed: "The 72-hour contestation window has closed.",
+      contestErrorNotEligible: "You were not eligible to vote in the decisive ballot.",
+      contestErrorNotDecided: "A contestation requires a decided mandate.",
     },
     es: {
       label: "Proceso cívico",
@@ -3614,6 +3657,22 @@
       verificationErrorClosed: "Esta etapa está cerrada.",
       verificationAlreadyConfirmed: "Ya has confirmado.",
       mandateTotalVotesLabel: "{count} votos en total",
+      mandateMinorityHeading: "Posiciones minoritarias",
+      contestStatusPending: "Has presentado una impugnación. Estado: pendiente de revisión.",
+      contestStatusUpheld: "Has presentado una impugnación. Estado: confirmada.",
+      contestStatusRejected: "Has presentado una impugnación. Estado: rechazada.",
+      contestPendingOther: "Se ha presentado una impugnación y está pendiente de revisión.",
+      contestReasonLabel: "Motivo",
+      contestReasonEligibilityError: "Error de elegibilidad",
+      contestReasonBallotTampering: "Sospecha de manipulación de la votación",
+      contestReasonCountDiscrepancy: "Discrepancia en el recuento de votos",
+      contestSubmit: "Presentar una impugnación",
+      contestElaborationPlaceholder: "Detalles opcionales",
+      contestErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
+      contestErrorAlready: "Ya has presentado una impugnación para este mandato.",
+      contestErrorWindowClosed: "La ventana de 72 horas para impugnar se ha cerrado.",
+      contestErrorNotEligible: "No tenías derecho a votar en la votación decisiva.",
+      contestErrorNotDecided: "Una impugnación requiere un mandato decidido.",
     },
     it: {
       label: "Processo civico",
@@ -3741,6 +3800,22 @@
       verificationErrorClosed: "Questa fase è chiusa.",
       verificationAlreadyConfirmed: "Hai già confermato.",
       mandateTotalVotesLabel: "{count} voti totali",
+      mandateMinorityHeading: "Posizioni di minoranza",
+      contestStatusPending: "Hai presentato una contestazione. Stato: in attesa di revisione.",
+      contestStatusUpheld: "Hai presentato una contestazione. Stato: accolta.",
+      contestStatusRejected: "Hai presentato una contestazione. Stato: respinta.",
+      contestPendingOther: "È stata presentata una contestazione ed è in attesa di revisione.",
+      contestReasonLabel: "Motivo",
+      contestReasonEligibilityError: "Errore di ammissibilità",
+      contestReasonBallotTampering: "Sospetta manomissione della scheda",
+      contestReasonCountDiscrepancy: "Discrepanza nel conteggio dei voti",
+      contestSubmit: "Presenta una contestazione",
+      contestElaborationPlaceholder: "Dettagli facoltativi",
+      contestErrorGeneric: "Qualcosa è andato storto. Riprova.",
+      contestErrorAlready: "Hai già presentato una contestazione per questo mandato.",
+      contestErrorWindowClosed: "La finestra di 72 ore per la contestazione si è chiusa.",
+      contestErrorNotEligible: "Non avevi diritto di voto nel ballottaggio decisivo.",
+      contestErrorNotDecided: "Una contestazione richiede un mandato deciso.",
     },
     de: {
       label: "Bürgerprozess",
@@ -3871,6 +3946,22 @@
       verificationErrorClosed: "Diese Phase ist geschlossen.",
       verificationAlreadyConfirmed: "Du hast bereits bestätigt.",
       mandateTotalVotesLabel: "{count} Stimmen insgesamt",
+      mandateMinorityHeading: "Minderheitspositionen",
+      contestStatusPending: "Du hast einen Einspruch eingereicht. Status: Prüfung ausstehend.",
+      contestStatusUpheld: "Du hast einen Einspruch eingereicht. Status: bestätigt.",
+      contestStatusRejected: "Du hast einen Einspruch eingereicht. Status: abgelehnt.",
+      contestPendingOther: "Ein Einspruch wurde eingereicht und wartet auf Prüfung.",
+      contestReasonLabel: "Grund",
+      contestReasonEligibilityError: "Wahlberechtigungsfehler",
+      contestReasonBallotTampering: "Verdacht auf Manipulation der Abstimmung",
+      contestReasonCountDiscrepancy: "Diskrepanz bei der Stimmenauszählung",
+      contestSubmit: "Einspruch einreichen",
+      contestElaborationPlaceholder: "Optionale Details",
+      contestErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
+      contestErrorAlready: "Du hast bereits einen Einspruch für dieses Mandat eingereicht.",
+      contestErrorWindowClosed: "Das 72-Stunden-Fenster für den Einspruch ist geschlossen.",
+      contestErrorNotEligible: "Du warst bei der entscheidenden Abstimmung nicht stimmberechtigt.",
+      contestErrorNotDecided: "Ein Einspruch erfordert ein entschiedenes Mandat.",
     },
     ro: {
       label: "Proces civic",
@@ -3998,6 +4089,22 @@
       verificationErrorClosed: "Această etapă este închisă.",
       verificationAlreadyConfirmed: "Ai confirmat deja.",
       mandateTotalVotesLabel: "{count} voturi în total",
+      mandateMinorityHeading: "Poziții minoritare",
+      contestStatusPending: "Ai depus o contestație. Stare: în așteptarea revizuirii.",
+      contestStatusUpheld: "Ai depus o contestație. Stare: admisă.",
+      contestStatusRejected: "Ai depus o contestație. Stare: respinsă.",
+      contestPendingOther: "A fost depusă o contestație și așteaptă revizuire.",
+      contestReasonLabel: "Motiv",
+      contestReasonEligibilityError: "Eroare de eligibilitate",
+      contestReasonBallotTampering: "Suspiciune de fraudare a buletinului de vot",
+      contestReasonCountDiscrepancy: "Discrepanță în numărarea voturilor",
+      contestSubmit: "Depune o contestație",
+      contestElaborationPlaceholder: "Detalii opționale",
+      contestErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
+      contestErrorAlready: "Ai depus deja o contestație pentru acest mandat.",
+      contestErrorWindowClosed: "Fereastra de 72 de ore pentru contestație s-a închis.",
+      contestErrorNotEligible: "Nu ai avut drept de vot la scrutinul decisiv.",
+      contestErrorNotDecided: "O contestație necesită un mandat decis.",
     },
   };
 
@@ -4180,7 +4287,7 @@
       detailProcessVoting.hidden = true;
       resetCivicVotingPanel();
     }
-    if (isMandateStage) {
+    if (isMandateStage || isActionStage || isVerificationStage || isArchivedStage) {
       detailProcessMandate.hidden = false;
       void loadSignalCivicMandate();
     } else {
@@ -5301,15 +5408,28 @@
   }
 
   let civicMandateLoadToken = 0;
+  let civicContestSubmitting = false;
+  let civicContestCanContestCache = false;
 
   function resetCivicMandatePanel() {
     civicMandateLoadToken += 1;
+    civicContestSubmitting = false;
+    civicContestCanContestCache = false;
     detailProcessMandateState.textContent = "";
     detailProcessMandateWinner.hidden = true;
     detailProcessMandateAuthor.textContent = "";
     detailProcessMandateTitle.textContent = "";
     detailProcessMandateBody.textContent = "";
     detailProcessMandateTally.textContent = "";
+    detailProcessMandateMinorityList.textContent = "";
+    detailProcessMandateMinorityList.hidden = true;
+    detailProcessMandateContest.hidden = true;
+    detailProcessMandateContestStatus.textContent = "";
+    detailProcessMandateContestStatus.hidden = true;
+    detailProcessMandateContestForm.hidden = true;
+    detailProcessMandateContestElaboration.value = "";
+    detailProcessMandateContestNote.hidden = true;
+    detailProcessMandateContestNote.textContent = "";
   }
 
   async function fetchSignalCivicMandate(signalId) {
@@ -5321,11 +5441,25 @@
     );
   }
 
+  async function submitSignalCivicMandateContest(signalId, reasonKey, elaboration) {
+    return postJsonWithCredentials(
+      API_BASE +
+        "/v1/signals/" +
+        encodeURIComponent(signalId) +
+        "/civic-process/mandate/contest",
+      elaboration
+        ? { reasonKey: reasonKey, elaboration: elaboration }
+        : { reasonKey: reasonKey }
+    );
+  }
+
   function renderCivicMandateLoading() {
     const copy = civicProcessCopy();
     detailProcessMandateState.textContent = copy.mandateLoading;
     detailProcessMandateWinner.hidden = true;
     detailProcessMandateTally.textContent = "";
+    detailProcessMandateMinorityList.hidden = true;
+    detailProcessMandateContest.hidden = true;
   }
 
   function renderCivicMandateUnavailable() {
@@ -5333,6 +5467,8 @@
     detailProcessMandateState.textContent = copy.mandateUnavailable;
     detailProcessMandateWinner.hidden = true;
     detailProcessMandateTally.textContent = "";
+    detailProcessMandateMinorityList.hidden = true;
+    detailProcessMandateContest.hidden = true;
   }
 
   function formatTotalVotesLabel(copy, count) {
@@ -5342,25 +5478,108 @@
     );
   }
 
+  function renderCivicMandateMinorityPositions(copy, minorityPositions) {
+    detailProcessMandateMinorityList.textContent = "";
+    if (!minorityPositions.length) {
+      detailProcessMandateMinorityList.hidden = true;
+      return;
+    }
+    detailProcessMandateMinorityList.hidden = false;
+    for (const position of minorityPositions) {
+      const item = document.createElement("li");
+      item.className = "signal-detail__process-mandate-minority-item";
+      const author = document.createElement("p");
+      author.className = "signal-detail__process-mandate-minority-author";
+      author.textContent = position.authorDisplayName || "";
+      const text = document.createElement("p");
+      text.className = "signal-detail__process-mandate-minority-text";
+      text.textContent = position.text || "";
+      item.appendChild(author);
+      item.appendChild(text);
+      detailProcessMandateMinorityList.appendChild(item);
+    }
+  }
+
+  function renderCivicMandateContestReasonOptions(copy) {
+    if (detailProcessMandateContestReason.options.length > 0) return;
+    const reasons = [
+      ["eligibility_error", copy.contestReasonEligibilityError],
+      ["ballot_tampering_suspected", copy.contestReasonBallotTampering],
+      ["count_discrepancy", copy.contestReasonCountDiscrepancy],
+    ];
+    for (const [value, label] of reasons) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label || value;
+      detailProcessMandateContestReason.appendChild(option);
+    }
+  }
+
+  function renderCivicMandateContest(copy, data) {
+    if (!data.decided) {
+      detailProcessMandateContest.hidden = true;
+      civicContestCanContestCache = false;
+      return;
+    }
+    detailProcessMandateContest.hidden = false;
+    if (data.myContestation) {
+      detailProcessMandateContestStatus.hidden = false;
+      detailProcessMandateContestStatus.textContent =
+        data.myContestation.status === "upheld"
+          ? copy.contestStatusUpheld
+          : data.myContestation.status === "rejected"
+            ? copy.contestStatusRejected
+            : copy.contestStatusPending;
+    } else if (data.contestationPending) {
+      detailProcessMandateContestStatus.hidden = false;
+      detailProcessMandateContestStatus.textContent = copy.contestPendingOther;
+    } else {
+      detailProcessMandateContestStatus.hidden = true;
+      detailProcessMandateContestStatus.textContent = "";
+    }
+    renderCivicMandateContestReasonOptions(copy);
+    civicContestCanContestCache = data.canContest === true;
+    detailProcessMandateContestForm.hidden = !civicContestCanContestCache;
+    detailProcessMandateContestLabel.textContent = copy.contestReasonLabel;
+    detailProcessMandateContestSubmit.textContent = copy.contestSubmit;
+    detailProcessMandateContestElaboration.placeholder =
+      copy.contestElaborationPlaceholder || "";
+    detailProcessMandateContestNote.hidden = true;
+    detailProcessMandateContestNote.textContent = "";
+  }
+
   function renderCivicMandate(data) {
     const copy = civicProcessCopy();
-    const winner = data.winner;
-    if (winner) {
-      detailProcessMandateState.textContent = "";
-      detailProcessMandateWinner.hidden = false;
-      detailProcessMandateAuthor.textContent = winner.authorDisplayName || "";
-      detailProcessMandateTitle.textContent = winner.title || "";
-      detailProcessMandateBody.textContent = winner.body || "";
+    // The mandate stage itself only ever pauses here for a contested tie —
+    // a clean win advances to action in the same transaction (§9), and the
+    // action panel is the canonical place that shows the winner from then
+    // on. This panel stays visible through action/verification/archived
+    // only to carry the minority-position record and contestation window.
+    if (data.currentStage === "mandate") {
+      const winner = data.winner;
+      if (winner) {
+        detailProcessMandateState.textContent = "";
+        detailProcessMandateWinner.hidden = false;
+        detailProcessMandateAuthor.textContent = winner.authorDisplayName || "";
+        detailProcessMandateTitle.textContent = winner.title || "";
+        detailProcessMandateBody.textContent = winner.body || "";
+      } else {
+        detailProcessMandateState.textContent = data.contested
+          ? copy.mandateContested
+          : copy.mandatePending;
+        detailProcessMandateWinner.hidden = true;
+      }
+      detailProcessMandateTally.textContent = formatTotalVotesLabel(
+        copy,
+        typeof data.totalVotes === "number" ? data.totalVotes : 0
+      );
     } else {
-      detailProcessMandateState.textContent = data.contested
-        ? copy.mandateContested
-        : copy.mandatePending;
+      detailProcessMandateState.textContent = "";
       detailProcessMandateWinner.hidden = true;
+      detailProcessMandateTally.textContent = "";
     }
-    detailProcessMandateTally.textContent = formatTotalVotesLabel(
-      copy,
-      typeof data.totalVotes === "number" ? data.totalVotes : 0
-    );
+    renderCivicMandateMinorityPositions(copy, data.minorityPositions || []);
+    renderCivicMandateContest(copy, data);
   }
 
   async function loadSignalCivicMandate() {
@@ -5380,9 +5599,16 @@
         result.response.status !== 200 ||
         !data ||
         data.processId == null ||
-        (data.currentStage !== "voting" && data.currentStage !== "mandate") ||
+        (data.currentStage !== "voting" &&
+          data.currentStage !== "mandate" &&
+          data.currentStage !== "action" &&
+          data.currentStage !== "verification" &&
+          data.currentStage !== "archived") ||
         typeof data.decided !== "boolean" ||
-        typeof data.contested !== "boolean"
+        typeof data.contested !== "boolean" ||
+        !Array.isArray(data.minorityPositions) ||
+        typeof data.contestationPending !== "boolean" ||
+        typeof data.canContest !== "boolean"
       ) {
         if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
         return;
@@ -5390,6 +5616,47 @@
       renderCivicMandate(data);
     } catch (_err) {
       if (token === civicMandateLoadToken) renderCivicMandateUnavailable();
+    }
+  }
+
+  async function submitCivicMandateContest() {
+    if (civicContestSubmitting || !civicContestCanContestCache) return;
+    const copy = civicProcessCopy();
+    const signalId = currentSignalApiId();
+    if (!signalId) return;
+    const reasonKey = detailProcessMandateContestReason.value;
+    const elaboration = detailProcessMandateContestElaboration.value.trim();
+    civicContestSubmitting = true;
+    detailProcessMandateContestSubmit.disabled = true;
+    try {
+      const result = await submitSignalCivicMandateContest(
+        signalId,
+        reasonKey,
+        elaboration
+      );
+      if (result.response && result.response.status === 201) {
+        await loadSignalCivicMandate();
+        return;
+      }
+      const code =
+        result.payload && result.payload.error && result.payload.error.code;
+      detailProcessMandateContestNote.textContent =
+        code === "CIVIC_CONTESTATION_ALREADY_FILED"
+          ? copy.contestErrorAlready
+          : code === "CIVIC_CONTESTATION_WINDOW_CLOSED"
+            ? copy.contestErrorWindowClosed
+            : code === "CIVIC_CONTESTATION_NOT_ELIGIBLE"
+              ? copy.contestErrorNotEligible
+              : code === "CIVIC_MANDATE_NOT_DECIDED"
+                ? copy.contestErrorNotDecided
+                : copy.contestErrorGeneric;
+      detailProcessMandateContestNote.hidden = false;
+    } catch (_err) {
+      detailProcessMandateContestNote.textContent = copy.contestErrorGeneric;
+      detailProcessMandateContestNote.hidden = false;
+    } finally {
+      civicContestSubmitting = false;
+      detailProcessMandateContestSubmit.disabled = false;
     }
   }
 
@@ -11926,6 +12193,10 @@
 
   detailProcessVotingSubmit.addEventListener("click", () => {
     submitCivicVote();
+  });
+
+  detailProcessMandateContestSubmit.addEventListener("click", () => {
+    submitCivicMandateContest();
   });
 
   detailProcessActionContribute.addEventListener("click", () => {
