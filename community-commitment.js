@@ -12,26 +12,29 @@
   "use strict";
 
   const CITY_BY_COUNTRY = {
-    Italy: { id: "Milano", slug: "milano-it" },
-    Germany: { id: "Munich", slug: "munich-de" },
-    Romania: { id: "Arad", slug: "arad-ro" },
+    Italy: [{ id: "Milano", slug: "milano-it" }],
+    Germany: [{ id: "Munich", slug: "munich-de" }],
+    Romania: [
+      { id: "Arad", slug: "arad-ro" },
+      { id: "ClujNapoca", slug: "cluj-napoca-ro" },
+      { id: "Sibiu", slug: "sibiu-ro" },
+      { id: "Iasi", slug: "iasi-ro" },
+      { id: "Timisoara", slug: "timisoara-ro" },
+    ],
   };
 
-  const COUNTRY_BY_CITY_ID = {
-    Milano: "Italy",
-    Munich: "Germany",
-    Arad: "Romania",
-  };
-
-  const SLUG_BY_CITY_ID = {
-    Milano: "milano-it",
-    Munich: "munich-de",
-    Arad: "arad-ro",
-  };
+  const COUNTRY_BY_CITY_ID = {};
+  const SLUG_BY_CITY_ID = {};
+  for (const country of Object.keys(CITY_BY_COUNTRY)) {
+    for (const city of CITY_BY_COUNTRY[country]) {
+      COUNTRY_BY_CITY_ID[city.id] = country;
+      SLUG_BY_CITY_ID[city.id] = city.slug;
+    }
+  }
 
   function citiesForCountry(country) {
-    const entry = CITY_BY_COUNTRY[country];
-    return entry ? [entry] : [];
+    const entries = CITY_BY_COUNTRY[country];
+    return entries ? entries.slice() : [];
   }
 
   function slugForCityId(cityId) {
@@ -43,12 +46,17 @@
   }
 
   function canSelectCity(country) {
-    return typeof country === "string" && country !== "" && !!CITY_BY_COUNTRY[country];
+    return (
+      typeof country === "string" &&
+      country !== "" &&
+      Array.isArray(CITY_BY_COUNTRY[country]) &&
+      CITY_BY_COUNTRY[country].length > 0
+    );
   }
 
   function isCityValidForCountry(country, cityId) {
     if (!canSelectCity(country) || !cityId) return false;
-    return CITY_BY_COUNTRY[country].id === cityId;
+    return CITY_BY_COUNTRY[country].some((city) => city.id === cityId);
   }
 
   /** City selection alone never counts as acceptance. */

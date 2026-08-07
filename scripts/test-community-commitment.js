@@ -129,5 +129,38 @@ assertEqual(commitment.hasRecordedCommitment(none), false, "none is not recorded
 assertEqual(commitment.slugForCityId("Milano"), "milano-it");
 assertEqual(commitment.slugForCityId("Munich"), "munich-de");
 assertEqual(commitment.slugForCityId("Arad"), "arad-ro");
+assertEqual(commitment.slugForCityId("ClujNapoca"), "cluj-napoca-ro");
+assertEqual(commitment.slugForCityId("Sibiu"), "sibiu-ro");
+assertEqual(commitment.slugForCityId("Iasi"), "iasi-ro");
+assertEqual(commitment.slugForCityId("Timisoara"), "timisoara-ro");
+
+// City-expansion: a country can offer more than one city, and every one of
+// them must be individually valid — not just the first/original city.
+const romaniaCities = commitment.citiesForCountry("Romania").map((c) => c.id);
+assertEqual(
+  romaniaCities.sort().join(","),
+  ["Arad", "ClujNapoca", "Iasi", "Sibiu", "Timisoara"].sort().join(","),
+  "Romania offers all five cities"
+);
+for (const cityId of ["Arad", "ClujNapoca", "Sibiu", "Iasi", "Timisoara"]) {
+  assertOk(
+    commitment.isCityValidForCountry("Romania", cityId),
+    cityId + " valid for Romania"
+  );
+  assertEqual(
+    commitment.countryForCityId(cityId),
+    "Romania",
+    cityId + " maps back to Romania"
+  );
+}
+assertEqual(
+  commitment.isCityValidForCountry("Romania", "Milano"),
+  false,
+  "Milano is not valid for Romania"
+);
+
+// Countries with a single city are unaffected by the multi-city change.
+const italyCities = commitment.citiesForCountry("Italy").map((c) => c.id);
+assertEqual(italyCities.join(","), "Milano", "Italy still offers only Milano");
 
 console.log("OK: community-commitment helper tests passed");

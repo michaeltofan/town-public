@@ -125,9 +125,13 @@ if "CITY_DISCOVERY_JOURNEY_ROUTES" not in js:
 if "function currentScenes()" not in js or "productOnlyScenes()" not in js:
     fail("currentScenes must use productOnlyScenes in product-only mode")
 
-# All three cities represented via live API scenes, no Milano-only hardcode for public product.
-if 'PRODUCT_ONLY_CITY_ORDER = ["Milano", "Munich", "Arad"]' not in js:
-    fail("product-only city order must include Milano, Munich, and Arad")
+# Every canonical city represented via live API scenes, no Milano-only hardcode for public product.
+order_pos = js.find("PRODUCT_ONLY_CITY_ORDER = [")
+order_end = js.find("]", order_pos) if order_pos >= 0 else -1
+order_body = js[order_pos:order_end + 1] if order_pos >= 0 and order_end >= 0 else ""
+required_cities = ["Milano", "Munich", "Arad", "ClujNapoca", "Sibiu", "Iasi", "Timisoara"]
+if not order_body or any('"' + city + '"' not in order_body for city in required_cities):
+    fail("product-only city order must include Milano, Munich, Arad, and the Romanian city-expansion cities")
 
 pos = js.find("function productOnlyScenes()")
 if pos < 0:
