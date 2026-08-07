@@ -240,9 +240,10 @@ assert(
   "vote submission visibility follows backend canVote truth only",
 );
 assert(
-  js.includes('option.proposalId === data.myChoice') &&
-    js.includes("copy.yourVote"),
-  "voting marks the caller's own choice without exposing who else voted",
+  !js.includes("data.myChoice") &&
+    !js.includes("copy.yourVote") &&
+    js.includes("data.hasVoted"),
+  "voting is a real secret ballot: no myChoice highlighting, only hasVoted",
 );
 assert(
   !js.includes("voteThreshold") &&

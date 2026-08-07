@@ -3384,11 +3384,11 @@
       votingHasVoted: "You voted. Results update live.",
       voteCountLabel: "{count} votes",
       voteSubmit: "Submit vote",
-      yourVote: "Your vote",
       voteNeedChoice: "Select one option first.",
       voteErrorGeneric: "Something went wrong. Try again.",
       voteErrorClosed: "Voting is closed.",
       voteErrorAlready: "You have already voted.",
+      voteErrorNotEligible: "You are not eligible to vote in this ballot.",
       proposalsCanAdd: "You can add a structured proposal.",
       proposalsSubmitted: "You have submitted a proposal for this process.",
       proposalsLoading: "Loading proposals…",
@@ -3511,11 +3511,11 @@
       votingHasVoted: "Has votado. Los resultados se actualizan en vivo.",
       voteCountLabel: "{count} votos",
       voteSubmit: "Enviar voto",
-      yourVote: "Tu voto",
       voteNeedChoice: "Selecciona una opción primero.",
       voteErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       voteErrorClosed: "La votación está cerrada.",
       voteErrorAlready: "Ya has votado.",
+      voteErrorNotEligible: "No tienes derecho a votar en esta votación.",
       proposalsCanAdd: "Puedes añadir una propuesta estructurada.",
       proposalsSubmitted: "Has enviado una propuesta para este proceso.",
       proposalsLoading: "Cargando propuestas…",
@@ -3639,11 +3639,11 @@
       votingHasVoted: "Hai votato. I risultati si aggiornano in tempo reale.",
       voteCountLabel: "{count} voti",
       voteSubmit: "Invia voto",
-      yourVote: "Il tuo voto",
       voteNeedChoice: "Seleziona prima un'opzione.",
       voteErrorGeneric: "Qualcosa è andato storto. Riprova.",
       voteErrorClosed: "Il voto è chiuso.",
       voteErrorAlready: "Hai già votato.",
+      voteErrorNotEligible: "Non hai diritto di voto in questo ballottaggio.",
       proposalsCanAdd: "Puoi aggiungere una proposta strutturata.",
       proposalsSubmitted: "Hai inviato una proposta per questo processo.",
       proposalsLoading: "Caricamento delle proposte…",
@@ -3766,11 +3766,11 @@
       votingHasVoted: "Du hast abgestimmt. Die Ergebnisse werden live aktualisiert.",
       voteCountLabel: "{count} Stimmen",
       voteSubmit: "Stimme abgeben",
-      yourVote: "Deine Stimme",
       voteNeedChoice: "Wähle zuerst eine Option.",
       voteErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       voteErrorClosed: "Die Abstimmung ist geschlossen.",
       voteErrorAlready: "Du hast bereits abgestimmt.",
+      voteErrorNotEligible: "Du bist nicht stimmberechtigt für diese Abstimmung.",
       proposalsCanAdd: "Du kannst einen strukturierten Vorschlag hinzufügen.",
       proposalsSubmitted: "Du hast einen Vorschlag für diesen Prozess eingereicht.",
       proposalsLoading: "Vorschläge werden geladen…",
@@ -3896,11 +3896,11 @@
       votingHasVoted: "Ai votat. Rezultatele se actualizează live.",
       voteCountLabel: "{count} voturi",
       voteSubmit: "Trimite votul",
-      yourVote: "Votul tău",
       voteNeedChoice: "Selectează o opțiune mai întâi.",
       voteErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       voteErrorClosed: "Votul este închis.",
       voteErrorAlready: "Ai votat deja.",
+      voteErrorNotEligible: "Nu ai drept de vot la acest scrutin.",
       proposalsCanAdd: "Poți adăuga o propunere structurată.",
       proposalsSubmitted: "Ai trimis o propunere pentru acest proces.",
       proposalsLoading: "Se încarcă propunerile…",
@@ -5170,16 +5170,10 @@
     );
   }
 
-  function appendVoteOptionContent(container, copy, option, isMine) {
+  function appendVoteOptionContent(container, copy, option) {
     const meta = document.createElement("p");
     meta.className = "signal-detail__process-voting-meta";
     meta.textContent = option.authorDisplayName || "";
-    if (isMine) {
-      const badge = document.createElement("span");
-      badge.className = "signal-detail__process-voting-badge";
-      badge.textContent = copy.yourVote;
-      meta.appendChild(badge);
-    }
     const title = document.createElement("p");
     title.className = "signal-detail__process-voting-title";
     title.textContent = option.title || "";
@@ -5221,11 +5215,11 @@
         label.appendChild(input);
         const text = document.createElement("span");
         text.className = "signal-detail__process-voting-option-text";
-        appendVoteOptionContent(text, copy, option, false);
+        appendVoteOptionContent(text, copy, option);
         label.appendChild(text);
         li.appendChild(label);
       } else {
-        appendVoteOptionContent(li, copy, option, option.proposalId === data.myChoice);
+        appendVoteOptionContent(li, copy, option);
       }
       detailProcessVotingList.appendChild(li);
     }
@@ -5293,7 +5287,9 @@
           ? copy.voteErrorAlready
           : code === "CIVIC_VOTING_STAGE_CLOSED"
             ? copy.voteErrorClosed
-            : copy.voteErrorGeneric;
+            : code === "CIVIC_VOTE_NOT_ELIGIBLE_FOR_BALLOT"
+              ? copy.voteErrorNotEligible
+              : copy.voteErrorGeneric;
       detailProcessVotingNote.hidden = false;
     } catch (_err) {
       detailProcessVotingNote.textContent = copy.voteErrorGeneric;
