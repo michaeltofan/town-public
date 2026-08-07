@@ -608,6 +608,9 @@
   const commitmentCountryRomaniaLabel = document.getElementById(
     "commitment-country-romania-label"
   );
+  const commitmentCountryAustriaLabel = document.getElementById(
+    "commitment-country-austria-label"
+  );
   const commitmentCityFieldset = document.getElementById(
     "commitment-city-fieldset"
   );
@@ -1095,6 +1098,7 @@
     !commitmentCountryItalyLabel ||
     !commitmentCountryGermanyLabel ||
     !commitmentCountryRomaniaLabel ||
+    !commitmentCountryAustriaLabel ||
     !commitmentCityFieldset ||
     !commitmentCityLegend ||
     !commitmentCityOptions ||
@@ -1174,7 +1178,13 @@
 
   const CITY_BY_COUNTRY = {
     Italy: [{ id: "Milano", image: "assets/cities/milano.png" }],
-    Germany: [{ id: "Munich", image: "assets/cities/munich.png" }],
+    Germany: [
+      { id: "Munich", image: "assets/cities/munich.png" },
+      { id: "Koln", image: "assets/cities/koln.svg" },
+      { id: "Dortmund", image: "assets/cities/dortmund.svg" },
+      { id: "Stuttgart", image: "assets/cities/stuttgart.svg" },
+      { id: "Frankfurt", image: "assets/cities/frankfurt.svg" },
+    ],
     Romania: [
       { id: "Arad", image: "assets/cities/arad.png" },
       { id: "ClujNapoca", image: "assets/cities/cluj-napoca.svg" },
@@ -1182,6 +1192,7 @@
       { id: "Iasi", image: "assets/cities/iasi.svg" },
       { id: "Timisoara", image: "assets/cities/timisoara.svg" },
     ],
+    Austria: [{ id: "Salzburg", image: "assets/cities/salzburg.svg" }],
   };
 
   // Approved Experience Prototype V1 scenes (fictional content).
@@ -1709,6 +1720,376 @@
           "„Observat” înseamnă că problema a fost recunoscută de comunitatea locală. Nu implică o procedură oficială și nici o intervenție deja începută.",
       },
     ],
+    Koln: [
+      {
+        id: "koln-signal-1",
+        category: "ÖFFENTLICHER RAUM",
+        authorName: "Redaktion TOWN Köln",
+        observedTime: "Gestern beobachtet",
+        observedDate: "6. August 2026",
+        area: "Ehrenfeld",
+        headline: "Der Spielplatz an der Piusstraße bleibt seit Wochen gesperrt",
+        summary:
+          "Ein beschädigtes Klettergerüst wurde provisorisch abgesperrt, aber nicht repariert. Kinder weichen auf die Straße aus.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "Auf dem Spielplatz in Ehrenfeld ist das große Klettergerüst seit einem Monat mit Flatterband abgesperrt, nachdem ein Teil der Konstruktion beschädigt wurde. Eine Reparatur wurde bisher nicht angekündigt, der Spielplatz bleibt nur eingeschränkt nutzbar.",
+        whyMatters:
+          "Der Spielplatz ist einer der wenigen großen Spielorte im dicht bebauten Ehrenfeld. Ohne ihn weichen Familien auf Gehwege und ruhige Straßen aus, was die Sicherheit der Kinder verringert.",
+        whoAffected:
+          "Familien mit kleinen Kindern, Kindertagesstätten in der Nähe und Anwohnerinnen und Anwohner, die den Platz täglich nutzen.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Reparatur vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
+      },
+      {
+        id: "koln-signal-2",
+        category: "STRASSENBELEUCHTUNG",
+        authorName: "Redaktion TOWN Köln",
+        observedTime: "Vor zwei Wochen gemeldet",
+        observedDate: "24. Juli 2026",
+        area: "Nippes",
+        headline: "Mehrere Straßenlaternen am Wilhelmplatz bleiben dunkel",
+        summary:
+          "Der Fußweg zur Straßenbahnhaltestelle ist abends kaum beleuchtet. Anwohner haben die Störung bereits gemeldet.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Rund um den Wilhelmplatz in Nippes bleiben seit über zwei Wochen mehrere Straßenlaternen dunkel. Der Fußweg zur nächsten Straßenbahnhaltestelle ist nach Einbruch der Dunkelheit schwer einsehbar.",
+        whyMatters:
+          "Gute Beleuchtung gehört zur alltäglichen Sicherheit im Viertel. Ein dunkler Weg zur Haltestelle betrifft besonders Berufspendlerinnen und -pendler in den Abendstunden.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, Fahrgäste der Straßenbahn und alle, die abends zu Fuß zur Haltestelle gehen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
+      },
+      {
+        id: "koln-signal-3",
+        category: "ÖFFENTLICHE BAUARBEITEN",
+        authorName: "Redaktion TOWN Köln",
+        observedTime: "Diese Woche beobachtet",
+        observedDate: "5. August 2026",
+        area: "Deutz",
+        headline: "Die Baustelle an der Deutzer Brücke lässt kaum Platz für Fußgänger",
+        summary:
+          "Der provisorische Gehweg ist eng und schlecht ausgeschildert. Es fehlt eine sichere Führung für Rollstuhlfahrer.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "An der Deutzer Brücke hat eine Baustelle den Gehweg auf einen schmalen provisorischen Streifen verengt. Es gibt keine erkennbare Alternative für Rollstuhlfahrer oder Personen mit Kinderwagen.",
+        whyMatters:
+          "Die Deutzer Brücke ist eine der meistgenutzten Fußgängerverbindungen über den Rhein. Ein zu enger Baustellenweg macht den täglichen Übergang für viele Menschen unsicher.",
+        whoAffected:
+          "Fußgänger, Rollstuhlfahrer, Eltern mit Kinderwagen und Pendlerinnen und Pendler, die täglich die Brücke queren.",
+        latestUpdate:
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu Dauer oder einer sicheren Alternative.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
+      },
+    ],
+    Dortmund: [
+      {
+        id: "dortmund-signal-1",
+        category: "ÖFFENTLICHER RAUM",
+        authorName: "Redaktion TOWN Dortmund",
+        observedTime: "Gestern beobachtet",
+        observedDate: "6. August 2026",
+        area: "Kreuzviertel",
+        headline: "Der Gehweg in der Vinckestraße ist durch Baumwurzeln stark angehoben",
+        summary:
+          "Wurzeln haben mehrere Gehwegplatten angehoben. Fußgänger weichen regelmäßig auf die Straße aus.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "In der Vinckestraße im Kreuzviertel haben Baumwurzeln mehrere Gehwegplatten deutlich angehoben. Der Gehweg ist auf einer Länge von rund zwanzig Metern uneben, besonders bei Dunkelheit eine Stolpergefahr.",
+        whyMatters:
+          "Das Kreuzviertel ist dicht bebaut und wird viel zu Fuß erschlossen. Ein beschädigter Gehweg betrifft den täglichen Weg vieler Anwohnerinnen und Anwohner.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, ältere Menschen, Familien mit Kinderwagen und alle, die die Vinckestraße zu Fuß nutzen.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Maßnahme vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
+      },
+      {
+        id: "dortmund-signal-2",
+        category: "STRASSENBELEUCHTUNG",
+        authorName: "Redaktion TOWN Dortmund",
+        observedTime: "Vor einer Woche gemeldet",
+        observedDate: "31. Juli 2026",
+        area: "Hörde",
+        headline: "Der Uferweg am Phoenix-See liegt abends im Dunkeln",
+        summary:
+          "Ein rund 300 Meter langer Abschnitt des Uferwegs hat keine funktionierende Beleuchtung. Läufer und Radfahrer meiden die Strecke nach Einbruch der Dunkelheit.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Am östlichen Ufer des Phoenix-Sees in Hörde bleibt ein rund 300 Meter langer Abschnitt des Uferwegs abends unbeleuchtet. Anwohner vermuten einen technischen Defekt, eine Meldung an die Stadtwerke ist bereits erfolgt.",
+        whyMatters:
+          "Der Uferweg ist eine der meistgenutzten Freizeitstrecken der Stadt. Ein dunkler Abschnitt schränkt die abendliche Nutzung für viele Menschen spürbar ein.",
+        whoAffected:
+          "Läuferinnen und Läufer, Radfahrende, Anwohnerinnen und Anwohner und alle, die den Uferweg abends nutzen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
+      },
+      {
+        id: "dortmund-signal-3",
+        category: "ÖFFENTLICHE BAUARBEITEN",
+        authorName: "Redaktion TOWN Dortmund",
+        observedTime: "Diese Woche beobachtet",
+        observedDate: "4. August 2026",
+        area: "Innenstadt-Nord",
+        headline: "Die Umleitung an der Münsterstraße ist für Radfahrer nicht ausgeschildert",
+        summary:
+          "Der Radweg endet abrupt an der Baustelle, eine Weiterführung fehlt. Radfahrer weichen unangekündigt auf die Fahrbahn aus.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "An der Münsterstraße in der Nordstadt endet der Radweg direkt an einer Baustelle, ohne dass eine Umleitung ausgeschildert ist. Radfahrende müssen unvermittelt auf die Fahrbahn wechseln, was Autofahrer überrascht.",
+        whyMatters:
+          "Die Münsterstraße ist eine zentrale Radverbindung in die Innenstadt. Eine unklare Umleitung an einer belebten Kreuzung erhöht das Unfallrisiko unmittelbar.",
+        whoAffected:
+          "Radfahrerinnen und Radfahrer, Berufspendler, Autofahrer und alle, die die Münsterstraße regelmäßig queren.",
+        latestUpdate:
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu einer ausgeschilderten Umleitung.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
+      },
+    ],
+    Stuttgart: [
+      {
+        id: "stuttgart-signal-1",
+        category: "ÖFFENTLICHER RAUM",
+        authorName: "Redaktion TOWN Stuttgart",
+        observedTime: "Vor zehn Tagen beobachtet",
+        observedDate: "28. Juli 2026",
+        area: "Bad Cannstatt",
+        headline: "Der Spielplatz am Kursaal ist seit dem Sturm im Juli halb gesperrt",
+        summary:
+          "Ein umgestürzter Ast beschädigte die Schaukel. Der Bereich ist notdürftig abgesperrt, eine Reparatur steht aus.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "Nach dem Sturm Ende Juli beschädigte ein umgestürzter Ast die große Schaukelanlage am Kursaal-Spielplatz in Bad Cannstatt. Der Bereich ist mit Flatterband abgesperrt, der Rest des Spielplatzes bleibt nutzbar.",
+        whyMatters:
+          "Der Kursaal-Spielplatz ist der zentrale Treffpunkt für Familien im Stadtteil. Eine dauerhaft gesperrte Schaukelanlage schränkt das Angebot für Kinder spürbar ein.",
+        whoAffected:
+          "Familien mit kleinen Kindern, Kindertagesstätten in der Nähe und Anwohnerinnen und Anwohner, die den Platz täglich nutzen.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Reparatur vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
+      },
+      {
+        id: "stuttgart-signal-2",
+        category: "STRASSENBELEUCHTUNG",
+        authorName: "Redaktion TOWN Stuttgart",
+        observedTime: "Vor zehn Tagen gemeldet",
+        observedDate: "28. Juli 2026",
+        area: "Ostheim",
+        headline: "Die Fußgängerunterführung an der Schwarenbergstraße bleibt dunkel",
+        summary:
+          "Die Beleuchtung der Unterführung fällt seit Tagen komplett aus. Anwohner meiden den Weg nach Einbruch der Dunkelheit.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Die Fußgängerunterführung unter der Schwarenbergstraße in Ostheim ist seit rund zehn Tagen ohne funktionierende Beleuchtung. Der Weg verbindet zwei Wohngebiete und wird täglich stark genutzt.",
+        whyMatters:
+          "Eine dunkle Unterführung ist ein zentraler Sicherheitsfaktor im Alltag. Ohne Beleuchtung meiden viele Anwohnerinnen und Anwohner den direkten Weg und nehmen Umwege in Kauf.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, Schülerinnen und Schüler auf dem Schulweg und alle, die die Unterführung abends nutzen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
+      },
+      {
+        id: "stuttgart-signal-3",
+        category: "ÖFFENTLICHE BAUARBEITEN",
+        authorName: "Redaktion TOWN Stuttgart",
+        observedTime: "Diese Woche beobachtet",
+        observedDate: "5. August 2026",
+        area: "Vaihingen",
+        headline: "Die Baustelle an der Universität engt den Rad- und Fußweg stark ein",
+        summary:
+          "Radfahrer und Fußgänger teilen sich einen schmalen provisorischen Streifen ohne klare Trennung.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "Auf dem Campus in Vaihingen hat eine Baustelle den kombinierten Rad- und Fußweg auf einen schmalen provisorischen Streifen reduziert. Eine Trennung zwischen Fußgängern und Radfahrenden fehlt vollständig.",
+        whyMatters:
+          "Der Weg wird von tausenden Studierenden und Beschäftigten täglich genutzt. Ohne klare Trennung steigt das Risiko von Zusammenstößen in den Stoßzeiten erheblich.",
+        whoAffected:
+          "Studierende, Beschäftigte der Universität, Radfahrerinnen und Radfahrer sowie Fußgänger auf dem Campus.",
+        latestUpdate:
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu Dauer oder einer klaren Wegetrennung.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
+      },
+    ],
+    Frankfurt: [
+      {
+        id: "frankfurt-signal-1",
+        category: "ÖFFENTLICHER RAUM",
+        authorName: "Redaktion TOWN Frankfurt",
+        observedTime: "Gestern beobachtet",
+        observedDate: "6. August 2026",
+        area: "Bornheim",
+        headline: "Der Gehweg in der Berger Straße ist durch lose Pflastersteine uneben",
+        summary:
+          "Mehrere Pflastersteine haben sich gelöst und liegen lose auf dem Gehweg. Passanten stolpern regelmäßig.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "In der Berger Straße in Bornheim haben sich auf einem stark frequentierten Abschnitt mehrere Pflastersteine gelöst. Sie liegen lose auf dem Gehweg und stellen besonders bei Dunkelheit eine Stolpergefahr dar.",
+        whyMatters:
+          "Die Berger Straße ist eine der belebtesten Einkaufsstraßen des Viertels. Ein unebener Gehweg betrifft täglich viele Menschen, besonders ältere Passanten.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, ältere Menschen, Besucherinnen und Besucher der Geschäfte in der Berger Straße.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Maßnahme vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
+      },
+      {
+        id: "frankfurt-signal-2",
+        category: "STRASSENBELEUCHTUNG",
+        authorName: "Redaktion TOWN Frankfurt",
+        observedTime: "Vor zwei Wochen gemeldet",
+        observedDate: "24. Juli 2026",
+        area: "Gallus",
+        headline: "Der Weg entlang der Bahngleise im Gallus bleibt abends unbeleuchtet",
+        summary:
+          "Ein rund 200 Meter langer Fußweg zwischen Wohnhäusern und der Haltestelle hat keine funktionierende Beleuchtung.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Entlang der Bahngleise im Gallusviertel bleibt ein rund 200 Meter langer Fußweg zwischen Wohnhäusern und der S-Bahn-Haltestelle abends dunkel. Anwohner berichten, dass mehrere Laternen bereits seit Wochen ausgefallen sind.",
+        whyMatters:
+          "Der Weg ist die kürzeste Verbindung zur Haltestelle für viele Anwohnerinnen und Anwohner. Fehlende Beleuchtung wirkt sich direkt auf das Sicherheitsgefühl auf dem täglichen Weg aus.",
+        whoAffected:
+          "Anwohnerinnen und Anwohner, Berufspendlerinnen und -pendler und alle, die abends die Haltestelle nutzen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
+      },
+      {
+        id: "frankfurt-signal-3",
+        category: "ÖFFENTLICHE BAUARBEITEN",
+        authorName: "Redaktion TOWN Frankfurt",
+        observedTime: "Diese Woche beobachtet",
+        observedDate: "5. August 2026",
+        area: "Sachsenhausen",
+        headline: "Die Baustelle am Mainufer versperrt den Uferweg ohne Hinweisschilder",
+        summary:
+          "Fußgänger und Radfahrer stehen unvermittelt vor einer Absperrung. Ein ausgeschilderter Umweg fehlt.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "Am Mainufer in Sachsenhausen versperrt eine Baustelle den beliebten Uferweg vollständig, ohne dass ein Umweg ausgeschildert ist. Fußgänger und Radfahrende stehen unvermittelt vor der Absperrung und müssen selbst einen Weg finden.",
+        whyMatters:
+          "Der Uferweg ist eine der meistgenutzten Freizeit- und Pendelstrecken der Stadt. Eine unangekündigte Vollsperrung ohne Umleitung sorgt für unnötige Verwirrung und Umwege.",
+        whoAffected:
+          "Fußgänger, Radfahrerinnen und Radfahrer, Joggerinnen und Jogger und alle, die den Uferweg täglich nutzen.",
+        latestUpdate:
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu einer ausgeschilderten Umleitung.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
+      },
+    ],
+    Salzburg: [
+      {
+        id: "salzburg-signal-1",
+        category: "ÖFFENTLICHER RAUM",
+        authorName: "Redaktion TOWN Salzburg",
+        observedTime: "Gestern beobachtet",
+        observedDate: "6. August 2026",
+        area: "Altstadt",
+        headline: "Das Kopfsteinpflaster in der Getreidegasse ist an mehreren Stellen abgesackt",
+        summary:
+          "Einzelne Steine haben sich gesenkt, es bilden sich Pfützen bei Regen. Rollstuhlfahrer weichen auf die Fahrbahn aus.",
+        image: "assets/feed/signal_citta_studi_pavement.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: beobachtet — wartet auf lokale Aufmerksamkeit",
+        description:
+          "In der Getreidegasse in der Altstadt sind an mehreren Stellen einzelne Pflastersteine abgesackt. Bei Regen bilden sich dort Pfützen, und Personen mit Rollstuhl oder Rollator weichen häufig auf die angrenzende Fahrbahn aus.",
+        whyMatters:
+          "Die Getreidegasse ist die meistbegangene Fußgängerzone der Altstadt. Ein unebenes Pflaster betrifft täglich tausende Passanten, besonders Menschen mit eingeschränkter Mobilität.",
+        whoAffected:
+          "Rollstuhlfahrerinnen und Rollstuhlfahrer, ältere Menschen, Anrainerinnen und Anrainer sowie Besucherinnen und Besucher der Altstadt.",
+        latestUpdate:
+          "Das Signal bleibt lokal und offen. Derzeit liegt keine bestätigte Maßnahme vor.",
+        statusNote:
+          "„Beobachtet“ bedeutet, dass die lokale Gemeinschaft das Problem erkannt hat. Es bedeutet keine offizielle Akte und keinen bereits begonnenen Eingriff.",
+      },
+      {
+        id: "salzburg-signal-2",
+        category: "STRASSENBELEUCHTUNG",
+        authorName: "Redaktion TOWN Salzburg",
+        observedTime: "Vor einer Woche gemeldet",
+        observedDate: "31. Juli 2026",
+        area: "Lehen",
+        headline: "Die Unterführung bei der Bahnhaltestelle Lehen bleibt seit Tagen dunkel",
+        summary:
+          "Die Beleuchtung ist komplett ausgefallen. Anwohner nehmen abends lieber einen Umweg über die Hauptstraße.",
+        image: "assets/feed/signal_porta_romana_lighting.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: gemeldet — lokale Beobachtung",
+        description:
+          "Die Fußgängerunterführung bei der Bahnhaltestelle Lehen ist seit rund einer Woche ohne funktionierende Beleuchtung. Anwohner berichten, dass sie abends lieber einen Umweg über die Hauptstraße nehmen.",
+        whyMatters:
+          "Die Unterführung ist der direkte Zugang zur Bahnhaltestelle für viele Pendlerinnen und Pendler. Fehlende Beleuchtung verringert das Sicherheitsgefühl auf einem täglich genutzten Weg.",
+        whoAffected:
+          "Pendlerinnen und Pendler, Anwohnerinnen und Anwohner und alle, die die Bahnhaltestelle Lehen abends nutzen.",
+        latestUpdate:
+          "Anwohner berichten, die Störung bereits gemeldet zu haben. Das Signal bleibt in lokaler Beobachtung.",
+        statusNote:
+          "„Gemeldet“ heißt, dass das Thema lokal sichtbar gemacht wurde. Es bestätigt keine Reparatur, keine formale Übernahme und keinen Zeitplan.",
+      },
+      {
+        id: "salzburg-signal-3",
+        category: "ÖFFENTLICHE BAUARBEITEN",
+        authorName: "Redaktion TOWN Salzburg",
+        observedTime: "Diese Woche beobachtet",
+        observedDate: "5. August 2026",
+        area: "Parsch",
+        headline: "Die Baustelle am Kapuzinerberg-Zugang lässt keinen sicheren Fußweg frei",
+        summary:
+          "Der Wanderweg ist auf einen schmalen Streifen neben der Baustelle reduziert, ohne Absperrung zur Grube.",
+        image: "assets/feed/signal_lorenteggio_works.jpg",
+        focus: "50% 45%",
+        civicStatus: "Bürgerlicher Status: offen — braucht lokale Klarheit",
+        description:
+          "Am Zugang zum Kapuzinerberg in Parsch hat eine Baustelle den Wanderweg auf einen schmalen Streifen reduziert. Eine Absperrung zur angrenzenden Baugrube fehlt, was besonders bei Dunkelheit ein Risiko darstellt.",
+        whyMatters:
+          "Der Kapuzinerberg ist eines der beliebtesten Naherholungsgebiete der Stadt. Ein ungesicherter Zugang betrifft täglich viele Wanderer und Anwohner, die diesen Weg nutzen.",
+        whoAffected:
+          "Wanderinnen und Wanderer, Anwohnerinnen und Anwohner von Parsch und alle, die den Kapuzinerberg regelmäßig besuchen.",
+        latestUpdate:
+          "Das Signal bleibt offen. Es gibt noch keine aktualisierte Angabe zu einer gesicherten Wegeführung.",
+        statusNote:
+          "„Offen“ bedeutet, dass die Situation für die Gemeinschaft noch geklärt werden muss. Es bedeutet keine abgeschlossene behördliche Entscheidung.",
+      },
+    ],
   };
 
   const apiBaseHelper = window.TownApiBase || null;
@@ -1735,6 +2116,11 @@
     Sibiu: "sibiu-ro",
     Iasi: "iasi-ro",
     Timisoara: "timisoara-ro",
+    Koln: "koln-de",
+    Dortmund: "dortmund-de",
+    Stuttgart: "stuttgart-de",
+    Frankfurt: "frankfurt-de",
+    Salzburg: "salzburg-at",
   };
   const KNOWN_FEED_IMAGES = {
     "assets/feed/signal_citta_studi_pavement.jpg": true,
@@ -1750,6 +2136,11 @@
     Sibiu: null,
     Iasi: null,
     Timisoara: null,
+    Koln: null,
+    Dortmund: null,
+    Stuttgart: null,
+    Frankfurt: null,
+    Salzburg: null,
   };
 
   const CITY_COPY = {
@@ -1759,7 +2150,7 @@
       cityLegend: "City",
       back: "Back",
       continue: "Continue",
-      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       context: {
         Italy: "Country: Italy",
         Germany: "Country: Germany",
@@ -1772,7 +2163,7 @@
       cityLegend: "Ciudad",
       back: "Atrás",
       continue: "Continuar",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       context: {
         Italy: "País: Italia",
         Germany: "País: Alemania",
@@ -1785,7 +2176,7 @@
       cityLegend: "Città",
       back: "Indietro",
       continue: "Continua",
-      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Munich" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       context: {
         Italy: "Paese: Italia",
         Germany: "Paese: Germania",
@@ -1798,7 +2189,7 @@
       cityLegend: "Stadt",
       back: "Zurück",
       continue: "Weiter",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       context: {
         Italy: "Land: Italien",
         Germany: "Land: Deutschland",
@@ -1811,7 +2202,7 @@
       cityLegend: "Oraș",
       back: "Înapoi",
       continue: "Continuă",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       context: {
         Italy: "Țară: Italia",
         Germany: "Țară: Germania",
@@ -1847,7 +2238,7 @@
       errorTimeout: "Timed out while getting location. Try again.",
       errorUnsupported:
         "Location verification is not available in this context. Use a secure connection and try again.",
-      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     es: {
       back: "Atrás",
@@ -1875,7 +2266,7 @@
       errorTimeout: "Se agotó el tiempo para obtener la ubicación. Inténtalo de nuevo.",
       errorUnsupported:
         "La verificación de ubicación no está disponible en este contexto. Usa una conexión segura e inténtalo de nuevo.",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     it: {
       back: "Indietro",
@@ -1903,7 +2294,7 @@
       errorTimeout: "Tempo scaduto per ottenere la posizione. Riprova.",
       errorUnsupported:
         "La verifica di posizione non è disponibile in questo contesto. Usa una connessione sicura e riprova.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       back: "Zurück",
@@ -1932,7 +2323,7 @@
         "Zeitüberschreitung bei der Standortabfrage. Bitte erneut versuchen.",
       errorUnsupported:
         "Standortprüfung ist in diesem Kontext nicht verfügbar. Bitte eine sichere Verbindung nutzen und erneut versuchen.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       back: "Înapoi",
@@ -1961,7 +2352,7 @@
         "Timpul pentru obținerea locației a expirat. Încearcă din nou.",
       errorUnsupported:
         "Verificarea locației nu este disponibilă în acest context. Folosește o conexiune sigură și încearcă din nou.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2031,7 +2422,7 @@
       seeTooBusy: "Saving your confirmation…",
       notYourCommunity:
         "You can explore, but participation is reserved for the local community.",
-      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     es: {
       back: "Atrás",
@@ -2090,7 +2481,7 @@
       seeTooBusy: "Guardando tu confirmación…",
       notYourCommunity:
         "Puedes explorar, pero la participación está reservada a la comunidad local.",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     it: {
       back: "Indietro",
@@ -2149,7 +2540,7 @@
       seeTooBusy: "Salvataggio della conferma…",
       notYourCommunity:
         "Puoi esplorare, ma la partecipazione è riservata alla comunità locale.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       back: "Zurück",
@@ -2208,7 +2599,7 @@
       seeTooBusy: "Bestätigung wird gespeichert…",
       notYourCommunity:
         "Du kannst erkunden, aber die Teilnahme ist der lokalen Gemeinschaft vorbehalten.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       back: "Înapoi",
@@ -2267,7 +2658,7 @@
       seeTooBusy: "Se salvează confirmarea…",
       notYourCommunity:
         "Poți explora, dar participarea este rezervată comunității locale.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2303,7 +2694,7 @@
         "TOWN è per chi è pronto a partecipare alla propria comunità.",
       endedBody: "Puoi tornare quando sei pronto a farne parte.",
       endedReturn: "Torna all’ingresso TOWN",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
@@ -2337,7 +2728,7 @@
       endedBody:
         "Du kannst zurückkehren, wenn du bereit bist, ein Teil davon zu sein.",
       endedReturn: "Zurück zum TOWN-Eingang",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       inviteTitle: "Îți pasă de ceea ce se întâmplă în comunitatea ta.",
@@ -2370,7 +2761,7 @@
         "TOWN este pentru cei gata să participe în comunitatea lor.",
       endedBody: "Poți reveni când ești pregătit să faci parte din ea.",
       endedReturn: "Înapoi la intrarea TOWN",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2397,7 +2788,7 @@
         "Il passo successivo crea il tuo account con email e passkey.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "PERSÖNLICHES KONTO",
@@ -2421,7 +2812,7 @@
         "Als Nächstes erstellst du dein Konto mit E-Mail und Passkey.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "CONT PERSONAL",
@@ -2445,7 +2836,7 @@
         "Următorul pas creează contul cu email și passkey.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2466,7 +2857,7 @@
       failed: "Non è stato possibile continuare. Riprova.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "KONTO ERSTELLEN",
@@ -2485,7 +2876,7 @@
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "CREEAZĂ-ȚI CONTUL",
@@ -2503,7 +2894,7 @@
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2519,7 +2910,7 @@
       failed: "Non è stato possibile continuare. Riprova.",
       verify: "Verifica",
       changeEmail: "Cambia email",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "E-MAIL BESTÄTIGEN",
@@ -2533,7 +2924,7 @@
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       verify: "Bestätigen",
       changeEmail: "E-Mail-Adresse ändern",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "VERIFICARE EMAIL",
@@ -2546,7 +2937,7 @@
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
       verify: "Verifică",
       changeEmail: "Schimbă emailul",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2584,7 +2975,7 @@
         "La finestra di configurazione è scaduta. Riparti dall’inserimento dell’email.",
       cancelled: "Creazione annullata. Puoi riprovare.",
       failed: "Non è stato possibile creare la passkey. Riprova.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "SICHERER ZUGANG",
@@ -2619,7 +3010,7 @@
         "Das Einrichtungsfenster ist abgelaufen. Starte erneut bei der E-Mail-Eingabe.",
       cancelled: "Erstellung abgebrochen. Du kannst es erneut versuchen.",
       failed: "Der Passkey konnte nicht erstellt werden. Bitte versuche es erneut.",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "ACCES SIGUR",
@@ -2654,7 +3045,7 @@
         "Fereastra de configurare a expirat. Repornește de la introducerea emailului.",
       cancelled: "Creare anulată. Poți încerca din nou.",
       failed: "Nu a fost posibil să creezi passkey-ul. Încearcă din nou.",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2677,7 +3068,7 @@
         "Il passo successivo è Stripe Checkout per la membership annuale.",
       continue: "Continua",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "KONTO BEREIT",
@@ -2697,7 +3088,7 @@
         "Der nächste Schritt ist Stripe Checkout für die jährliche Mitgliedschaft.",
       continue: "Weiter",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "CONT PREGĂTIT",
@@ -2717,7 +3108,7 @@
         "Următorul pas este Stripe Checkout pentru membership-ul anual.",
       continue: "Continuă",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2771,7 +3162,7 @@
       paidNoParticipateStatus:
         "Il pagamento risulta registrato, ma la partecipazione civica non è ancora disponibile. Completa la scelta della comunità se richiesto, oppure riprova tra poco.",
       continueCommunity: "Scegli la comunità",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "JÄHRLICHE MITGLIEDSCHAFT",
@@ -2824,7 +3215,7 @@
       paidNoParticipateStatus:
         "Die Zahlung ist erfasst, aber die Mitwirkung ist noch nicht verfügbar. Schließe gegebenenfalls die Gemeindewahl ab oder versuche es gleich erneut.",
       continueCommunity: "Gemeinde wählen",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "MEMBERSHIP ANUAL",
@@ -2875,7 +3266,7 @@
       paidNoParticipateStatus:
         "Plata este înregistrată, dar participarea civică nu este încă disponibilă. Completează alegerea comunității dacă e nevoie sau încearcă din nou în curând.",
       continueCommunity: "Alege comunitatea",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2893,7 +3284,7 @@
         "Gestisci l’abbonamento dal profilo quando Stripe lo consente per questo account.",
       returnSignal: "Torna al segnale",
       back: "Indietro",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
       label: "MITGLIEDSCHAFT AKTIV",
@@ -2908,7 +3299,7 @@
         "Verwalte das Abonnement im Profil, wenn Stripe das für dieses Konto erlaubt.",
       returnSignal: "Zurück zum Signal",
       back: "Zurück",
-      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
       label: "MEMBERSHIP ACTIV",
@@ -2923,7 +3314,7 @@
         "Gestionează abonamentul din profil când Stripe o permite pentru acest cont.",
       returnSignal: "Înapoi la semnal",
       back: "Înapoi",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
 
@@ -2939,8 +3330,9 @@
         Italy: "Italia",
         Germany: "Germania",
         Romania: "Romania",
+        Austria: "Austria",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Rivedi la comunità selezionata",
       reviewCountry: "Paese: {country}",
       reviewCity: "Città: {city}",
@@ -2976,8 +3368,9 @@
         Italy: "Italien",
         Germany: "Deutschland",
         Romania: "Rumänien",
+        Austria: "Österreich",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Ausgewählte Gemeinschaft prüfen",
       reviewCountry: "Land: {country}",
       reviewCity: "Stadt: {city}",
@@ -3016,8 +3409,9 @@
         Italy: "Italia",
         Germany: "Germania",
         Romania: "România",
+        Austria: "Austria",
       },
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Revizuiește comunitatea selectată",
       reviewCountry: "Țară: {country}",
       reviewCity: "Oraș: {city}",
@@ -3268,6 +3662,11 @@
     "Sibiu",
     "Iasi",
     "Timisoara",
+    "Koln",
+    "Dortmund",
+    "Stuttgart",
+    "Frankfurt",
+    "Salzburg",
   ];
   const PRODUCT_ONLY_COUNTRY_BY_CITY = {
     Milano: "Italy",
@@ -3277,6 +3676,11 @@
     Sibiu: "Romania",
     Iasi: "Romania",
     Timisoara: "Romania",
+    Koln: "Germany",
+    Dortmund: "Germany",
+    Stuttgart: "Germany",
+    Frankfurt: "Germany",
+    Salzburg: "Austria",
   };
   const NON_PRODUCT_ROUTES = {
     entry: true,
@@ -3398,6 +3802,11 @@
     if (scene.id.indexOf("sibiu-") === 0) return "Sibiu";
     if (scene.id.indexOf("iasi-") === 0) return "Iasi";
     if (scene.id.indexOf("timisoara-") === 0) return "Timisoara";
+    if (scene.id.indexOf("koln-") === 0) return "Koln";
+    if (scene.id.indexOf("dortmund-") === 0) return "Dortmund";
+    if (scene.id.indexOf("stuttgart-") === 0) return "Stuttgart";
+    if (scene.id.indexOf("frankfurt-") === 0) return "Frankfurt";
+    if (scene.id.indexOf("salzburg-") === 0) return "Salzburg";
     return null;
   }
 
@@ -7506,6 +7915,11 @@
     if (cityId === "Sibiu") return "ro";
     if (cityId === "Iasi") return "ro";
     if (cityId === "Timisoara") return "ro";
+    if (cityId === "Koln") return "de";
+    if (cityId === "Dortmund") return "de";
+    if (cityId === "Stuttgart") return "de";
+    if (cityId === "Frankfurt") return "de";
+    if (cityId === "Salzburg") return "de";
     return null;
   }
 
@@ -8142,7 +8556,7 @@
     const labels = document.querySelectorAll(
       "#view-country .country__option-label"
     );
-    const order = ["Italy", "Germany", "Romania"];
+    const order = ["Italy", "Germany", "Romania", "Austria"];
     for (let i = 0; i < labels.length && i < order.length; i++) {
       labels[i].textContent =
         (copy.countries && copy.countries[order[i]]) || order[i];
@@ -9388,6 +9802,11 @@
     Sibiu: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
     Iasi: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
     Timisoara: ["MEDIU", "INFRASTRUCTURĂ", "SPAȚIU PUBLIC"],
+    Koln: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Dortmund: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Stuttgart: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Frankfurt: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    Salzburg: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
   };
 
   const SIGNAL_CREATE_COPY = {
@@ -11208,6 +11627,7 @@
     commitmentCountryItalyLabel.textContent = copy.countryNames.Italy;
     commitmentCountryGermanyLabel.textContent = copy.countryNames.Germany;
     commitmentCountryRomaniaLabel.textContent = copy.countryNames.Romania;
+    commitmentCountryAustriaLabel.textContent = copy.countryNames.Austria;
     commitmentReviewLabel.textContent = copy.reviewLabel;
     commitmentAcceptText.textContent = copy.acceptText;
     commitmentAcceptRequired.textContent = copy.acceptRequired;

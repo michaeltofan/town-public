@@ -163,4 +163,47 @@ assertEqual(
 const italyCities = commitment.citiesForCountry("Italy").map((c) => c.id);
 assertEqual(italyCities.join(","), "Milano", "Italy still offers only Milano");
 
+// German/Austrian city-expansion: Germany gains four cities alongside
+// Munich, and Austria is a genuinely new country (Salzburg is not German).
+assertEqual(commitment.slugForCityId("Koln"), "koln-de");
+assertEqual(commitment.slugForCityId("Dortmund"), "dortmund-de");
+assertEqual(commitment.slugForCityId("Stuttgart"), "stuttgart-de");
+assertEqual(commitment.slugForCityId("Frankfurt"), "frankfurt-de");
+assertEqual(commitment.slugForCityId("Salzburg"), "salzburg-at");
+
+const germanyCities = commitment.citiesForCountry("Germany").map((c) => c.id);
+assertEqual(
+  germanyCities.sort().join(","),
+  ["Munich", "Koln", "Dortmund", "Stuttgart", "Frankfurt"].sort().join(","),
+  "Germany offers all five cities"
+);
+for (const cityId of ["Munich", "Koln", "Dortmund", "Stuttgart", "Frankfurt"]) {
+  assertOk(
+    commitment.isCityValidForCountry("Germany", cityId),
+    cityId + " valid for Germany"
+  );
+  assertEqual(
+    commitment.countryForCityId(cityId),
+    "Germany",
+    cityId + " maps back to Germany"
+  );
+}
+
+const austriaCities = commitment.citiesForCountry("Austria").map((c) => c.id);
+assertEqual(austriaCities.join(","), "Salzburg", "Austria offers only Salzburg");
+assertOk(
+  commitment.isCityValidForCountry("Austria", "Salzburg"),
+  "Salzburg valid for Austria"
+);
+assertEqual(
+  commitment.countryForCityId("Salzburg"),
+  "Austria",
+  "Salzburg maps back to Austria, not Germany"
+);
+assertEqual(
+  commitment.isCityValidForCountry("Germany", "Salzburg"),
+  false,
+  "Salzburg is not valid for Germany"
+);
+
 console.log("OK: community-commitment helper tests passed");

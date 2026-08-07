@@ -28,6 +28,11 @@
     Sibiu: "ro",
     Iasi: "ro",
     Timisoara: "ro",
+    Koln: "de",
+    Dortmund: "de",
+    Stuttgart: "de",
+    Frankfurt: "de",
+    Salzburg: "de",
   };
 
   const SOURCE_LANGUAGE_LABELS = {
@@ -79,7 +84,7 @@
       clearTestimony: "Remove media",
       demoTestimonyNote: "Attached — uploads securely when you publish",
       storyOf: "Story {current} of {total}",
-      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Cologne", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       navHome: "HOME",
       navMembership: "MEMBERSHIP",
       navChat: "CHAT",
@@ -107,7 +112,7 @@
       clearTestimony: "Quitar medio",
       demoTestimonyNote: "Adjunto — se carga de forma segura al publicar",
       storyOf: "Historia {current} de {total}",
-      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milán", Munich: "Múnich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Colonia", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Fráncfort", Salzburg: "Salzburgo" },
       navHome: "INICIO",
       navMembership: "MEMBRESÍA",
       navChat: "CHAT",
@@ -135,7 +140,7 @@
       clearTestimony: "Rimuovi media",
       demoTestimonyNote: "Allegato — viene caricato in sicurezza alla pubblicazione",
       storyOf: "Storia {current} di {total}",
-      cityNames: { Milano: "Milano", Munich: "Monaco", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "Monaco", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Colonia", Dortmund: "Dortmund", Stuttgart: "Stoccarda", Frankfurt: "Francoforte", Salzburg: "Salisburgo" },
       navHome: "HOME",
       navMembership: "MEMBERSHIP",
       navChat: "CHAT",
@@ -163,7 +168,7 @@
       clearTestimony: "Medium entfernen",
       demoTestimonyNote: "Angehängt — wird beim Veröffentlichen sicher hochgeladen",
       storyOf: "Geschichte {current} von {total}",
-      cityNames: { Milano: "Mailand", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Mailand", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       navHome: "START",
       navMembership: "MITGLIEDSCHAFT",
       navChat: "CHAT",
@@ -191,7 +196,7 @@
       clearTestimony: "Elimină media",
       demoTestimonyNote: "Atașat — se încarcă în siguranță la publicare",
       storyOf: "Povestea {current} din {total}",
-      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara" },
+      cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       navHome: "ACASĂ",
       navMembership: "MEMBRU",
       navChat: "CHAT",
@@ -212,6 +217,7 @@
         Italy: "Italy",
         Germany: "Germany",
         Romania: "Romania",
+        Austria: "Austria",
       },
     },
     es: {
@@ -224,6 +230,7 @@
         Italy: "Italia",
         Germany: "Alemania",
         Romania: "Rumanía",
+        Austria: "Austria",
       },
     },
     it: {
@@ -236,6 +243,7 @@
         Italy: "Italia",
         Germany: "Germania",
         Romania: "România",
+        Austria: "Austria",
       },
     },
     de: {
@@ -248,6 +256,7 @@
         Italy: "Italien",
         Germany: "Deutschland",
         Romania: "Rumänien",
+        Austria: "Österreich",
       },
     },
     ro: {
@@ -260,6 +269,7 @@
         Italy: "Italia",
         Germany: "Germania",
         Romania: "România",
+        Austria: "Austria",
       },
     },
   };
