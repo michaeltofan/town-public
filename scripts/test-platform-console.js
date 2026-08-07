@@ -127,6 +127,43 @@ assert(js.includes("promptReason"), "moderation reason prompt present");
 assert(!js.includes("/admin"), "avoids /admin path");
 assert(!js.includes("/users"), "avoids /users path");
 
+assert(html.includes('id="civic-proposal-form"'), "civic proposal hide/unhide form present");
+assert(
+  html.includes('id="civic-deliberation-contribution-form"'),
+  "civic deliberation contribution hide/unhide form present"
+);
+assert(
+  html.includes('id="civic-verification-evidence-form"'),
+  "civic verification evidence hide/unhide form present"
+);
+assert(html.includes('id="civic-content-detail"'), "civic content action detail present");
+assert(html.includes('id="civic-contestations-list"'), "civic contestations queue present");
+assert(
+  html.includes('id="civic-verification-disputes-list"'),
+  "civic verification disputes queue present"
+);
+assert(js.includes('"/v1/platform/civic/"'), "civic content base path");
+assert(
+  js.includes('bindCivicContentForm("civic-proposal-form", "civic-proposal-id", "proposals")'),
+  "civic proposal hide/unhide route segment wired"
+);
+assert(
+  js.includes('"deliberation-contributions"'),
+  "civic deliberation contribution hide/unhide route segment"
+);
+assert(
+  js.includes('"verification-evidence"'),
+  "civic verification evidence hide/unhide route segment"
+);
+assert(js.includes("/v1/platform/civic/contestations"), "civic contestations queue path");
+assert(
+  js.includes("/v1/platform/civic/verification-disputes"),
+  "civic verification disputes queue path"
+);
+assert(js.includes("bindCivicContentForm"), "civic content form binder present");
+assert(js.includes("loadCivicContestations"), "civic contestations loader present");
+assert(js.includes("loadCivicVerificationDisputes"), "civic verification disputes loader present");
+
 assert(css.includes("--font-display"), "display font token");
 assert(css.includes("@keyframes rise"), "motion present");
 assert(css.includes("@keyframes drift"), "atmosphere motion present");

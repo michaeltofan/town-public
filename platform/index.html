@@ -222,8 +222,10 @@
             <header class="section-head">
               <h2>Moderation</h2>
               <p>
-                Hide or restore signals, reject or restore submissions, and hide
-                or unhide discussion contributions. Mutations require a reason.
+                Hide or restore signals, reject or restore submissions, hide
+                or unhide discussion contributions, hide or restore civic
+                content, and resolve civic contestations and verification
+                disputes. Mutations require a reason.
               </p>
             </header>
 
@@ -291,6 +293,85 @@
                   <pre id="discussion-detail" class="code-block">Select a contribution.</pre>
                 </div>
               </div>
+            </div>
+
+            <div class="moderation-block">
+              <h3>Civic content</h3>
+              <p>
+                Hide or restore a civic proposal, deliberation contribution, or
+                verification evidence item by id (governance spec §14).
+                Requires the moderate_civic_process capability. Hiding
+                requires a reason.
+              </p>
+              <form
+                id="civic-proposal-form"
+                class="toolbar"
+                data-civic-content-type="proposals"
+              >
+                <input id="civic-proposal-id" type="text" placeholder="Proposal id" />
+                <button type="button" class="row-action danger" data-action="hide">
+                  Hide
+                </button>
+                <button type="button" class="row-action" data-action="unhide">
+                  Unhide
+                </button>
+              </form>
+              <form
+                id="civic-deliberation-contribution-form"
+                class="toolbar"
+                data-civic-content-type="deliberation-contributions"
+              >
+                <input
+                  id="civic-deliberation-contribution-id"
+                  type="text"
+                  placeholder="Deliberation contribution id"
+                />
+                <button type="button" class="row-action danger" data-action="hide">
+                  Hide
+                </button>
+                <button type="button" class="row-action" data-action="unhide">
+                  Unhide
+                </button>
+              </form>
+              <form
+                id="civic-verification-evidence-form"
+                class="toolbar"
+                data-civic-content-type="verification-evidence"
+              >
+                <input
+                  id="civic-verification-evidence-id"
+                  type="text"
+                  placeholder="Verification evidence id"
+                />
+                <button type="button" class="row-action danger" data-action="hide">
+                  Hide
+                </button>
+                <button type="button" class="row-action" data-action="unhide">
+                  Unhide
+                </button>
+              </form>
+              <pre id="civic-content-detail" class="code-block">No civic content action yet.</pre>
+            </div>
+
+            <div class="moderation-block">
+              <h3>Civic contestations</h3>
+              <p>
+                Pending procedural contestations against a decided mandate
+                (governance spec §10). Resolve upheld or rejected, once,
+                permanently.
+              </p>
+              <div id="civic-contestations-list" class="list"></div>
+            </div>
+
+            <div class="moderation-block">
+              <h3>Civic verification disputes</h3>
+              <p>
+                Verification disputes left unresolved 14 days after
+                verification opened (governance spec §13). Resolve delivered
+                or not delivered, once, permanently. Never changes the
+                process's stage.
+              </p>
+              <div id="civic-verification-disputes-list" class="list"></div>
             </div>
           </section>
 

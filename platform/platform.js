@@ -1432,7 +1432,184 @@
       });
     });
 
+    await loadCivicContestations();
+    await loadCivicVerificationDisputes();
+
     setStatus(consoleStatus, "Moderation inventory ready", "is-ok");
+  }
+
+  function civicContentDetail(payload) {
+    var detail = document.getElementById("civic-content-detail");
+    if (detail) detail.textContent = JSON.stringify(payload, null, 2);
+  }
+
+  function bindCivicContentForm(formId, inputId, routeSegment) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+    form.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        var contentId = document.getElementById(inputId).value.trim();
+        if (!contentId) {
+          setStatus(consoleStatus, "Enter a content id first", "is-error");
+          return;
+        }
+        var action = button.getAttribute("data-action");
+        var result;
+        if (action === "hide") {
+          var reason = promptReason("off_topic");
+          if (!reason) return;
+          if (!window.confirm("Hide this item for reason: " + reason + "?")) return;
+          setStatus(consoleStatus, "Hiding civic content…");
+          result = await postJson(
+            "/v1/platform/civic/" + routeSegment + "/" + encodeURIComponent(contentId) + "/hide",
+            { reason: reason }
+          );
+        } else {
+          if (!window.confirm("Unhide this item?")) return;
+          setStatus(consoleStatus, "Unhiding civic content…");
+          result = await postJson(
+            "/v1/platform/civic/" + routeSegment + "/" + encodeURIComponent(contentId) + "/unhide",
+            {}
+          );
+        }
+        if (!result || result.response.status !== 200) {
+          setStatus(consoleStatus, "Civic content action failed", "is-error");
+          return;
+        }
+        civicContentDetail(result.payload.data);
+        setStatus(
+          consoleStatus,
+          result.payload.data.changed
+            ? action === "hide"
+              ? "Civic content hidden"
+              : "Civic content unhidden"
+            : "Civic content already in target state",
+          "is-ok"
+        );
+      });
+    });
+  }
+
+  async function loadCivicContestations() {
+    var result = await getJson("/v1/platform/civic/contestations");
+    if (result.response.status !== 200) {
+      throw new Error("Unable to load civic contestations");
+    }
+    var list = document.getElementById("civic-contestations-list");
+    var rows = result.payload.data.contestations || [];
+    list.innerHTML = rows.length
+      ? rows
+          .map(function (row) {
+            return (
+              '<div class="row"><div><h4>' +
+              escapeHtml(row.reasonKey) +
+              " · " +
+              escapeHtml(row.status) +
+              "</h4><p>" +
+              (row.elaboration ? escapeHtml(row.elaboration) + "<br />" : "") +
+              "process " +
+              escapeHtml(row.processId) +
+              " · filed " +
+              escapeHtml(row.filedAt) +
+              '</p></div><div class="row-actions">' +
+              '<button type="button" class="row-action" data-action="upheld" data-id="' +
+              escapeHtml(row.id) +
+              '">Uphold</button>' +
+              '<button type="button" class="row-action danger" data-action="rejected" data-id="' +
+              escapeHtml(row.id) +
+              '">Reject</button>' +
+              "</div></div>"
+            );
+          })
+          .join("")
+      : emptyState("No pending contestations.");
+
+    list.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        var id = button.getAttribute("data-id");
+        var status = button.getAttribute("data-action");
+        if (!window.confirm("Resolve this contestation as " + status + "?")) return;
+        var reviewNote = window.prompt("Review note (optional)", "") || "";
+        setStatus(consoleStatus, "Resolving contestation…");
+        var body = { status: status };
+        if (reviewNote.trim()) body.reviewNote = reviewNote.trim();
+        var result = await postJson(
+          "/v1/platform/civic/contestations/" + encodeURIComponent(id) + "/resolve",
+          body
+        );
+        if (!result || result.response.status !== 200) {
+          setStatus(consoleStatus, "Contestation resolution failed", "is-error");
+          return;
+        }
+        setStatus(
+          consoleStatus,
+          result.payload.data.changed
+            ? "Contestation resolved: " + result.payload.data.status
+            : "Contestation already resolved: " + result.payload.data.status,
+          "is-ok"
+        );
+        await loadCivicContestations();
+      });
+    });
+  }
+
+  async function loadCivicVerificationDisputes() {
+    var result = await getJson("/v1/platform/civic/verification-disputes");
+    if (result.response.status !== 200) {
+      throw new Error("Unable to load civic verification disputes");
+    }
+    var list = document.getElementById("civic-verification-disputes-list");
+    var rows = result.payload.data.disputes || [];
+    list.innerHTML = rows.length
+      ? rows
+          .map(function (row) {
+            return (
+              '<div class="row"><div><h4>process ' +
+              escapeHtml(row.processId) +
+              "</h4><p>verification opened " +
+              escapeHtml(row.verificationOpenedAt) +
+              '</p></div><div class="row-actions">' +
+              '<button type="button" class="row-action" data-action="delivered" data-id="' +
+              escapeHtml(row.processId) +
+              '">Delivered</button>' +
+              '<button type="button" class="row-action danger" data-action="not_delivered" data-id="' +
+              escapeHtml(row.processId) +
+              '">Not delivered</button>' +
+              "</div></div>"
+            );
+          })
+          .join("")
+      : emptyState("No escalated verification disputes.");
+
+    list.querySelectorAll("[data-action]").forEach(function (button) {
+      button.addEventListener("click", async function () {
+        var processId = button.getAttribute("data-id");
+        var outcome = button.getAttribute("data-action");
+        if (!window.confirm("Resolve this verification dispute as " + outcome + "?")) return;
+        var reviewNote = window.prompt("Review note (optional)", "") || "";
+        setStatus(consoleStatus, "Resolving verification dispute…");
+        var body = { outcome: outcome };
+        if (reviewNote.trim()) body.reviewNote = reviewNote.trim();
+        var result = await postJson(
+          "/v1/platform/civic/verification-disputes/" +
+            encodeURIComponent(processId) +
+            "/resolve",
+          body
+        );
+        if (!result || result.response.status !== 200) {
+          setStatus(consoleStatus, "Verification dispute resolution failed", "is-error");
+          return;
+        }
+        setStatus(
+          consoleStatus,
+          result.payload.data.changed
+            ? "Verification dispute resolved: " + result.payload.data.outcome
+            : "Verification dispute already resolved: " + result.payload.data.outcome,
+          "is-ok"
+        );
+        await loadCivicVerificationDisputes();
+      });
+    });
   }
 
   async function loadInvestigation(accountId) {
@@ -1599,6 +1776,18 @@
         discussions: currentDiscussionFilters(),
       });
     });
+
+  bindCivicContentForm("civic-proposal-form", "civic-proposal-id", "proposals");
+  bindCivicContentForm(
+    "civic-deliberation-contribution-form",
+    "civic-deliberation-contribution-id",
+    "deliberation-contributions"
+  );
+  bindCivicContentForm(
+    "civic-verification-evidence-form",
+    "civic-verification-evidence-id",
+    "verification-evidence"
+  );
 
   document
     .getElementById("memberships-search")
