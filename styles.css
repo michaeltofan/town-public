@@ -3495,6 +3495,51 @@ body.page-feed {
   color: #f4efe6;
 }
 
+.signal-detail__process-action-institution,
+.signal-detail__process-action-objective,
+.signal-detail__process-action-deadline {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(244, 239, 230, 0.75);
+}
+
+.signal-detail__process-action-institution[hidden],
+.signal-detail__process-action-objective[hidden],
+.signal-detail__process-action-deadline[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-action-status {
+  display: inline-block;
+  margin: 0 0 0.6rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.2);
+  color: #f7d968;
+}
+
+.signal-detail__process-action-status[hidden] {
+  display: none !important;
+}
+
+.signal-detail__process-action-responsible,
+.signal-detail__process-action-collaborators {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgba(244, 239, 230, 0.82);
+}
+
+.signal-detail__process-action-responsible[hidden],
+.signal-detail__process-action-collaborators[hidden] {
+  display: none !important;
+}
+
 .signal-detail__process-action-list {
   list-style: none;
   margin: 0 0 0.9rem;
@@ -3524,11 +3569,54 @@ body.page-feed {
   color: #f7d968;
 }
 
+.signal-detail__process-action-kind-badge {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(244, 239, 230, 0.62);
+}
+
 .signal-detail__process-action-text {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.55;
   color: #f4efe6;
+}
+
+.signal-detail__process-action-blocked-reason {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(244, 239, 230, 0.24);
+  background: rgba(0, 0, 0, 0.16);
+  color: #f4efe6;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.signal-detail__process-action-item-blocked-reason {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(247, 158, 105, 0.92);
+}
+
+.signal-detail__process-action-evidence-link {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  color: #e8772e;
+  word-break: break-all;
+}
+
+.signal-detail__process-action-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
 }
 
 .signal-detail__process-action-compose {

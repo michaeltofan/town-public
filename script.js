@@ -346,17 +346,53 @@
   const detailProcessActionBody = document.getElementById(
     "detail-process-action-body"
   );
+  const detailProcessActionInstitution = document.getElementById(
+    "detail-process-action-institution"
+  );
+  const detailProcessActionObjective = document.getElementById(
+    "detail-process-action-objective"
+  );
+  const detailProcessActionDeadline = document.getElementById(
+    "detail-process-action-deadline"
+  );
+  const detailProcessActionStatus = document.getElementById(
+    "detail-process-action-status"
+  );
+  const detailProcessActionResponsible = document.getElementById(
+    "detail-process-action-responsible"
+  );
+  const detailProcessActionCollaborators = document.getElementById(
+    "detail-process-action-collaborators"
+  );
   const detailProcessActionList = document.getElementById(
     "detail-process-action-list"
   );
+  const detailProcessActionTakeStep = document.getElementById(
+    "detail-process-action-take-step"
+  );
+  const detailProcessActionOfferHelp = document.getElementById(
+    "detail-process-action-offer-help"
+  );
   const detailProcessActionContribute = document.getElementById(
     "detail-process-action-contribute"
+  );
+  const detailProcessActionAddEvidence = document.getElementById(
+    "detail-process-action-add-evidence"
+  );
+  const detailProcessActionInstitutionResponse = document.getElementById(
+    "detail-process-action-institution-response"
   );
   const detailProcessActionCompose = document.getElementById(
     "detail-process-action-compose"
   );
   const detailProcessActionInput = document.getElementById(
     "detail-process-action-input"
+  );
+  const detailProcessActionBlockedReason = document.getElementById(
+    "detail-process-action-blocked-reason"
+  );
+  const detailProcessActionUrlInput = document.getElementById(
+    "detail-process-action-url-input"
   );
   const detailProcessActionSubmit = document.getElementById(
     "detail-process-action-submit"
@@ -901,10 +937,22 @@
     !detailProcessActionAuthor ||
     !detailProcessActionTitle ||
     !detailProcessActionBody ||
+    !detailProcessActionInstitution ||
+    !detailProcessActionObjective ||
+    !detailProcessActionDeadline ||
+    !detailProcessActionStatus ||
+    !detailProcessActionResponsible ||
+    !detailProcessActionCollaborators ||
     !detailProcessActionList ||
+    !detailProcessActionTakeStep ||
+    !detailProcessActionOfferHelp ||
     !detailProcessActionContribute ||
+    !detailProcessActionAddEvidence ||
+    !detailProcessActionInstitutionResponse ||
     !detailProcessActionCompose ||
     !detailProcessActionInput ||
+    !detailProcessActionBlockedReason ||
+    !detailProcessActionUrlInput ||
     !detailProcessActionSubmit ||
     !detailProcessActionCancel ||
     !detailProcessActionNote ||
@@ -3494,6 +3542,34 @@
       actionNeedText: "Write at least 12 characters.",
       actionErrorGeneric: "Something went wrong. Try again.",
       actionErrorClosed: "This stage is closed.",
+      actionErrorAlreadyResponsible:
+        "Another member has already taken responsibility for this action.",
+      actionQuickTakeStep: "Take a step",
+      actionQuickOfferHelp: "Offer help",
+      actionQuickAddEvidence: "Add evidence",
+      actionQuickInstitutionResponse: "Record the institution's response",
+      actionInputLabelTakeStep: "What will you take on?",
+      actionInputLabelOfferHelp: "How can you help?",
+      actionInputLabelEvidence: "Evidence description",
+      actionInputLabelInstitutionResponse: "What did the institution say?",
+      actionSubmitTakeStep: "Submit",
+      actionSubmitOfferHelp: "Submit",
+      actionSubmitEvidence: "Submit evidence",
+      actionSubmitInstitutionResponse: "Submit",
+      actionStatusNotStarted: "Not started yet",
+      actionStatusInProgress: "In progress",
+      actionStatusBlocked: "Blocked",
+      actionStatusCompleted: "Completed",
+      actionResponsibleLabel: "Responsible: {name}",
+      actionCollaboratorsLabel: "Helping: {names}",
+      actionInstitutionLabel: "Institution: {value}",
+      actionObjectiveLabel: "Objective: {value}",
+      actionDeadlineLabel: "Indicative deadline: {value}",
+      actionBlockedReasonNone: "No reason",
+      actionBlockedReasonInstitution: "Awaiting institution response",
+      actionBlockedReasonResources: "Awaiting resources",
+      actionBlockedReasonVolunteers: "Awaiting volunteers",
+      actionBlockedReasonOther: "Other",
       verificationLoading: "Loading verification…",
       verificationUnavailable: "Verification is temporarily unavailable.",
       verificationPendingReady: "Not yet marked ready for verification.",
@@ -3638,6 +3714,34 @@
       actionNeedText: "Escribe al menos 12 caracteres.",
       actionErrorGeneric: "Algo salió mal. Inténtalo de nuevo.",
       actionErrorClosed: "Esta etapa está cerrada.",
+      actionErrorAlreadyResponsible:
+        "Otro miembro ya ha asumido la responsabilidad de esta acción.",
+      actionQuickTakeStep: "Asumir un paso",
+      actionQuickOfferHelp: "Ofrecer ayuda",
+      actionQuickAddEvidence: "Añadir evidencia",
+      actionQuickInstitutionResponse: "Registrar la respuesta de la institución",
+      actionInputLabelTakeStep: "¿Qué vas a asumir?",
+      actionInputLabelOfferHelp: "¿Cómo puedes ayudar?",
+      actionInputLabelEvidence: "Descripción de la evidencia",
+      actionInputLabelInstitutionResponse: "¿Qué dijo la institución?",
+      actionSubmitTakeStep: "Enviar",
+      actionSubmitOfferHelp: "Enviar",
+      actionSubmitEvidence: "Enviar evidencia",
+      actionSubmitInstitutionResponse: "Enviar",
+      actionStatusNotStarted: "Aún no iniciado",
+      actionStatusInProgress: "En curso",
+      actionStatusBlocked: "Bloqueado",
+      actionStatusCompleted: "Completado",
+      actionResponsibleLabel: "Responsable: {name}",
+      actionCollaboratorsLabel: "Colaborando: {names}",
+      actionInstitutionLabel: "Institución: {value}",
+      actionObjectiveLabel: "Objetivo: {value}",
+      actionDeadlineLabel: "Plazo indicativo: {value}",
+      actionBlockedReasonNone: "Sin motivo",
+      actionBlockedReasonInstitution: "Esperando respuesta de la institución",
+      actionBlockedReasonResources: "Esperando recursos",
+      actionBlockedReasonVolunteers: "Esperando voluntarios",
+      actionBlockedReasonOther: "Otro",
       verificationLoading: "Cargando la verificación…",
       verificationUnavailable: "La verificación no está disponible temporalmente.",
       verificationPendingReady: "Aún no se ha marcado como lista para verificación.",
@@ -3781,6 +3885,34 @@
       actionNeedText: "Scrivi almeno 12 caratteri.",
       actionErrorGeneric: "Qualcosa è andato storto. Riprova.",
       actionErrorClosed: "Questa fase è chiusa.",
+      actionErrorAlreadyResponsible:
+        "Un altro membro ha già assunto la responsabilità di questa azione.",
+      actionQuickTakeStep: "Farsi carico di un passo",
+      actionQuickOfferHelp: "Offrire aiuto",
+      actionQuickAddEvidence: "Aggiungi una prova",
+      actionQuickInstitutionResponse: "Registra la risposta dell'istituzione",
+      actionInputLabelTakeStep: "Di cosa ti farai carico?",
+      actionInputLabelOfferHelp: "Come puoi aiutare?",
+      actionInputLabelEvidence: "Descrizione della prova",
+      actionInputLabelInstitutionResponse: "Cosa ha detto l'istituzione?",
+      actionSubmitTakeStep: "Invia",
+      actionSubmitOfferHelp: "Invia",
+      actionSubmitEvidence: "Invia prova",
+      actionSubmitInstitutionResponse: "Invia",
+      actionStatusNotStarted: "Non ancora iniziato",
+      actionStatusInProgress: "In corso",
+      actionStatusBlocked: "Bloccato",
+      actionStatusCompleted: "Completato",
+      actionResponsibleLabel: "Responsabile: {name}",
+      actionCollaboratorsLabel: "Collaborano: {names}",
+      actionInstitutionLabel: "Istituzione: {value}",
+      actionObjectiveLabel: "Obiettivo: {value}",
+      actionDeadlineLabel: "Scadenza indicativa: {value}",
+      actionBlockedReasonNone: "Nessun motivo",
+      actionBlockedReasonInstitution: "In attesa della risposta dell'istituzione",
+      actionBlockedReasonResources: "In attesa di risorse",
+      actionBlockedReasonVolunteers: "In attesa di volontari",
+      actionBlockedReasonOther: "Altro",
       verificationLoading: "Caricamento della verifica…",
       verificationUnavailable: "La verifica non è temporaneamente disponibile.",
       verificationPendingReady: "Non ancora contrassegnata come pronta per la verifica.",
@@ -3927,6 +4059,34 @@
       actionNeedText: "Schreibe mindestens 12 Zeichen.",
       actionErrorGeneric: "Etwas ist schiefgelaufen. Versuche es erneut.",
       actionErrorClosed: "Diese Phase ist geschlossen.",
+      actionErrorAlreadyResponsible:
+        "Ein anderes Mitglied hat bereits die Verantwortung für diese Maßnahme übernommen.",
+      actionQuickTakeStep: "Einen Schritt übernehmen",
+      actionQuickOfferHelp: "Hilfe anbieten",
+      actionQuickAddEvidence: "Nachweis hinzufügen",
+      actionQuickInstitutionResponse: "Antwort der Institution festhalten",
+      actionInputLabelTakeStep: "Was wirst du übernehmen?",
+      actionInputLabelOfferHelp: "Wie kannst du helfen?",
+      actionInputLabelEvidence: "Beschreibung des Nachweises",
+      actionInputLabelInstitutionResponse: "Was hat die Institution gesagt?",
+      actionSubmitTakeStep: "Absenden",
+      actionSubmitOfferHelp: "Absenden",
+      actionSubmitEvidence: "Nachweis absenden",
+      actionSubmitInstitutionResponse: "Absenden",
+      actionStatusNotStarted: "Noch nicht begonnen",
+      actionStatusInProgress: "In Bearbeitung",
+      actionStatusBlocked: "Blockiert",
+      actionStatusCompleted: "Abgeschlossen",
+      actionResponsibleLabel: "Verantwortlich: {name}",
+      actionCollaboratorsLabel: "Helfen: {names}",
+      actionInstitutionLabel: "Institution: {value}",
+      actionObjectiveLabel: "Ziel: {value}",
+      actionDeadlineLabel: "Voraussichtliche Frist: {value}",
+      actionBlockedReasonNone: "Kein Grund",
+      actionBlockedReasonInstitution: "Warten auf Antwort der Institution",
+      actionBlockedReasonResources: "Warten auf Ressourcen",
+      actionBlockedReasonVolunteers: "Warten auf Freiwillige",
+      actionBlockedReasonOther: "Sonstiges",
       verificationLoading: "Überprüfung wird geladen…",
       verificationUnavailable: "Die Überprüfung ist vorübergehend nicht verfügbar.",
       verificationPendingReady: "Noch nicht als bereit zur Überprüfung markiert.",
@@ -4070,6 +4230,34 @@
       actionNeedText: "Scrie cel puțin 12 caractere.",
       actionErrorGeneric: "Ceva nu a funcționat. Încearcă din nou.",
       actionErrorClosed: "Această etapă este închisă.",
+      actionErrorAlreadyResponsible:
+        "Un alt membru și-a asumat deja responsabilitatea pentru această acțiune.",
+      actionQuickTakeStep: "Îmi asum un pas",
+      actionQuickOfferHelp: "Ofer ajutor",
+      actionQuickAddEvidence: "Adaugă o dovadă",
+      actionQuickInstitutionResponse: "Înregistrează răspunsul instituției",
+      actionInputLabelTakeStep: "Ce îți vei asuma?",
+      actionInputLabelOfferHelp: "Cum poți ajuta?",
+      actionInputLabelEvidence: "Descrierea dovezii",
+      actionInputLabelInstitutionResponse: "Ce a spus instituția?",
+      actionSubmitTakeStep: "Trimite",
+      actionSubmitOfferHelp: "Trimite",
+      actionSubmitEvidence: "Trimite dovada",
+      actionSubmitInstitutionResponse: "Trimite",
+      actionStatusNotStarted: "Neînceput încă",
+      actionStatusInProgress: "În desfășurare",
+      actionStatusBlocked: "Blocat",
+      actionStatusCompleted: "Finalizat",
+      actionResponsibleLabel: "Responsabil: {name}",
+      actionCollaboratorsLabel: "Ajută: {names}",
+      actionInstitutionLabel: "Instituție: {value}",
+      actionObjectiveLabel: "Obiectiv: {value}",
+      actionDeadlineLabel: "Termen indicativ: {value}",
+      actionBlockedReasonNone: "Fără motiv",
+      actionBlockedReasonInstitution: "Se așteaptă răspunsul instituției",
+      actionBlockedReasonResources: "Se așteaptă resurse",
+      actionBlockedReasonVolunteers: "Se așteaptă voluntari",
+      actionBlockedReasonOther: "Altul",
       verificationLoading: "Se încarcă verificarea…",
       verificationUnavailable: "Verificarea este temporar indisponibilă.",
       verificationPendingReady: "Nu a fost încă marcată gata pentru verificare.",
@@ -5663,10 +5851,21 @@
   let civicActionLoadToken = 0;
   let civicActionSubmitting = false;
   let civicActionCanPostCache = false;
+  let civicActionCanTakeStepCache = false;
+  let civicActionPendingKind = "status_update";
+
+  const CIVIC_ACTION_BLOCKED_REASON_KEYS = [
+    "awaiting_institution_response",
+    "awaiting_resources",
+    "awaiting_volunteers",
+    "other",
+  ];
 
   function closeCivicActionCompose() {
     detailProcessActionCompose.hidden = true;
     detailProcessActionInput.value = "";
+    detailProcessActionBlockedReason.value = "";
+    detailProcessActionUrlInput.value = "";
     detailProcessActionNote.hidden = true;
     detailProcessActionNote.textContent = "";
   }
@@ -5674,13 +5873,24 @@
   function resetCivicActionPanel() {
     civicActionLoadToken += 1;
     civicActionCanPostCache = false;
+    civicActionCanTakeStepCache = false;
     detailProcessActionState.textContent = "";
     detailProcessActionWinner.hidden = true;
     detailProcessActionAuthor.textContent = "";
     detailProcessActionTitle.textContent = "";
     detailProcessActionBody.textContent = "";
+    detailProcessActionInstitution.hidden = true;
+    detailProcessActionObjective.hidden = true;
+    detailProcessActionDeadline.hidden = true;
+    detailProcessActionStatus.hidden = true;
+    detailProcessActionResponsible.hidden = true;
+    detailProcessActionCollaborators.hidden = true;
     detailProcessActionList.textContent = "";
+    detailProcessActionTakeStep.hidden = true;
+    detailProcessActionOfferHelp.hidden = true;
     detailProcessActionContribute.hidden = true;
+    detailProcessActionAddEvidence.hidden = true;
+    detailProcessActionInstitutionResponse.hidden = true;
     closeCivicActionCompose();
   }
 
@@ -5693,13 +5903,13 @@
     );
   }
 
-  async function submitSignalCivicActionUpdate(signalId, text) {
+  async function submitSignalCivicActionUpdate(signalId, payload) {
     return postJsonWithCredentials(
       API_BASE +
         "/v1/signals/" +
         encodeURIComponent(signalId) +
         "/civic-process/action/updates",
-      { text: text }
+      payload
     );
   }
 
@@ -5707,8 +5917,15 @@
     const copy = civicProcessCopy();
     detailProcessActionState.textContent = copy.actionLoading;
     detailProcessActionWinner.hidden = true;
+    detailProcessActionStatus.hidden = true;
+    detailProcessActionResponsible.hidden = true;
+    detailProcessActionCollaborators.hidden = true;
     detailProcessActionList.textContent = "";
+    detailProcessActionTakeStep.hidden = true;
+    detailProcessActionOfferHelp.hidden = true;
     detailProcessActionContribute.hidden = true;
+    detailProcessActionAddEvidence.hidden = true;
+    detailProcessActionInstitutionResponse.hidden = true;
     closeCivicActionCompose();
   }
 
@@ -5716,9 +5933,38 @@
     const copy = civicProcessCopy();
     detailProcessActionState.textContent = copy.actionUnavailable;
     detailProcessActionWinner.hidden = true;
+    detailProcessActionStatus.hidden = true;
+    detailProcessActionResponsible.hidden = true;
+    detailProcessActionCollaborators.hidden = true;
     detailProcessActionList.textContent = "";
+    detailProcessActionTakeStep.hidden = true;
+    detailProcessActionOfferHelp.hidden = true;
     detailProcessActionContribute.hidden = true;
+    detailProcessActionAddEvidence.hidden = true;
+    detailProcessActionInstitutionResponse.hidden = true;
     closeCivicActionCompose();
+  }
+
+  function civicActionKindBadgeLabel(copy, kind) {
+    return kind === "take_step"
+      ? copy.actionQuickTakeStep
+      : kind === "offer_help"
+        ? copy.actionQuickOfferHelp
+        : kind === "evidence"
+          ? copy.actionQuickAddEvidence
+          : kind === "institution_response"
+            ? copy.actionQuickInstitutionResponse
+            : "";
+  }
+
+  function civicActionBlockedReasonLabel(copy, key) {
+    return key === "awaiting_institution_response"
+      ? copy.actionBlockedReasonInstitution
+      : key === "awaiting_resources"
+        ? copy.actionBlockedReasonResources
+        : key === "awaiting_volunteers"
+          ? copy.actionBlockedReasonVolunteers
+          : copy.actionBlockedReasonOther;
   }
 
   function buildActionUpdateItem(copy, update) {
@@ -5733,12 +5979,44 @@
       badge.textContent = copy.actionMine;
       meta.appendChild(badge);
     }
+    const kindLabel = civicActionKindBadgeLabel(copy, update.kind);
+    if (kindLabel) {
+      const kindBadge = document.createElement("span");
+      kindBadge.className = "signal-detail__process-action-kind-badge";
+      kindBadge.textContent = kindLabel;
+      meta.appendChild(kindBadge);
+    }
     const text = document.createElement("p");
     text.className = "signal-detail__process-action-text";
     text.textContent = update.text || "";
     li.appendChild(meta);
     li.appendChild(text);
+    if (update.blockedReasonKey) {
+      const reason = document.createElement("p");
+      reason.className = "signal-detail__process-action-item-blocked-reason";
+      reason.textContent = civicActionBlockedReasonLabel(copy, update.blockedReasonKey);
+      li.appendChild(reason);
+    }
+    if (update.url) {
+      const link = document.createElement("a");
+      link.className = "signal-detail__process-action-evidence-link";
+      link.href = update.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = update.url;
+      li.appendChild(link);
+    }
     return li;
+  }
+
+  function civicActionStatusLabel(copy, actionStatus) {
+    return actionStatus === "blocked"
+      ? copy.actionStatusBlocked
+      : actionStatus === "completed"
+        ? copy.actionStatusCompleted
+        : actionStatus === "in_progress"
+          ? copy.actionStatusInProgress
+          : copy.actionStatusNotStarted;
   }
 
   function renderCivicAction(data) {
@@ -5749,8 +6027,64 @@
       detailProcessActionAuthor.textContent = winner.authorDisplayName || "";
       detailProcessActionTitle.textContent = winner.title || "";
       detailProcessActionBody.textContent = winner.body || "";
+      if (winner.targetInstitution) {
+        detailProcessActionInstitution.hidden = false;
+        detailProcessActionInstitution.textContent = (
+          copy.actionInstitutionLabel || "Institution: {value}"
+        ).replace("{value}", winner.targetInstitution);
+      } else {
+        detailProcessActionInstitution.hidden = true;
+      }
+      if (winner.objective) {
+        detailProcessActionObjective.hidden = false;
+        detailProcessActionObjective.textContent = (
+          copy.actionObjectiveLabel || "Objective: {value}"
+        ).replace("{value}", winner.objective);
+      } else {
+        detailProcessActionObjective.hidden = true;
+      }
+      if (winner.indicativeDeadline) {
+        detailProcessActionDeadline.hidden = false;
+        detailProcessActionDeadline.textContent = (
+          copy.actionDeadlineLabel || "Indicative deadline: {value}"
+        ).replace("{value}", winner.indicativeDeadline);
+      } else {
+        detailProcessActionDeadline.hidden = true;
+      }
     } else {
       detailProcessActionWinner.hidden = true;
+      detailProcessActionInstitution.hidden = true;
+      detailProcessActionObjective.hidden = true;
+      detailProcessActionDeadline.hidden = true;
+    }
+    if (data.actionStatus) {
+      detailProcessActionStatus.hidden = false;
+      detailProcessActionStatus.textContent = civicActionStatusLabel(copy, data.actionStatus);
+    } else {
+      detailProcessActionStatus.hidden = true;
+    }
+    if (data.responsibleActor && data.responsibleActor.displayName) {
+      detailProcessActionResponsible.hidden = false;
+      detailProcessActionResponsible.textContent = (
+        copy.actionResponsibleLabel || "Responsible: {name}"
+      ).replace("{name}", data.responsibleActor.displayName);
+    } else {
+      detailProcessActionResponsible.hidden = true;
+    }
+    const collaborators = Array.isArray(data.collaborators) ? data.collaborators : [];
+    if (collaborators.length > 0) {
+      detailProcessActionCollaborators.hidden = false;
+      const names = collaborators
+        .map(function (collaborator) {
+          return collaborator.displayName || "";
+        })
+        .filter(Boolean)
+        .join(", ");
+      detailProcessActionCollaborators.textContent = (
+        copy.actionCollaboratorsLabel || "Helping: {names}"
+      ).replace("{names}", names);
+    } else {
+      detailProcessActionCollaborators.hidden = true;
     }
     const updates = Array.isArray(data.updates) ? data.updates : [];
     detailProcessActionState.textContent =
@@ -5764,7 +6098,12 @@
       detailProcessActionList.appendChild(buildActionUpdateItem(copy, updates[i]));
     }
     civicActionCanPostCache = data.canPost === true;
+    civicActionCanTakeStepCache = data.canTakeStep === true;
+    detailProcessActionTakeStep.hidden = !civicActionCanTakeStepCache;
+    detailProcessActionOfferHelp.hidden = !civicActionCanPostCache;
     detailProcessActionContribute.hidden = !civicActionCanPostCache;
+    detailProcessActionAddEvidence.hidden = !civicActionCanPostCache;
+    detailProcessActionInstitutionResponse.hidden = !civicActionCanPostCache;
     if (!civicActionCanPostCache) closeCivicActionCompose();
   }
 
@@ -5787,6 +6126,9 @@
         data.processId == null ||
         (data.currentStage !== "mandate" && data.currentStage !== "action") ||
         typeof data.canPost !== "boolean" ||
+        typeof data.canTakeStep !== "boolean" ||
+        typeof data.actionStatus !== "string" ||
+        !Array.isArray(data.collaborators) ||
         !Array.isArray(data.updates)
       ) {
         if (token === civicActionLoadToken) renderCivicActionUnavailable();
@@ -5798,15 +6140,58 @@
     }
   }
 
-  function openCivicActionCompose() {
+  function openCivicActionCompose(kind) {
     const copy = civicProcessCopy();
-    detailProcessActionInput.setAttribute("aria-label", copy.actionInputLabel);
-    detailProcessActionSubmit.textContent = copy.actionSubmit;
+    civicActionPendingKind = kind;
+    const inputLabel =
+      kind === "take_step"
+        ? copy.actionInputLabelTakeStep
+        : kind === "offer_help"
+          ? copy.actionInputLabelOfferHelp
+          : kind === "evidence"
+            ? copy.actionInputLabelEvidence
+            : kind === "institution_response"
+              ? copy.actionInputLabelInstitutionResponse
+              : copy.actionInputLabel;
+    const submitLabel =
+      kind === "take_step"
+        ? copy.actionSubmitTakeStep
+        : kind === "offer_help"
+          ? copy.actionSubmitOfferHelp
+          : kind === "evidence"
+            ? copy.actionSubmitEvidence
+            : kind === "institution_response"
+              ? copy.actionSubmitInstitutionResponse
+              : copy.actionSubmit;
+    detailProcessActionInput.setAttribute("aria-label", inputLabel);
+    detailProcessActionSubmit.textContent = submitLabel;
     detailProcessActionCancel.textContent = copy.cancel;
     detailProcessActionNote.hidden = true;
     detailProcessActionNote.textContent = "";
+    if (kind === "status_update") {
+      if (detailProcessActionBlockedReason.options.length === 0) {
+        const none = document.createElement("option");
+        none.value = "";
+        none.textContent = copy.actionBlockedReasonNone;
+        detailProcessActionBlockedReason.appendChild(none);
+        for (const key of CIVIC_ACTION_BLOCKED_REASON_KEYS) {
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = civicActionBlockedReasonLabel(copy, key);
+          detailProcessActionBlockedReason.appendChild(option);
+        }
+      }
+      detailProcessActionBlockedReason.hidden = false;
+    } else {
+      detailProcessActionBlockedReason.hidden = true;
+    }
+    detailProcessActionUrlInput.hidden = kind !== "evidence";
     detailProcessActionCompose.hidden = false;
+    detailProcessActionTakeStep.hidden = true;
+    detailProcessActionOfferHelp.hidden = true;
     detailProcessActionContribute.hidden = true;
+    detailProcessActionAddEvidence.hidden = true;
+    detailProcessActionInstitutionResponse.hidden = true;
     detailProcessActionInput.focus();
   }
 
@@ -5822,10 +6207,18 @@
       detailProcessActionInput.focus();
       return;
     }
+    const payload = { text: text, kind: civicActionPendingKind };
+    if (civicActionPendingKind === "status_update" && detailProcessActionBlockedReason.value) {
+      payload.blockedReasonKey = detailProcessActionBlockedReason.value;
+    }
+    if (civicActionPendingKind === "evidence") {
+      const url = (detailProcessActionUrlInput.value || "").trim();
+      if (url) payload.url = url;
+    }
     civicActionSubmitting = true;
     detailProcessActionSubmit.disabled = true;
     try {
-      const result = await submitSignalCivicActionUpdate(signalId, text);
+      const result = await submitSignalCivicActionUpdate(signalId, payload);
       if (result.response && result.response.status === 201) {
         closeCivicActionCompose();
         await loadSignalCivicAction();
@@ -5836,7 +6229,9 @@
       detailProcessActionNote.textContent =
         code === "CIVIC_ACTION_STAGE_CLOSED"
           ? copy.actionErrorClosed
-          : copy.actionErrorGeneric;
+          : code === "CIVIC_ACTION_ALREADY_HAS_RESPONSIBLE_ACTOR"
+            ? copy.actionErrorAlreadyResponsible
+            : copy.actionErrorGeneric;
       detailProcessActionNote.hidden = false;
     } catch (_err) {
       detailProcessActionNote.textContent = copy.actionErrorGeneric;
@@ -12199,16 +12594,33 @@
     submitCivicMandateContest();
   });
 
+  detailProcessActionTakeStep.addEventListener("click", () => {
+    openCivicActionCompose("take_step");
+  });
+
+  detailProcessActionOfferHelp.addEventListener("click", () => {
+    openCivicActionCompose("offer_help");
+  });
+
   detailProcessActionContribute.addEventListener("click", () => {
-    openCivicActionCompose();
+    openCivicActionCompose("status_update");
+  });
+
+  detailProcessActionAddEvidence.addEventListener("click", () => {
+    openCivicActionCompose("evidence");
+  });
+
+  detailProcessActionInstitutionResponse.addEventListener("click", () => {
+    openCivicActionCompose("institution_response");
   });
 
   detailProcessActionCancel.addEventListener("click", () => {
-    detailProcessActionCompose.hidden = true;
-    detailProcessActionInput.value = "";
-    detailProcessActionNote.hidden = true;
-    detailProcessActionNote.textContent = "";
+    closeCivicActionCompose();
+    detailProcessActionTakeStep.hidden = !civicActionCanTakeStepCache;
+    detailProcessActionOfferHelp.hidden = !civicActionCanPostCache;
     detailProcessActionContribute.hidden = !civicActionCanPostCache;
+    detailProcessActionAddEvidence.hidden = !civicActionCanPostCache;
+    detailProcessActionInstitutionResponse.hidden = !civicActionCanPostCache;
   });
 
   detailProcessActionSubmit.addEventListener("click", () => {
