@@ -226,10 +226,11 @@ const feedLocaleMatch = js.match(
 );
 assert(!!feedLocaleMatch, "feedLocaleForScene body readable");
 assert(
-  feedLocaleMatch[1].includes("sourceLanguageForCity") &&
-    feedLocaleMatch[1].includes("hasCompleteLocale") &&
-    feedLocaleMatch[1].includes("const detailLang"),
-  "untranslated live signals use their community language for detail chrome"
+  feedLocaleMatch[1].includes("feedChromeCopy(readingLang)") &&
+    feedLocaleMatch[1].includes("lang: readingLang") &&
+    !feedLocaleMatch[1].includes("sourceLanguageForCity") &&
+    !feedLocaleMatch[1].includes("const detailLang"),
+  "signal detail chrome always follows the browser reading language"
 );
 
 const civicCopyMatch = js.match(
@@ -237,9 +238,9 @@ const civicCopyMatch = js.match(
 );
 assert(!!civicCopyMatch, "civicProcessCopy body readable");
 assert(
-  civicCopyMatch[1].includes("feedLocaleForScene(scene)") &&
-    civicCopyMatch[1].includes("!signalDetail.hidden"),
-  "open civic process follows the signal detail language"
+  civicCopyMatch[1].includes("resolvePublicReadingLanguage()") &&
+    !civicCopyMatch[1].includes("feedLocaleForScene(scene)"),
+  "civic process always follows the browser reading language"
 );
 
 console.log("PASSED: " + passed + " member-local-feed assertions");
