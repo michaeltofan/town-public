@@ -114,7 +114,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=city-expansion-de-1"),
+  html.includes("script.js?v=fr-hu-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
@@ -708,4 +708,3 @@ if (failed > 0) {
   process.exit(1);
 }
 console.log("PASSED: " + passed + " Etapa 3 member journey assertions");
-
