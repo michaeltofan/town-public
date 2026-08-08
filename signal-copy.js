@@ -1,6 +1,6 @@
 /**
  * TOWN public signal reading-copy catalogs.
- * Stable signal IDs; localized fields for en/es/it/de/ro.
+ * Stable signal IDs; localized fields for en/es/fr/hu/it/de/ro.
  * Original source language preserved per city (Milano=it, Munich=de, Arad=ro).
  */
 (function (root, factory) {
@@ -681,6 +681,262 @@
     }
   }
 };
+
+  // French browser-language catalog. English remains the final field-level
+  // fallback only when a future signal has not yet received a French edition.
+  Object.assign(SIGNAL_COPY["milano-signal-1"], { fr: {
+    category: "ESPACE PUBLIC",
+    headline: "Trottoir endommagé devant l'école, via Padova",
+    summary: "Les racines ont soulevé le trottoir. Les enfants et les personnes âgées sont contraints de marcher sur la chaussée.",
+    area: "Città Studi",
+    observedTime: "Observé hier",
+    observedDate: "14 juillet 2026",
+    civicStatus: "Statut civique : observé — en attente d'une attention locale",
+    description: "Devant l'école de la via Padova, le trottoir est soulevé et cassé. Le passage piéton reste irrégulier sur plusieurs mètres et pousse les personnes vers la chaussée, surtout aux heures d'entrée et de sortie.",
+    whyMatters: "Les personnes qui accompagnent les enfants à l'école et se déplacent à pied dans le quartier passent ici chaque jour. Un trottoir endommagé n'est pas un détail esthétique : il réduit la sécurité d'un trajet quotidien très fréquenté.",
+    whoAffected: "Les familles avec enfants, les personnes âgées, les personnes à mobilité réduite et toute personne traversant Città Studi à pied aux heures de pointe.",
+    latestUpdate: "Le signalement reste local et ouvert. Aucune confirmation d'intervention pertinente n'est encore disponible.",
+    statusNote: "« Observé » signifie que la communauté locale a reconnu le problème. Cela n'implique ni procédure officielle ni intervention déjà engagée."
+  }});
+  Object.assign(SIGNAL_COPY["milano-signal-2"], { fr: {
+    category: "ÉCLAIRAGE",
+    headline: "Le chemin près de l'école reste sombre le soir",
+    summary: "Plusieurs lampadaires ne fonctionnent pas sur le passage piéton. Les habitants l'ont déjà signalé à la municipalité.",
+    area: "Porta Romana",
+    observedTime: "Signalé il y a deux jours",
+    observedDate: "13 juillet 2026",
+    civicStatus: "Statut civique : signalé — suivi local",
+    description: "Sur le passage piéton près de l'école, plusieurs lampadaires restent éteints après la tombée de la nuit. Le trajet entre les habitations et l'entrée de l'école devient difficile à distinguer, surtout le soir.",
+    whyMatters: "Une rue mal éclairée réduit le sentiment de sécurité sur un trajet scolaire et quotidien. Dans un quartier habité, l'éclairage public fait partie de la vie locale.",
+    whoAffected: "Les élèves, les parents, les habitants qui rentrent le soir et toute personne utilisant ce passage pour rejoindre les arrêts et logements voisins.",
+    latestUpdate: "Les habitants indiquent l'avoir déjà signalé à la municipalité. Le signalement reste sous suivi local.",
+    statusNote: "« Signalé » signifie que le problème a été porté à l'attention locale. Cela ne confirme ni réparation, ni prise en charge formelle, ni calendrier d'intervention."
+  }});
+  Object.assign(SIGNAL_COPY["milano-signal-3"], { fr: {
+    category: "TRAVAUX PUBLICS",
+    headline: "Le chantier rétrécit le passage piéton sans signalisation claire",
+    summary: "Le passage provisoire est étroit et mal indiqué. Un calendrier clair et un cheminement plus sûr sont nécessaires.",
+    area: "Lorenteggio",
+    observedTime: "Observé cette semaine",
+    observedDate: "Cette semaine · juillet 2026",
+    civicStatus: "Statut civique : ouvert — clarification locale nécessaire",
+    description: "Le chantier a réduit le passage piéton à un couloir étroit, avec une signalisation difficile à lire. Piétons et cyclistes partagent un espace réduit sans itinéraire alternatif clair.",
+    whyMatters: "Les travaux publics font partie de la vie du quartier, mais sans signalisation ni calendrier compréhensibles, le passage quotidien devient confus et moins sûr.",
+    whoAffected: "Les piétons, les cyclistes, les habitants de Lorenteggio et toute personne traversant le secteur pour le travail ou l'école.",
+    latestUpdate: "Le signalement reste ouvert. Il n'y a toujours aucune information actualisée sur la durée ou un itinéraire alternatif.",
+    statusNote: "« Ouvert » signifie que la situation doit encore être clarifiée pour la communauté. Cela n'implique pas qu'une décision administrative définitive ait été prise."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-1"], { fr: {
+    category: "ESPACE PUBLIC",
+    headline: "Ce trottoir est à peine praticable en toute sécurité.",
+    summary: "Des dalles irrégulières rétrécissent le trottoir. Les personnes avec poussette ou fauteuil roulant doivent passer sur la chaussée.",
+    area: "Schwabing",
+    observedTime: "Observé hier",
+    observedDate: "14 juillet 2026",
+    civicStatus: "Statut civique : observé — en attente d'une attention locale",
+    description: "À Schwabing, le trottoir est fortement réduit par des dalles soulevées et irrégulières. Le passage sûr devient étroit et oblige les personnes à se rapprocher de la chaussée.",
+    whyMatters: "Un trottoir endommagé affecte la vie quotidienne du quartier. Il rend un itinéraire fréquenté moins sûr, surtout pour les familles, les personnes âgées et les piétons.",
+    whoAffected: "Les familles avec poussette, les personnes âgées, les personnes à mobilité réduite et les piétons empruntant quotidiennement ce trajet à Schwabing.",
+    latestUpdate: "Le signalement reste local et ouvert. Aucune mesure confirmée n'est encore disponible.",
+    statusNote: "« Observé » signifie que la communauté locale a reconnu le problème. Cela ne signifie ni acte officiel ni intervention déjà commencée."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-2"], { fr: {
+    category: "ÉCLAIRAGE PUBLIC",
+    headline: "Plusieurs lampadaires restent éteints le soir.",
+    summary: "Le chemin entre les habitations et l'arrêt est à peine éclairé. Les habitants ont déjà signalé la panne.",
+    area: "Haidhausen",
+    observedTime: "Signalé il y a deux jours",
+    observedDate: "13 juillet 2026",
+    civicStatus: "Statut civique : signalé — observation locale",
+    description: "Plusieurs lampes du chemin entre les habitations et l'arrêt restent éteintes après la tombée de la nuit. Le trajet est plus difficile à distinguer et paraît moins sûr.",
+    whyMatters: "Un bon éclairage fait partie de la sécurité quotidienne du quartier. Un chemin résidentiel et scolaire sombre affecte le confort et la confiance dans l'espace public.",
+    whoAffected: "Les habitants, les écoliers, les promeneurs du soir et toute personne utilisant ce chemin vers l'arrêt.",
+    latestUpdate: "Les habitants indiquent avoir déjà signalé la panne. Le signalement reste sous observation locale.",
+    statusNote: "« Signalé » signifie que le problème a été rendu visible localement. Cela ne confirme ni réparation, ni prise en charge formelle, ni calendrier."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-3"], { fr: {
+    category: "TRAVAUX PUBLICS",
+    headline: "Le passage provisoire est trop étroit et mal indiqué.",
+    summary: "Piétons et cyclistes partagent un passage étroit. Des indications claires et une traversée plus sûre font défaut.",
+    area: "Sendling",
+    observedTime: "Observé cette semaine",
+    observedDate: "Cette semaine · juillet 2026",
+    civicStatus: "Statut civique : ouvert — clarification locale nécessaire",
+    description: "Les travaux ont réduit le passage à un chemin provisoire étroit. Piétons et cyclistes partagent le même espace sans indications claires ni alternative visible.",
+    whyMatters: "Les travaux publics font partie de la vie urbaine. Sans signalisation compréhensible ni traversée sûre, les déplacements quotidiens deviennent inutilement dangereux et confus.",
+    whoAffected: "Les piétons, les cyclistes, les habitants de Sendling et toute personne traversant régulièrement le secteur.",
+    latestUpdate: "Le signalement reste ouvert. Il n'y a toujours aucune information actualisée sur la durée ou une déviation.",
+    statusNote: "« Ouvert » signifie que la situation doit encore être clarifiée pour la communauté. Cela ne signifie pas qu'une décision officielle définitive a été prise."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-1"], { fr: {
+    category: "ENVIRONNEMENT",
+    headline: "Dépôt illégal de gravats à la lisière de la forêt de Ceala",
+    summary: "Des camions de gravats atteignent encore la rive du Mureș près de la forêt de Ceala. L'accès reste ouvert, sans barrière.",
+    area: "Forêt de Ceala",
+    observedTime: "Observé cette semaine",
+    observedDate: "20 juillet 2026",
+    civicStatus: "Statut civique : observé — en attente d'une attention locale",
+    description: "Au bout de la rue Mărului, dans le secteur Alfa, les transports de gravats continuent sur un itinéraire qui traverse aussi la piste cyclable vers la rive du Mureș et la lisière de la forêt de Ceala. Les amendes n'ont pas arrêté les dépôts et l'accès des camions reste possible sans barrière.",
+    whyMatters: "La forêt de Ceala et la rive du Mureș comptent parmi les rares espaces naturels de loisirs de la ville. Les dépôts incontrôlés affectent le paysage, l'environnement et la sécurité des usagers de la piste cyclable.",
+    whoAffected: "Les cyclistes, les familles qui se promènent dans le secteur de Ceala, les pêcheurs, les habitants du quartier Alfa et toute personne utilisant la rive du Mureș pour ses loisirs.",
+    latestUpdate: "Le signalement reste local et ouvert. Aucune barrière d'accès n'a encore été installée.",
+    statusNote: "« Observé » signifie que la communauté locale a reconnu le problème. Cela n'implique ni procédure officielle ni intervention déjà engagée."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-2"], { fr: {
+    category: "INFRASTRUCTURE",
+    headline: "Les travaux de la Route du Roi avancent sur le tronçon Petriș–Vața",
+    summary: "Sur les 4 km du département d'Arad, des murs de soutènement et des fondations continues sont en construction. Achèvement prévu : avril 2028.",
+    area: "Petriș",
+    observedTime: "Observé cette semaine",
+    observedDate: "21 juillet 2026",
+    civicStatus: "Statut civique : en cours — intervention publique en cours",
+    description: "Sur le tronçon de la Route du Roi situé dans le département d'Arad, entre Petriș et la limite du département de Hunedoara, l'entreprise construit environ 2,5 kilomètres de murs de soutènement et 1 900 mètres de fondations continues. Les travaux stabilisent les pentes et élargissent la plateforme routière de montagne.",
+    whyMatters: "La Route du Roi modernisera la liaison entre les départements d'Arad et de Hunedoara et ouvrira l'accès aux monts Zărand, sur l'un des itinéraires les plus pittoresques de l'ouest de la Roumanie.",
+    whoAffected: "Les habitants de la commune de Petriș et de la zone montagneuse, les conducteurs circulant entre les deux départements et les visiteurs des monts Zărand.",
+    latestUpdate: "Les travaux avancent à un rythme soutenu. L'achèvement du projet est prévu pour avril 2028.",
+    statusNote: "« En cours » signifie qu'une intervention publique est engagée avec une échéance annoncée. Le signalement suit l'évolution des travaux."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-3"], { fr: {
+    category: "ESPACE PUBLIC",
+    headline: "La rue Someșului reste non asphaltée malgré une décision de justice définitive",
+    summary: "Le tribunal a ordonné à la mairie d'asphalter la rue. Les trottoirs ont été construits, mais pas encore la chaussée.",
+    area: "Rue Someșului",
+    observedTime: "Observé cette semaine",
+    observedDate: "21 juillet 2026",
+    civicStatus: "Statut civique : observé — décision de justice définitive en attente d'exécution",
+    description: "La rue Someșului est toujours en terre, bien qu'une décision définitive de 2024 oblige la mairie à l'asphalter et à aménager les trottoirs. Les trottoirs ont été achevés l'année dernière ; la chaussée attend encore la documentation technique et l'exécution.",
+    whyMatters: "Une rue en terre dans une zone où les taxes sont calculées pour une infrastructure complète pose une question simple d'équité : les habitants paient pour des conditions dont ils ne bénéficient pas.",
+    whoAffected: "Les habitants de la rue Someșului et du secteur — piétons, familles et conducteurs qui utilisent chaque jour une rue non asphaltée, par tous les temps.",
+    latestUpdate: "La mairie a indiqué que la rue figure sur la liste des voies à asphalter, l'investissement étant encore au stade de la documentation technico-économique.",
+    statusNote: "Le signalement concerne une obligation fixée par une décision de justice définitive dont l'exécution est toujours en cours."
+  }});
+
++  Object.assign(SIGNAL_COPY["milano-signal-1"], { hu: {
+    category: "KÖZTERÜLET",
+    headline: "Sérült járda a Via Padova iskolája előtt",
+    summary: "A gyökerek felnyomták a járdát; a gyerekek és idősek az úttestre kényszerülnek.",
+    area: "Città Studi",
+    observedTime: "Tegnap megfigyelve",
+    observedDate: "2026. július 14.",
+    civicStatus: "Civil állapot: megfigyelve — helyi figyelemre vár",
+    description: "Az iskola előtt a járda több méteren felpúposodott és eltört, ezért a gyalogosok veszélyesen közel kerülnek az úttesthez.",
+    whyMatters: "Naponta családok és gyalogosok használják ezt az útvonalat; a sérült járda közvetlen biztonsági kockázat.",
+    whoAffected: "A gyermekes családok, idősek, mozgáskorlátozottak és a környék gyalogosai.",
+    latestUpdate: "A jelzés helyi és nyitott; megerősített beavatkozásról még nincs hír.",
+    statusNote: "A „megfigyelve” helyi felismerést jelent, nem hivatalos eljárást vagy megkezdett munkát."
+  }});
+  Object.assign(SIGNAL_COPY["milano-signal-2"], { hu: {
+    category: "KÖZVILÁGÍTÁS",
+    headline: "Este sötét marad az iskola melletti útvonal",
+    summary: "Több lámpa nem működik; a lakók már jelezték a hibát az önkormányzatnak.",
+    area: "Porta Romana",
+    observedTime: "Két napja jelezve",
+    observedDate: "2026. július 13.",
+    civicStatus: "Civil állapot: jelezve — helyi nyomon követés",
+    description: "Az iskola melletti gyalogos szakaszon több lámpa sötétedés után sem működik.",
+    whyMatters: "A megfelelő közvilágítás a mindennapi és iskolai útvonal biztonságának része.",
+    whoAffected: "A diákok, szülők, esti gyalogosok és a környék lakói.",
+    latestUpdate: "A lakók szerint a hibát már bejelentették; a jelzés helyi követés alatt marad.",
+    statusNote: "A „jelezve” nem jelent megerősített javítást vagy hivatalos határidőt."
+  }});
+  Object.assign(SIGNAL_COPY["milano-signal-3"], { hu: {
+    category: "KÖZMUNKÁK",
+    headline: "A munkaterület egyértelmű jelzés nélkül szűkíti le a gyalogos utat",
+    summary: "Az ideiglenes átjáró keskeny és rosszul jelzett; biztonságosabb útvonal kell.",
+    area: "Lorenteggio",
+    observedTime: "Ezen a héten megfigyelve",
+    observedDate: "2026. július",
+    civicStatus: "Civil állapot: nyitott — helyi tisztázást igényel",
+    description: "A munkaterület keskeny folyosóra szűkítette a járdát, ahol gyalogosok és kerékpárosok osztoznak.",
+    whyMatters: "Érthető tájékoztatás nélkül a mindennapi áthaladás bizonytalanná és kevésbé biztonságossá válik.",
+    whoAffected: "A gyalogosok, kerékpárosok, helyi lakók, munkába és iskolába járók.",
+    latestUpdate: "A jelzés nyitott; a munka időtartamáról és a kerülőútról nincs friss adat.",
+    statusNote: "A „nyitott” azt jelenti, hogy a helyzetet a közösség számára még tisztázni kell."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-1"], { hu: {
+    category: "KÖZTERÜLET",
+    headline: "A járda alig használható biztonságosan",
+    summary: "Az egyenetlen kövek leszűkítik az utat; a babakocsik és kerekesszékek az úttestre kényszerülnek.",
+    area: "Schwabing",
+    observedTime: "Tegnap megfigyelve",
+    observedDate: "2026. július 14.",
+    civicStatus: "Civil állapot: megfigyelve — helyi figyelemre vár",
+    description: "Schwabingban a felnyomódott, egyenetlen kövek miatt nagyon beszűkült a biztonságos gyalogos sáv.",
+    whyMatters: "A sérült járda különösen a családok, idősek és mozgáskorlátozottak mindennapjait nehezíti.",
+    whoAffected: "A babakocsis családok, idősek, mozgáskorlátozottak és a napi gyalogosok.",
+    latestUpdate: "A jelzés helyi és nyitott; megerősített intézkedés még nincs.",
+    statusNote: "A „megfigyelve” nem jelent hivatalos eljárást vagy már megkezdett munkát."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-2"], { hu: {
+    category: "KÖZVILÁGÍTÁS",
+    headline: "Este több utcai lámpa sötét marad",
+    summary: "A lakóházak és a megálló közötti út alig megvilágított; a lakók már jelezték a hibát.",
+    area: "Haidhausen",
+    observedTime: "Két napja jelezve",
+    observedDate: "2026. július 13.",
+    civicStatus: "Civil állapot: jelezve — helyi nyomon követés",
+    description: "A megállóhoz vezető gyalogos úton több lámpa nem működik sötétedés után.",
+    whyMatters: "A jó világítás a napi közlekedés és a lakónegyed biztonságának része.",
+    whoAffected: "A lakók, diákok, esti gyalogosok és a megállót használók.",
+    latestUpdate: "A lakók szerint bejelentették a hibát; a jelzés helyi követés alatt marad.",
+    statusNote: "A „jelezve” nem jelent megerősített javítást vagy határidőt."
+  }});
+  Object.assign(SIGNAL_COPY["munich-signal-3"], { hu: {
+    category: "KÖZMUNKÁK",
+    headline: "Az ideiglenes átjáró túl keskeny és rosszul jelzett",
+    summary: "A gyalogosok és kerékpárosok egy keskeny sávon osztoznak; egyértelmű kerülőút hiányzik.",
+    area: "Sendling",
+    observedTime: "Ezen a héten megfigyelve",
+    observedDate: "2026. július",
+    civicStatus: "Civil állapot: nyitott — helyi tisztázást igényel",
+    description: "Az építkezés keskeny ideiglenes útra tereli a gyalogosokat és kerékpárosokat, világos jelzések nélkül.",
+    whyMatters: "Közérthető tájékoztatás és biztonságos áthaladás nélkül a napi közlekedés kockázatosabb.",
+    whoAffected: "A gyalogosok, kerékpárosok, sendlingi lakók és a rendszeres áthaladók.",
+    latestUpdate: "A jelzés nyitott; a munkák időtartamáról és a kerülőútról nincs friss adat.",
+    statusNote: "A „nyitott” azt jelenti, hogy a helyzetet még tisztázni kell."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-1"], { hu: {
+    category: "KÖRNYEZET",
+    headline: "Illegális törmeléklerakás a Ceala-erdő szélén",
+    summary: "Törmelékszállító teherautók továbbra is elérik a Maros-partot; az út sorompó nélkül nyitva marad.",
+    area: "Ceala-erdő",
+    observedTime: "Ezen a héten megfigyelve",
+    observedDate: "2026. július 20.",
+    civicStatus: "Civil állapot: megfigyelve — helyi figyelemre vár",
+    description: "Az Alfa negyed felől a törmelékszállítás a kerékpárutat is keresztezve jut el a Maros-parthoz és a Ceala-erdő széléhez.",
+    whyMatters: "A Ceala-erdő és a Maros-part ritka városi természeti pihenőterek; az ellenőrizetlen lerakás károsítja a környezetet és a biztonságot.",
+    whoAffected: "A kerékpárosok, családok, horgászok, az Alfa negyed lakói és a part használói.",
+    latestUpdate: "A jelzés helyi és nyitott; belépést korlátozó sorompót még nem telepítettek.",
+    statusNote: "A „megfigyelve” helyi felismerést jelent, nem hivatalos eljárást."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-2"], { hu: {
+    category: "INFRASTRUKTÚRA",
+    headline: "Haladnak a Király útja munkálatai a Petriș–Vața szakaszon",
+    summary: "Az Arad megyei négy kilométeren támfalak és folyamatos alapok épülnek; a tervezett befejezés 2028 áprilisa.",
+    area: "Petriș",
+    observedTime: "Ezen a héten megfigyelve",
+    observedDate: "2026. július 21.",
+    civicStatus: "Civil állapot: folyamatban — közberuházás zajlik",
+    description: "Az Arad megyei hegyi szakaszon támfalak és alapok stabilizálják a lejtőket és szélesítik az útpályát.",
+    whyMatters: "A korszerűsítés javítja Arad és Hunyad megye kapcsolatát, valamint a Zarándi-hegység elérhetőségét.",
+    whoAffected: "Petriș és a hegyvidék lakói, a két megye között közlekedők és a látogatók.",
+    latestUpdate: "A munkák haladnak; a projekt befejezését 2028 áprilisára tervezik.",
+    statusNote: "A „folyamatban” bejelentett határidővel zajló közberuházást jelent."
+  }});
+  Object.assign(SIGNAL_COPY["arad-signal-3"], { hu: {
+    category: "KÖZTERÜLET",
+    headline: "A Someșului utca jogerős bírósági döntés ellenére burkolatlan",
+    summary: "A bíróság elrendelte az aszfaltozást; a járdák elkészültek, az úttest még nem.",
+    area: "Someșului utca",
+    observedTime: "Ezen a héten megfigyelve",
+    observedDate: "2026. július 21.",
+    civicStatus: "Civil állapot: megfigyelve — jogerős döntés végrehajtására vár",
+    description: "Az utca továbbra is földút, bár egy 2024-es jogerős döntés aszfaltozásra és járdaépítésre kötelezi az önkormányzatot.",
+    whyMatters: "A teljes infrastruktúrára számított adók mellett a burkolatlan út alapvető méltányossági kérdést vet fel.",
+    whoAffected: "A Someșului utca és a környék lakói, gyalogosai, családjai és autósai.",
+    latestUpdate: "Az önkormányzat szerint az utca szerepel az aszfaltozási listán, de a beruházás még dokumentációs szakaszban van.",
+    statusNote: "A jelzés jogerős bírósági kötelezettség még folyamatban lévő végrehajtását követi."
+  }});
 
   function localizeSignal(scene, readingLang, i18n) {
     if (!scene || !scene.id) return scene;

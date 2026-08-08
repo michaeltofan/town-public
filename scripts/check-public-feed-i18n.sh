@@ -76,7 +76,7 @@ if "resolvePublicReadingLanguage()" not in js:
     fail("reading language must be used in feed path")
 
 feed_ui = i18n.split("const FEED_UI_COPY = {", 1)[1].split("\n  const ", 1)[0]
-for lang in ("en", "es", "it", "de", "ro"):
+for lang in ("en", "es", "fr", "it", "de", "ro"):
     if f"\n    {lang}: {{" not in "\n" + feed_ui and f"\n    {lang}:{{" not in "\n" + feed_ui:
         # JSON-like object keys in source
         if f"    {lang}: {{" not in feed_ui:

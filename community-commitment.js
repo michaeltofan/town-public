@@ -28,6 +28,15 @@
       { id: "Timisoara", slug: "timisoara-ro" },
     ],
     Austria: [{ id: "Salzburg", slug: "salzburg-at" }],
+    France: [
+      { id: "Marseille", slug: "marseille-fr" },
+      { id: "Lyon", slug: "lyon-fr" },
+      { id: "Toulouse", slug: "toulouse-fr" },
+    ],
+    Hungary: [
+      { id: "Budapest", slug: "budapest-hu" },
+      { id: "Szeged", slug: "szeged-hu" },
+    ],
   };
 
   const COUNTRY_BY_CITY_ID = {};

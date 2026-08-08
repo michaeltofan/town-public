@@ -206,4 +206,25 @@ assertEqual(
   "Salzburg is not valid for Germany"
 );
 
+// France and Hungary are real membership countries with selectable cities.
+assertEqual(commitment.slugForCityId("Marseille"), "marseille-fr");
+assertEqual(commitment.slugForCityId("Lyon"), "lyon-fr");
+assertEqual(commitment.slugForCityId("Toulouse"), "toulouse-fr");
+assertEqual(commitment.slugForCityId("Budapest"), "budapest-hu");
+assertEqual(commitment.slugForCityId("Szeged"), "szeged-hu");
+assertEqual(
+  commitment.citiesForCountry("France").map((c) => c.id).join(","),
+  "Marseille,Lyon,Toulouse",
+  "France offers Marseille, Lyon, and Toulouse"
+);
+assertEqual(
+  commitment.citiesForCountry("Hungary").map((c) => c.id).join(","),
+  "Budapest,Szeged",
+  "Hungary offers Budapest and Szeged"
+);
+assertOk(commitment.isCityValidForCountry("France", "Marseille"));
+assertOk(commitment.isCityValidForCountry("Hungary", "Budapest"));
+assertEqual(commitment.isCityValidForCountry("France", "Budapest"), false);
+assertEqual(commitment.isCityValidForCountry("Hungary", "Lyon"), false);
+
 console.log("OK: community-commitment helper tests passed");

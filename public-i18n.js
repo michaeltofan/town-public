@@ -15,6 +15,8 @@
   const SUPPORTED_READING_LANGS = {
     en: true,
     es: true,
+    fr: true,
+    hu: true,
     it: true,
     de: true,
     ro: true,
@@ -33,6 +35,11 @@
     Stuttgart: "de",
     Frankfurt: "de",
     Salzburg: "de",
+    Marseille: "fr",
+    Lyon: "fr",
+    Toulouse: "fr",
+    Budapest: "hu",
+    Szeged: "hu",
   };
 
   const SOURCE_LANGUAGE_LABELS = {
@@ -40,26 +47,50 @@
       it: "Original in Italian",
       de: "Original in German",
       ro: "Original in Romanian",
+      fr: "Original in French",
+      hu: "Original in Hungarian",
     },
     es: {
       it: "Original en italiano",
       de: "Original en alemán",
       ro: "Original en rumano",
+      fr: "Original en francés",
+      hu: "Original en húngaro",
+    },
+    fr: {
+      it: "Original en italien",
+      de: "Original en allemand",
+      ro: "Original en roumain",
+      fr: "Original en français",
+      hu: "Original en hongrois",
     },
     it: {
       it: "Originale in italiano",
       de: "Originale in tedesco",
       ro: "Originale in rumeno",
+      fr: "Originale in francese",
+      hu: "Originale in ungherese",
     },
     de: {
       it: "Original auf Italienisch",
       de: "Original auf Deutsch",
       ro: "Original auf Rumänisch",
+      fr: "Original auf Französisch",
+      hu: "Original auf Ungarisch",
     },
     ro: {
       it: "Original în italiană",
       de: "Original în germană",
       ro: "Original în română",
+      fr: "Original în franceză",
+      hu: "Original în maghiară",
+    },
+    hu: {
+      it: "Eredeti olasz nyelven",
+      de: "Eredeti német nyelven",
+      ro: "Eredeti román nyelven",
+      fr: "Eredeti francia nyelven",
+      hu: "Eredeti magyar nyelven",
     },
   };
 
@@ -119,6 +150,62 @@
       navActivity: "ACTIVIDAD",
       navProfile: "PERFIL",
       chatUnavailable: "El chat aún no está disponible en TOWN.",
+    },
+    fr: {
+      back: "Retour",
+      visitor: "Visiteur",
+      member: "Membre · {city}",
+      seeThisToo: "JE LE VOIS AUSSI",
+      doneTitle: "Vous le voyez aussi",
+      doneNote: "Confirmation enregistrée sur TOWN",
+      openSignal: "Ouvrir le signalement",
+      openSignalClose: "Fermer",
+      whyLabel: "Pourquoi c'est important ici",
+      whoLabel: "Qui est concerné",
+      updateLabel: "Dernière mise à jour",
+      statusLabel: "Ce que signifie ce statut",
+      communityArea: "{city} · {area}",
+      sessionLabel: "Session vers une solution",
+      sessionOpen: "Ouvrir une session de discussion",
+      sessionContribute: "Ajouter votre contribution",
+      clearTestimony: "Supprimer le média",
+      demoTestimonyNote: "Joint — sera téléversé en toute sécurité lors de la publication",
+      storyOf: "Histoire {current} sur {total}",
+      cityNames: { Milano: "Milan", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Cologne", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Francfort", Salzburg: "Salzbourg" },
+      navHome: "ACCUEIL",
+      navMembership: "ADHÉSION",
+      navChat: "CHAT",
+      navActivity: "ACTIVITÉ",
+      navProfile: "PROFIL",
+      chatUnavailable: "Le chat n'est pas encore disponible sur TOWN.",
+    },
+    hu: {
+      back: "Vissza",
+      visitor: "Látogató",
+      member: "Tag · {city}",
+      seeThisToo: "ÉN IS LÁTOM EZT",
+      doneTitle: "Ön is látja ezt",
+      doneNote: "A megerősítést a TOWN elmentette",
+      openSignal: "Jelzés megnyitása",
+      openSignalClose: "Bezárás",
+      whyLabel: "Miért fontos ez itt",
+      whoLabel: "Kiket érint",
+      updateLabel: "Legfrissebb frissítés",
+      statusLabel: "Mit jelent ez az állapot",
+      communityArea: "{city} · {area}",
+      sessionLabel: "Közös munka a megoldásért",
+      sessionOpen: "Egyeztetés indítása",
+      sessionContribute: "Hozzászólás hozzáadása",
+      clearTestimony: "Média eltávolítása",
+      demoTestimonyNote: "Csatolva — közzétételkor biztonságosan feltöltjük",
+      storyOf: "{current}. történet, összesen {total}",
+      cityNames: { Milano: "Milánó", Munich: "München", Arad: "Arad", ClujNapoca: "Kolozsvár", Sibiu: "Nagyszeben", Iasi: "Jászvásár", Timisoara: "Temesvár", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg", Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+      navHome: "KEZDŐLAP",
+      navMembership: "TAGSÁG",
+      navChat: "CHAT",
+      navActivity: "AKTIVITÁS",
+      navProfile: "PROFIL",
+      chatUnavailable: "A chat még nem érhető el a TOWN-on.",
     },
     it: {
       back: "Indietro",
@@ -218,6 +305,8 @@
         Germany: "Germany",
         Romania: "Romania",
         Austria: "Austria",
+        France: "France",
+        Hungary: "Hungary",
       },
     },
     es: {
@@ -231,6 +320,23 @@
         Germany: "Alemania",
         Romania: "Rumanía",
         Austria: "Austria",
+        France: "Francia",
+        Hungary: "Hungría",
+      },
+    },
+    fr: {
+      back: "Retour",
+      title: "Choisissez votre pays",
+      lead: "TOWN vous relie à votre véritable communauté locale.",
+      legend: "Pays",
+      continue: "Continuer",
+      countries: {
+        Italy: "Italie",
+        Germany: "Allemagne",
+        Romania: "Roumanie",
+        Austria: "Autriche",
+        France: "France",
+        Hungary: "Hongrie",
       },
     },
     it: {
@@ -244,6 +350,8 @@
         Germany: "Germania",
         Romania: "România",
         Austria: "Austria",
+        France: "Francia",
+        Hungary: "Ungheria",
       },
     },
     de: {
@@ -257,6 +365,8 @@
         Germany: "Deutschland",
         Romania: "Rumänien",
         Austria: "Österreich",
+        France: "Frankreich",
+        Hungary: "Ungarn",
       },
     },
     ro: {
@@ -270,9 +380,37 @@
         Germany: "Germania",
         Romania: "România",
         Austria: "Austria",
+        France: "Franța",
+        Hungary: "Ungaria",
+      },
+    },
+    hu: {
+      back: "Vissza",
+      title: "Válassza ki az országát",
+      lead: "A TOWN összeköti Önt a valódi helyi közösségével.",
+      legend: "Ország",
+      continue: "Tovább",
+      countries: {
+        Italy: "Olaszország",
+        Germany: "Németország",
+        Romania: "Románia",
+        Austria: "Ausztria",
+        France: "Franciaország",
+        Hungary: "Magyarország",
       },
     },
   };
+
+  const EXPANDED_CITY_NAMES = {
+    Marseille: "Marseille",
+    Lyon: "Lyon",
+    Toulouse: "Toulouse",
+    Budapest: "Budapest",
+    Szeged: "Szeged",
+  };
+  Object.keys(FEED_UI_COPY).forEach(function (lang) {
+    Object.assign(FEED_UI_COPY[lang].cityNames, EXPANDED_CITY_NAMES);
+  });
 
   const PUBLIC_INVITE_COPY = {
     en: {
@@ -292,6 +430,24 @@
         "TOWN se construye en torno a personas reales de la misma comunidad — no cuentas anónimas, seguidores ni popularidad en redes.",
       continue: "Continuar",
       notNow: "Ahora no",
+    },
+    fr: {
+      inviteTitle: "Ce qui se passe dans votre communauté vous tient à cœur.",
+      inviteBody:
+        "Pour confirmer ce signalement et faire partie de la solution, rejoignez TOWN en tant que membre local vérifié.",
+      inviteBodySecond:
+        "TOWN est construit autour de personnes réelles d'une même communauté — pas de comptes anonymes, d'abonnés ou de popularité sur les réseaux sociaux.",
+      continue: "Continuer",
+      notNow: "Pas maintenant",
+    },
+    hu: {
+      inviteTitle: "Fontos Önnek, mi történik a közösségében.",
+      inviteBody:
+        "A jelzés megerősítéséhez és a megoldásban való részvételhez csatlakozzon a TOWN-hoz ellenőrzött helyi tagként.",
+      inviteBodySecond:
+        "A TOWN ugyanazon közösség valódi embereire épül — nem névtelen fiókokra, követőkre vagy közösségimédia-népszerűségre.",
+      continue: "Tovább",
+      notNow: "Most nem",
     },
     it: {
       inviteTitle: "Ti sta a cuore ciò che accade nella tua comunità.",

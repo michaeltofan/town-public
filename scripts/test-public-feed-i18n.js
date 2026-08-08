@@ -33,7 +33,7 @@ function assertEqual(actual, expected, message) {
   );
 }
 
-const langs = ["es", "en", "it", "de", "ro"];
+const langs = ["es", "fr", "en", "it", "de", "ro"];
 const ids = [
   "milano-signal-1",
   "milano-signal-2",
@@ -53,8 +53,8 @@ assertEqual(i18n.resolveReadingLanguage(["de-DE"]), "de", "de-DE → German");
 assertEqual(i18n.resolveReadingLanguage(["ro-RO"]), "ro", "ro-RO → Romanian");
 assertEqual(
   i18n.resolveReadingLanguage(["fr-FR"]),
-  "en",
-  "unsupported → English"
+  "fr",
+  "fr-FR → French"
 );
 assertEqual(i18n.resolveReadingLanguage(["@@@"]), "en", "malformed → English");
 assertEqual(i18n.resolveReadingLanguage(null), "en", "absent → English");
@@ -66,8 +66,8 @@ assertEqual(
 );
 assertEqual(
   discovery.resolveEditorialLanguage(["fr-CA"]),
-  "en",
-  "discovery resolver agrees on unsupported → English"
+  "fr",
+  "discovery resolver agrees on fr-CA"
 );
 
 assertEqual(ids.length, 9, "nine public signal IDs");
@@ -160,7 +160,7 @@ delete signals.SIGNAL_COPY["milano-signal-1-test"];
 const chromeEs = i18n.feedChromeCopy("es");
 assertEqual(chromeEs.openSignal, "Abrir señal", "Spanish feed chrome");
 const chromeFr = i18n.feedChromeCopy("fr");
-assertEqual(chromeFr.openSignal, "Open signal", "unsupported chrome → English");
+assertEqual(chromeFr.openSignal, "Ouvrir le signalement", "French feed chrome");
 
 const state = {
   selectedCountry: "Italy",
