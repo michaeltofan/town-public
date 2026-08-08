@@ -5048,14 +5048,7 @@
   };
 
   function civicProcessCopy() {
-    const scenes = currentScenes();
-    const scene = scenes[feedIndex];
-    const detailLocale =
-      signalDetail && !signalDetail.hidden && scene
-        ? feedLocaleForScene(scene)
-        : null;
-    const lang =
-      (detailLocale && detailLocale.lang) || resolvePublicReadingLanguage();
+    const lang = resolvePublicReadingLanguage();
     return CIVIC_PROCESS_COPY[lang] || CIVIC_PROCESS_COPY.en;
   }
 
@@ -7974,23 +7967,9 @@
       (localizedScene && localizedScene.cityId) ||
       cityIdFromScene(scene) ||
       selectedCity;
-    const sourceLang =
-      (localizedScene && localizedScene.sourceLang) ||
-      (i18n && typeof i18n.sourceLanguageForCity === "function"
-        ? i18n.sourceLanguageForCity(cityId)
-        : languageForCityId(cityId));
-    const hasLocalizedCopy =
-      signalCopy &&
-      typeof signalCopy.hasCompleteLocale === "function" &&
-      scene &&
-      signalCopy.hasCompleteLocale(scene.id, readingLang);
-    // Live foundation signals that are not yet in the translation catalog keep
-    // their community language. Match the surrounding chrome to that language
-    // so a Romanian signal never opens inside an English detail panel.
-    const detailLang = hasLocalizedCopy ? readingLang : sourceLang || readingLang;
     const chrome =
-      (i18n && i18n.feedChromeCopy(detailLang)) ||
-      FEED_COPY[detailLang] ||
+      (i18n && i18n.feedChromeCopy(readingLang)) ||
+      FEED_COPY[readingLang] ||
       FEED_COPY.en ||
       FEED_COPY.it;
     const cityName =
@@ -7999,7 +7978,7 @@
       cityDisplayName(readingLang);
 
     return {
-      lang: detailLang,
+      lang: readingLang,
       copy: chrome,
       cityId: cityId,
       cityName: cityName,
