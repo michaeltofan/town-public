@@ -221,4 +221,25 @@ assert(
   "FEED_SCENES catalog has no prototype wording"
 );
 
+const feedLocaleMatch = js.match(
+  /function feedLocaleForScene\(scene\)\s*\{([\s\S]*?)\n  \}/
+);
+assert(!!feedLocaleMatch, "feedLocaleForScene body readable");
+assert(
+  feedLocaleMatch[1].includes("sourceLanguageForCity") &&
+    feedLocaleMatch[1].includes("hasCompleteLocale") &&
+    feedLocaleMatch[1].includes("const detailLang"),
+  "untranslated live signals use their community language for detail chrome"
+);
+
+const civicCopyMatch = js.match(
+  /function civicProcessCopy\(\)\s*\{([\s\S]*?)\n  \}/
+);
+assert(!!civicCopyMatch, "civicProcessCopy body readable");
+assert(
+  civicCopyMatch[1].includes("feedLocaleForScene(scene)") &&
+    civicCopyMatch[1].includes("!signalDetail.hidden"),
+  "open civic process follows the signal detail language"
+);
+
 console.log("PASSED: " + passed + " member-local-feed assertions");
