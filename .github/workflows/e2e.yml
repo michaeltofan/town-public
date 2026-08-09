@@ -24,6 +24,8 @@ jobs:
           node scripts/test-platform-console.js
           node scripts/test-owner-participate-preview.js
           node scripts/test-etapa3-member-journey.js
+          node scripts/test-password-passkey-contract.js
+          node scripts/test-public-auth-signin.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
