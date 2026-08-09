@@ -80,8 +80,8 @@ for (const id of signals.allSignalIds()) {
   assert(signals.hasCompleteLocale(id, "fr"), id + " has complete French signal copy");
 }
 assert(
-  source.includes('if (resolvePublicReadingLanguage() === "fr") return "fr";'),
-  "member journey keeps French browser copy"
+  /function membershipLang\(\) \{[\s\S]*?return resolvePublicReadingLanguage\(\);[\s\S]*?\n  \}/.test(source),
+  "member journey keeps the browser language, including French"
 );
 
 console.log("FRENCH LOCALIZATION TESTS PASSED");
