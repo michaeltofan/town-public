@@ -4260,6 +4260,7 @@
     account: true,
     email: true,
     code: true,
+    password: true,
     passkey: true,
     ready: true,
     commitment: true,
