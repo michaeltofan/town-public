@@ -1606,6 +1606,25 @@
               spellcheck="false"
             />
 
+            <div class="auth-window__password" id="auth-password-wrap">
+              <label
+                class="auth-window__field-label"
+                for="auth-password"
+                id="auth-password-label"
+              >
+                Password
+              </label>
+              <input
+                class="auth-window__input"
+                id="auth-password"
+                type="password"
+                name="password"
+                autocomplete="current-password"
+                minlength="1"
+                maxlength="256"
+              />
+            </div>
+
             <p
               class="auth-window__status"
               id="auth-window-status"
@@ -2049,6 +2068,49 @@
       </main>
     </div>
 
+    <!-- Password setup: required after verified email and before passkey registration -->
+    <div id="view-password" hidden>
+      <main class="email" aria-label="Password setup">
+        <div class="email__frame">
+          <p class="email__brand" aria-label="TOWN">TOWN</p>
+          <p class="email__label" id="password-label"></p>
+          <h1 class="email__title" id="password-title"></h1>
+          <p class="email__lead" id="password-body"></p>
+          <p class="email__lead" id="password-body-second"></p>
+          <label class="email__field-label" for="password-input" id="password-field-label"></label>
+          <input
+            class="email__input"
+            id="password-input"
+            type="password"
+            name="new-password"
+            autocomplete="new-password"
+            minlength="15"
+            maxlength="128"
+          />
+          <label class="email__field-label" for="password-confirm" id="password-confirm-label"></label>
+          <input
+            class="email__input"
+            id="password-confirm"
+            type="password"
+            name="confirm-password"
+            autocomplete="new-password"
+            minlength="15"
+            maxlength="128"
+          />
+          <p class="email__note" id="password-note"></p>
+          <p class="email__error" id="password-error" hidden></p>
+          <div class="email__actions">
+            <button type="button" class="btn btn--primary" id="password-continue" disabled>
+              Continue
+            </button>
+            <button type="button" class="btn btn--secondary" id="password-back">
+              Back
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
     <!-- Screen 10: Passkey registration -->
     <div id="view-passkey" hidden>
       <main class="passkey" aria-label="Passkey introduction">
@@ -2302,6 +2364,6 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js?v=fr-hu-1" defer></script>
     <script src="api-base.js?v=foundation-stabilize-1"></script>
-    <script src="script.js?v=community-identity-1" defer></script>
+    <script src="script.js?v=password-passkey-1" defer></script>
   </body>
 </html>
