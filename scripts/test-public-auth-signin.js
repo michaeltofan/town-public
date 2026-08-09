@@ -31,8 +31,7 @@ function sliceHandler(startNeedle, endNeedle) {
   return start >= 0 && end > start ? js.slice(start, end) : "";
 }
 
-assert(!html.includes("Sign in with password"), "password control absent from HTML");
-assert(!html.includes('id="auth-password"'), "auth-password id absent");
+assert(html.includes('id="auth-password"'), "password control present in HTML");
 assert(html.includes('id="auth-passkey"'), "passkey control present");
 assert(html.includes('id="auth-window-status"'), "auth status surface present");
 assert(html.includes('id="auth-window"'), "public auth window present");
@@ -56,9 +55,9 @@ assert(
   "Create account path still gated on create + email"
 );
 assert(
-  continueBody.includes("startPublicAuthWindowPasskeySignIn") &&
+    continueBody.includes("startPublicAuthWindowPasswordSignIn") &&
     continueBody.includes('authMode === "signin"'),
-  "Sign-in Continue is not a silent no-op"
+  "Sign-in Continue invokes password authentication"
 );
 assert(
   !/authMode === "signin"\s*\{\s*return;\s*\}/.test(continueBody),
@@ -143,7 +142,7 @@ assert(
   "closing auth always restores Profile interaction before post-auth routing"
 );
 assert(
-  html.includes('script.js?v=community-identity-1'),
+  html.includes('script.js?v=password-passkey-1'),
   "post-passkey interaction fix has a fresh browser cache key"
 );
 
@@ -168,9 +167,10 @@ assert(
     js.includes("isMemberPresented"),
   "membership presentation still derives from authoritative snapshot"
 );
+assert(js.includes("authenticateWithPassword"), "password Sign-in handler is wired");
 assert(
-  !js.includes('authPassword.addEventListener'),
-  "password inert handler removed"
+  js.includes('/v1/authentication/password'),
+  "password Sign-in uses the canonical endpoint"
 );
 
 const ceremonyMatch = js.match(
