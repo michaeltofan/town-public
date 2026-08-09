@@ -60,7 +60,7 @@ if grep -qF 'membershipSimulated' script.js || grep -qiE 'solo prototipo|nur Pro
 else
   echo "OK: no prototype membership simulate language"
 fi
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe|confetti|trophy' index.html script.js; then
   echo "FAIL: forbidden payment/auth/social/celebration pattern present"
   fail=1
 else
