@@ -29,6 +29,20 @@
       primary: "Encontrar mi ciudad",
       secondary: "Seguir explorando",
     },
+    fr: {
+      headline1: "Explorez des villes du monde entier.",
+      headline2: "Que se passe-t-il dans votre ville ?",
+      support: "Découvrez la communauté TOWN de votre lieu de vie.",
+      primary: "Trouver ma ville",
+      secondary: "Continuer à explorer",
+    },
+    hu: {
+      headline1: "Fedezzen fel városokat mindenütt.",
+      headline2: "Mi történik az Ön városában?",
+      support: "Találja meg lakóhelye TOWN-közösségét.",
+      primary: "Városom megkeresése",
+      secondary: "Felfedezés folytatása",
+    },
     ro: {
       headline1: "Explorează orașe de pretutindeni.",
       headline2: "Ce se întâmplă în orașul tău?",
@@ -70,6 +84,21 @@
       primary: "Volver a mi comunidad",
       secondary: "Seguir explorando",
     },
+    fr: {
+      headline1: "Explorez d'autres communautés.",
+      headline2: "La participation reste locale.",
+      support:
+        "Vous pouvez explorer, mais la participation est réservée à la communauté locale.",
+      primary: "Retour à ma communauté",
+      secondary: "Continuer à explorer",
+    },
+    hu: {
+      headline1: "Fedezzen fel más közösségeket.",
+      headline2: "A részvétel helyi marad.",
+      support: "Böngészhet, de a részvétel a helyi közösség tagjainak szól.",
+      primary: "Vissza a közösségemhez",
+      secondary: "Felfedezés folytatása",
+    },
     ro: {
       headline1: "Explorează alte comunități.",
       headline2: "Participarea rămâne locală.",
@@ -99,6 +128,8 @@
   const SUPPORTED_EDITORIAL_LANGS = {
     en: true,
     es: true,
+    fr: true,
+    hu: true,
     ro: true,
     it: true,
     de: true,

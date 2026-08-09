@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Lyon">
+  <rect width="640" height="360" fill="#9a4c42"/>
+  <circle cx="520" cy="80" r="48" fill="#fff" opacity=".55"/>
+  <path d="M0 270 120 190l80 45 95-105 105 98 85-60 155 102v90H0z" fill="#fff" opacity=".30"/>
+  <path d="M0 302h640v58H0z" fill="#17211b" opacity=".28"/>
+  <text x="32" y="325" fill="#fff" font-family="system-ui,sans-serif" font-size="38" font-weight="700">Lyon</text>
+</svg>
+

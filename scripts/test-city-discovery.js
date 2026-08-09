@@ -95,8 +95,8 @@ assertEqual(
 );
 assertEqual(
   discovery.resolveEditorialLanguage(["fr-FR", "ja"]),
-  "en",
-  "unsupported locale resolves to English"
+  "fr",
+  "fr-FR resolves to French"
 );
 assertEqual(
   discovery.resolveEditorialLanguage([]),
@@ -118,6 +118,11 @@ assertEqual(
   discovery.editorialCopyForLanguage("ro").secondary,
   "Continuă explorarea",
   "Romanian secondary CTA copy"
+);
+assertEqual(
+  discovery.editorialCopyForLanguage("fr").primary,
+  "Trouver ma ville",
+  "French primary CTA copy"
 );
 
 const memberExplore = discovery.createMemberExploreStory("ro");

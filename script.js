@@ -1193,6 +1193,15 @@
       { id: "Timisoara", image: "assets/cities/timisoara.svg" },
     ],
     Austria: [{ id: "Salzburg", image: "assets/cities/salzburg.svg" }],
+    France: [
+      { id: "Marseille", image: "assets/cities/marseille.svg" },
+      { id: "Lyon", image: "assets/cities/lyon.svg" },
+      { id: "Toulouse", image: "assets/cities/toulouse.svg" },
+    ],
+    Hungary: [
+      { id: "Budapest", image: "assets/cities/budapest.svg" },
+      { id: "Szeged", image: "assets/cities/szeged.svg" },
+    ],
   };
 
   // Approved Experience Prototype V1 scenes (fictional content).
@@ -2121,11 +2130,23 @@
     Stuttgart: "stuttgart-de",
     Frankfurt: "frankfurt-de",
     Salzburg: "salzburg-at",
+    Marseille: "marseille-fr",
+    Lyon: "lyon-fr",
+    Toulouse: "toulouse-fr",
+    Budapest: "budapest-hu",
+    Szeged: "szeged-hu",
   };
   const KNOWN_FEED_IMAGES = {
     "assets/feed/signal_citta_studi_pavement.jpg": true,
     "assets/feed/signal_porta_romana_lighting.jpg": true,
     "assets/feed/signal_lorenteggio_works.jpg": true,
+  };
+  const CITY_PLACEHOLDER_IMAGES = {
+    Marseille: "assets/cities/marseille.svg",
+    Lyon: "assets/cities/lyon.svg",
+    Toulouse: "assets/cities/toulouse.svg",
+    Budapest: "assets/cities/budapest.svg",
+    Szeged: "assets/cities/szeged.svg",
   };
   /** In-session live scenes by city id; cleared on session reset. */
   const liveScenes = {
@@ -2141,6 +2162,11 @@
     Stuttgart: null,
     Frankfurt: null,
     Salzburg: null,
+    Marseille: null,
+    Lyon: null,
+    Toulouse: null,
+    Budapest: null,
+    Szeged: null,
   };
 
   const CITY_COPY = {
@@ -3667,6 +3693,11 @@
     "Stuttgart",
     "Frankfurt",
     "Salzburg",
+    "Marseille",
+    "Lyon",
+    "Toulouse",
+    "Budapest",
+    "Szeged",
   ];
   const PRODUCT_ONLY_COUNTRY_BY_CITY = {
     Milano: "Italy",
@@ -3681,6 +3712,11 @@
     Stuttgart: "Germany",
     Frankfurt: "Germany",
     Salzburg: "Austria",
+    Marseille: "France",
+    Lyon: "France",
+    Toulouse: "France",
+    Budapest: "Hungary",
+    Szeged: "Hungary",
   };
   const NON_PRODUCT_ROUTES = {
     entry: true,
@@ -7920,6 +7956,13 @@
     if (cityId === "Stuttgart") return "de";
     if (cityId === "Frankfurt") return "de";
     if (cityId === "Salzburg") return "de";
+    if (cityId === "Marseille") return "fr";
+    if (cityId === "Lyon") return "fr";
+    if (cityId === "Toulouse") return "fr";
+    if (cityId === "Budapest") return "hu";
+    if (cityId === "Szeged") return "hu";
+    if (cityId === "Frankfurt") return "de";
+    if (cityId === "Salzburg") return "de";
     return null;
   }
 
@@ -8066,6 +8109,7 @@
 
   function resolveSceneImage(imageKey, cityId) {
     if (imageKey && KNOWN_FEED_IMAGES[imageKey]) return imageKey;
+    if (CITY_PLACEHOLDER_IMAGES[cityId]) return CITY_PLACEHOLDER_IMAGES[cityId];
     const fallback =
       (FEED_SCENES[cityId] &&
         FEED_SCENES[cityId][0] &&
@@ -8086,7 +8130,7 @@
     return resolveSceneImage(detail && detail.imageKey, cityId);
   }
 
-  const LOCALE_TAG_BY_LANG = { it: "it-IT", de: "de-DE", ro: "ro-RO" };
+  const LOCALE_TAG_BY_LANG = { it: "it-IT", de: "de-DE", ro: "ro-RO", fr: "fr-FR", hu: "hu-HU" };
 
   function mapSignalDetailToScene(detail, cityId) {
     const localeTag =
@@ -9565,6 +9609,10 @@
 
 
   function membershipLang() {
+    // French is a browser reading language even when the member is joining one
+    // of the currently available non-French communities.
+    if (resolvePublicReadingLanguage() === "fr") return "fr";
+    if (resolvePublicReadingLanguage() === "hu") return "hu";
     const lang = communityLanguage();
     if (lang === "de") return "de";
     if (lang === "ro") return "ro";
@@ -10972,6 +11020,410 @@
       },
     },
   };
+
+  // French is selected exclusively from the browser language, like the other
+  // public reading languages. These catalogs do not infer or grant a country,
+  // community, eligibility, or membership.
+  CITY_COPY.fr = {
+    title: "Choisissez votre ville",
+    lead: "TOWN vous relie à une communauté locale vérifiée.",
+    cityLegend: "Ville",
+    back: "Retour",
+    continue: "Continuer",
+    cityNames: { Milano: "Milan", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Cologne", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Francfort", Salzburg: "Salzbourg" },
+    context: { Italy: "Pays : Italie", Germany: "Pays : Allemagne", Romania: "Pays : Roumanie", Austria: "Pays : Autriche" },
+  };
+  LOCATION_COPY.fr = {
+    back: "Retour",
+    title: "Confirmez votre communauté locale",
+    lead: "TOWN est local. La participation appartient aux personnes liées à cette communauté.",
+    privacy: "Cette vérification s'effectue sur votre appareil par rapport aux limites de la ville choisie. Vos coordonnées ne sont ni envoyées ni conservées.",
+    verify: "Vérifier la localisation",
+    verifying: "Vérification…",
+    retry: "Réessayer",
+    statusLabel: "Confirmé",
+    successTitle: "Localisation vérifiée pour {city}",
+    successLead: "Votre communauté locale est confirmée. La vérification a eu lieu sur votre appareil.",
+    continue: "Continuer",
+    outsideLabel: "Avertissement",
+    outsideTitle: "Vous semblez être en dehors de {city}",
+    outsideLead: "Vous semblez être en dehors des limites de {city}. Déclarer une localisation inexacte enfreint les Conditions d'utilisation. Vous pouvez toutefois continuer.",
+    notAvailable: "La vérification de localisation n'est pas encore disponible pour {city}.",
+    errorPermission: "Autorisation de localisation refusée. Activez-la puis réessayez.",
+    errorUnavailable: "Localisation indisponible. Réessayez.",
+    errorTimeout: "Le délai d'obtention de la localisation a expiré. Réessayez.",
+    errorUnsupported: "La vérification de localisation n'est pas disponible dans ce contexte. Utilisez une connexion sécurisée puis réessayez.",
+    cityNames: CITY_COPY.fr.cityNames,
+  };
+  FEED_COPY.fr = Object.assign({}, FEED_COPY.en, {
+    back: "Retour", visitor: "Visiteur", member: "Membre · {city}",
+    seeThisToo: "JE LE VOIS AUSSI", doneTitle: "Vous le voyez aussi", doneNote: "Confirmation enregistrée sur TOWN",
+    confirmCount: "{count} confirmations", confirmCountOne: "1 confirmation",
+    openSignal: "Ouvrir le signalement", openSignalClose: "Fermer",
+    whyLabel: "Pourquoi c'est important ici", whoLabel: "Qui est concerné", updateLabel: "Dernière mise à jour",
+    statusLabel: "Ce que signifie ce statut", communityArea: "{city} · {area}", clearTestimony: "Supprimer le média",
+    demoTestimonyNote: "Joint — sera téléversé en toute sécurité lors de la publication",
+    sessionLabel: "Session vers une solution",
+    sessionBody: "Ceci n'est pas un chat. Les membres payants ouvrent une discussion ciblée sur ce signalement afin de transformer un constat en mouvement local vers une solution.",
+    sessionEmpty: "Aucune session pour le moment. La première contribution ouvre la discussion sur ce signalement.",
+    sessionOpen: "Ouvrir une session de discussion", sessionContribute: "Ajouter votre contribution",
+    sessionComposeTitle: "Contribuer à ce signalement",
+    sessionComposeGuide: "Partagez une observation concrète, une proposition locale ou une prochaine étape. Écrivez pour faire avancer la communauté vers une solution.",
+    sessionAttach: "Joindre une photo ou une vidéo", sessionPublish: "Publier la contribution", sessionCancel: "Annuler",
+    sessionIntentLegend: "Quel type de contribution est-ce ?", sessionIntentObservation: "Observation", sessionIntentProposal: "Proposition", sessionIntentNextStep: "Prochaine étape",
+    sessionNeedIntent: "Choisissez une observation, une proposition ou une prochaine étape.",
+    sessionUnavailable: "Impossible de joindre TOWN pour cette session — réessayez plus tard.",
+    sessionLocalOnly: "Ce signalement d'aperçu n'a pas encore de session sur le serveur.",
+    sessionGated: "La discussion s'ouvre avec une adhésion active. Confirmez d'abord ce signalement ou poursuivez l'adhésion pour participer.",
+    sessionLoading: "Chargement de la session de discussion…", sessionPublishFailed: "Impossible de publier cette contribution — réessayez.",
+    sessionNeedText: "Rédigez au moins une contribution courte et concrète avant de publier.", sessionYou: "Vous",
+    feedLoadingTitle: "Chargement des signalements locaux", feedLoadingBody: "TOWN récupère les signalements civiques en direct pour vos villes.",
+    feedEmptyTitle: "Aucun signalement en direct pour le moment", feedEmptyBody: "Impossible de joindre TOWN — réessayez plus tard.", feedRetry: "Réessayer",
+    seeTooFailed: "Impossible d'enregistrer cette confirmation — réessayez.", seeTooBusy: "Enregistrement de votre confirmation…",
+    notYourCommunity: "Vous pouvez explorer, mais la participation est réservée à la communauté locale.",
+    cityNames: CITY_COPY.fr.cityNames,
+  });
+  WRONG_COMMUNITY_COPY.fr = "Votre communauté est {home}. Vous pouvez explorer {explored}, mais vous ne pouvez participer que dans {home}.";
+  LOGIN_COPY.fr = {
+    signIn: "Connexion des membres", working: "Vérification…", success: "Connecté. Session active.",
+    cancelled: "Connexion annulée. Vous pouvez réessayer.", failed: "Échec de la connexion. Veuillez réessayer.",
+    phoneUnavailable: "La connexion par téléphone n'est pas encore disponible. Utilisez l'e-mail ou une clé d'accès.",
+  };
+  MEMBERSHIP_COPY.fr = {
+    inviteTitle: "Ce qui se passe dans votre communauté vous tient à cœur.", inviteBody: "Pour confirmer ce signalement et faire partie de la solution, rejoignez TOWN en tant que membre local vérifié.",
+    inviteBodySecond: "TOWN est construit autour de personnes réelles d'une même communauté — pas de comptes anonymes, d'abonnés ou de popularité sur les réseaux sociaux.",
+    continue: "Continuer", notNow: "Pas maintenant", label: "ADHÉSION LOCALE", title: "Rejoignez la communauté de {city}.",
+    body: "TOWN est un espace civique local pour des personnes réelles.", bodySecond: "Pour participer, il faut un compte, une communauté locale confirmée et une adhésion active.",
+    price: "12 € par an", renewal: "Renouvellement annuel.", renewalSecond: "Vous pouvez annuler à tout moment. L'accès reste actif jusqu'à la fin de la période déjà payée.",
+    whyTitle: "Pourquoi l'adhésion existe", why: ["Des personnes réelles dans la même communauté", "Une participation locale vérifiée", "Moins de robots et de faux comptes", "Un espace civique calme, sans publicité"],
+    rightsTitle: "Avec une adhésion active, vous pouvez :", rights: "Confirmer des signalements, ouvrir des sessions de discussion vers une solution et participer aux décisions de la communauté.",
+    endedTitle: "TOWN s'adresse aux personnes prêtes à participer à leur communauté.", endedBody: "Vous pourrez revenir lorsque vous serez prêt à en faire partie.", endedReturn: "Retour à l'entrée de TOWN", cityNames: CITY_COPY.fr.cityNames,
+  };
+  ACCOUNT_COPY.fr = {
+    label: "COMPTE PERSONNEL", title: "Créez votre compte TOWN.", community: "Communauté : {city}",
+    body: "Avant de demander des informations personnelles, nous vous expliquons pourquoi un compte est nécessaire.", whyTitle: "Votre compte TOWN servira à :",
+    why: ["identifier une seule personne réelle ;", "conserver la communauté locale confirmée ;", "permettre l'accès sur le web et mobile ;", "protéger la participation contre les robots et les faux comptes."],
+    privacyTitle: "Confidentialité", privacy: "Seules les informations essentielles au compte seront demandées.", privacySecond: "Un mot de passe est configuré dans le parcours de compte.",
+    prototype: "L'étape suivante crée votre compte avec votre e-mail et un accès sécurisé.", continue: "Continuer", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
+  };
+  EMAIL_COPY.fr = {
+    label: "CRÉEZ VOTRE COMPTE", title: "Saisissez votre adresse e-mail.", body: "Nous vous enverrons un code de vérification à 6 chiffres.", bodySecond: "Votre compte sera ensuite sécurisé.",
+    prototype: "Nous vous enverrons un code de vérification à 6 chiffres par e-mail.", fieldLabel: "Adresse e-mail", placeholder: "nom@exemple.fr",
+    privacy: "Nous utiliserons cette adresse pour vérifier votre compte, envoyer les communications essentielles et vous aider à récupérer l'accès.",
+    invalid: "Saisissez une adresse e-mail valide.", rateLimited: "Trop de tentatives. Réessayez dans un instant.", failed: "Impossible de continuer. Réessayez.", continue: "Continuer", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
+  };
+  CODE_COPY.fr = {
+    label: "VÉRIFICATION DE L'E-MAIL", title: "Consultez votre messagerie.", body: "Nous avons envoyé un code à 6 chiffres à :", fieldLabel: "Code de vérification",
+    prototype: "Saisissez le code à 6 chiffres envoyé par e-mail.", invalid: "Le code est incorrect.", rateLimited: "Trop de tentatives. Réessayez dans un instant.",
+    failed: "Impossible de continuer. Réessayez.", verify: "Vérifier", changeEmail: "Changer d'adresse e-mail", cityNames: CITY_COPY.fr.cityNames,
+  };
+  PASSKEY_COPY.fr = {
+    label: "ACCÈS SÉCURISÉ", title: "Protégez votre compte TOWN.", body: "TOWN utilise une clé d'accès sécurisée sur votre appareil.",
+    bodySecond: "L'accès sécurisé utilise les méthodes de votre appareil.", methodsTitle: "Méthodes disponibles sur l'appareil", methods: ["Face ID", "Touch ID", "Empreinte digitale", "Code PIN de l'appareil"],
+    benefitsTitle: "Pourquoi une clé d'accès", benefits: ["Aucun secret supplémentaire à mémoriser", "Meilleure résistance au hameçonnage", "Aucun mot de passe partagé avec TOWN", "Vous pourrez ajouter d'autres appareils plus tard"],
+    prototype: "TOWN créera une clé d'accès sur votre appareil.", create: "Créer l'accès sécurisé", back: "Retour", successLabel: "ACCÈS CONFIGURÉ",
+    successTitle: "Accès sécurisé configuré.", successBody: "Votre adresse e-mail est vérifiée et la clé d'accès a été créée sur votre appareil.",
+    successEmail: "E-mail vérifié", successAccess: "Accès sécurisé configuré", successNote: "La clé d'accès est prête. L'étape suivante consiste à activer l'adhésion TOWN.",
+    continue: "Continuer", grantExpired: "La fenêtre de configuration a expiré. Recommencez par la saisie de l'e-mail.", cancelled: "Création annulée. Vous pouvez réessayer.",
+    failed: "Impossible de créer la clé d'accès. Réessayez.", cityNames: CITY_COPY.fr.cityNames,
+  };
+  READY_COPY.fr = {
+    label: "COMPTE PRÊT", title: "Votre compte TOWN est prêt.", community: "Communauté : {city}", emailLine: "E-mail : {email}", emailStatus: "E-mail vérifié",
+    accessStatus: "Accès sécurisé configuré", body: "La configuration du compte est terminée.", bodySecond: "L'étape suivante consiste à activer l'adhésion annuelle TOWN.",
+    inactive: "Compte prêt — l'adhésion n'est pas active. Vous ne pouvez pas encore participer comme membre.", membership: "Adhésion TOWN — 12 € par an",
+    paymentNote: "L'étape suivante est le paiement sécurisé Stripe pour l'adhésion annuelle.", continue: "Continuer", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
+  };
+  PAYMENT_COPY.fr = {
+    label: "ADHÉSION ANNUELLE", title: "Activez l'adhésion annuelle TOWN.", community: "Communauté : {city}", price: "12 € par an", renewal: "Renouvellement annuel automatique.",
+    cancel: "Vous pouvez annuler à tout moment. L'accès reste actif jusqu'à la fin de la période déjà payée.", body: "Avec une adhésion active, vous pourrez participer à la communauté locale vérifiée.",
+    accountStatus: "Compte : prêt", membershipStatus: "Adhésion : inactive", prototype: "Vous serez redirigé vers Stripe Checkout pour effectuer le paiement en toute sécurité.",
+    simulateStart: "Activer l'adhésion", back: "Retour", successLabel: "ADHÉSION ACTIVE", successTitle: "Adhésion annuelle active.", successCommunity: "Communauté : {city}",
+    successAccount: "Compte : prêt", successMembership: "Adhésion : active", successBody: "Le paiement a été confirmé. L'adhésion annuelle TOWN est active pour cette communauté.",
+    successNote: "Vous pouvez gérer l'abonnement depuis votre profil lorsque Stripe le permet pour ce compte.", continue: "Continuer",
+    errorUnauthenticated: "Vous n'êtes pas connecté ou la session a expiré.", errorAlreadyMember: "Vous avez déjà une adhésion active. Gérez votre abonnement existant.",
+    errorRateLimited: "Trop de tentatives. Réessayez dans un instant.", errorUnavailable: "Le paiement est actuellement indisponible.", errorCheckoutFailed: "Impossible de lancer le paiement. Réessayez.",
+    errorNetwork: "Impossible de continuer. Réessayez.", confirmingLabel: "CONFIRMATION DE L'ADHÉSION", confirmingTitle: "Confirmation de l'adhésion en cours.",
+    confirmingBody: "Nous vérifions l'activation auprès de TOWN. Cela peut prendre quelques secondes après le paiement.", confirmingStatus: "Confirmation en cours…",
+    confirmingPending: "La confirmation est toujours en cours. Le paiement n'est pas indiqué comme ayant échoué — réessayez dans un instant.", confirmingRetry: "Réessayer", confirmingDismiss: "Retour au fil",
+    paidNoParticipateTitle: "Adhésion enregistrée", paidNoParticipateStatus: "Le paiement est enregistré, mais la participation civique n'est pas encore disponible. Terminez le choix de la communauté si nécessaire ou réessayez dans un instant.",
+    continueCommunity: "Choisir la communauté", cityNames: CITY_COPY.fr.cityNames,
+  };
+  ACTIVE_COPY.fr = {
+    label: "ADHÉSION ACTIVE", title: "Adhésion annuelle active.", community: "Communauté : {city}", memberStatus: "Membre · {city}",
+    body: "L'adhésion annuelle TOWN est active pour votre communauté.", bodySecond: "Vous pouvez revenir au signalement de départ et participer lorsque votre compte le permet.",
+    prototype: "Gérez l'abonnement depuis votre profil lorsque Stripe le permet pour ce compte.", returnSignal: "Retour au signalement", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
+  };
+  COMMITMENT_COPY.fr = {
+    label: "CHOIX DE LA COMMUNAUTÉ", title: "Choisissez votre communauté TOWN.", body: "Sélectionnez personnellement le pays et la ville. TOWN ne vérifie pas techniquement votre position physique ni votre résidence.",
+    countryLegend: "Choisissez le pays", cityLegend: "Choisissez la ville", countryNames: { Italy: "Italie", Germany: "Allemagne", Romania: "Roumanie", Austria: "Autriche" }, cityNames: CITY_COPY.fr.cityNames,
+    reviewLabel: "Vérifiez la communauté choisie", reviewCountry: "Pays : {country}", reviewCity: "Ville : {city}", reviewNote: "L'adhésion et la participation civique seront associées à cette communauté.",
+    acceptText: "Je confirme avoir personnellement choisi le bon pays et la bonne ville et j'assume la responsabilité de l'exactitude de cette déclaration.",
+    acceptRequired: "L'acceptation explicite de cette responsabilité est obligatoire.", confirm: "Enregistrer la déclaration", saving: "Enregistrement…", saved: "Déclaration enregistrée pour {city}, {country}.",
+    checkoutHint: "Le paiement annuel n'est disponible qu'après la confirmation de la communauté.", checkoutCta: "Continuer vers l'adhésion annuelle — 12 €/an", back: "Retour",
+    errorNetwork: "Impossible de continuer. Réessayez.", errorUnauthenticated: "Vous n'êtes pas connecté ou la session a expiré.", errorValidation: "Vérifiez la sélection et l'acceptation, puis réessayez.",
+    errorSave: "Impossible d'enregistrer la déclaration. Réessayez.", errorUnsupported: "Cette communauté n'est pas disponible.", errorLocked: "La communauté ne peut pas être modifiée tant que l'adhésion est active.",
+  };
+  PROFILE_COPY.fr = {
+    label: "Votre profil", close: "Fermer", defaultName: "Voisin TOWN", handleFallback: "Compte enregistré",
+    bioRegistered: "Inscrit sur TOWN. La participation civique locale s'ouvre avec une adhésion active.",
+    bioMember: "Membre local actif. Vous pouvez confirmer les signalements de votre communauté.",
+    bioOwner: "Accès propriétaire de la plateforme. La participation civique est ouverte sans adhésion payante.",
+    bioPaidPending: "Adhésion enregistrée. La participation locale n'est pas encore disponible.",
+    communityNone: "Communauté : pas encore choisie", communityLine: "Communauté : {community}", membershipNone: "Adhésion : inactive",
+    membershipPaid: "Adhésion : active", membershipOwner: "Adhésion : inactive — accès propriétaire", membershipPending: "Adhésion : payée — participation en attente",
+    membershipOther: "Adhésion : {status}", activityTitle: "Activité civique", activityEmpty: "Aucune confirmation pour le moment. Ouvrez un signalement local et appuyez sur JE LE VOIS AUSSI lorsque vous êtes prêt.",
+    activityError: "Impossible de charger votre activité civique — réessayez dans un instant.", activityConfirmed: "Vous le voyez aussi", feedCta: "Retour au fil",
+    publishInCommunity: "Publier dans {community}", platformConsoleCta: "Ouvrir la console de la plateforme", membershipCta: "Poursuivre l'adhésion",
+    manageBillingCta: "Gérer l'adhésion", signOutCta: "Se déconnecter", signingOut: "Déconnexion…", openingPortal: "Ouverture du portail d'adhésion…",
+    errorSignOut: "Impossible de se déconnecter. Réessayez.", errorPortal: "Impossible d'ouvrir la gestion de l'adhésion. Réessayez dans un instant.",
+    errorPortalUnavailable: "La gestion de l'adhésion n'est pas encore disponible pour ce compte.",
+  };
+  SIGNAL_CREATE_COPY.fr = {
+    profileCta: "Publier un signalement civique", title: "Publier un signalement civique",
+    lead: "Publiez sous votre vrai nom dans votre communauté. Vous avez déjà accepté votre responsabilité personnelle comme membre TOWN — confirmez-la à nouveau pour cette publication.",
+    titleLabel: "Titre", descriptionLabel: "Description", categoryLabel: "Catégorie", realNameLabel: "Nom réel", photoLabel: "Photo",
+    acceptText: "Je publie sous mon vrai nom et j'assume la responsabilité personnelle de ce signalement, conformément aux règles d'adhésion TOWN déjà acceptées.",
+    submit: "Publier le signalement", cancel: "Annuler", close: "Fermer", errorGeneric: "Impossible de publier. Réessayez.",
+    errorPhoto: "Choisissez une photo JPEG, PNG ou WebP.", errorAccept: "Confirmez votre responsabilité personnelle pour publier.",
+    errorName: "Utilisez vos vrais prénom et nom, pas un nom d'utilisateur.",
+  };
+  ACTIVITY_COPY.fr = {
+    label: "Activité", title: "Votre activité civique",
+    lead: "Confirmations, contributions publiées et mises à jour des signalements auxquels vous participez — depuis TOWN, pas des exemples.",
+    empty: "Aucune activité civique pour le moment. Confirmez un signalement ou publiez une contribution dans votre communauté.",
+    loading: "Chargement de votre activité…", error: "Impossible de charger l'activité. Réessayez.", close: "Fermer", feedCta: "Retour au fil", whenUnknown: "",
+    inboxLabel: "Vos processus civiques", inboxEmpty: "Aucun processus civique pour le moment. Participez à un signalement pour le voir ici.",
+    inboxNew: "Nouveau", inboxContinue: "Continuer la participation", recentLabel: "Activité récente",
+    kinds: { confirmation: "Vous avez confirmé ce signalement", contribution: "Vous avez publié une contribution", signal_published: "Vous avez publié un signalement civique", signal_evolution: "Mise à jour du signalement" },
+    intents: { observation: "Observation", proposal: "Proposition", next_step: "Prochaine étape" },
+  };
+  CIVIC_PROCESS_COPY.fr = Object.assign({}, CIVIC_PROCESS_COPY.en, {
+    label: "Processus civique", stage: "Confirmation", loading: "Chargement du processus civique…",
+    unavailable: "Le processus civique est temporairement indisponible.", confirmed: "Vous avez confirmé ce signalement.",
+    canConfirm: "Vous pouvez ajouter votre confirmation.", readOnly: "Vous pouvez suivre ce processus. La participation dépend de l'accès à votre communauté.",
+    confirmations: "Confirmations", next: "Étape suivante", proposals: "Propositions", closing: "Clôture", notScheduled: "Non programmé", started: "Processus lancé",
+    deliberation: "Délibération", ballotPreparation: "Préparation du scrutin", voting: "Vote", mandate: "Mandat",
+    votingLoading: "Chargement du vote…", votingUnavailable: "Le vote est temporairement indisponible.", votingCanVote: "Choisissez une option et soumettez votre vote.",
+    votingHasVoted: "Vous avez voté. Les résultats sont actualisés en direct.", voteCountLabel: "{count} votes", voteSubmit: "Soumettre le vote",
+    voteNeedChoice: "Sélectionnez d'abord une option.", voteErrorGeneric: "Une erreur s'est produite. Réessayez.", voteErrorClosed: "Le vote est clos.",
+    voteErrorAlready: "Vous avez déjà voté.", voteErrorNotEligible: "Vous n'êtes pas autorisé à voter dans ce scrutin.",
+    proposalsCanAdd: "Vous pouvez ajouter une proposition structurée.", proposalsSubmitted: "Vous avez soumis une proposition pour ce processus.",
+    proposalsLoading: "Chargement des propositions…", proposalsUnavailable: "Les propositions sont temporairement indisponibles.", proposalsEmpty: "Aucune proposition pour le moment.",
+    proposalsAdd: "Ajouter une proposition", proposalsTitleLabel: "Titre de la proposition", proposalsBodyLabel: "Détails de la proposition", proposalsSubmit: "Soumettre la proposition",
+    cancel: "Annuler", proposalsMine: "Votre proposition", proposalsNeedTitle: "Ajoutez un titre court.", proposalsNeedBody: "Décrivez la proposition.",
+    proposalsErrorGeneric: "Une erreur s'est produite. Réessayez.", proposalsErrorClosed: "Cette étape est close.", proposalsErrorDuplicate: "Vous avez déjà soumis une proposition pour ce processus.",
+    proposalsOutcomeLabel: "Résultat attendu", proposalsInstitutionLabel: "Institution concernée (facultatif)", proposalsResourcesLabel: "Ressources estimées (facultatif)",
+    proposalsDeadlineLabel: "Échéance indicative (facultatif)", proposalsNeedOutcome: "Décrivez le résultat attendu.", proposalsRevise: "Réviser", proposalsWithdraw: "Retirer",
+    proposalsWithdrawConfirm: "Retirer cette proposition ? Cette action est irréversible.", proposalsRevisedBadge: "Révisée", proposalsWithdrawnBadge: "Retirée",
+    proposalsEditTitle: "Réviser votre proposition", proposalsSaveRevision: "Enregistrer la révision", proposalsErrorNotAuthor: "Seul l'auteur peut effectuer cette action.",
+    proposalsErrorAlreadyRevised: "Cette proposition a déjà été révisée une fois.", proposalsErrorAlreadyWithdrawn: "Cette proposition a déjà été retirée.",
+    deliberationLoading: "Chargement de la délibération…", deliberationUnavailable: "La délibération est temporairement indisponible.",
+    deliberationCanContribute: "Vous pouvez ajouter une contribution structurée à toute proposition.", ballotFinalOptions: "Voici les options finales issues de la délibération.",
+    deliberationEmpty: "Aucune proposition à délibérer pour le moment.", contributionsEmpty: "Aucune contribution pour le moment.", addContribution: "Ajouter une contribution",
+    intentObservation: "Observation", intentProposal: "Proposition", intentNextStep: "Prochaine étape", intentArgumentFor: "Argument favorable",
+    intentRiskOrObjection: "Risque ou objection", intentQuestion: "Question", intentAuthorResponse: "Réponse de l'auteur", intentEvidence: "Preuve",
+    intentAmendmentSuggestion: "Suggestion d'amendement", intentMinorityPosition: "Position minoritaire", intentLegend: "Type",
+    contributionLabel: "Contribution", contributionSubmit: "Soumettre la contribution", contributionNeedText: "Rédigez au moins 12 caractères.",
+    contributionNeedIntent: "Choisissez un type.", contributionErrorGeneric: "Une erreur s'est produite. Réessayez.", contributionErrorClosed: "Cette étape est close.",
+    contributionErrorInvalidReplyTarget: "Il n'est plus possible de répondre à cette contribution.", replyAction: "Répondre", replyingToLabel: "Réponse à {author}",
+    replyCancel: "Annuler la réponse", deliberationContributionMine: "Votre contribution", action: "Action", archived: "Archivé",
+    mandateLoading: "Chargement du mandat…", mandateUnavailable: "Le mandat est temporairement indisponible.", mandateContested: "Aucun gagnant : les propositions arrivées en tête sont à égalité.",
+    mandatePending: "Le vote n'est pas encore clos.", verification: "Vérification", actionLoading: "Chargement de l'action…", actionUnavailable: "L'action est temporairement indisponible.",
+    actionPending: "Le mandat n'est pas encore décidé.", actionCanPost: "Vous pouvez ajouter une mise à jour de statut.", actionMine: "Votre contribution",
+    actionInputLabel: "Mise à jour de statut", actionSubmit: "Soumettre la mise à jour", actionNeedText: "Rédigez au moins 12 caractères.",
+    actionErrorGeneric: "Une erreur s'est produite. Réessayez.", actionErrorClosed: "Cette étape est close.", actionErrorAlreadyResponsible: "Un autre membre a déjà pris la responsabilité de cette action.",
+    actionQuickTakeStep: "Prendre en charge une étape", actionQuickOfferHelp: "Proposer de l'aide", actionQuickAddEvidence: "Ajouter une preuve", actionQuickInstitutionResponse: "Consigner la réponse de l'institution",
+    actionInputLabelTakeStep: "Que prendrez-vous en charge ?", actionInputLabelOfferHelp: "Comment pouvez-vous aider ?", actionInputLabelEvidence: "Description de la preuve",
+    actionInputLabelInstitutionResponse: "Qu'a répondu l'institution ?", actionSubmitTakeStep: "Soumettre", actionSubmitOfferHelp: "Soumettre", actionSubmitEvidence: "Soumettre la preuve",
+    actionSubmitInstitutionResponse: "Soumettre", actionStatusNotStarted: "Pas encore commencé", actionStatusInProgress: "En cours", actionStatusBlocked: "Bloqué", actionStatusCompleted: "Terminé",
+    actionResponsibleLabel: "Responsable : {name}", actionCollaboratorsLabel: "Soutien : {names}", actionInstitutionLabel: "Institution : {value}", actionObjectiveLabel: "Objectif : {value}",
+    actionDeadlineLabel: "Échéance indicative : {value}", actionBlockedReasonNone: "Aucune raison", actionBlockedReasonInstitution: "En attente de la réponse de l'institution",
+    actionBlockedReasonResources: "En attente de ressources", actionBlockedReasonVolunteers: "En attente de bénévoles", actionBlockedReasonOther: "Autre",
+    verificationLoading: "Chargement de la vérification…", verificationUnavailable: "La vérification est temporairement indisponible.",
+    verificationPendingReady: "Pas encore indiqué comme prêt pour vérification.", verificationCanMarkReady: "Vous pouvez indiquer que cette action est prête pour vérification.",
+    verificationCanConfirm: "Vous pouvez confirmer si l'action a été réalisée.", verificationConfirmedDelivered: "Vous avez confirmé : réalisée.",
+    verificationConfirmedNotDelivered: "Vous avez confirmé : non réalisée.", verificationTallyLabel: "{delivered} confirmations de réalisation · {notDelivered} confirmations de non-réalisation",
+    verificationDisputeEscalated: "Ce litige est ouvert depuis plus de 14 jours et a été signalé pour examen par un opérateur.",
+    verificationOutcomeDelivered: "Vérifié : réalisée.", verificationOutcomeNotDelivered: "Vérifié : non réalisée.",
+    verificationEvidenceUrlLabel: "Lien justificatif (facultatif)", verificationEvidenceSubmit: "Soumettre une preuve", verificationEvidenceNeedText: "Rédigez au moins 12 caractères.",
+    verificationEvidenceInvalidUrl: "Saisissez un lien http(s) valide ou laissez le champ vide.", verificationEvidenceMine: "Votre preuve",
+    verificationErrorGeneric: "Une erreur s'est produite. Réessayez.", verificationErrorClosed: "Cette étape est close.", verificationAlreadyConfirmed: "Vous avez déjà confirmé.",
+    mandateTotalVotesLabel: "{count} votes au total", mandateMinorityHeading: "Positions minoritaires",
+    contestStatusPending: "Vous avez déposé une contestation. Statut : en attente d'examen.", contestStatusUpheld: "Vous avez déposé une contestation. Statut : acceptée.",
+    contestStatusRejected: "Vous avez déposé une contestation. Statut : rejetée.", contestPendingOther: "Une contestation a été déposée et attend un examen.",
+    contestReasonLabel: "Motif", contestReasonEligibilityError: "Erreur d'éligibilité", contestReasonBallotTampering: "Suspicion de manipulation du scrutin",
+    contestReasonCountDiscrepancy: "Écart dans le décompte des votes", contestSubmit: "Déposer une contestation", contestElaborationPlaceholder: "Détails facultatifs",
+    contestErrorGeneric: "Une erreur s'est produite. Réessayez.", contestErrorAlready: "Vous avez déjà déposé une contestation pour ce mandat.",
+    contestErrorWindowClosed: "Le délai de contestation de 72 heures est clos.", contestErrorNotEligible: "Vous n'étiez pas autorisé à voter lors du scrutin décisif.",
+    contestErrorNotDecided: "Une contestation exige qu'un mandat ait été décidé.",
+  });
+
+  CITY_COPY.hu = {
+    title: "Válassza ki a városát",
+    lead: "A TOWN összeköti Önt egy valódi helyi közösséggel.",
+    cityLegend: "Város",
+    back: "Vissza",
+    continue: "Tovább",
+    cityNames: {},
+    context: {},
+  };
+  LOCATION_COPY.hu = Object.assign({}, LOCATION_COPY.en, {
+    back: "Vissza",
+    title: "Erősítse meg helyi közösségét",
+    lead: "A TOWN helyi. A részvétel az adott közösséghez tartozó embereké.",
+    privacy: "A TOWN nem követi és nem tárolja a tartózkodási helyét.",
+    verify: "Hely ellenőrzése",
+    verifying: "Ellenőrzés…",
+    retry: "Újra",
+    statusLabel: "Megerősítve",
+    successTitle: "{city} közössége megerősítve",
+    continue: "Tovább",
+    outsideLabel: "Figyelmeztetés",
+    notAvailable: "A helyellenőrzés még nem érhető el ehhez a városhoz: {city}.",
+    cityNames: CITY_COPY.hu.cityNames,
+  });
+  FEED_COPY.hu = Object.assign({}, FEED_COPY.en, {
+    back: "Vissza", visitor: "Látogató", member: "Tag · {city}",
+    seeThisToo: "ÉN IS LÁTOM EZT", doneTitle: "Ön is látja ezt", doneNote: "A megerősítést a TOWN elmentette",
+    confirmCount: "{count} megerősítés", confirmCountOne: "1 megerősítés",
+    openSignal: "Jelzés megnyitása", openSignalClose: "Bezárás",
+    whyLabel: "Miért fontos ez itt", whoLabel: "Kiket érint", updateLabel: "Legfrissebb frissítés",
+    statusLabel: "Mit jelent ez az állapot", communityArea: "{city} · {area}",
+    sessionLabel: "Közös munka a megoldásért", sessionBody: "Ez nem chat. A tagok célzott egyeztetésben alakítják a megfigyelést helyi megoldássá.",
+    sessionEmpty: "Még nincs egyeztetés.", sessionOpen: "Egyeztetés indítása", sessionContribute: "Hozzászólás hozzáadása",
+    sessionComposeTitle: "Hozzászólás ehhez a jelzéshez", sessionComposeGuide: "Osszon meg konkrét megfigyelést, helyi javaslatot vagy következő lépést.",
+    sessionAttach: "Fénykép vagy videó csatolása", sessionPublish: "Hozzászólás közzététele", sessionCancel: "Mégse",
+    sessionLoading: "Az egyeztetés betöltése…", sessionUnavailable: "Az egyeztetés jelenleg nem érhető el.",
+    sessionPublishFailed: "A hozzászólást nem sikerült közzétenni.", sessionNeedText: "Írjon rövid, konkrét hozzászólást.", sessionYou: "Ön",
+    feedLoadingTitle: "Helyi jelzések betöltése", feedLoadingBody: "A TOWN betölti a városok élő civil jelzéseit.",
+    feedEmptyTitle: "Jelenleg nincs élő jelzés", feedEmptyBody: "A TOWN nem érhető el — próbálja újra később.", feedRetry: "Újra",
+    seeTooFailed: "A megerősítést nem sikerült elmenteni.", seeTooBusy: "A megerősítés mentése…",
+    notYourCommunity: "Böngészhet, de a részvétel a helyi közösség tagjainak szól.",
+    cityNames: CITY_COPY.hu.cityNames,
+  });
+  WRONG_COMMUNITY_COPY.hu = "Az Ön közössége {home}. {explored} tartalmait böngészheti, de csak {home} közösségében vehet részt.";
+  LOGIN_COPY.hu = Object.assign({}, LOGIN_COPY.en, {
+    signIn: "Tagi bejelentkezés", working: "Ellenőrzés…", success: "Bejelentkezve. A munkamenet aktív.",
+    cancelled: "A bejelentkezést megszakította.", failed: "A bejelentkezés sikertelen. Próbálja újra.",
+  });
+  MEMBERSHIP_COPY.hu = Object.assign({}, MEMBERSHIP_COPY.en, {
+    inviteTitle: "Fontos Önnek, mi történik a közösségében.",
+    inviteBody: "A jelzés megerősítéséhez és a megoldásban való részvételhez csatlakozzon helyi tagként.",
+    inviteBodySecond: "A TOWN valódi emberekre épül — nem névtelen fiókokra vagy követőszámokra.",
+    continue: "Tovább", notNow: "Most nem", label: "HELYI TAGSÁG", title: "Csatlakozzon {city} közösségéhez.",
+    body: "A TOWN valódi emberek helyi civil tere.", bodySecond: "A részvételhez fiók, vállalt helyi közösség és aktív tagság szükséges.",
+    price: "Évi 12 €", renewal: "Éves megújítás.", renewalSecond: "Bármikor lemondható; a hozzáférés a kifizetett időszak végéig aktív marad.",
+    whyTitle: "Miért van tagság", why: ["Valódi emberek ugyanabban a közösségben", "Felelős helyi részvétel", "Kevesebb bot és hamis fiók", "Nyugodt, reklámmentes civil tér"],
+    rightsTitle: "Aktív tagsággal:", rights: "Megerősíthet jelzéseket, részt vehet az egyeztetésben és a közösségi döntésekben.",
+    endedTitle: "A TOWN azoknak szól, akik készek részt venni a közösségükben.", endedBody: "Visszatérhet, amikor készen áll a csatlakozásra.", endedReturn: "Vissza a TOWN elejére", cityNames: CITY_COPY.hu.cityNames,
+  });
+  ACCOUNT_COPY.hu = Object.assign({}, ACCOUNT_COPY.en || ACCOUNT_COPY.it, {
+    label: "SZEMÉLYES FIÓK", title: "Hozza létre TOWN-fiókját.", community: "Közösség: {city}",
+    body: "Előbb elmagyarázzuk, miért szükséges a fiók.", whyTitle: "A TOWN-fiók célja:",
+    why: ["egy valódi személy azonosítása;", "a vállalt helyi közösség megőrzése;", "biztonságos hozzáférés;", "védelem a botok és hamis fiókok ellen."],
+    privacyTitle: "Adatvédelem", privacy: "Csak a fiókhoz szükséges adatokat kérjük.", continue: "Tovább", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
+  });
+  EMAIL_COPY.hu = Object.assign({}, EMAIL_COPY.en || EMAIL_COPY.it, {
+    label: "FIÓK LÉTREHOZÁSA", title: "Adja meg e-mail-címét.", body: "Hatjegyű ellenőrző kódot küldünk.",
+    fieldLabel: "E-mail-cím", placeholder: "nev@pelda.hu", invalid: "Adjon meg érvényes e-mail-címet.",
+    rateLimited: "Túl sok próbálkozás. Próbálja újra később.", failed: "Nem sikerült folytatni.", continue: "Tovább", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
+  });
+  CODE_COPY.hu = Object.assign({}, CODE_COPY.en || CODE_COPY.it, {
+    label: "E-MAIL ELLENŐRZÉSE", title: "Nézze meg a leveleit.", body: "Hatjegyű kódot küldtünk ide:", fieldLabel: "Ellenőrző kód",
+    invalid: "A kód hibás.", rateLimited: "Túl sok próbálkozás.", failed: "Nem sikerült folytatni.", verify: "Ellenőrzés", changeEmail: "E-mail-cím módosítása", cityNames: CITY_COPY.hu.cityNames,
+  });
+  PASSKEY_COPY.hu = Object.assign({}, PASSKEY_COPY.en || PASSKEY_COPY.it, {
+    label: "BIZTONSÁGOS HOZZÁFÉRÉS", title: "Védje TOWN-fiókját.", body: "A TOWN biztonságos hozzáférési kulcsot használ az eszközén.",
+    methodsTitle: "Az eszközön elérhető módszerek", benefitsTitle: "Miért hozzáférési kulcs", create: "Biztonságos hozzáférés létrehozása", back: "Vissza",
+    successLabel: "HOZZÁFÉRÉS BEÁLLÍTVA", successTitle: "A biztonságos hozzáférés elkészült.", continue: "Tovább", cancelled: "A létrehozást megszakította.", failed: "A hozzáférési kulcs létrehozása sikertelen.", cityNames: CITY_COPY.hu.cityNames,
+  });
+  READY_COPY.hu = Object.assign({}, READY_COPY.en || READY_COPY.it, {
+    label: "FIÓK KÉSZ", title: "TOWN-fiókja elkészült.", community: "Közösség: {city}", emailLine: "E-mail: {email}", emailStatus: "E-mail ellenőrizve",
+    accessStatus: "Biztonságos hozzáférés beállítva", body: "A fiók beállítása kész.", inactive: "A tagság még nem aktív.", membership: "TOWN-tagság — évi 12 €", continue: "Tovább", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
+  });
+  PAYMENT_COPY.hu = Object.assign({}, PAYMENT_COPY.en || PAYMENT_COPY.it, {
+    label: "ÉVES TAGSÁG", title: "Aktiválja éves TOWN-tagságát.", community: "Közösség: {city}", price: "Évi 12 €", renewal: "Automatikus éves megújítás.",
+    cancel: "Bármikor lemondható.", body: "Aktív tagsággal részt vehet a vállalt helyi közösségben.", simulateStart: "Tagság aktiválása", back: "Vissza",
+    successLabel: "AKTÍV TAGSÁG", successTitle: "Az éves tagság aktív.", successCommunity: "Közösség: {city}", continue: "Tovább",
+    errorUnauthenticated: "Nincs bejelentkezve, vagy a munkamenet lejárt.", errorAlreadyMember: "Már van aktív tagsága.", errorUnavailable: "A fizetés jelenleg nem érhető el.", errorCheckoutFailed: "A fizetés indítása sikertelen.",
+    confirmingTitle: "A tagság megerősítése folyamatban.", confirmingStatus: "Megerősítés…", confirmingRetry: "Újra", confirmingDismiss: "Vissza a hírfolyamhoz", continueCommunity: "Közösség kiválasztása", cityNames: CITY_COPY.hu.cityNames,
+  });
+  ACTIVE_COPY.hu = Object.assign({}, ACTIVE_COPY.en || ACTIVE_COPY.it, {
+    label: "AKTÍV TAGSÁG", title: "Az éves tagság aktív.", community: "Közösség: {city}", memberStatus: "Tag · {city}",
+    body: "A TOWN éves tagsága aktív az Ön közösségében.", returnSignal: "Vissza a jelzéshez", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
+  });
+  COMMITMENT_COPY.hu = Object.assign({}, COMMITMENT_COPY.en || COMMITMENT_COPY.it, {
+    label: "KÖZÖSSÉGVÁLLALÁS", title: "Válassza ki TOWN-közösségét.",
+    body: "Személyesen válassza ki az országot és a várost. A TOWN nem követi és nem ellenőrzi technikailag a fizikai tartózkodási helyét.",
+    countryLegend: "Ország", cityLegend: "Város", countryNames: {}, cityNames: CITY_COPY.hu.cityNames,
+    reviewLabel: "Ellenőrizze a kiválasztott közösséget", reviewCountry: "Ország: {country}", reviewCity: "Város: {city}",
+    reviewNote: "A tagság és a civil részvétel ehhez a közösséghez kapcsolódik.",
+    acceptText: "Megerősítem, hogy személyesen a helyes országot és várost választottam, és felelősséget vállalok e nyilatkozat pontosságáért.",
+    acceptRequired: "A felelősség kifejezett elfogadása kötelező.", confirm: "Nyilatkozat mentése", saving: "Mentés…", saved: "Nyilatkozat elmentve: {city}, {country}.",
+    checkoutHint: "Az éves fizetés csak a közösség megerősítése után érhető el.", checkoutCta: "Tovább az éves tagsághoz — 12 €/év", back: "Vissza",
+    errorNetwork: "Nem sikerült folytatni.", errorUnauthenticated: "Nincs bejelentkezve, vagy a munkamenet lejárt.", errorValidation: "Ellenőrizze a választást és az elfogadást.", errorSave: "A nyilatkozat mentése sikertelen.", errorUnsupported: "Ez a közösség nem érhető el.", errorLocked: "Aktív tagság alatt a közösség nem módosítható.",
+  });
+  PROFILE_COPY.hu = Object.assign({}, PROFILE_COPY.en, {
+    label: "Profil", close: "Bezárás", defaultName: "TOWN-szomszéd", handleFallback: "Regisztrált fiók",
+    bioRegistered: "Regisztrált a TOWN-on. A helyi civil részvétel aktív tagsággal nyílik meg.", bioMember: "Aktív helyi tag.",
+    communityNone: "Közösség: még nincs kiválasztva", communityLine: "Közösség: {community}", membershipNone: "Tagság: inaktív", membershipPaid: "Tagság: aktív",
+    activityTitle: "Civil aktivitás", activityEmpty: "Még nincs megerősítés.", activityError: "Az aktivitás nem tölthető be.", activityConfirmed: "Ön is látja ezt", feedCta: "Vissza a hírfolyamhoz",
+    publishInCommunity: "Közzététel itt: {community}", membershipCta: "Tagság folytatása", manageBillingCta: "Tagság kezelése", signOutCta: "Kijelentkezés", signingOut: "Kijelentkezés…",
+  });
+  SIGNAL_CREATE_COPY.hu = Object.assign({}, SIGNAL_CREATE_COPY.en, {
+    profileCta: "Civil jelzés közzététele", title: "Civil jelzés közzététele", lead: "Valódi nevén tegye közzé a saját közösségében.",
+    titleLabel: "Cím", descriptionLabel: "Leírás", categoryLabel: "Kategória", realNameLabel: "Valódi név", photoLabel: "Fénykép",
+    acceptText: "Valódi nevemen teszem közzé, és személyes felelősséget vállalok ezért a jelzésért.", submit: "Jelzés közzététele", cancel: "Mégse", close: "Bezárás",
+    errorGeneric: "A közzététel sikertelen.", errorPhoto: "Válasszon JPEG, PNG vagy WebP képet.", errorAccept: "Erősítse meg személyes felelősségét.", errorName: "Valódi vezeték- és keresztnevet használjon.",
+  });
+  ACTIVITY_COPY.hu = Object.assign({}, ACTIVITY_COPY.en, {
+    label: "Aktivitás", title: "Az Ön civil aktivitása", lead: "Megerősítések, hozzászólások és frissítések a TOWN-ból.",
+    empty: "Még nincs civil aktivitás.", loading: "Aktivitás betöltése…", error: "Az aktivitás nem tölthető be.", close: "Bezárás", feedCta: "Vissza a hírfolyamhoz",
+    inboxLabel: "Az Ön civil folyamatai", inboxEmpty: "Még nincs civil folyamat.", inboxNew: "Új", inboxContinue: "Részvétel folytatása", recentLabel: "Legutóbbi aktivitás",
+    kinds: { confirmation: "Megerősítette ezt a jelzést", contribution: "Hozzászólást tett közzé", signal_published: "Civil jelzést tett közzé", signal_evolution: "A jelzés frissült" },
+    intents: { observation: "Megfigyelés", proposal: "Javaslat", next_step: "Következő lépés" },
+  });
+  CIVIC_PROCESS_COPY.hu = Object.assign({}, CIVIC_PROCESS_COPY.en, {
+    label: "Civil folyamat", stage: "Megerősítés", loading: "A civil folyamat betöltése…", unavailable: "A civil folyamat átmenetileg nem érhető el.",
+    confirmed: "Megerősítette ezt a jelzést.", canConfirm: "Hozzáadhatja megerősítését.", readOnly: "Követheti ezt a folyamatot.", confirmations: "Megerősítések", next: "Következő szakasz",
+    proposals: "Javaslatok", closing: "Lezárás", notScheduled: "Nincs ütemezve", started: "A folyamat elindult", deliberation: "Mérlegelés", ballotPreparation: "Szavazás előkészítése",
+    voting: "Szavazás", mandate: "Mandátum", action: "Cselekvés", verification: "Ellenőrzés", archived: "Archiválva",
+    votingLoading: "Szavazás betöltése…", votingUnavailable: "A szavazás átmenetileg nem érhető el.", votingCanVote: "Válasszon egy lehetőséget és adja le szavazatát.",
+    votingHasVoted: "Szavazata rögzítve.", voteCountLabel: "{count} szavazat", voteSubmit: "Szavazat leadása", voteNeedChoice: "Előbb válasszon egy lehetőséget.", voteErrorGeneric: "Hiba történt. Próbálja újra.", voteErrorClosed: "A szavazás lezárult.", voteErrorAlready: "Már szavazott.", voteErrorNotEligible: "Ebben a szavazásban nem jogosult részt venni.",
+    proposalsCanAdd: "Strukturált javaslatot adhat hozzá.", proposalsSubmitted: "Már benyújtott javaslatot.", proposalsLoading: "Javaslatok betöltése…", proposalsUnavailable: "A javaslatok átmenetileg nem érhetők el.", proposalsEmpty: "Még nincs javaslat.",
+    proposalsAdd: "Javaslat hozzáadása", proposalsTitleLabel: "Javaslat címe", proposalsBodyLabel: "Javaslat részletei", proposalsSubmit: "Javaslat benyújtása", cancel: "Mégse", proposalsMine: "Az Ön javaslata", proposalsNeedTitle: "Adjon rövid címet.", proposalsNeedBody: "Írja le a javaslatot.",
+    proposalsOutcomeLabel: "Várt eredmény", proposalsInstitutionLabel: "Célintézmény (nem kötelező)", proposalsResourcesLabel: "Becsült erőforrások (nem kötelező)", proposalsDeadlineLabel: "Javasolt határidő (nem kötelező)", proposalsRevise: "Módosítás", proposalsWithdraw: "Visszavonás",
+    deliberationLoading: "Mérlegelés betöltése…", deliberationUnavailable: "A mérlegelés átmenetileg nem érhető el.", deliberationCanContribute: "Strukturált hozzászólást adhat bármely javaslathoz.", deliberationEmpty: "Még nincs mérlegelhető javaslat.", contributionsEmpty: "Még nincs hozzászólás.", addContribution: "Hozzászólás hozzáadása",
+    intentObservation: "Megfigyelés", intentProposal: "Javaslat", intentNextStep: "Következő lépés", intentArgumentFor: "Támogató érv", intentRiskOrObjection: "Kockázat vagy kifogás", intentQuestion: "Kérdés", intentAuthorResponse: "Szerző válasza", intentEvidence: "Bizonyíték", intentAmendmentSuggestion: "Módosítási javaslat", intentMinorityPosition: "Kisebbségi álláspont", intentLegend: "Típus",
+    contributionLabel: "Hozzászólás", contributionSubmit: "Hozzászólás beküldése", contributionNeedText: "Írjon legalább 12 karaktert.", contributionNeedIntent: "Válasszon típust.", replyAction: "Válasz", replyingToLabel: "Válasz neki: {author}", replyCancel: "Válasz megszakítása",
+    mandateLoading: "Mandátum betöltése…", mandateUnavailable: "A mandátum átmenetileg nem érhető el.", mandateContested: "Nincs nyertes: az első helyen álló javaslatok döntetlenben vannak.", mandatePending: "A szavazás még nem zárult le.",
+    actionLoading: "Cselekvés betöltése…", actionUnavailable: "A cselekvési szakasz átmenetileg nem érhető el.", actionPending: "A mandátum még nem dőlt el.", actionCanPost: "Állapotfrissítést adhat hozzá.", actionInputLabel: "Állapotfrissítés", actionSubmit: "Frissítés beküldése", actionNeedText: "Írjon legalább 12 karaktert.",
+    verificationLoading: "Ellenőrzés betöltése…", verificationUnavailable: "Az ellenőrzés átmenetileg nem érhető el.", verificationPendingReady: "Még nincs ellenőrzésre késznek jelölve.", verificationCanMarkReady: "Ellenőrzésre késznek jelölheti ezt a cselekvést.", verificationCanConfirm: "Megerősítheti, hogy a cselekvés teljesült-e.", verificationConfirmedDelivered: "Megerősítette: teljesült.", verificationConfirmedNotDelivered: "Megerősítette: nem teljesült.", verificationOutcomeDelivered: "Ellenőrizve: teljesült.", verificationOutcomeNotDelivered: "Ellenőrizve: nem teljesült.",
+  });
+
+  const EXPANDED_CITY_NAMES_BY_LANG = {
+    en: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+    es: { Marseille: "Marsella", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+    fr: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+    it: { Marseille: "Marsiglia", Lyon: "Lione", Toulouse: "Tolosa", Budapest: "Budapest", Szeged: "Seghedino" },
+    de: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+    ro: { Marseille: "Marsilia", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapesta", Szeged: "Szeged" },
+    hu: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+  };
+  const COUNTRY_NAMES_BY_LANG = {
+    en: { France: "France", Hungary: "Hungary" }, es: { France: "Francia", Hungary: "Hungría" },
+    fr: { France: "France", Hungary: "Hongrie" }, it: { France: "Francia", Hungary: "Ungheria" },
+    de: { France: "Frankreich", Hungary: "Ungarn" }, ro: { France: "Franța", Hungary: "Ungaria" },
+    hu: { Italy: "Olaszország", Germany: "Németország", Romania: "Románia", Austria: "Ausztria", France: "Franciaország", Hungary: "Magyarország" },
+  };
+  [CITY_COPY, LOCATION_COPY, FEED_COPY, MEMBERSHIP_COPY, ACCOUNT_COPY, EMAIL_COPY, CODE_COPY, PASSKEY_COPY, READY_COPY, PAYMENT_COPY, ACTIVE_COPY, COMMITMENT_COPY].forEach(function (catalog) {
+    Object.keys(EXPANDED_CITY_NAMES_BY_LANG).forEach(function (lang) {
+      if (catalog[lang] && catalog[lang].cityNames) Object.assign(catalog[lang].cityNames, EXPANDED_CITY_NAMES_BY_LANG[lang]);
+    });
+  });
+  Object.keys(COUNTRY_NAMES_BY_LANG).forEach(function (lang) {
+    if (COMMITMENT_COPY[lang] && COMMITMENT_COPY[lang].countryNames) Object.assign(COMMITMENT_COPY[lang].countryNames, COUNTRY_NAMES_BY_LANG[lang]);
+  });
 
   let activityItemsCache = [];
   let activityLoading = false;
