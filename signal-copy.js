@@ -942,10 +942,22 @@
     if (!scene || !scene.id) return scene;
     const entry = SIGNAL_COPY[scene.id];
     if (!entry) {
+      const lang = (i18n && i18n.resolveReadingLanguage([readingLang])) || "en";
+      const sourceLang =
+        scene.sourceLang ||
+        (i18n &&
+        typeof i18n.sourceLanguageForCity === "function"
+          ? i18n.sourceLanguageForCity(scene.cityId)
+          : null);
       return Object.assign({}, scene, {
-        sourceLang: null,
-        sourceLanguageLabel: "",
-        readingLang: (i18n && i18n.resolveReadingLanguage([readingLang])) || "en",
+        sourceLang: sourceLang,
+        sourceLanguageLabel:
+          sourceLang &&
+          i18n &&
+          typeof i18n.sourceLanguageLabel === "function"
+            ? i18n.sourceLanguageLabel(lang, sourceLang)
+            : "",
+        readingLang: lang,
       });
     }
     const lang = (i18n && i18n.resolveReadingLanguage([readingLang])) || "en";
