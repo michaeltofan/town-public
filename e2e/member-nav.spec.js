@@ -1,6 +1,11 @@
 const { test, expect } = require("@playwright/test");
+const { installStagingApiProxy } = require("./helpers/staging-api-proxy");
 
 test.describe("Etapa 3 member nav + feed states", () => {
+  test.beforeEach(async ({ page }) => {
+    await installStagingApiProxy(page);
+  });
+
   test("feed shows live panels or an honest empty/retry state", async ({
     page,
   }) => {
