@@ -48,7 +48,7 @@ require_contains "script.js" "Wähle deine Stadt"
 require_contains "script.js" "Continua"
 require_contains "script.js" "Weiter"
 require_contains "script.js" 'go("city")'
-require_contains "script.js" 'go("location")'
+require_contains "script.js" "loadLiveScenesForCity(selectedCity)"
 
 echo "== Guardrails =="
 if grep -qiE 'followers|trending|dashboard' index.html script.js; then
@@ -69,6 +69,7 @@ echo "== HTML smoke =="
 python3 - <<'PY'
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 
 class Checker(HTMLParser):
     def error(self, message):
@@ -91,6 +92,20 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in ("Italy", "Germany", "Milano", "Munich", "Indietro", "Zurück"):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")
+continue_city = re.search(
+    r'continueCity\\.addEventListener\\("click", \\(\\) => \\{([\\s\\S]*?)\\n  \\}\\);',
+    js,
+)
+if not continue_city:
+    raise SystemExit("Missing continue-city handler")
+continue_body = continue_city.group(1)
+if "loadLiveScenesForCity(selectedCity)" not in continue_body or 'go("feed")' not in continue_body:
+    raise SystemExit("City acceptance must load the selected city feed directly")
+if 'go("location")' in continue_body or "resetLocationVerification()" in continue_body:
+    raise SystemExit("Location verification must not gate city acceptance")
+
+if re.search(r'!locationVerified\\s*\\)\\s*\\{\\s*go\\("location"\\)', js):
+    raise SystemExit("Router still gates the product on location verification")
 print("OK: Screen 03 markup and language copy present")
 PY
 
