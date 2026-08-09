@@ -8,6 +8,10 @@ const {
   extractVerificationCode,
   recipientMatches,
 } = require("../e2e/helpers/resend-verification");
+const {
+  PUBLIC_ORIGIN,
+  candidatePath,
+} = require("../e2e/helpers/candidate-staging-origin");
 
 assert.equal(
   buildUniqueEmail("town+{tag}@example.com", "GH_123/2"),
@@ -23,6 +27,8 @@ assert.throws(
   () => extractVerificationCode({ text: "Codes 482915 and 123456" }),
   /exactly one/
 );
+assert.equal(PUBLIC_ORIGIN, "https://towncivic.org");
+assert.equal(path.basename(candidatePath("https://towncivic.org/?candidate=1")), "index.html");
 
 const root = path.join(__dirname, "..");
 const workflow = fs.readFileSync(path.join(root, ".github/workflows/e2e.yml"), "utf8");
@@ -34,6 +40,7 @@ assert.match(workflow, /secrets\.TOWN_E2E_EMAIL_BASE/);
 assert.match(workflow, /secrets\.TOWN_RESEND_API_KEY/);
 assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "off" \}\)/);
 assert.match(spec, /WebAuthn\.addVirtualAuthenticator/);
+assert.match(spec, /installCandidateAtProductionOrigin/);
 assert.match(spec, /\/v1\/account\/community-commitment/);
 
-console.log("PASSED: 12 staging account enrollment E2E assertions");
+console.log("PASSED: 15 staging account enrollment E2E assertions");
