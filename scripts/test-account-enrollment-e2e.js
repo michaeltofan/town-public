@@ -41,6 +41,17 @@ assert.match(workflow, /secrets\.TOWN_RESEND_API_KEY/);
 assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "off" \}\)/);
 assert.match(spec, /WebAuthn\.addVirtualAuthenticator/);
 assert.match(spec, /installCandidateAtProductionOrigin/);
+assert.match(spec, /page\.goto\(\`\\\$\{PUBLIC_ORIGIN\}\\\/#\\\/feed\`\)/);
+assert.match(
+  spec,
+  /\[data-feed-index\]:visible \[data-feed-role="feed-see-too"\]:visible/
+);
+assert.match(spec, /#membership-invite/);
+assert.match(spec, /#invite-continue/);
+assert.doesNotMatch(
+  spec,
+  /page\.goto\(\`\\\$\{PUBLIC_ORIGIN\}\\\/#\\\/membership\`\)/
+);
 assert.match(spec, /\/v1\/account\/community-commitment/);
 
-console.log("PASSED: 15 staging account enrollment E2E assertions");
+console.log("PASSED: 20 staging account enrollment E2E assertions");
