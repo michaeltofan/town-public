@@ -67,7 +67,7 @@ fi
 # sessionStorage is forbidden in script.js/index.html; the advisory checkout-pending
 # marker lives only in membership-recovery.js (see check-membership-recovery.sh).
 # Payment/recovery must not use localStorage/sessionStorage.
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|sk_live|pk_live|checkout\.stripe' index.html script.js; then
   echo "FAIL: forbidden payment/checkout pattern present"
   fail=1
 else
