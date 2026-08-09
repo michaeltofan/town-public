@@ -143,7 +143,7 @@ assert(
   "closing auth always restores Profile interaction before post-auth routing"
 );
 assert(
-  html.includes('script.js?v=city-expansion-de-1'),
+  html.includes('script.js?v=community-identity-1'),
   "post-passkey interaction fix has a fresh browser cache key"
 );
 

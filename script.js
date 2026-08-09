@@ -611,6 +611,12 @@
   const commitmentCountryAustriaLabel = document.getElementById(
     "commitment-country-austria-label"
   );
+  const commitmentCountryFranceLabel = document.getElementById(
+    "commitment-country-france-label"
+  );
+  const commitmentCountryHungaryLabel = document.getElementById(
+    "commitment-country-hungary-label"
+  );
   const commitmentCityFieldset = document.getElementById(
     "commitment-city-fieldset"
   );
@@ -1099,6 +1105,8 @@
     !commitmentCountryGermanyLabel ||
     !commitmentCountryRomaniaLabel ||
     !commitmentCountryAustriaLabel ||
+    !commitmentCountryFranceLabel ||
+    !commitmentCountryHungaryLabel ||
     !commitmentCityFieldset ||
     !commitmentCityLegend ||
     !commitmentCityOptions ||
@@ -1176,33 +1184,8 @@
     return;
   }
 
-  const CITY_BY_COUNTRY = {
-    Italy: [{ id: "Milano", image: "assets/cities/milano.png" }],
-    Germany: [
-      { id: "Munich", image: "assets/cities/munich.png" },
-      { id: "Koln", image: "assets/cities/koln.svg" },
-      { id: "Dortmund", image: "assets/cities/dortmund.svg" },
-      { id: "Stuttgart", image: "assets/cities/stuttgart.svg" },
-      { id: "Frankfurt", image: "assets/cities/frankfurt.svg" },
-    ],
-    Romania: [
-      { id: "Arad", image: "assets/cities/arad.png" },
-      { id: "ClujNapoca", image: "assets/cities/cluj-napoca.svg" },
-      { id: "Sibiu", image: "assets/cities/sibiu.svg" },
-      { id: "Iasi", image: "assets/cities/iasi.svg" },
-      { id: "Timisoara", image: "assets/cities/timisoara.svg" },
-    ],
-    Austria: [{ id: "Salzburg", image: "assets/cities/salzburg.svg" }],
-    France: [
-      { id: "Marseille", image: "assets/cities/marseille.svg" },
-      { id: "Lyon", image: "assets/cities/lyon.svg" },
-      { id: "Toulouse", image: "assets/cities/toulouse.svg" },
-    ],
-    Hungary: [
-      { id: "Budapest", image: "assets/cities/budapest.svg" },
-      { id: "Szeged", image: "assets/cities/szeged.svg" },
-    ],
-  };
+  const communityCatalogApi = window.TownCommunityCommitment;
+  const CITY_BY_COUNTRY = communityCatalogApi.CITY_BY_COUNTRY;
 
   // Approved Experience Prototype V1 scenes (fictional content).
   const FEED_SCENES = {
@@ -2117,57 +2100,22 @@
   }
   // Owner product-testing only: unlocks canTakeCivicAction while API is staging.
   // Does not invent backend canParticipate; strip after read. Not a production grant.
-  const CITY_API_SLUG = {
-    Milano: "milano-it",
-    Munich: "munich-de",
-    Arad: "arad-ro",
-    ClujNapoca: "cluj-napoca-ro",
-    Sibiu: "sibiu-ro",
-    Iasi: "iasi-ro",
-    Timisoara: "timisoara-ro",
-    Koln: "koln-de",
-    Dortmund: "dortmund-de",
-    Stuttgart: "stuttgart-de",
-    Frankfurt: "frankfurt-de",
-    Salzburg: "salzburg-at",
-    Marseille: "marseille-fr",
-    Lyon: "lyon-fr",
-    Toulouse: "toulouse-fr",
-    Budapest: "budapest-hu",
-    Szeged: "szeged-hu",
-  };
+  const CITY_API_SLUG = {};
   const KNOWN_FEED_IMAGES = {
     "assets/feed/signal_citta_studi_pavement.jpg": true,
     "assets/feed/signal_porta_romana_lighting.jpg": true,
     "assets/feed/signal_lorenteggio_works.jpg": true,
   };
-  const CITY_PLACEHOLDER_IMAGES = {
-    Marseille: "assets/cities/marseille.svg",
-    Lyon: "assets/cities/lyon.svg",
-    Toulouse: "assets/cities/toulouse.svg",
-    Budapest: "assets/cities/budapest.svg",
-    Szeged: "assets/cities/szeged.svg",
-  };
+  const CITY_PLACEHOLDER_IMAGES = {};
   /** In-session live scenes by city id; cleared on session reset. */
-  const liveScenes = {
-    Milano: null,
-    Munich: null,
-    Arad: null,
-    ClujNapoca: null,
-    Sibiu: null,
-    Iasi: null,
-    Timisoara: null,
-    Koln: null,
-    Dortmund: null,
-    Stuttgart: null,
-    Frankfurt: null,
-    Salzburg: null,
-    Marseille: null,
-    Lyon: null,
-    Toulouse: null,
-    Budapest: null,
-    Szeged: null,
-  };
+  const liveScenes = {};
+  const catalogCityIds = communityCatalogApi.cityIds();
+  for (let cityIndex = 0; cityIndex < catalogCityIds.length; cityIndex++) {
+    const catalogCity = communityCatalogApi.cityForId(catalogCityIds[cityIndex]);
+    CITY_API_SLUG[catalogCity.id] = catalogCity.slug;
+    CITY_PLACEHOLDER_IMAGES[catalogCity.id] = catalogCity.image;
+    liveScenes[catalogCity.id] = null;
+  }
 
   const CITY_COPY = {
     en: {
@@ -3680,44 +3628,12 @@
   // path may open the existing approved membership/account-entry journey.
   const PRODUCT_ONLY_PUBLIC_MODE = true;
   const PRODUCT_ONLY_FEED_ROUTE = "feed";
-  const PRODUCT_ONLY_CITY_ORDER = [
-    "Milano",
-    "Munich",
-    "Arad",
-    "ClujNapoca",
-    "Sibiu",
-    "Iasi",
-    "Timisoara",
-    "Koln",
-    "Dortmund",
-    "Stuttgart",
-    "Frankfurt",
-    "Salzburg",
-    "Marseille",
-    "Lyon",
-    "Toulouse",
-    "Budapest",
-    "Szeged",
-  ];
-  const PRODUCT_ONLY_COUNTRY_BY_CITY = {
-    Milano: "Italy",
-    Munich: "Germany",
-    Arad: "Romania",
-    ClujNapoca: "Romania",
-    Sibiu: "Romania",
-    Iasi: "Romania",
-    Timisoara: "Romania",
-    Koln: "Germany",
-    Dortmund: "Germany",
-    Stuttgart: "Germany",
-    Frankfurt: "Germany",
-    Salzburg: "Austria",
-    Marseille: "France",
-    Lyon: "France",
-    Toulouse: "France",
-    Budapest: "Hungary",
-    Szeged: "Hungary",
-  };
+  const PRODUCT_ONLY_CITY_ORDER = communityCatalogApi.cityIds();
+  const PRODUCT_ONLY_COUNTRY_BY_CITY = {};
+  for (let cityIndex = 0; cityIndex < PRODUCT_ONLY_CITY_ORDER.length; cityIndex++) {
+    const catalogCity = communityCatalogApi.cityForId(PRODUCT_ONLY_CITY_ORDER[cityIndex]);
+    PRODUCT_ONLY_COUNTRY_BY_CITY[catalogCity.id] = catalogCity.country;
+  }
   const NON_PRODUCT_ROUTES = {
     entry: true,
     country: true,
@@ -3830,19 +3746,18 @@
   }
 
   function cityIdFromScene(scene) {
-    if (!scene || !scene.id) return null;
-    if (scene.id.indexOf("milano-") === 0) return "Milano";
-    if (scene.id.indexOf("munich-") === 0) return "Munich";
-    if (scene.id.indexOf("arad-") === 0) return "Arad";
-    if (scene.id.indexOf("cluj-napoca-") === 0) return "ClujNapoca";
-    if (scene.id.indexOf("sibiu-") === 0) return "Sibiu";
-    if (scene.id.indexOf("iasi-") === 0) return "Iasi";
-    if (scene.id.indexOf("timisoara-") === 0) return "Timisoara";
-    if (scene.id.indexOf("koln-") === 0) return "Koln";
-    if (scene.id.indexOf("dortmund-") === 0) return "Dortmund";
-    if (scene.id.indexOf("stuttgart-") === 0) return "Stuttgart";
-    if (scene.id.indexOf("frankfurt-") === 0) return "Frankfurt";
-    if (scene.id.indexOf("salzburg-") === 0) return "Salzburg";
+    if (!scene) return null;
+    if (scene.cityId && communityCatalogApi.cityForId(scene.cityId)) {
+      return scene.cityId;
+    }
+    // Temporary compatibility for old editorial scenes. Live API scenes carry
+    // cityId explicitly and never inherit the previously selected community.
+    if (!scene.id) return null;
+    for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
+      const city = communityCatalogApi.cityForId(PRODUCT_ONLY_CITY_ORDER[i]);
+      const legacyPrefix = city.slug.replace(/-[a-z]{2}$/, "") + "-";
+      if (scene.id.indexOf(legacyPrefix) === 0) return city.id;
+    }
     return null;
   }
 
@@ -7944,26 +7859,8 @@
   }
 
   function languageForCityId(cityId) {
-    if (cityId === "Milano") return "it";
-    if (cityId === "Munich") return "de";
-    if (cityId === "Arad") return "ro";
-    if (cityId === "ClujNapoca") return "ro";
-    if (cityId === "Sibiu") return "ro";
-    if (cityId === "Iasi") return "ro";
-    if (cityId === "Timisoara") return "ro";
-    if (cityId === "Koln") return "de";
-    if (cityId === "Dortmund") return "de";
-    if (cityId === "Stuttgart") return "de";
-    if (cityId === "Frankfurt") return "de";
-    if (cityId === "Salzburg") return "de";
-    if (cityId === "Marseille") return "fr";
-    if (cityId === "Lyon") return "fr";
-    if (cityId === "Toulouse") return "fr";
-    if (cityId === "Budapest") return "hu";
-    if (cityId === "Szeged") return "hu";
-    if (cityId === "Frankfurt") return "de";
-    if (cityId === "Salzburg") return "de";
-    return null;
+    const city = communityCatalogApi.cityForId(cityId);
+    return city ? city.language : null;
   }
 
   function resolvePublicReadingLanguage() {
@@ -8007,9 +7904,7 @@
         ? signalCopy.localizeSignal(scene, readingLang, i18n)
         : scene;
     const cityId =
-      (localizedScene && localizedScene.cityId) ||
-      cityIdFromScene(scene) ||
-      selectedCity;
+      (localizedScene && localizedScene.cityId) || cityIdFromScene(scene);
     const chrome =
       (i18n && i18n.feedChromeCopy(readingLang)) ||
       FEED_COPY[readingLang] ||
@@ -8151,6 +8046,10 @@
 
     return {
       id: detail.slug || detail.id,
+      cityId: cityId,
+      communitySlug: CITY_API_SLUG[cityId] || null,
+      countryCode:
+        (communityCatalogApi.cityForId(cityId) || {}).countryCode || null,
       // Canonical UUID for discussion-session and other signal-scoped APIs.
       signalId: detail.id || "",
       category: detail.category || "",
@@ -8583,9 +8482,9 @@
   }
 
   function clearLiveScenes() {
-    liveScenes.Milano = null;
-    liveScenes.Munich = null;
-    liveScenes.Arad = null;
+    for (let i = 0; i < PRODUCT_ONLY_CITY_ORDER.length; i++) {
+      liveScenes[PRODUCT_ONLY_CITY_ORDER[i]] = null;
+    }
   }
 
 
@@ -8605,7 +8504,7 @@
     const labels = document.querySelectorAll(
       "#view-country .country__option-label"
     );
-    const order = ["Italy", "Germany", "Romania", "Austria"];
+    const order = communityCatalogApi.countries();
     for (let i = 0; i < labels.length && i < order.length; i++) {
       labels[i].textContent =
         (copy.countries && copy.countries[order[i]]) || order[i];
@@ -12085,6 +11984,8 @@
     commitmentCountryGermanyLabel.textContent = copy.countryNames.Germany;
     commitmentCountryRomaniaLabel.textContent = copy.countryNames.Romania;
     commitmentCountryAustriaLabel.textContent = copy.countryNames.Austria;
+    commitmentCountryFranceLabel.textContent = copy.countryNames.France;
+    commitmentCountryHungaryLabel.textContent = copy.countryNames.Hungary;
     commitmentReviewLabel.textContent = copy.reviewLabel;
     commitmentAcceptText.textContent = copy.acceptText;
     commitmentAcceptRequired.textContent = copy.acceptRequired;

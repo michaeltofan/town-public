@@ -227,4 +227,21 @@ assertOk(commitment.isCityValidForCountry("Hungary", "Budapest"));
 assertEqual(commitment.isCityValidForCountry("France", "Budapest"), false);
 assertEqual(commitment.isCityValidForCountry("Hungary", "Lyon"), false);
 
+// One explicit identity contract for every production community.
+assertEqual(commitment.countries().length, 6, "six selectable countries");
+assertEqual(commitment.cityIds().length, 17, "seventeen selectable cities");
+for (const cityId of commitment.cityIds()) {
+  const city = commitment.cityForId(cityId);
+  assertOk(city, cityId + " resolves from the canonical catalog");
+  assertOk(city.slug, cityId + " has an API community slug");
+  assertOk(city.countryCode, cityId + " has a country code");
+  assertOk(city.language, cityId + " has a content language");
+  assertOk(city.image, cityId + " has a city image");
+  assertEqual(
+    commitment.countryForCityId(cityId),
+    city.country,
+    cityId + " has one country authority"
+  );
+}
+
 console.log("OK: community-commitment helper tests passed");
