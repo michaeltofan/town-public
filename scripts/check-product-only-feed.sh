@@ -125,13 +125,9 @@ if "CITY_DISCOVERY_JOURNEY_ROUTES" not in js:
 if "function currentScenes()" not in js or "productOnlyScenes()" not in js:
     fail("currentScenes must use productOnlyScenes in product-only mode")
 
-# Every canonical city represented via live API scenes, no Milano-only hardcode for public product.
-order_pos = js.find("PRODUCT_ONLY_CITY_ORDER = [")
-order_end = js.find("]", order_pos) if order_pos >= 0 else -1
-order_body = js[order_pos:order_end + 1] if order_pos >= 0 and order_end >= 0 else ""
-required_cities = ["Milano", "Munich", "Arad", "ClujNapoca", "Sibiu", "Iasi", "Timisoara"]
-if not order_body or any('"' + city + '"' not in order_body for city in required_cities):
-    fail("product-only city order must include Milano, Munich, Arad, and the Romanian city-expansion cities")
+# Every canonical city is represented through the catalog-derived live API order.
+if "PRODUCT_ONLY_CITY_ORDER = communityCatalogApi.cityIds()" not in js:
+    fail("product-only city order must derive from the canonical community catalog")
 
 pos = js.find("function productOnlyScenes()")
 if pos < 0:
@@ -190,8 +186,8 @@ if "signalConfirmed" in invite_continue_body:
 if re.search(r"isProductOnlyPublicMode\(\)\s*return", invite_continue_body):
     fail("invite continue must not silently no-op in product-only mode")
 
-if not invite_not_now or "isProductOnlyPublicMode()" not in invite_not_now.group(1):
-    fail("invite not-now must keep existing product-only visitor exit behaviour")
+if not invite_not_now or "returnVisitorToOriginatingSignal()" not in invite_not_now.group(1):
+    fail("invite secondary action must return to the originating feed signal")
 
 if "function beginInviteMembershipJourney()" not in js:
     fail("missing beginInviteMembershipJourney()")

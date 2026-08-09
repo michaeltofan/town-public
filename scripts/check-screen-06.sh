@@ -46,7 +46,7 @@ require_contains "script.js" "Dir ist wichtig"
 require_contains "script.js" "€12"
 require_contains "script.js" "openInvite"
 require_contains "script.js" 'go("membership")'
-require_contains "script.js" 'go("ended")'
+require_contains "script.js" "returnVisitorToOriginatingSignal"
 
 echo "== Guardrails =="
 if grep -Eiq 'card number|paymentIntent|type="password"|dashboard|followers|trending' index.html script.js; then
@@ -82,8 +82,8 @@ for fragment in (
 
 js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
-    "Non ora",
-    "Noch nicht",
+    "Continua a esplorare",
+    "Weiter erkunden",
     "Torna all’ingresso TOWN",
     "Zurück zum TOWN-Eingang",
     "MEMBERSHIP LOCALE",

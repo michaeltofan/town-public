@@ -72,7 +72,10 @@ assert(i18n.sourceLanguageForCity("Budapest") === "hu", "Budapest source is Hung
 assert(i18n.sourceLanguageForCity("Marseille") === "fr", "Marseille source is French");
 assert(commitment.countryForCityId("Budapest") === "Hungary", "language never replaces Hungary selection");
 assert(commitment.countryForCityId("Marseille") === "France", "language never replaces France selection");
-assert(source.includes('if (resolvePublicReadingLanguage() === "hu") return "hu";'), "member journey keeps Hungarian browser copy");
+assert(
+  /function membershipLang\(\) \{[\s\S]*?return resolvePublicReadingLanguage\(\);[\s\S]*?\n  \}/.test(source),
+  "member journey keeps the browser language, including Hungarian"
+);
 for (const id of signals.allSignalIds()) {
   assert(signals.hasCompleteLocale(id, "hu"), id + " has complete Hungarian signal copy");
 }
