@@ -41,6 +41,22 @@ assert.match(workflow, /secrets\.TOWN_RESEND_API_KEY/);
 assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "off" \}\)/);
 assert.match(spec, /WebAuthn\.addVirtualAuthenticator/);
 assert.match(spec, /installCandidateAtProductionOrigin/);
+assert.equal(
+  spec.includes('page.goto(`${PUBLIC_ORIGIN}/#/feed`)'),
+  true
+);
+assert.equal(
+  spec.includes(
+    '[data-feed-index]:visible [data-feed-role="feed-see-too"]:visible'
+  ),
+  true
+);
+assert.equal(spec.includes("#membership-invite"), true);
+assert.equal(spec.includes("#invite-continue"), true);
+assert.equal(
+  spec.includes('page.goto(`${PUBLIC_ORIGIN}/#/membership`)'),
+  false
+);
 assert.match(spec, /\/v1\/account\/community-commitment/);
 
-console.log("PASSED: 15 staging account enrollment E2E assertions");
+console.log("PASSED: 20 staging account enrollment E2E assertions");
