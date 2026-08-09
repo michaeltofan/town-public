@@ -14358,23 +14358,6 @@
       go(selectedCountry ? "city" : "country");
       return;
     }
-    if (
-      (route === "feed" ||
-        route === "membership" ||
-        route === "ended" ||
-        route === "account" ||
-        route === "email" ||
-        route === "code" ||
-        route === "password" ||
-        route === "passkey" ||
-        route === "ready" ||
-        route === "payment" ||
-        route === "active") &&
-      !locationVerified
-    ) {
-      go("location");
-      return;
-    }
     showView(route);
   }
 
@@ -15042,9 +15025,12 @@
 
   continueCity.addEventListener("click", () => {
     if (!selectedCountry || !selectedCity) return;
-    resetLocationVerification();
     feedIndex = 0;
-    go("location");
+    continueCity.disabled = true;
+    loadLiveScenesForCity(selectedCity).finally(() => {
+      continueCity.disabled = false;
+      go("feed");
+    });
   });
 
   locationBack.addEventListener("click", () => {
