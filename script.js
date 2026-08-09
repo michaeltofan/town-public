@@ -8355,6 +8355,7 @@
   let emailVerified = false;
   let passwordSet = false;
   let passwordSubmitting = false;
+  let passwordSetupErrorVisible = false;
   let passkeyRegistered = false;
   let passkeySubmitting = false;
   let paymentCheckoutSubmitting = false;
@@ -8810,6 +8811,9 @@
     }
     if (code === "INVALID_OR_EXPIRED_CHALLENGE") {
       return "invalid";
+    }
+    if (code === "PASSWORD_SETUP_FAILED") {
+      return "grantExpired";
     }
     if (
       status === 401 ||
@@ -11206,6 +11210,7 @@
     emailVerified = false;
     passwordSet = false;
     passwordSubmitting = false;
+    passwordSetupErrorVisible = false;
     passkeyRegistered = false;
     passkeySubmitting = false;
     paymentCheckoutSubmitting = false;
@@ -12936,7 +12941,7 @@
       passwordError.textContent = copy.mismatch;
       return;
     }
-    if (!passwordSubmitting) {
+    if (!passwordSubmitting && !passwordSetupErrorVisible) {
       passwordError.hidden = true;
       passwordError.textContent = "";
     }
@@ -15358,8 +15363,13 @@
     go("email");
   });
 
-  passwordInput.addEventListener("input", syncPasswordContinue);
-  passwordConfirm.addEventListener("input", syncPasswordContinue);
+  function handlePasswordInput() {
+    passwordSetupErrorVisible = false;
+    syncPasswordContinue();
+  }
+
+  passwordInput.addEventListener("input", handlePasswordInput);
+  passwordConfirm.addEventListener("input", handlePasswordInput);
 
   passwordContinue.addEventListener("click", () => {
     const copy = PASSWORD_COPY[membershipLang()];
@@ -15373,11 +15383,13 @@
       return;
     }
     if (!isSetupGrantUsable()) {
+      passwordSetupErrorVisible = true;
       passwordError.hidden = false;
       passwordError.textContent = copy.grantExpired;
       return;
     }
 
+    passwordSetupErrorVisible = false;
     passwordSubmitting = true;
     passwordContinue.disabled = true;
     passwordError.hidden = true;
@@ -15392,6 +15404,7 @@
         go("passkey");
       })
       .catch(function (err) {
+        passwordSetupErrorVisible = true;
         passwordError.hidden = false;
         passwordError.textContent =
           err && err.kind === "grantExpired" ? copy.grantExpired : copy.failed;
@@ -15403,6 +15416,7 @@
   });
 
   passwordBack.addEventListener("click", () => {
+    passwordSetupErrorVisible = false;
     passwordInput.value = "";
     passwordConfirm.value = "";
     passwordError.hidden = true;
