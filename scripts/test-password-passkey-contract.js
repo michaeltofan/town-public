@@ -62,6 +62,21 @@ assert(
 );
 assert(js.includes('go("passkey")'), "password setup continues to passkey registration");
 assert(js.includes("passwordSet = true"), "passkey route opens only after password setup success");
+assert(
+  js.includes('code === "PASSWORD_SETUP_FAILED"') &&
+    js.includes('return "grantExpired"'),
+  "password setup API failures become an actionable restart message"
+);
+assert(
+  js.includes("passwordSetupErrorVisible = true") &&
+    js.includes("!passwordSetupErrorVisible"),
+  "server-side password errors remain visible after request cleanup"
+);
+assert(
+  js.includes("function handlePasswordInput()") &&
+    js.includes("passwordSetupErrorVisible = false"),
+  "editing the password clears the retained server error"
+);
 assert(js.includes("passwordBack.hidden = true"), "consumed email code cannot be replayed through Back");
 assert(js.includes("passkeyBack.hidden = passwordSet"), "consumed password grant cannot be replayed through Back");
 assert(js.includes("passwordCodePointLength"), "password policy counts Unicode code points");
