@@ -2120,7 +2120,7 @@
   const CITY_COPY = {
     en: {
       title: "Choose your city",
-      lead: "TOWN connects you to one verified local community.",
+      lead: "TOWN connects you to one local community that you declare.",
       cityLegend: "City",
       back: "Back",
       continue: "Continue",
@@ -2133,7 +2133,7 @@
     },
     es: {
       title: "Elige tu ciudad",
-      lead: "TOWN te conecta con una sola comunidad local verificada.",
+      lead: "TOWN te conecta con una sola comunidad local que tú declaras.",
       cityLegend: "Ciudad",
       back: "Atrás",
       continue: "Continuar",
@@ -2146,7 +2146,7 @@
     },
     it: {
       title: "Seleziona la tua città",
-      lead: "TOWN ti collega a una sola comunità locale verificata.",
+      lead: "TOWN ti collega a una sola comunità locale che dichiari.",
       cityLegend: "Città",
       back: "Indietro",
       continue: "Continua",
@@ -2159,7 +2159,7 @@
     },
     de: {
       title: "Wähle deine Stadt",
-      lead: "TOWN verbindet dich mit einer einzigen verifizierten lokalen Gemeinschaft.",
+      lead: "TOWN verbindet dich mit einer einzigen lokalen Gemeinschaft, die du angibst.",
       cityLegend: "Stadt",
       back: "Zurück",
       continue: "Weiter",
@@ -2172,7 +2172,7 @@
     },
     ro: {
       title: "Alege-ți orașul",
-      lead: "TOWN te leagă de o singură comunitate locală verificată.",
+      lead: "TOWN te leagă de o singură comunitate locală pe care o declari.",
       cityLegend: "Oraș",
       back: "Înapoi",
       continue: "Continuă",
@@ -2640,16 +2640,16 @@
     it: {
       inviteTitle: "Ti sta a cuore ciò che accade nella tua comunità.",
       inviteBody:
-        "Per confermare questo segnale e diventare parte della soluzione, unisciti a TOWN come membro locale verificato.",
+        "Per confermare questo segnale e diventare parte della soluzione, crea un account identificato e dichiara la comunità in cui partecipi.",
       inviteBodySecond:
         "TOWN è costruito intorno a persone reali della stessa comunità — non su account anonimi, follower o popolarità sui social.",
       continue: "Continua",
-      notNow: "Non ora",
+      notNow: "Continua a esplorare",
       label: "MEMBERSHIP LOCALE",
       title: "Entra nella comunità di {city}.",
       body: "TOWN è uno spazio civico locale per persone reali.",
       bodySecond:
-        "Per partecipare servono un account, una verifica locale valida e un abbonamento attivo.",
+        "Per partecipare servono un account identificato, una comunità dichiarata e una membership attiva.",
       price: "€12 all’anno",
       renewal: "Rinnovo annuale.",
       renewalSecond:
@@ -2657,7 +2657,7 @@
       whyTitle: "Perché esiste la membership",
       why: [
         "Persone reali nella stessa comunità",
-        "Partecipazione locale verificata",
+        "Partecipazione responsabile nella comunità dichiarata",
         "Meno bot e account fantasma",
         "Spazio civico calmo, senza pubblicità",
       ],
@@ -2673,16 +2673,16 @@
     de: {
       inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
       inviteBody:
-        "Um dieses Signal zu bestätigen und Teil der Lösung zu werden, tritt TOWN als verifiziertes lokales Mitglied bei.",
+        "Um dieses Signal zu bestätigen und Teil der Lösung zu werden, erstelle ein identifiziertes Konto und gib die Gemeinschaft an, in der du teilnimmst.",
       inviteBodySecond:
         "TOWN wird von echten Menschen aus derselben Gemeinschaft getragen — nicht von anonymen Konten, Followern oder Popularität in sozialen Medien.",
       continue: "Weiter",
-      notNow: "Noch nicht",
+      notNow: "Weiter erkunden",
       label: "LOKALE MITGLIEDSCHAFT",
       title: "Werde Mitglied in deiner Münchner Gemeinschaft.",
       body: "TOWN ist ein lokaler zivilgesellschaftlicher Raum für echte Menschen.",
       bodySecond:
-        "Für die Teilnahme brauchst du ein Konto, eine gültige lokale Verifizierung und eine aktive Mitgliedschaft.",
+        "Für die Teilnahme brauchst du ein identifiziertes Konto, eine angegebene Gemeinschaft und eine aktive Mitgliedschaft.",
       price: "€12 pro Jahr",
       renewal: "Jährliche Verlängerung.",
       renewalSecond:
@@ -2690,7 +2690,7 @@
       whyTitle: "Warum es die Mitgliedschaft gibt",
       why: [
         "Echte Menschen in derselben Gemeinschaft",
-        "Verifizierte lokale Teilnahme",
+        "Verantwortliche Teilnahme in der angegebenen Gemeinschaft",
         "Weniger Bots und Geisterkonten",
         "Ruhiger zivilgesellschaftlicher Raum ohne Werbung",
       ],
@@ -2707,16 +2707,16 @@
     ro: {
       inviteTitle: "Îți pasă de ceea ce se întâmplă în comunitatea ta.",
       inviteBody:
-        "Pentru a confirma acest semnal și a deveni parte din soluție, alătură-te TOWN ca membru local verificat.",
+        "Pentru a confirma acest semnal și a deveni parte din soluție, creează un cont identificat și declară comunitatea în care participi.",
       inviteBodySecond:
         "TOWN este construit în jurul oamenilor reali din aceeași comunitate — nu pe conturi anonime, urmăritori sau popularitate pe social media.",
       continue: "Continuă",
-      notNow: "Nu acum",
+      notNow: "Continuă să explorezi",
       label: "MEMBERSHIP LOCAL",
       title: "Intră în comunitatea din {city}.",
       body: "TOWN este un spațiu civic local pentru oameni reali.",
       bodySecond:
-        "Pentru a participa ai nevoie de un cont, o verificare locală validă și un abonament activ.",
+        "Pentru a participa ai nevoie de un cont identificat, o comunitate declarată și un membership activ.",
       price: "12 € pe an",
       renewal: "Reînnoire anuală.",
       renewalSecond:
@@ -2724,7 +2724,7 @@
       whyTitle: "De ce există membership-ul",
       why: [
         "Oameni reali în aceeași comunitate",
-        "Participare locală verificată",
+        "Participare responsabilă în comunitatea declarată",
         "Mai puține boturi și conturi fantomă",
         "Spațiu civic calm, fără publicitate",
       ],
@@ -2749,7 +2749,7 @@
       whyTitle: "Il tuo account TOWN servirà a:",
       why: [
         "identificare una sola persona reale;",
-        "conservare la comunità locale verificata;",
+        "conservare la comunità locale dichiarata;",
         "consentire l’accesso su web e mobile;",
         "proteggere la partecipazione da bot e account fantasma.",
       ],
@@ -2773,7 +2773,7 @@
       whyTitle: "Dein TOWN-Konto dient dazu:",
       why: [
         "eine einzige reale Person zu kennzeichnen;",
-        "die verifizierte lokale Gemeinschaft zu bewahren;",
+        "die angegebene lokale Gemeinschaft zu speichern;",
         "den Zugang über Web und Mobile zu unterstützen;",
         "die Teilnahme vor Bots und Geisterkonten zu schützen.",
       ],
@@ -2797,7 +2797,7 @@
       whyTitle: "Contul tău TOWN va servi la:",
       why: [
         "identificarea unei singure persoane reale;",
-        "păstrarea comunității locale verificate;",
+        "păstrarea comunității locale declarate;",
         "permiterea accesului pe web și mobil;",
         "protejarea participării de boturi și conturi fantomă.",
       ],
@@ -3096,7 +3096,7 @@
       cancel:
         "Puoi annullare in qualsiasi momento. L’accesso resta attivo fino alla fine del periodo già pagato.",
       body:
-        "Con una membership attiva potrai partecipare alla comunità locale verificata.",
+        "Con una membership attiva potrai partecipare nella comunità locale che hai dichiarato.",
       accountStatus: "Account: pronto",
       membershipStatus: "Membership: non attiva",
       prototype:
@@ -3147,7 +3147,7 @@
       cancel:
         "Du kannst jederzeit kündigen. Der Zugang bleibt bis zum Ende des bereits bezahlten Zeitraums aktiv.",
       body:
-        "Mit einer aktiven Mitgliedschaft kannst du an der verifizierten lokalen Gemeinschaft teilnehmen.",
+        "Mit einer aktiven Mitgliedschaft kannst du in der von dir angegebenen lokalen Gemeinschaft teilnehmen.",
       accountStatus: "Konto: bereit",
       membershipStatus: "Mitgliedschaft: nicht aktiv",
       prototype:
@@ -3200,7 +3200,7 @@
       cancel:
         "Poți anula oricând. Accesul rămâne activ până la sfârșitul perioadei deja plătite.",
       body:
-        "Cu un membership activ vei putea participa în comunitatea locală verificată.",
+        "Cu un membership activ vei putea participa în comunitatea locală pe care ai declarat-o.",
       accountStatus: "Cont: pregătit",
       membershipStatus: "Membership: inactiv",
       prototype:
@@ -3415,6 +3415,440 @@
     },
   };
 
+  // The interface language follows the visitor, independently of the signal's
+  // source language or the community being joined. English and Spanish need
+  // complete onboarding catalogs so neither can fall through to city copy.
+  const ONBOARDING_CITY_NAMES = CITY_COPY.en.cityNames;
+  const ONBOARDING_CITY_NAMES_ES = CITY_COPY.es.cityNames;
+
+  MEMBERSHIP_COPY.en = {
+    inviteTitle: "You care about what happens in your community.",
+    inviteBody:
+      "To confirm this signal and become part of the solution, create an identified account and declare the community where you participate.",
+    inviteBodySecond:
+      "TOWN is built around real people from the same community — not anonymous accounts or popularity metrics.",
+    continue: "Continue",
+    notNow: "Continue exploring",
+    label: "LOCAL MEMBERSHIP",
+    title: "Join the {city} community.",
+    body: "TOWN is a local civic space for real people.",
+    bodySecond:
+      "To participate, you need an identified account, a declared community, and an active membership.",
+    price: "€12 per year",
+    renewal: "Renews annually.",
+    renewalSecond:
+      "You can cancel at any time. Access remains active until the end of the paid period.",
+    whyTitle: "Why membership exists",
+    why: [
+      "Real people in the same community",
+      "Responsible participation in the declared community",
+      "Fewer bots and fake accounts",
+      "A calm civic space without advertising",
+    ],
+    rightsTitle: "With an active membership, you can:",
+    rights:
+      "Confirm signals, open focused discussions toward a solution, and participate in community decisions.",
+    endedTitle: "",
+    endedBody: "",
+    endedReturn: "Back to the feed",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  MEMBERSHIP_COPY.es = {
+    inviteTitle: "Te importa lo que ocurre en tu comunidad.",
+    inviteBody:
+      "Para confirmar esta señal y formar parte de la solución, crea una cuenta identificada y declara la comunidad en la que participas.",
+    inviteBodySecond:
+      "TOWN se construye en torno a personas reales de la misma comunidad, no a cuentas anónimas, seguidores ni popularidad en redes.",
+    continue: "Continuar",
+    notNow: "Seguir explorando",
+    label: "MEMBRESÍA LOCAL",
+    title: "Únete a la comunidad de {city}.",
+    body: "TOWN es un espacio cívico local para personas reales.",
+    bodySecond:
+      "Para participar necesitas una cuenta identificada, una comunidad declarada y una membresía activa.",
+    price: "12 € al año",
+    renewal: "Renovación anual.",
+    renewalSecond:
+      "Puedes cancelar en cualquier momento. El acceso continúa hasta el final del periodo pagado.",
+    whyTitle: "Por qué existe la membresía",
+    why: [
+      "Personas reales en la misma comunidad",
+      "Participación responsable en la comunidad declarada",
+      "Menos bots y cuentas falsas",
+      "Un espacio cívico tranquilo y sin publicidad",
+    ],
+    rightsTitle: "Con una membresía activa puedes:",
+    rights:
+      "Confirmar señales, abrir conversaciones centradas en una solución y participar en las decisiones de la comunidad.",
+    endedTitle: "",
+    endedBody: "",
+    endedReturn: "Volver al feed",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  ACCOUNT_COPY.en = {
+    label: "PERSONAL ACCOUNT",
+    title: "Create your TOWN account.",
+    community: "Community: {city}",
+    body: "Before asking for personal information, we explain why an account is needed.",
+    whyTitle: "Your TOWN account is used to:",
+    why: [
+      "identify one real person;",
+      "store the local community you declare;",
+      "support secure access;",
+      "protect participation from bots and fake accounts.",
+    ],
+    privacyTitle: "Privacy",
+    privacy: "We ask only for information essential to the account.",
+    privacySecond: "The current flow does not require a password.",
+    prototype: "Next, you create your account with email and a passkey.",
+    continue: "Continue",
+    back: "Back",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  ACCOUNT_COPY.es = {
+    label: "CUENTA PERSONAL",
+    title: "Crea tu cuenta TOWN.",
+    community: "Comunidad: {city}",
+    body: "Antes de pedir datos personales, te explicamos por qué necesitas una cuenta.",
+    whyTitle: "Tu cuenta TOWN sirve para:",
+    why: [
+      "identificar a una persona real;",
+      "guardar la comunidad local que declaras;",
+      "permitir un acceso seguro;",
+      "proteger la participación frente a bots y cuentas falsas.",
+    ],
+    privacyTitle: "Privacidad",
+    privacy: "Solo pedimos los datos esenciales para la cuenta.",
+    privacySecond: "El flujo actual no requiere contraseña.",
+    prototype: "A continuación, creas tu cuenta con email y una passkey.",
+    continue: "Continuar",
+    back: "Atrás",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  EMAIL_COPY.en = {
+    label: "CREATE YOUR ACCOUNT",
+    title: "Enter your email.",
+    body: "We will send you a six-digit verification code.",
+    bodySecond: "No password is required in the current flow.",
+    prototype: "We will send a six-digit verification code by email.",
+    fieldLabel: "Email address",
+    placeholder: "name@example.com",
+    privacy:
+      "We use this email to verify your account, send essential communications, and help recover access.",
+    invalid: "Enter a valid email address.",
+    rateLimited: "Too many attempts. Try again shortly.",
+    failed: "Could not continue. Try again.",
+    continue: "Continue",
+    back: "Back",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  EMAIL_COPY.es = {
+    label: "CREA TU CUENTA",
+    title: "Introduce tu email.",
+    body: "Te enviaremos un código de verificación de seis dígitos.",
+    bodySecond: "El flujo actual no requiere contraseña.",
+    prototype: "Te enviaremos por email un código de verificación de seis dígitos.",
+    fieldLabel: "Dirección de email",
+    placeholder: "nombre@ejemplo.com",
+    privacy:
+      "Usamos este email para verificar tu cuenta, enviar comunicaciones esenciales y ayudarte a recuperar el acceso.",
+    invalid: "Introduce una dirección de email válida.",
+    rateLimited: "Demasiados intentos. Vuelve a intentarlo en breve.",
+    failed: "No se pudo continuar. Inténtalo de nuevo.",
+    continue: "Continuar",
+    back: "Atrás",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  CODE_COPY.en = {
+    label: "VERIFY EMAIL",
+    title: "Check your email.",
+    body: "We sent a six-digit code to:",
+    fieldLabel: "Verification code",
+    prototype: "Enter the six-digit code we sent by email.",
+    invalid: "The code is not correct.",
+    rateLimited: "Too many attempts. Try again shortly.",
+    failed: "Could not continue. Try again.",
+    verify: "Verify",
+    changeEmail: "Change email",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  CODE_COPY.es = {
+    label: "VERIFICA EL EMAIL",
+    title: "Revisa tu email.",
+    body: "Hemos enviado un código de seis dígitos a:",
+    fieldLabel: "Código de verificación",
+    prototype: "Introduce el código de seis dígitos que enviamos por email.",
+    invalid: "El código no es correcto.",
+    rateLimited: "Demasiados intentos. Vuelve a intentarlo en breve.",
+    failed: "No se pudo continuar. Inténtalo de nuevo.",
+    verify: "Verificar",
+    changeEmail: "Cambiar email",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  PASSKEY_COPY.en = {
+    label: "SECURE ACCESS",
+    title: "Protect your TOWN account.",
+    body: "TOWN currently uses a passkey for secure access.",
+    bodySecond: "The passkey uses the security method available on your device.",
+    methodsTitle: "Methods available on your device",
+    methods: ["Face ID", "Touch ID", "Fingerprint", "Device PIN"],
+    benefitsTitle: "Why a passkey",
+    benefits: [
+      "Nothing extra to type at sign-in",
+      "Stronger resistance to phishing",
+      "No passkey secret is shared with TOWN",
+      "You can add other devices later",
+    ],
+    prototype: "TOWN will create a passkey on your device.",
+    create: "Create secure access",
+    back: "Back",
+    successLabel: "ACCESS SET UP",
+    successTitle: "Secure access is ready.",
+    successBody: "Your email is verified and the passkey was created on your device.",
+    successEmail: "Email verified",
+    successAccess: "Secure access set up",
+    successNote: "Your passkey is ready. The next step is TOWN membership.",
+    continue: "Continue",
+    grantExpired: "The setup window expired. Start again from email entry.",
+    cancelled: "Creation cancelled. You can try again.",
+    failed: "Could not create the passkey. Try again.",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  PASSKEY_COPY.es = {
+    label: "ACCESO SEGURO",
+    title: "Protege tu cuenta TOWN.",
+    body: "TOWN utiliza actualmente una passkey para el acceso seguro.",
+    bodySecond: "La passkey usa el método de seguridad disponible en tu dispositivo.",
+    methodsTitle: "Métodos disponibles en tu dispositivo",
+    methods: ["Face ID", "Touch ID", "Huella digital", "PIN del dispositivo"],
+    benefitsTitle: "Por qué una passkey",
+    benefits: [
+      "Nada adicional que escribir al iniciar sesión",
+      "Mayor resistencia al phishing",
+      "Ningún secreto de la passkey se comparte con TOWN",
+      "Puedes añadir otros dispositivos más adelante",
+    ],
+    prototype: "TOWN creará una passkey en tu dispositivo.",
+    create: "Crear acceso seguro",
+    back: "Atrás",
+    successLabel: "ACCESO CONFIGURADO",
+    successTitle: "El acceso seguro está listo.",
+    successBody: "Tu email está verificado y la passkey se creó en tu dispositivo.",
+    successEmail: "Email verificado",
+    successAccess: "Acceso seguro configurado",
+    successNote: "Tu passkey está lista. El siguiente paso es la membresía TOWN.",
+    continue: "Continuar",
+    grantExpired: "La ventana de configuración ha caducado. Empieza de nuevo desde el email.",
+    cancelled: "Creación cancelada. Puedes intentarlo de nuevo.",
+    failed: "No se pudo crear la passkey. Inténtalo de nuevo.",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  READY_COPY.en = {
+    label: "ACCOUNT READY",
+    title: "Your TOWN account is ready.",
+    community: "Community: {city}",
+    emailLine: "Email: {email}",
+    emailStatus: "Email verified",
+    accessStatus: "Secure access set up",
+    body: "Account setup is complete.",
+    bodySecond: "The next step is your annual TOWN membership.",
+    inactive: "Account ready — membership is not active yet.",
+    membership: "TOWN membership — €12 per year",
+    paymentNote: "The next step is Stripe Checkout for annual membership.",
+    continue: "Continue",
+    back: "Back",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  READY_COPY.es = {
+    label: "CUENTA LISTA",
+    title: "Tu cuenta TOWN está lista.",
+    community: "Comunidad: {city}",
+    emailLine: "Email: {email}",
+    emailStatus: "Email verificado",
+    accessStatus: "Acceso seguro configurado",
+    body: "La configuración de la cuenta está completa.",
+    bodySecond: "El siguiente paso es tu membresía anual de TOWN.",
+    inactive: "Cuenta lista — la membresía todavía no está activa.",
+    membership: "Membresía TOWN — 12 € al año",
+    paymentNote: "El siguiente paso es Stripe Checkout para la membresía anual.",
+    continue: "Continuar",
+    back: "Atrás",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  PAYMENT_COPY.en = {
+    label: "ANNUAL MEMBERSHIP",
+    title: "Activate annual TOWN membership.",
+    community: "Community: {city}",
+    price: "€12 per year",
+    renewal: "Renews automatically each year.",
+    cancel: "Cancel at any time. Access continues until the end of the paid period.",
+    body: "Active membership lets you participate in the local community you declared.",
+    accountStatus: "Account: ready",
+    membershipStatus: "Membership: inactive",
+    prototype: "You will continue to Stripe Checkout to pay securely.",
+    simulateStart: "Activate membership",
+    back: "Back",
+    successLabel: "MEMBERSHIP ACTIVE",
+    successTitle: "Annual membership active.",
+    successCommunity: "Community: {city}",
+    successAccount: "Account: ready",
+    successMembership: "Membership: active",
+    successBody: "Payment is confirmed. Annual TOWN membership is active for this community.",
+    successNote: "Manage the subscription from your profile when Stripe supports it for this account.",
+    continue: "Continue",
+    errorUnauthenticated: "You are not signed in, or the session expired.",
+    errorAlreadyMember: "You already have active membership. Manage the existing subscription.",
+    errorRateLimited: "Too many attempts. Try again shortly.",
+    errorUnavailable: "Payment is not available right now.",
+    errorCheckoutFailed: "Could not start checkout. Try again.",
+    errorNetwork: "Could not continue. Try again.",
+    confirmingLabel: "CONFIRMING MEMBERSHIP",
+    confirmingTitle: "Membership confirmation is in progress.",
+    confirmingBody: "We are checking activation with TOWN. This can take a few seconds after payment.",
+    confirmingStatus: "Confirming…",
+    confirmingPending: "Confirmation is still in progress. The payment is not marked as failed — try again shortly.",
+    confirmingRetry: "Try again",
+    confirmingDismiss: "Back to feed",
+    paidNoParticipateTitle: "Membership recorded",
+    paidNoParticipateStatus: "Payment is recorded, but civic participation is not available yet. Complete community selection if needed, or try again shortly.",
+    continueCommunity: "Choose community",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  PAYMENT_COPY.es = Object.assign({}, PAYMENT_COPY.en, {
+    label: "MEMBRESÍA ANUAL",
+    title: "Activa la membresía anual de TOWN.",
+    community: "Comunidad: {city}",
+    price: "12 € al año",
+    renewal: "Renovación anual automática.",
+    cancel: "Puedes cancelar en cualquier momento. El acceso continúa hasta el final del periodo pagado.",
+    body: "La membresía activa te permite participar en la comunidad local que declaraste.",
+    accountStatus: "Cuenta: lista",
+    membershipStatus: "Membresía: inactiva",
+    prototype: "Continuarás a Stripe Checkout para pagar de forma segura.",
+    simulateStart: "Activar membresía",
+    back: "Atrás",
+    successLabel: "MEMBRESÍA ACTIVA",
+    successTitle: "Membresía anual activa.",
+    successCommunity: "Comunidad: {city}",
+    successAccount: "Cuenta: lista",
+    successMembership: "Membresía: activa",
+    successBody: "El pago está confirmado. La membresía anual de TOWN está activa para esta comunidad.",
+    successNote: "Gestiona la suscripción desde tu perfil cuando Stripe lo permita para esta cuenta.",
+    continue: "Continuar",
+    errorUnauthenticated: "No has iniciado sesión o la sesión ha caducado.",
+    errorAlreadyMember: "Ya tienes una membresía activa. Gestiona la suscripción existente.",
+    errorRateLimited: "Demasiados intentos. Vuelve a intentarlo en breve.",
+    errorUnavailable: "El pago no está disponible en este momento.",
+    errorCheckoutFailed: "No se pudo iniciar el checkout. Inténtalo de nuevo.",
+    errorNetwork: "No se pudo continuar. Inténtalo de nuevo.",
+    confirmingLabel: "CONFIRMACIÓN DE MEMBRESÍA",
+    confirmingTitle: "La confirmación de la membresía está en curso.",
+    confirmingBody: "Estamos comprobando la activación con TOWN. Puede tardar unos segundos después del pago.",
+    confirmingStatus: "Confirmando…",
+    confirmingPending: "La confirmación continúa. El pago no figura como fallido; inténtalo de nuevo en breve.",
+    confirmingRetry: "Intentar de nuevo",
+    confirmingDismiss: "Volver al feed",
+    paidNoParticipateTitle: "Membresía registrada",
+    paidNoParticipateStatus: "El pago está registrado, pero la participación cívica aún no está disponible. Completa la elección de comunidad si es necesario o inténtalo de nuevo en breve.",
+    continueCommunity: "Elegir comunidad",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  });
+
+  ACTIVE_COPY.en = {
+    label: "MEMBERSHIP ACTIVE",
+    title: "Annual membership active.",
+    community: "Community: {city}",
+    memberStatus: "Member · {city}",
+    body: "Annual TOWN membership is active for your community.",
+    bodySecond: "You can return to the originating signal and participate when your account allows it.",
+    prototype: "Manage the subscription from your profile when Stripe supports it for this account.",
+    returnSignal: "Return to signal",
+    back: "Back",
+    cityNames: ONBOARDING_CITY_NAMES,
+  };
+
+  ACTIVE_COPY.es = {
+    label: "MEMBRESÍA ACTIVA",
+    title: "Membresía anual activa.",
+    community: "Comunidad: {city}",
+    memberStatus: "Miembro · {city}",
+    body: "La membresía anual de TOWN está activa para tu comunidad.",
+    bodySecond: "Puedes volver a la señal de origen y participar cuando tu cuenta lo permita.",
+    prototype: "Gestiona la suscripción desde tu perfil cuando Stripe lo permita para esta cuenta.",
+    returnSignal: "Volver a la señal",
+    back: "Atrás",
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+  };
+
+  COMMITMENT_COPY.en = {
+    label: "COMMUNITY DECLARATION",
+    title: "Choose your TOWN community.",
+    body: "Choose the country and city yourself. TOWN does not verify your residence or physical location.",
+    countryLegend: "Choose country",
+    cityLegend: "Choose city",
+    countryNames: { Italy: "Italy", Germany: "Germany", Romania: "Romania", Austria: "Austria", France: "France", Hungary: "Hungary" },
+    cityNames: ONBOARDING_CITY_NAMES,
+    reviewLabel: "Review the selected community",
+    reviewCountry: "Country: {country}",
+    reviewCity: "City: {city}",
+    reviewNote: "Membership and civic participation will be linked to this community.",
+    acceptText: "I confirm that I personally selected the correct country and city and accept responsibility for the accuracy of this declaration.",
+    acceptRequired: "Explicit acceptance of responsibility is required.",
+    confirm: "Record declaration",
+    saving: "Saving…",
+    saved: "Declaration recorded for {city}, {country}.",
+    checkoutHint: "Annual payment is available only after the community declaration is recorded.",
+    checkoutCta: "Continue to annual membership — €12/year",
+    back: "Back",
+    errorNetwork: "Could not continue. Try again.",
+    errorUnauthenticated: "You are not signed in, or the session expired.",
+    errorValidation: "Check the selection and acceptance, then try again.",
+    errorSave: "Could not record the declaration. Try again.",
+    errorUnsupported: "This community is not available.",
+    errorLocked: "The community cannot be changed while membership is active.",
+  };
+
+  COMMITMENT_COPY.es = Object.assign({}, COMMITMENT_COPY.en, {
+    label: "DECLARACIÓN DE COMUNIDAD",
+    title: "Elige tu comunidad TOWN.",
+    body: "Elige personalmente el país y la ciudad. TOWN no verifica tu residencia ni tu ubicación física.",
+    countryLegend: "Elige el país",
+    cityLegend: "Elige la ciudad",
+    countryNames: { Italy: "Italia", Germany: "Alemania", Romania: "Rumanía", Austria: "Austria", France: "Francia", Hungary: "Hungría" },
+    cityNames: ONBOARDING_CITY_NAMES_ES,
+    reviewLabel: "Revisa la comunidad seleccionada",
+    reviewCountry: "País: {country}",
+    reviewCity: "Ciudad: {city}",
+    reviewNote: "La membresía y la participación cívica quedarán vinculadas a esta comunidad.",
+    acceptText: "Confirmo que elegí personalmente el país y la ciudad correctos y asumo la responsabilidad por la exactitud de esta declaración.",
+    acceptRequired: "Es necesario aceptar expresamente esta responsabilidad.",
+    confirm: "Registrar declaración",
+    saving: "Guardando…",
+    saved: "Declaración registrada para {city}, {country}.",
+    checkoutHint: "El pago anual está disponible después de registrar la declaración de comunidad.",
+    checkoutCta: "Continuar a la membresía anual — 12 €/año",
+    back: "Atrás",
+    errorNetwork: "No se pudo continuar. Inténtalo de nuevo.",
+    errorUnauthenticated: "No has iniciado sesión o la sesión ha caducado.",
+    errorValidation: "Revisa la selección y la aceptación e inténtalo de nuevo.",
+    errorSave: "No se pudo registrar la declaración. Inténtalo de nuevo.",
+    errorUnsupported: "Esta comunidad no está disponible.",
+    errorLocked: "La comunidad no puede cambiarse mientras la membresía está activa.",
+  });
+
   // Returning-user passkey login (Screen 01). Does not use SetupGrant.
   // S01 chrome is English until a community is selected; en is the pre-selection default.
   const LOGIN_COPY = {
@@ -3426,6 +3860,15 @@
       failed: "Sign-in failed. Please try again.",
       phoneUnavailable:
         "Phone sign-in is not available yet. Use email, or Sign in with a passkey.",
+    },
+    es: {
+      signIn: "Acceso de miembros",
+      working: "Verificando…",
+      success: "Sesión iniciada. La sesión está activa.",
+      cancelled: "Inicio de sesión cancelado. Puedes intentarlo de nuevo.",
+      failed: "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      phoneUnavailable:
+        "El acceso por teléfono aún no está disponible. Usa el email o inicia sesión con una passkey.",
     },
     it: {
       signIn: "Usa l’accesso sicuro",
@@ -9508,20 +9951,21 @@
 
 
   function membershipLang() {
-    // French is a browser reading language even when the member is joining one
-    // of the currently available non-French communities.
-    if (resolvePublicReadingLanguage() === "fr") return "fr";
-    if (resolvePublicReadingLanguage() === "hu") return "hu";
-    const lang = communityLanguage();
-    if (lang === "de") return "de";
-    if (lang === "ro") return "ro";
-    return "it";
+    // Interface language belongs to the visitor. Community language describes
+    // signal content only and must never replace the onboarding language.
+    return resolvePublicReadingLanguage();
   }
 
   function entryLang() {
-    // S01 is English until a community (city) is selected — match the rest of the entry screen.
-    if (!selectedCity) return "en";
+    // Keep the same browser-selected interface language across every route.
     return membershipLang();
+  }
+
+  function returnVisitorToOriginatingSignal() {
+    feedIndex = originatingFeedIndex;
+    endInviteMembershipJourney();
+    go("feed");
+    scrollFeedToIndex(feedIndex, { behavior: "auto" });
   }
 
   function getAnonymousClientKey() {
@@ -10925,7 +11369,7 @@
   // community, eligibility, or membership.
   CITY_COPY.fr = {
     title: "Choisissez votre ville",
-    lead: "TOWN vous relie à une communauté locale vérifiée.",
+    lead: "TOWN vous relie à une communauté locale que vous déclarez.",
     cityLegend: "Ville",
     back: "Retour",
     continue: "Continuer",
@@ -10989,12 +11433,12 @@
     phoneUnavailable: "La connexion par téléphone n'est pas encore disponible. Utilisez l'e-mail ou une clé d'accès.",
   };
   MEMBERSHIP_COPY.fr = {
-    inviteTitle: "Ce qui se passe dans votre communauté vous tient à cœur.", inviteBody: "Pour confirmer ce signalement et faire partie de la solution, rejoignez TOWN en tant que membre local vérifié.",
+    inviteTitle: "Ce qui se passe dans votre communauté vous tient à cœur.", inviteBody: "Pour confirmer ce signalement et faire partie de la solution, créez un compte identifié et déclarez la communauté dans laquelle vous participez.",
     inviteBodySecond: "TOWN est construit autour de personnes réelles d'une même communauté — pas de comptes anonymes, d'abonnés ou de popularité sur les réseaux sociaux.",
-    continue: "Continuer", notNow: "Pas maintenant", label: "ADHÉSION LOCALE", title: "Rejoignez la communauté de {city}.",
+    continue: "Continuer", notNow: "Continuer à explorer", label: "ADHÉSION LOCALE", title: "Rejoignez la communauté de {city}.",
     body: "TOWN est un espace civique local pour des personnes réelles.", bodySecond: "Pour participer, il faut un compte, une communauté locale confirmée et une adhésion active.",
     price: "12 € par an", renewal: "Renouvellement annuel.", renewalSecond: "Vous pouvez annuler à tout moment. L'accès reste actif jusqu'à la fin de la période déjà payée.",
-    whyTitle: "Pourquoi l'adhésion existe", why: ["Des personnes réelles dans la même communauté", "Une participation locale vérifiée", "Moins de robots et de faux comptes", "Un espace civique calme, sans publicité"],
+    whyTitle: "Pourquoi l'adhésion existe", why: ["Des personnes réelles dans la même communauté", "Une participation responsable dans la communauté déclarée", "Moins de robots et de faux comptes", "Un espace civique calme, sans publicité"],
     rightsTitle: "Avec une adhésion active, vous pouvez :", rights: "Confirmer des signalements, ouvrir des sessions de discussion vers une solution et participer aux décisions de la communauté.",
     endedTitle: "TOWN s'adresse aux personnes prêtes à participer à leur communauté.", endedBody: "Vous pourrez revenir lorsque vous serez prêt à en faire partie.", endedReturn: "Retour à l'entrée de TOWN", cityNames: CITY_COPY.fr.cityNames,
   };
@@ -11034,7 +11478,7 @@
   };
   PAYMENT_COPY.fr = {
     label: "ADHÉSION ANNUELLE", title: "Activez l'adhésion annuelle TOWN.", community: "Communauté : {city}", price: "12 € par an", renewal: "Renouvellement annuel automatique.",
-    cancel: "Vous pouvez annuler à tout moment. L'accès reste actif jusqu'à la fin de la période déjà payée.", body: "Avec une adhésion active, vous pourrez participer à la communauté locale vérifiée.",
+    cancel: "Vous pouvez annuler à tout moment. L'accès reste actif jusqu'à la fin de la période déjà payée.", body: "Avec une adhésion active, vous pourrez participer dans la communauté locale que vous avez déclarée.",
     accountStatus: "Compte : prêt", membershipStatus: "Adhésion : inactive", prototype: "Vous serez redirigé vers Stripe Checkout pour effectuer le paiement en toute sécurité.",
     simulateStart: "Activer l'adhésion", back: "Retour", successLabel: "ADHÉSION ACTIVE", successTitle: "Adhésion annuelle active.", successCommunity: "Communauté : {city}",
     successAccount: "Compte : prêt", successMembership: "Adhésion : active", successBody: "Le paiement a été confirmé. L'adhésion annuelle TOWN est active pour cette communauté.",
@@ -11209,7 +11653,7 @@
     inviteTitle: "Fontos Önnek, mi történik a közösségében.",
     inviteBody: "A jelzés megerősítéséhez és a megoldásban való részvételhez csatlakozzon helyi tagként.",
     inviteBodySecond: "A TOWN valódi emberekre épül — nem névtelen fiókokra vagy követőszámokra.",
-    continue: "Tovább", notNow: "Most nem", label: "HELYI TAGSÁG", title: "Csatlakozzon {city} közösségéhez.",
+    continue: "Tovább", notNow: "Böngészés folytatása", label: "HELYI TAGSÁG", title: "Csatlakozzon {city} közösségéhez.",
     body: "A TOWN valódi emberek helyi civil tere.", bodySecond: "A részvételhez fiók, vállalt helyi közösség és aktív tagság szükséges.",
     price: "Évi 12 €", renewal: "Éves megújítás.", renewalSecond: "Bármikor lemondható; a hozzáférés a kifizetett időszak végéig aktív marad.",
     whyTitle: "Miért van tagság", why: ["Valódi emberek ugyanabban a közösségben", "Felelős helyi részvétel", "Kevesebb bot és hamis fiók", "Nyugodt, reklámmentes civil tér"],
@@ -14459,8 +14903,7 @@
   inviteNotNow.addEventListener("click", () => {
     clearPendingSeeTooContext();
     closeInvite();
-    if (isProductOnlyPublicMode()) return;
-    go("ended");
+    returnVisitorToOriginatingSignal();
   });
 
   membershipContinue.addEventListener("click", () => {
@@ -14468,7 +14911,7 @@
   });
 
   membershipNotNow.addEventListener("click", () => {
-    go("ended");
+    returnVisitorToOriginatingSignal();
   });
 
   endedReturn.addEventListener("click", () => {
