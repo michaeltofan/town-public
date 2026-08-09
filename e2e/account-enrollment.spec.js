@@ -1,5 +1,8 @@
 const { test, expect } = require("@playwright/test");
-const { installStagingApiProxy } = require("./helpers/staging-api-proxy");
+const {
+  PUBLIC_ORIGIN,
+  installCandidateAtProductionOrigin,
+} = require("./helpers/candidate-staging-origin");
 const {
   buildUniqueEmail,
   waitForVerificationCode,
@@ -15,7 +18,7 @@ test.describe("staging account enrollment", () => {
     const resendApiKey = process.env.TOWN_RESEND_API_KEY;
     test.skip(!emailTemplate || !resendApiKey, "Staging enrollment secrets are not configured");
 
-    await installStagingApiProxy(page);
+    await installCandidateAtProductionOrigin(page);
 
     const cdp = await page.context().newCDPSession(page);
     await cdp.send("WebAuthn.enable");
@@ -38,7 +41,7 @@ test.describe("staging account enrollment", () => {
     const email = buildUniqueEmail(emailTemplate, runTag);
     const password = `Town-E2E-${runTag}-secure!`;
 
-    await page.goto("/#/membership");
+    await page.goto(`${PUBLIC_ORIGIN}/#/membership`);
     await expect(page.locator("#view-membership")).toBeVisible();
     await page.locator("#membership-continue").click();
     await expect(page.locator("#view-account")).toBeVisible();
