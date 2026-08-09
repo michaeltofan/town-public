@@ -73,10 +73,10 @@ require_absent "script.js" "openPasskeyNotice"
 require_absent "script.js" "passkeySimulate"
 
 echo "== Guardrails =="
-# Storage / password / social patterns remain forbidden.
+# Storage / payment / social patterns remain forbidden.
 # Passkey LOGIN may use /v1/authentication/* with credentials:"include" for the
 # HttpOnly session cookie; do not treat those as forbidden sessionStorage patterns.
-if grep -Eiq 'card number|paymentIntent|type="password"|localStorage|sessionStorage|dashboard|followers|trending' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|localStorage|sessionStorage|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden storage/payment/session pattern present"
   fail=1
 else
@@ -151,7 +151,7 @@ for fragment in (
     "Touch ID",
     "TOWN creerà una passkey sul tuo dispositivo",
     "TOWN erstellt einen Passkey auf deinem Gerät",
-    "TOWN va crea o passkey pe dispozitivul tău",
+    "TOWN va crea o passkey pe dispozitiv",
     "/v1/account/passkeys/registration/options",
     "/v1/account/passkeys/registration/verify",
     "Authorization: \"SetupGrant \"",

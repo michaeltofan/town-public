@@ -49,11 +49,11 @@ require_contains "script.js" 'go("account")'
 require_contains "script.js" 'go("email")'
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|dashboard|followers|trending' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden account/payment/social pattern present"
   fail=1
 else
-  echo "OK: no password fields or payment/social patterns"
+  echo "OK: no payment/social patterns"
 fi
 if grep -Eiq '<input' index.html | grep -Eiq 'view-account' ; then
   :
@@ -100,10 +100,8 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "ACCOUNT PERSONALE",
     "PERSÖNLICHES KONTO",
-    "non è richiesta una password",
-    "kein Passwort erforderlich",
-    "sistema reale di account non è attivo",
-    "reale Kontosystem nicht aktiv",
+    "creerai la password e poi la passkey",
+    "erstellst du zuerst das Passwort und dann den Passkey",
 ):
     if fragment not in js:
         raise SystemExit(f"Missing JS fragment: {fragment}")

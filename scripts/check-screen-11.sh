@@ -51,7 +51,7 @@ require_contains "script.js" "fetchAuthenticationSession"
 require_contains "styles.css" ".ready__error"
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|membershipActive\s*=\s*true' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|membershipActive\s*=\s*true' index.html script.js; then
   echo "FAIL: forbidden payment/storage/dashboard pattern present"
   fail=1
 else
@@ -144,16 +144,16 @@ probe_idx = ceremony_src.find("fetchAuthenticationSession")
 if not (0 <= verify_idx < probe_idx):
     fail("session probe must follow authentication verification")
 
-# Returning-user entry login remains wired through the same helper
+# Returning-user entry login opens the shared password/passkey chooser.
 entry_start = js.find('entrySignIn.addEventListener("click"')
 country_start = js.find('countryBack.addEventListener("click"')
 if entry_start < 0 or country_start < 0:
     fail("missing entrySignIn handler")
 entry_body = js[entry_start:country_start]
-if "runPasskeyAuthenticationCeremony" not in entry_body:
-    fail("entrySignIn (Members Login) must reuse runPasskeyAuthenticationCeremony")
-if "sessionAuthenticated = true" not in entry_body:
-    fail("entrySignIn must still set sessionAuthenticated on success")
+if "openAuthWindow" not in entry_body:
+    fail("entrySignIn (Members Login) must open the shared auth window")
+if "startPublicAuthWindowPasswordSignIn" not in js or "startPublicAuthWindowPasskeySignIn" not in js:
+    fail("shared auth window must preserve both password and passkey sign-in")
 
 # Registration remains a separate ceremony (no session pretend)
 reg_verify = re.search(

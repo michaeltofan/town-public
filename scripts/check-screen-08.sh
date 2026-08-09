@@ -49,11 +49,11 @@ require_contains "script.js" 'go("email")'
 require_contains "script.js" 'go("code")'
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden auth/storage/payment/social pattern present"
   fail=1
 else
-  echo "OK: no real email send, storage, auth, or payment patterns"
+  echo "OK: no browser storage or payment patterns"
 fi
 
 echo "== HTML smoke =="
@@ -83,8 +83,8 @@ js = Path("script.js").read_text(encoding="utf-8")
 for fragment in (
     "CREA IL TUO ACCOUNT",
     "KONTO ERSTELLEN",
-    "Non serve una password.",
-    "Du brauchst kein Passwort.",
+    "Dopo la verifica creerai una password, poi una passkey.",
+    "Nach der Bestätigung erstellst du ein Passwort und dann einen Passkey.",
     "Ti invieremo un codice di verifica a 6 cifre via email.",
     "Wir senden dir einen 6-stelligen Bestätigungscode per E-Mail.",
     "Îți trimitem un cod de verificare din 6 cifre pe email.",

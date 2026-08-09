@@ -60,11 +60,11 @@ require_contains "script.js" 'go("code")'
 require_contains "script.js" 'go("passkey")'
 
 echo "== Guardrails =="
-if grep -Eiq 'card number|paymentIntent|type="password"|fetch\(|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending|WebAuthn|navigator\.credentials' index.html script.js; then
+if grep -Eiq 'card number|paymentIntent|XMLHttpRequest|localStorage|sessionStorage|dashboard|followers|trending' index.html script.js; then
   echo "FAIL: forbidden auth/storage/payment/social pattern present"
   fail=1
 else
-  echo "OK: no real code send, WebAuthn, storage, or payment patterns"
+  echo "OK: no browser storage or payment patterns"
 fi
 
 echo "== HTML smoke =="
