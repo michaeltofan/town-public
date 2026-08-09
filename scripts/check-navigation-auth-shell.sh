@@ -60,8 +60,9 @@ require_contains "index.html" 'id="auth-window-status"'
 require_contains "index.html" 'id="signal-detail"'
 require_contains "index.html" "I SEE THIS TOO"
 require_contains "index.html" 'id="membership-invite"'
-require_absent "index.html" "Sign in with password"
-require_absent "index.html" 'id="auth-password"'
+require_contains "index.html" 'id="auth-password"'
+require_contains "script.js" "Sign in with password"
+require_contains "script.js" "/v1/authentication/password"
 require_contains "script.js" "PRODUCT_ONLY_PUBLIC_MODE"
 require_contains "script.js" "openAuthWindow"
 require_contains "script.js" "closeAuthWindow"
@@ -91,11 +92,11 @@ if html.count('id="auth-window"') != 1:
 if html.count('id="app-nav"') != 1:
     fail("expected exactly one app-nav")
 
-# Password authentication must not appear in the public auth interface
-if "Sign in with password" in html or 'id="auth-password"' in html:
-    fail("password sign-in control must be removed from public auth UI")
-if "authPassword" in js or 'getElementById("auth-password")' in js:
-    fail("authPassword client handler must be removed")
+# Password and passkey must both be available to returning members.
+if 'id="auth-password"' not in html:
+    fail("password sign-in control missing from public auth UI")
+if "authPassword" not in js or 'getElementById("auth-password")' not in js:
+    fail("authPassword client wiring missing")
 
 # Nav must be sibling of main.feed inside view-feed, not inside feed__chrome
 feed_view = re.search(
@@ -144,6 +145,7 @@ for token in (
     "Phone",
     "Continue",
     "Sign in with passkey",
+    'id="auth-password"',
     'id="auth-passkey"',
     'id="auth-window-status"',
     'id="auth-window-close"',
@@ -151,12 +153,10 @@ for token in (
 ):
     if token not in auth_html and token not in html:
         fail(f"auth dialog missing {token}")
-if "Sign in with password" in auth_html:
-    fail("auth dialog must not offer password sign-in")
 
 for fragment in (
-    'handleProtectedNav(navMembership, "membership")',
-    'handleProtectedNav(navChat, "chat")',
+    "handleMembershipNav()",
+    "handleChatNav()",
     "handleActivityNav()",
     "handleProfileNav()",
     "handleHomeNav()",
@@ -227,9 +227,6 @@ if continue_start < 0 or passkey_start < 0 or enter_start < 0:
     fail("missing authContinue / authPasskey / enterButton handlers")
 if not (continue_start < passkey_start < enter_start):
     fail("auth shell click handlers out of expected order")
-if 'authPassword.addEventListener("click"' in js:
-    fail("authPassword click handler must be removed")
-
 continue_body = js[continue_start:passkey_start]
 passkey_body = js[passkey_start:enter_start]
 
@@ -245,12 +242,12 @@ store_idx = continue_body.find("emailVerificationId")
 go_code_idx = continue_body.find('go("code")')
 journey_idx = continue_body.find("beginInviteMembershipJourney")
 valid_idx = continue_body.find("isValidEmail")
-signin_passkey_idx = continue_body.find("startPublicAuthWindowPasskeySignIn")
+signin_password_idx = continue_body.find("startPublicAuthWindowPasswordSignIn")
 
 if phone_idx < 0:
     fail("authContinue must early-return when authChannel === phone")
-if signin_idx < 0 or signin_passkey_idx < 0:
-    fail("Sign-in Continue must invoke startPublicAuthWindowPasskeySignIn")
+if signin_idx < 0 or signin_password_idx < 0:
+    fail("Sign-in Continue must invoke startPublicAuthWindowPasswordSignIn")
 if create_idx < 0 or email_ch_idx < 0:
     fail("authContinue must gate success path on create + email")
 if req_idx < 0:
@@ -264,9 +261,9 @@ if journey_idx < 0:
 if valid_idx < 0:
     fail("Create + email must validate with isValidEmail")
 
-# Ordering: phone gate, Sign-in passkey path, then Create+email API
-if not (phone_idx < signin_idx < signin_passkey_idx < req_idx):
-    fail("Sign-in passkey path must precede Create+email requestEmailVerification")
+# Ordering: phone gate, Sign-in password path, then Create+email API
+if not (phone_idx < signin_idx < signin_password_idx < req_idx):
+    fail("Sign-in password path must precede Create+email requestEmailVerification")
 if not (create_idx < req_idx and email_ch_idx < req_idx and valid_idx < req_idx):
     fail("Create + email validation gate must precede requestEmailVerification")
 if not (req_idx < store_idx < journey_idx < go_code_idx):
@@ -278,29 +275,28 @@ phone_gate = continue_body[phone_idx:signin_idx]
 if not re.search(r'authChannel === "phone"[\s\S]*?return;', phone_gate):
     fail("phone Continue must return early (no API)")
 
-# Sign-in Continue must NOT silently return without starting passkey auth
+# Sign-in Continue must NOT silently return without starting password auth
 signin_gate = continue_body[signin_idx:req_idx]
 if re.search(
     r'authMode === "signin"\s*\{\s*return;\s*\}',
     signin_gate,
 ):
     fail("Sign-in Continue must not be a silent no-op return")
-if "startPublicAuthWindowPasskeySignIn" not in signin_gate:
-    fail("Sign-in Continue must call startPublicAuthWindowPasskeySignIn")
+if "startPublicAuthWindowPasswordSignIn" not in signin_gate:
+    fail("Sign-in Continue must call startPublicAuthWindowPasswordSignIn")
 
 # Create+email must remain the only requestEmailVerification path
 create_email_branch = continue_body[max(create_idx, email_ch_idx):]
 if "requestEmailVerification" not in create_email_branch:
     fail("requestEmailVerification must be inside create + email branch")
-if "startPublicAuthWindowPasskeySignIn" in create_email_branch:
-    fail("Create + email must not start passkey sign-in")
+if "startPublicAuthWindowPasswordSignIn" in create_email_branch:
+    fail("Create + email must not start password sign-in")
 
-# Sign-in Continue must not invent password/local storage auth
+# Sign-in Continue must not use browser storage.
 for forbidden in (
     "localStorage",
     "sessionStorage",
     "requestEmailVerification",
-    "password",
 ):
     if forbidden in signin_gate:
         fail(f"Sign-in Continue must not use {forbidden}")
@@ -455,16 +451,16 @@ if "const PRODUCT_ONLY_PUBLIC_MODE = true" not in js:
 if "openAuthWindow" not in js or "startPublicAuthWindowPasskeySignIn" not in js:
     fail("product-only surface must still expose functional public Sign-in")
 
-# Returning-user Members Login remains wired through the same ceremony helper
+# Returning-user Members Login opens the shared chooser for password or passkey.
 entry_start = js.find('entrySignIn.addEventListener("click"')
 country_back = js.find('countryBack.addEventListener("click"')
 if entry_start < 0 or country_back < 0:
     fail("missing entrySignIn (Members Login) handler")
 entry_body = js[entry_start:country_back]
-if "runPasskeyAuthenticationCeremony" not in entry_body:
-    fail("Members Login must reuse runPasskeyAuthenticationCeremony")
-if "fetchAuthenticationSession" in entry_body and "runPasskeyAuthenticationCeremony" not in entry_body:
-    fail("Members Login must not fork a parallel auth sequence")
+if "openAuthWindow" not in entry_body:
+    fail("Members Login must open the shared auth window")
+if "startPublicAuthWindowPasswordSignIn" not in js or "startPublicAuthWindowPasskeySignIn" not in js:
+    fail("shared auth window must expose password and passkey methods")
 
 # Shared ceremony must still probe session after verification
 ceremony_fn = re.search(
