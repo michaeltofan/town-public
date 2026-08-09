@@ -19,8 +19,13 @@ test.describe("public feed live signals", () => {
     await page.waitForLoadState("networkidle");
 
     expect(signalResponses.length).toBeGreaterThan(0);
+    const pageHost = new URL(process.env.TOWN_PUBLIC_BASE_URL || "https://towncivic.org").hostname;
+    const expectedApiHost =
+      pageHost === "localhost" || pageHost === "127.0.0.1"
+        ? "api-staging.towncivic.org"
+        : "api.towncivic.org";
     expect(
-      signalResponses.every((item) => item.url.includes("api.towncivic.org"))
+      signalResponses.every((item) => item.url.includes(expectedApiHost))
     ).toBeTruthy();
     expect(signalResponses.some((item) => item.status === 200)).toBeTruthy();
 
