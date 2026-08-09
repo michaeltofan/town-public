@@ -1,6 +1,11 @@
 const { test, expect } = require("@playwright/test");
+const { installStagingApiProxy } = require("./helpers/staging-api-proxy");
 
 test.describe("public feed live signals", () => {
+  test.beforeEach(async ({ page }) => {
+    await installStagingApiProxy(page);
+  });
+
   test("loads live feed panels without fictional fallback text", async ({
     page,
   }) => {
