@@ -4,6 +4,8 @@ const fs = require("fs");
 
 const source = fs.readFileSync("script.js", "utf8");
 const publicI18n = fs.readFileSync("public-i18n.js", "utf8");
+const publicI18nApi = require("../public-i18n.js");
+const signalCopy = require("../signal-copy.js");
 
 let passed = 0;
 function assert(condition, message) {
@@ -28,6 +30,45 @@ assert(
 assert(
   !membershipLanguage.includes("communityLanguage"),
   "community content language cannot replace interface language"
+);
+
+for (const functionName of [
+  "applyCityCopy",
+  "applyLocationCopy",
+  "resetLocationVerification",
+]) {
+  const body = functionBody(functionName);
+  assert(!!body, functionName + " exists");
+  assert(
+    body.includes("resolvePublicReadingLanguage()"),
+    functionName + " keeps the browser-selected interface language"
+  );
+  assert(
+    !body.includes("communityLanguage()"),
+    functionName + " does not replace interface language with city language"
+  );
+}
+
+const expandedGermanSignal = signalCopy.localizeSignal(
+  {
+    id: "dortmund-signal-not-in-static-copy",
+    cityId: "Dortmund",
+    headline: "Original German headline",
+  },
+  "en",
+  publicI18nApi
+);
+assert(
+  expandedGermanSignal.headline === "Original German headline",
+  "expanded signal keeps its original editorial content"
+);
+assert(
+  expandedGermanSignal.sourceLang === "de",
+  "expanded signal derives source language from canonical city identity"
+);
+assert(
+  expandedGermanSignal.sourceLanguageLabel === "Original in German",
+  "expanded signal shows an honest source-language label"
 );
 
 for (const lang of ["en", "es"]) {
