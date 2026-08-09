@@ -416,65 +416,65 @@
     en: {
       inviteTitle: "You care about what happens in your community.",
       inviteBody:
-        "To confirm this signal and become part of the solution, join TOWN as a verified local member.",
+        "To confirm this signal and become part of the solution, create an identified account and declare the community where you participate.",
       inviteBodySecond:
         "TOWN is built around real people from the same community — not anonymous accounts, followers, or social popularity.",
       continue: "Continue",
-      notNow: "Not now",
+      notNow: "Continue exploring",
     },
     es: {
       inviteTitle: "Te importa lo que ocurre en tu comunidad.",
       inviteBody:
-        "Para confirmar esta señal y formar parte de la solución, únete a TOWN como miembro local verificado.",
+        "Para confirmar esta señal y formar parte de la solución, crea una cuenta identificada y declara la comunidad en la que participas.",
       inviteBodySecond:
         "TOWN se construye en torno a personas reales de la misma comunidad — no cuentas anónimas, seguidores ni popularidad en redes.",
       continue: "Continuar",
-      notNow: "Ahora no",
+      notNow: "Seguir explorando",
     },
     fr: {
       inviteTitle: "Ce qui se passe dans votre communauté vous tient à cœur.",
       inviteBody:
-        "Pour confirmer ce signalement et faire partie de la solution, rejoignez TOWN en tant que membre local vérifié.",
+        "Pour confirmer ce signalement et faire partie de la solution, créez un compte identifié et déclarez la communauté dans laquelle vous participez.",
       inviteBodySecond:
         "TOWN est construit autour de personnes réelles d'une même communauté — pas de comptes anonymes, d'abonnés ou de popularité sur les réseaux sociaux.",
       continue: "Continuer",
-      notNow: "Pas maintenant",
+      notNow: "Continuer à explorer",
     },
     hu: {
       inviteTitle: "Fontos Önnek, mi történik a közösségében.",
       inviteBody:
-        "A jelzés megerősítéséhez és a megoldásban való részvételhez csatlakozzon a TOWN-hoz ellenőrzött helyi tagként.",
+        "A jelzés megerősítéséhez és a megoldásban való részvételhez hozzon létre azonosított fiókot, és adja meg azt a közösséget, ahol részt vesz.",
       inviteBodySecond:
         "A TOWN ugyanazon közösség valódi embereire épül — nem névtelen fiókokra, követőkre vagy közösségimédia-népszerűségre.",
       continue: "Tovább",
-      notNow: "Most nem",
+      notNow: "Böngészés folytatása",
     },
     it: {
       inviteTitle: "Ti sta a cuore ciò che accade nella tua comunità.",
       inviteBody:
-        "Per confermare questo segnale e diventare parte della soluzione, unisciti a TOWN come membro locale verificato.",
+        "Per confermare questo segnale e diventare parte della soluzione, crea un account identificato e dichiara la comunità in cui partecipi.",
       inviteBodySecond:
         "TOWN è costruito intorno a persone reali della stessa comunità — non su account anonimi, follower o popolarità sui social.",
       continue: "Continua",
-      notNow: "Non ora",
+      notNow: "Continua a esplorare",
     },
     de: {
       inviteTitle: "Dir ist wichtig, was in deiner Gemeinschaft geschieht.",
       inviteBody:
-        "Um dieses Signal zu bestätigen und Teil der Lösung zu werden, tritt TOWN als verifiziertes lokales Mitglied bei.",
+        "Um dieses Signal zu bestätigen und Teil der Lösung zu werden, erstelle ein identifiziertes Konto und gib die Gemeinschaft an, in der du teilnimmst.",
       inviteBodySecond:
         "TOWN ist um echte Menschen derselben Gemeinschaft gebaut — nicht um anonyme Konten, Follower oder Social-Media-Popularität.",
       continue: "Weiter",
-      notNow: "Nicht jetzt",
+      notNow: "Weiter erkunden",
     },
     ro: {
       inviteTitle: "Îți pasă de ce se întâmplă în comunitatea ta.",
       inviteBody:
-        "Pentru a confirma acest semnal și a deveni parte din soluție, alătură-te TOWN ca membru local verificat.",
+        "Pentru a confirma acest semnal și a deveni parte din soluție, creează un cont identificat și declară comunitatea în care participi.",
       inviteBodySecond:
         "TOWN este construit în jurul unor oameni reali din aceeași comunitate — nu conturi anonime, urmăritori sau popularitate pe social media.",
       continue: "Continuă",
-      notNow: "Nu acum",
+      notNow: "Continuă să explorezi",
     },
   };
 
