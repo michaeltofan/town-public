@@ -1,4 +1,9 @@
 (() => {
+  const authInput = window.TownAuthInput;
+  if (!authInput) {
+    throw new Error("TownAuthInput must load before script.js");
+  }
+  const { digitsOnly, passwordCodePointLength, passwordMeetsPolicy } = authInput;
   const viewEntry = document.getElementById("view-entry");
   const viewCountry = document.getElementById("view-country");
   const viewCity = document.getElementById("view-city");
@@ -12875,10 +12880,6 @@
     document.documentElement.lang = membershipLang();
   }
 
-  function digitsOnly(value) {
-    return String(value || "").replace(/\D/g, "").slice(0, 6);
-  }
-
   function syncCodeVerify() {
     const value = digitsOnly(codeInput.value);
     if (codeInput.value !== value) {
@@ -12890,15 +12891,6 @@
       codeError.hidden = true;
       codeError.textContent = "";
     }
-  }
-
-  function passwordCodePointLength(value) {
-    return Array.from(String(value || "").normalize("NFC")).length;
-  }
-
-  function passwordMeetsPolicy(value) {
-    const length = passwordCodePointLength(value);
-    return length >= 15 && length <= 128;
   }
 
   function applyPasswordCopy() {

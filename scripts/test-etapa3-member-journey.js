@@ -115,8 +115,9 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=password-passkey-1"),
-  "civic-process UI has a fresh browser cache key"
+  html.includes("auth-input.js?v=auth-input-1") &&
+    html.includes("script.js?v=auth-input-1"),
+  "auth input module and app bundle share the fresh extraction cache key"
 );
 
 assert(html.includes('id="detail-process-proposals"'), "civic proposals panel markup present");
