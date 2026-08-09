@@ -9179,7 +9179,9 @@
   }
 
   function applyCityCopy() {
-    const lang = communityLanguage();
+    // Country/city selection is interface chrome. It must follow the visitor's
+    // reading language before a city exists and after a city is selected.
+    const lang = resolvePublicReadingLanguage();
     const copy = CITY_COPY[lang];
     cityTitle.textContent = copy.title;
     cityLead.textContent = copy.lead;
@@ -9209,10 +9211,7 @@
   }
 
   function applyLocationCopy() {
-    const lang =
-      isProductOnlyPublicMode() || isCityDiscoveryJourneyActive()
-        ? resolvePublicReadingLanguage()
-        : communityLanguage();
+    const lang = resolvePublicReadingLanguage();
     const copy =
       LOCATION_COPY[lang] || LOCATION_COPY.en || LOCATION_COPY.it;
     const cityName = cityDisplayName(lang);
@@ -9272,7 +9271,7 @@
     locationOutsideBoundary = false;
     clearLocationMessage();
     locationVerify.disabled = false;
-    const lang = communityLanguage();
+    const lang = resolvePublicReadingLanguage();
     const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
     locationVerify.textContent = copy.verify;
     syncLocationState();
@@ -10104,7 +10103,7 @@
     }
 
     const cities = CITY_BY_COUNTRY[selectedCountry];
-    const copy = CITY_COPY[communityLanguage()];
+    const copy = CITY_COPY[resolvePublicReadingLanguage()];
 
     for (let i = 0; i < cities.length; i++) {
       const city = cities[i];
@@ -15055,7 +15054,7 @@
 
   locationVerify.addEventListener("click", () => {
     if (locationVerify.disabled) return;
-    const lang = communityLanguage();
+    const lang = resolvePublicReadingLanguage();
     const copy = LOCATION_COPY[lang] || LOCATION_COPY.it;
     const cityName = cityDisplayName(lang);
     const cityId = selectedCity;
