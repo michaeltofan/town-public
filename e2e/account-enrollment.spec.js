@@ -41,7 +41,20 @@ test.describe("staging account enrollment", () => {
     const email = buildUniqueEmail(emailTemplate, runTag);
     const password = `Town-E2E-${runTag}-secure!`;
 
-    await page.goto(`${PUBLIC_ORIGIN}/#/membership`);
+    await page.goto(`${PUBLIC_ORIGIN}/#/feed`);
+    await expect(page.locator("#view-feed")).toBeVisible();
+
+    const seeToo = page
+      .locator(
+        '[data-feed-index]:visible [data-feed-role="feed-see-too"]:visible'
+      )
+      .first();
+    await expect(seeToo).toBeVisible();
+    await expect(seeToo).toHaveText(/I SEE THIS TOO/i);
+    await seeToo.click();
+
+    await expect(page.locator("#membership-invite")).toBeVisible();
+    await page.locator("#invite-continue").click();
     await expect(page.locator("#view-membership")).toBeVisible();
     await page.locator("#membership-continue").click();
     await expect(page.locator("#view-account")).toBeVisible();
