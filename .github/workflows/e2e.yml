@@ -98,23 +98,11 @@ jobs:
         if: steps.enrollment-secrets.outputs.available == 'true'
         working-directory: e2e
         run: npx playwright install --with-deps chromium
-      - name: Start candidate site
-        if: steps.enrollment-secrets.outputs.available == 'true'
-        run: |
-          python3 -m http.server 8080 > /tmp/town-public-http.log 2>&1 &
-          for attempt in {1..20}; do
-            if curl --fail --silent http://127.0.0.1:8080/ > /dev/null; then
-              exit 0
-            fi
-            sleep 1
-          done
-          cat /tmp/town-public-http.log
-          exit 1
       - name: Full staging enrollment E2E
         if: steps.enrollment-secrets.outputs.available == 'true'
         working-directory: e2e
         env:
-          TOWN_PUBLIC_BASE_URL: http://127.0.0.1:8080
+          TOWN_PUBLIC_BASE_URL: https://towncivic.org
           TOWN_E2E_EMAIL_BASE: ${{ secrets.TOWN_E2E_EMAIL_BASE }}
           TOWN_RESEND_API_KEY: ${{ secrets.TOWN_RESEND_API_KEY }}
         run: npx playwright test account-enrollment.spec.js
