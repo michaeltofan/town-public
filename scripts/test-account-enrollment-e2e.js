@@ -41,16 +41,21 @@ assert.match(workflow, /secrets\.TOWN_RESEND_API_KEY/);
 assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "off" \}\)/);
 assert.match(spec, /WebAuthn\.addVirtualAuthenticator/);
 assert.match(spec, /installCandidateAtProductionOrigin/);
-assert.match(spec, /page\.goto\(\`\\\$\{PUBLIC_ORIGIN\}\\\/#\\\/feed\`\)/);
-assert.match(
-  spec,
-  /\[data-feed-index\]:visible \[data-feed-role="feed-see-too"\]:visible/
+assert.equal(
+  spec.includes('page.goto(`${PUBLIC_ORIGIN}/#/feed`)'),
+  true
 );
-assert.match(spec, /#membership-invite/);
-assert.match(spec, /#invite-continue/);
-assert.doesNotMatch(
-  spec,
-  /page\.goto\(\`\\\$\{PUBLIC_ORIGIN\}\\\/#\\\/membership\`\)/
+assert.equal(
+  spec.includes(
+    '[data-feed-index]:visible [data-feed-role="feed-see-too"]:visible'
+  ),
+  true
+);
+assert.equal(spec.includes("#membership-invite"), true);
+assert.equal(spec.includes("#invite-continue"), true);
+assert.equal(
+  spec.includes('page.goto(`${PUBLIC_ORIGIN}/#/membership`)'),
+  false
 );
 assert.match(spec, /\/v1\/account\/community-commitment/);
 
