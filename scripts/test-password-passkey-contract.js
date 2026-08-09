@@ -52,6 +52,14 @@ assert(passwordSignIn.includes("bootstrapCommunityCommitment"), "password sign-i
 assert(passwordSignIn.includes("continueAfterPublicPasskeySignIn"), "both sign-in methods share post-auth routing");
 
 assert(js.includes('go("password")'), "verified email continues to password setup");
+const inviteJourneyRoutes = js.slice(
+  js.indexOf("const INVITE_MEMBERSHIP_JOURNEY_ROUTES"),
+  js.indexOf("const CITY_DISCOVERY_JOURNEY_ROUTES")
+);
+assert(
+  inviteJourneyRoutes.includes("password: true"),
+  "password setup remains inside the invite membership journey"
+);
 assert(js.includes('go("passkey")'), "password setup continues to passkey registration");
 assert(js.includes("passwordSet = true"), "passkey route opens only after password setup success");
 assert(js.includes("passwordBack.hidden = true"), "consumed email code cannot be replayed through Back");
