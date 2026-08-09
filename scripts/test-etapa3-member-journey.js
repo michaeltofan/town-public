@@ -115,7 +115,7 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("script.js?v=community-identity-1"),
+  html.includes("script.js?v=password-passkey-1"),
   "civic-process UI has a fresh browser cache key"
 );
 
