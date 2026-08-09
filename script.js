@@ -7,6 +7,7 @@
   const viewAccount = document.getElementById("view-account");
   const viewEmail = document.getElementById("view-email");
   const viewCode = document.getElementById("view-code");
+  const viewPassword = document.getElementById("view-password");
   const viewPasskey = document.getElementById("view-passkey");
   const viewReady = document.getElementById("view-ready");
   const viewCommitment = document.getElementById("view-commitment");
@@ -88,9 +89,24 @@
   const authChannelPhone = document.getElementById("auth-channel-phone");
   const authIdentityLabel = document.getElementById("auth-identity-label");
   const authIdentityInput = document.getElementById("auth-identity-input");
+  const authPasswordWrap = document.getElementById("auth-password-wrap");
+  const authPasswordLabel = document.getElementById("auth-password-label");
+  const authPassword = document.getElementById("auth-password");
   const authContinue = document.getElementById("auth-continue");
   const authPasskey = document.getElementById("auth-passkey");
   const authWindowStatus = document.getElementById("auth-window-status");
+  const passwordLabel = document.getElementById("password-label");
+  const passwordTitle = document.getElementById("password-title");
+  const passwordBody = document.getElementById("password-body");
+  const passwordBodySecond = document.getElementById("password-body-second");
+  const passwordFieldLabel = document.getElementById("password-field-label");
+  const passwordInput = document.getElementById("password-input");
+  const passwordConfirmLabel = document.getElementById("password-confirm-label");
+  const passwordConfirm = document.getElementById("password-confirm");
+  const passwordNote = document.getElementById("password-note");
+  const passwordError = document.getElementById("password-error");
+  const passwordContinue = document.getElementById("password-continue");
+  const passwordBack = document.getElementById("password-back");
   const profilePanel = document.getElementById("profile-panel");
   const profileDim = document.getElementById("profile-dim");
   const profileClose = document.getElementById("profile-close");
@@ -749,6 +765,7 @@
     !viewAccount ||
     !viewEmail ||
     !viewCode ||
+    !viewPassword ||
     !viewPasskey ||
     !viewReady ||
     !viewPayment ||
@@ -825,9 +842,24 @@
     !authChannelPhone ||
     !authIdentityLabel ||
     !authIdentityInput ||
+    !authPasswordWrap ||
+    !authPasswordLabel ||
+    !authPassword ||
     !authContinue ||
     !authPasskey ||
     !authWindowStatus ||
+    !passwordLabel ||
+    !passwordTitle ||
+    !passwordBody ||
+    !passwordBodySecond ||
+    !passwordFieldLabel ||
+    !passwordInput ||
+    !passwordConfirmLabel ||
+    !passwordConfirm ||
+    !passwordNote ||
+    !passwordError ||
+    !passwordContinue ||
+    !passwordBack ||
     !profilePanel ||
     !profileDim ||
     !profileClose ||
@@ -2757,9 +2789,9 @@
       privacy:
         "Verranno richieste solo le informazioni essenziali per l’account.",
       privacySecond:
-        "Nel flusso approvato non è richiesta una password.",
+        "Creerai una password e registrerai una passkey per un accesso sicuro.",
       prototype:
-        "Il passo successivo crea il tuo account con email e passkey.",
+        "Dopo aver verificato l’email, creerai la password e poi la passkey.",
       continue: "Continua",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2781,9 +2813,9 @@
       privacy:
         "Es werden nur die für das Konto wesentlichen Angaben erfragt.",
       privacySecond:
-        "Im genehmigten Ablauf ist kein Passwort erforderlich.",
+        "Du erstellst ein Passwort und registrierst einen Passkey für sicheren Zugang.",
       prototype:
-        "Als Nächstes erstellst du dein Konto mit E-Mail und Passkey.",
+        "Nach der E-Mail-Bestätigung erstellst du zuerst das Passwort und dann den Passkey.",
       continue: "Weiter",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2805,9 +2837,9 @@
       privacy:
         "Vor fi cerute doar informațiile esențiale pentru cont.",
       privacySecond:
-        "În fluxul aprobat nu este necesară o parolă.",
+        "Vei crea o parolă și vei înregistra o passkey pentru acces sigur.",
       prototype:
-        "Următorul pas creează contul cu email și passkey.",
+        "După verificarea emailului, creezi mai întâi parola și apoi passkey-ul.",
       continue: "Continuă",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2819,7 +2851,7 @@
       label: "CREA IL TUO ACCOUNT",
       title: "Inserisci la tua email.",
       body: "Normalmente ti invieremmo un codice di verifica di 6 cifre.",
-      bodySecond: "Non serve una password.",
+      bodySecond: "Dopo la verifica creerai una password, poi una passkey.",
       prototype:
         "Ti invieremo un codice di verifica a 6 cifre via email.",
       fieldLabel: "Indirizzo email",
@@ -2837,7 +2869,7 @@
       label: "KONTO ERSTELLEN",
       title: "Gib deine E-Mail-Adresse ein.",
       body: "Normalerweise würden wir dir einen sechsstelligen Bestätigungscode senden.",
-      bodySecond: "Du brauchst kein Passwort.",
+      bodySecond: "Nach der Bestätigung erstellst du ein Passwort und dann einen Passkey.",
       prototype:
         "Wir senden dir einen 6-stelligen Bestätigungscode per E-Mail.",
       fieldLabel: "E-Mail-Adresse",
@@ -2856,7 +2888,7 @@
       label: "CREEAZĂ-ȚI CONTUL",
       title: "Introdu adresa ta de email.",
       body: "În mod normal ți-am trimite un cod de verificare din 6 cifre.",
-      bodySecond: "Nu este nevoie de o parolă.",
+      bodySecond: "După verificare vei crea o parolă, apoi o passkey.",
       prototype:
         "Îți trimitem un cod de verificare din 6 cifre pe email.",
       fieldLabel: "Adresă de email",
@@ -2915,25 +2947,133 @@
     },
   };
 
+  const PASSWORD_COPY = {
+    en: {
+      label: "CREATE YOUR PASSWORD",
+      title: "Secure your TOWN account.",
+      body: "Create a password before registering your passkey.",
+      bodySecond: "After setup, you can sign in with either your passkey or your email and password.",
+      fieldLabel: "Password",
+      confirmLabel: "Confirm password",
+      note: "Use 15 to 128 characters. Spaces and Unicode characters are allowed.",
+      mismatch: "The passwords do not match.",
+      invalid: "Use a password between 15 and 128 characters.",
+      grantExpired: "The setup window expired. Start again from email entry.",
+      failed: "Could not set the password. Try again.",
+      continue: "Create password",
+      back: "Back",
+    },
+    es: {
+      label: "CREA TU CONTRASEÑA",
+      title: "Protege tu cuenta TOWN.",
+      body: "Crea una contraseña antes de registrar tu passkey.",
+      bodySecond: "Después podrás iniciar sesión con la passkey o con tu email y contraseña.",
+      fieldLabel: "Contraseña",
+      confirmLabel: "Confirmar contraseña",
+      note: "Usa entre 15 y 128 caracteres. Se permiten espacios y caracteres Unicode.",
+      mismatch: "Las contraseñas no coinciden.",
+      invalid: "Usa una contraseña de entre 15 y 128 caracteres.",
+      grantExpired: "La ventana de configuración ha caducado. Empieza de nuevo desde el email.",
+      failed: "No se pudo crear la contraseña. Inténtalo de nuevo.",
+      continue: "Crear contraseña",
+      back: "Atrás",
+    },
+    it: {
+      label: "CREA LA PASSWORD",
+      title: "Proteggi il tuo account TOWN.",
+      body: "Crea una password prima di registrare la passkey.",
+      bodySecond: "In seguito potrai accedere con la passkey oppure con email e password.",
+      fieldLabel: "Password",
+      confirmLabel: "Conferma password",
+      note: "Usa da 15 a 128 caratteri. Sono consentiti spazi e caratteri Unicode.",
+      mismatch: "Le password non coincidono.",
+      invalid: "Usa una password da 15 a 128 caratteri.",
+      grantExpired: "La finestra di configurazione è scaduta. Riparti dall’email.",
+      failed: "Non è stato possibile creare la password. Riprova.",
+      continue: "Crea password",
+      back: "Indietro",
+    },
+    de: {
+      label: "PASSWORT ERSTELLEN",
+      title: "Schütze dein TOWN-Konto.",
+      body: "Erstelle ein Passwort, bevor du den Passkey registrierst.",
+      bodySecond: "Danach kannst du dich mit Passkey oder mit E-Mail und Passwort anmelden.",
+      fieldLabel: "Passwort",
+      confirmLabel: "Passwort bestätigen",
+      note: "Verwende 15 bis 128 Zeichen. Leerzeichen und Unicode-Zeichen sind erlaubt.",
+      mismatch: "Die Passwörter stimmen nicht überein.",
+      invalid: "Verwende ein Passwort mit 15 bis 128 Zeichen.",
+      grantExpired: "Das Einrichtungsfenster ist abgelaufen. Beginne erneut mit der E-Mail.",
+      failed: "Das Passwort konnte nicht erstellt werden. Bitte erneut versuchen.",
+      continue: "Passwort erstellen",
+      back: "Zurück",
+    },
+    ro: {
+      label: "CREEAZĂ PAROLA",
+      title: "Protejează-ți contul TOWN.",
+      body: "Creează o parolă înainte de a înregistra passkey-ul.",
+      bodySecond: "Ulterior te poți autentifica fie cu passkey, fie cu email și parolă.",
+      fieldLabel: "Parolă",
+      confirmLabel: "Confirmă parola",
+      note: "Folosește între 15 și 128 de caractere. Sunt permise spațiile și caracterele Unicode.",
+      mismatch: "Parolele nu coincid.",
+      invalid: "Folosește o parolă între 15 și 128 de caractere.",
+      grantExpired: "Fereastra de configurare a expirat. Repornește de la email.",
+      failed: "Nu a fost posibilă crearea parolei. Încearcă din nou.",
+      continue: "Creează parola",
+      back: "Înapoi",
+    },
+    fr: {
+      label: "CRÉEZ VOTRE MOT DE PASSE",
+      title: "Protégez votre compte TOWN.",
+      body: "Créez un mot de passe avant d’enregistrer votre clé d’accès.",
+      bodySecond: "Vous pourrez ensuite vous connecter avec la clé d’accès ou avec votre e-mail et votre mot de passe.",
+      fieldLabel: "Mot de passe",
+      confirmLabel: "Confirmer le mot de passe",
+      note: "Utilisez entre 15 et 128 caractères. Les espaces et caractères Unicode sont autorisés.",
+      mismatch: "Les mots de passe ne correspondent pas.",
+      invalid: "Utilisez un mot de passe de 15 à 128 caractères.",
+      grantExpired: "La fenêtre de configuration a expiré. Recommencez par l’e-mail.",
+      failed: "Impossible de créer le mot de passe. Réessayez.",
+      continue: "Créer le mot de passe",
+      back: "Retour",
+    },
+    hu: {
+      label: "JELSZÓ LÉTREHOZÁSA",
+      title: "Védje TOWN-fiókját.",
+      body: "A hozzáférési kulcs regisztrálása előtt hozzon létre jelszót.",
+      bodySecond: "Ezután hozzáférési kulccsal vagy e-mail-címmel és jelszóval is bejelentkezhet.",
+      fieldLabel: "Jelszó",
+      confirmLabel: "Jelszó megerősítése",
+      note: "Használjon 15–128 karaktert. Szóköz és Unicode-karakter is megengedett.",
+      mismatch: "A jelszavak nem egyeznek.",
+      invalid: "Használjon 15–128 karakteres jelszót.",
+      grantExpired: "A beállítási időablak lejárt. Kezdje újra az e-mail megadásától.",
+      failed: "A jelszó létrehozása sikertelen. Próbálja újra.",
+      continue: "Jelszó létrehozása",
+      back: "Vissza",
+    },
+  };
+
   const PASSKEY_COPY = {
     it: {
       label: "ACCESSO SICURO",
       title: "Proteggi il tuo account TOWN.",
       body:
-        "TOWN utilizza una passkey: non devi creare o ricordare una password.",
+        "Hai creato la password. Ora registra una passkey per un accesso rapido e resistente al phishing.",
       bodySecond:
         "Nel flusso approvato, l’accesso sicuro usa i metodi del tuo dispositivo.",
       methodsTitle: "Metodi disponibili sul dispositivo",
       methods: ["Face ID", "Touch ID", "Impronta digitale", "PIN del dispositivo"],
       benefitsTitle: "Perché una passkey",
       benefits: [
-        "Nessuna password da ricordare",
+        "Accesso rapido senza digitare la password",
         "Maggiore resistenza al phishing",
-        "Nessuna password condivisa con TOWN",
+        "Il segreto della passkey non viene condiviso con TOWN",
         "Puoi aggiungere altri dispositivi in seguito",
       ],
       prototype:
-        "TOWN creerà una passkey sul tuo dispositivo. Non viene creata alcuna password.",
+        "TOWN creerà una passkey sul tuo dispositivo; la password resta disponibile come metodo alternativo.",
       create: "Crea accesso sicuro",
       back: "Indietro",
       successLabel: "ACCESSO CONFIGURATO",
@@ -2955,20 +3095,20 @@
       label: "SICHERER ZUGANG",
       title: "Schütze dein TOWN-Konto.",
       body:
-        "TOWN verwendet einen Passkey. Du musst kein Passwort erstellen oder merken.",
+        "Du hast dein Passwort erstellt. Registriere jetzt einen Passkey für schnellen, phishing-resistenten Zugang.",
       bodySecond:
         "Im genehmigten Ablauf nutzt der sichere Zugang die Methoden deines Geräts.",
       methodsTitle: "Verfügbare Gerätemethoden",
       methods: ["Face ID", "Touch ID", "Fingerabdruck", "Geräte-PIN"],
       benefitsTitle: "Warum ein Passkey",
       benefits: [
-        "Kein Passwort zum Merken",
+        "Schnelle Anmeldung ohne Passworteingabe",
         "Besserer Schutz vor Phishing",
-        "Kein Passwort wird mit TOWN geteilt",
+        "Das Passkey-Geheimnis wird nicht mit TOWN geteilt",
         "Weitere Geräte können später hinzugefügt werden",
       ],
       prototype:
-        "TOWN erstellt einen Passkey auf deinem Gerät. Es wird kein Passwort angelegt.",
+        "TOWN erstellt einen Passkey auf deinem Gerät; dein Passwort bleibt als alternative Anmeldemethode verfügbar.",
       create: "Sicheren Zugang erstellen",
       back: "Zurück",
       successLabel: "ZUGANG EINGERICHTET",
@@ -2990,20 +3130,20 @@
       label: "ACCES SIGUR",
       title: "Protejează-ți contul TOWN.",
       body:
-        "TOWN folosește o passkey: nu trebuie să creezi sau să ții minte o parolă.",
+        "Ai creat parola. Acum înregistrează o passkey pentru acces rapid și rezistent la phishing.",
       bodySecond:
         "În fluxul aprobat, accesul sigur folosește metodele dispozitivului tău.",
       methodsTitle: "Metode disponibile pe dispozitiv",
       methods: ["Face ID", "Touch ID", "Amprentă", "PIN-ul dispozitivului"],
       benefitsTitle: "De ce o passkey",
       benefits: [
-        "Nicio parolă de ținut minte",
+        "Autentificare rapidă fără introducerea parolei",
         "Rezistență mai bună la phishing",
-        "Nicio parolă partajată cu TOWN",
+        "Secretul passkey-ului nu este partajat cu TOWN",
         "Poți adăuga alte dispozitive mai târziu",
       ],
       prototype:
-        "TOWN va crea o passkey pe dispozitivul tău. Nu se creează nicio parolă.",
+        "TOWN va crea o passkey pe dispozitiv; parola rămâne disponibilă ca metodă alternativă.",
       create: "Creează acces sigur",
       back: "Înapoi",
       successLabel: "ACCES CONFIGURAT",
@@ -3501,8 +3641,8 @@
     ],
     privacyTitle: "Privacy",
     privacy: "We ask only for information essential to the account.",
-    privacySecond: "The current flow does not require a password.",
-    prototype: "Next, you create your account with email and a passkey.",
+    privacySecond: "You create a password and register a passkey for secure access.",
+    prototype: "After email verification, create the password first and then the passkey.",
     continue: "Continue",
     back: "Back",
     cityNames: ONBOARDING_CITY_NAMES,
@@ -3522,8 +3662,8 @@
     ],
     privacyTitle: "Privacidad",
     privacy: "Solo pedimos los datos esenciales para la cuenta.",
-    privacySecond: "El flujo actual no requiere contraseña.",
-    prototype: "A continuación, creas tu cuenta con email y una passkey.",
+    privacySecond: "Creas una contraseña y registras una passkey para un acceso seguro.",
+    prototype: "Después de verificar el email, crea primero la contraseña y luego la passkey.",
     continue: "Continuar",
     back: "Atrás",
     cityNames: ONBOARDING_CITY_NAMES_ES,
@@ -3533,7 +3673,7 @@
     label: "CREATE YOUR ACCOUNT",
     title: "Enter your email.",
     body: "We will send you a six-digit verification code.",
-    bodySecond: "No password is required in the current flow.",
+    bodySecond: "After verification, you create a password and then a passkey.",
     prototype: "We will send a six-digit verification code by email.",
     fieldLabel: "Email address",
     placeholder: "name@example.com",
@@ -3551,7 +3691,7 @@
     label: "CREA TU CUENTA",
     title: "Introduce tu email.",
     body: "Te enviaremos un código de verificación de seis dígitos.",
-    bodySecond: "El flujo actual no requiere contraseña.",
+    bodySecond: "Después de verificarlo, crearás una contraseña y luego una passkey.",
     prototype: "Te enviaremos por email un código de verificación de seis dígitos.",
     fieldLabel: "Dirección de email",
     placeholder: "nombre@ejemplo.com",
@@ -3596,18 +3736,18 @@
   PASSKEY_COPY.en = {
     label: "SECURE ACCESS",
     title: "Protect your TOWN account.",
-    body: "TOWN currently uses a passkey for secure access.",
-    bodySecond: "The passkey uses the security method available on your device.",
+    body: "Your password is set. Now register a passkey for fast, phishing-resistant access.",
+    bodySecond: "You can later sign in with either the passkey or your email and password.",
     methodsTitle: "Methods available on your device",
     methods: ["Face ID", "Touch ID", "Fingerprint", "Device PIN"],
     benefitsTitle: "Why a passkey",
     benefits: [
-      "Nothing extra to type at sign-in",
+      "Fast sign-in without typing your password",
       "Stronger resistance to phishing",
       "No passkey secret is shared with TOWN",
       "You can add other devices later",
     ],
-    prototype: "TOWN will create a passkey on your device.",
+    prototype: "TOWN will create a passkey on your device; your password remains available as an alternative.",
     create: "Create secure access",
     back: "Back",
     successLabel: "ACCESS SET UP",
@@ -3626,18 +3766,18 @@
   PASSKEY_COPY.es = {
     label: "ACCESO SEGURO",
     title: "Protege tu cuenta TOWN.",
-    body: "TOWN utiliza actualmente una passkey para el acceso seguro.",
-    bodySecond: "La passkey usa el método de seguridad disponible en tu dispositivo.",
+    body: "Tu contraseña está creada. Ahora registra una passkey para un acceso rápido y resistente al phishing.",
+    bodySecond: "Después podrás iniciar sesión con la passkey o con tu email y contraseña.",
     methodsTitle: "Métodos disponibles en tu dispositivo",
     methods: ["Face ID", "Touch ID", "Huella digital", "PIN del dispositivo"],
     benefitsTitle: "Por qué una passkey",
     benefits: [
-      "Nada adicional que escribir al iniciar sesión",
+      "Inicio rápido sin escribir la contraseña",
       "Mayor resistencia al phishing",
       "Ningún secreto de la passkey se comparte con TOWN",
       "Puedes añadir otros dispositivos más adelante",
     ],
-    prototype: "TOWN creará una passkey en tu dispositivo.",
+    prototype: "TOWN creará una passkey en tu dispositivo; la contraseña seguirá disponible como alternativa.",
     create: "Crear acceso seguro",
     back: "Atrás",
     successLabel: "ACCESO CONFIGURADO",
@@ -3858,6 +3998,10 @@
       success: "Signed in. Session active.",
       cancelled: "Sign-in cancelled. You can try again.",
       failed: "Sign-in failed. Please try again.",
+      passwordLabel: "Password",
+      passwordRequired: "Enter your password.",
+      passwordSignIn: "Sign in with password",
+      passkeySignIn: "Sign in with passkey",
       phoneUnavailable:
         "Phone sign-in is not available yet. Use email, or Sign in with a passkey.",
     },
@@ -3867,6 +4011,10 @@
       success: "Sesión iniciada. La sesión está activa.",
       cancelled: "Inicio de sesión cancelado. Puedes intentarlo de nuevo.",
       failed: "No se pudo iniciar sesión. Inténtalo de nuevo.",
+      passwordLabel: "Contraseña",
+      passwordRequired: "Introduce tu contraseña.",
+      passwordSignIn: "Iniciar sesión con contraseña",
+      passkeySignIn: "Iniciar sesión con passkey",
       phoneUnavailable:
         "El acceso por teléfono aún no está disponible. Usa el email o inicia sesión con una passkey.",
     },
@@ -3876,6 +4024,10 @@
       success: "Accesso effettuato. Sessione attiva.",
       cancelled: "Accesso annullato. Puoi riprovare.",
       failed: "Accesso non riuscito. Riprova.",
+      passwordLabel: "Password",
+      passwordRequired: "Inserisci la password.",
+      passwordSignIn: "Accedi con email e password",
+      passkeySignIn: "Accedi con passkey",
       phoneUnavailable:
         "L’accesso con telefono non è ancora disponibile. Usa l’email oppure Accedi con una passkey.",
     },
@@ -3885,6 +4037,10 @@
       success: "Angemeldet. Sitzung aktiv.",
       cancelled: "Anmeldung abgebrochen. Du kannst es erneut versuchen.",
       failed: "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+      passwordLabel: "Passwort",
+      passwordRequired: "Gib dein Passwort ein.",
+      passwordSignIn: "Mit E-Mail und Passwort anmelden",
+      passkeySignIn: "Mit Passkey anmelden",
       phoneUnavailable:
         "Telefon-Anmeldung ist noch nicht verfügbar. Nutze E-Mail oder melde dich mit einer Passkey an.",
     },
@@ -3894,6 +4050,10 @@
       success: "Autentificare reușită. Sesiune activă.",
       cancelled: "Autentificare anulată. Poți încerca din nou.",
       failed: "Autentificarea a eșuat. Încearcă din nou.",
+      passwordLabel: "Parolă",
+      passwordRequired: "Introdu parola.",
+      passwordSignIn: "Autentificare cu email și parolă",
+      passkeySignIn: "Autentificare cu passkey",
       phoneUnavailable:
         "Autentificarea cu telefon nu este încă disponibilă. Folosește emailul sau Sign in cu o passkey.",
     },
@@ -4087,6 +4247,7 @@
     account: true,
     email: true,
     code: true,
+    password: true,
     passkey: true,
     ready: true,
     commitment: true,
@@ -8191,6 +8352,8 @@
   let emailSubmitting = false;
   let codeSubmitting = false;
   let emailVerified = false;
+  let passwordSet = false;
+  let passwordSubmitting = false;
   let passkeyRegistered = false;
   let passkeySubmitting = false;
   let paymentCheckoutSubmitting = false;
@@ -8249,6 +8412,7 @@
     account: "TOWN — Account setup",
     email: "TOWN — Email entry",
     code: "TOWN — Verification code",
+    password: "TOWN — Password setup",
     passkey: "TOWN — Secure access",
     ready: "TOWN — Account ready",
     commitment: "TOWN — Community commitment",
@@ -8268,6 +8432,7 @@
     else if (raw.startsWith("account")) route = "account";
     else if (raw.startsWith("email")) route = "email";
     else if (raw.startsWith("code")) route = "code";
+    else if (raw.startsWith("password")) route = "password";
     else if (raw.startsWith("passkey")) route = "passkey";
     else if (raw.startsWith("ready")) route = "ready";
     else if (raw.startsWith("commitment")) route = "commitment";
@@ -8691,6 +8856,36 @@
         setupGrant: data.setupGrant || null,
         setupGrantExpiresAt: data.setupGrantExpiresAt || null,
       };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function completeInitialPasswordSetup(password) {
+    const result = await postJson(
+      API_BASE + "/v1/account/password",
+      { password: password },
+      setupGrantAuthHeader()
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.status === "PASSWORD_SET") {
+      return {
+        setupGrant: data.setupGrant || null,
+        setupGrantExpiresAt: data.setupGrantExpiresAt || null,
+      };
+    }
+    throw makeApiError(apiErrorKind(status, result.payload));
+  }
+
+  async function authenticateWithPassword(email, password) {
+    const result = await postJsonWithCredentials(
+      API_BASE + "/v1/authentication/password",
+      { email: email, password: password, clientType: "web" }
+    );
+    const status = result.response.status;
+    const data = result.payload && result.payload.data;
+    if (status === 200 && data && data.status === "AUTHENTICATED") {
+      return data;
     }
     throw makeApiError(apiErrorKind(status, result.payload));
   }
@@ -10081,11 +10276,11 @@
   // Does not invent password auth or manufacture session state locally.
   function startPublicAuthWindowPasskeySignIn() {
     if (authSignInSubmitting) return;
-    // Auth-window chrome is English; keep status copy aligned with that shell.
-    const copy = LOGIN_COPY.en;
+    const copy = LOGIN_COPY[entryLang()] || LOGIN_COPY.en;
     clearAuthWindowStatus();
 
     authSignInSubmitting = true;
+    authPassword.disabled = true;
     authPasskey.disabled = true;
     authContinue.disabled = true;
     showAuthWindowStatus(copy.working, "success");
@@ -10119,6 +10314,67 @@
       })
       .finally(function () {
         authSignInSubmitting = false;
+        authPassword.disabled = false;
+        authPasskey.disabled = false;
+        authContinue.disabled = false;
+      });
+  }
+
+  function startPublicAuthWindowPasswordSignIn() {
+    if (authSignInSubmitting) return;
+    const copy = LOGIN_COPY[entryLang()] || LOGIN_COPY.en;
+    const email = (authIdentityInput.value || "").trim();
+    const password = authPassword.value || "";
+    clearAuthWindowStatus();
+
+    if (!isValidEmail(email)) {
+      authIdentityInput.setCustomValidity(
+        (EMAIL_COPY[entryLang()] || EMAIL_COPY.en).invalid
+      );
+      authIdentityInput.reportValidity();
+      return;
+    }
+    authIdentityInput.setCustomValidity("");
+    if (!password) {
+      authPassword.setCustomValidity(
+        copy.passwordRequired || "Enter your password."
+      );
+      authPassword.reportValidity();
+      return;
+    }
+    authPassword.setCustomValidity("");
+
+    authSignInSubmitting = true;
+    authPassword.disabled = true;
+    authPasskey.disabled = true;
+    authContinue.disabled = true;
+    showAuthWindowStatus(copy.working, "success");
+
+    authenticateWithPassword(email, password)
+      .then(function () {
+        sessionAuthenticated = true;
+        noteAccountEmail(email);
+        showAuthWindowStatus(copy.success, "success");
+        return Promise.all([
+          fetchAccountMembership()
+            .then(function (snapshot) {
+              applyMembershipSnapshot(snapshot);
+            })
+            .catch(function () {
+              // Keep prior authoritative snapshot on transient failure.
+            }),
+          bootstrapCommunityCommitment(),
+        ]).then(function () {
+          continueAfterPublicPasskeySignIn();
+        });
+      })
+      .catch(function () {
+        sessionAuthenticated = false;
+        showAuthWindowStatus(copy.failed, "error");
+      })
+      .finally(function () {
+        authSignInSubmitting = false;
+        authPassword.disabled = false;
         authPasskey.disabled = false;
         authContinue.disabled = false;
       });
@@ -10948,6 +11204,8 @@
     emailSubmitting = false;
     codeSubmitting = false;
     emailVerified = false;
+    passwordSet = false;
+    passwordSubmitting = false;
     passkeyRegistered = false;
     passkeySubmitting = false;
     paymentCheckoutSubmitting = false;
@@ -11430,6 +11688,8 @@
   LOGIN_COPY.fr = {
     signIn: "Connexion des membres", working: "Vérification…", success: "Connecté. Session active.",
     cancelled: "Connexion annulée. Vous pouvez réessayer.", failed: "Échec de la connexion. Veuillez réessayer.",
+    passwordLabel: "Mot de passe", passwordRequired: "Saisissez votre mot de passe.",
+    passwordSignIn: "Se connecter avec e-mail et mot de passe", passkeySignIn: "Se connecter avec une clé d’accès",
     phoneUnavailable: "La connexion par téléphone n'est pas encore disponible. Utilisez l'e-mail ou une clé d'accès.",
   };
   MEMBERSHIP_COPY.fr = {
@@ -11461,10 +11721,10 @@
     failed: "Impossible de continuer. Réessayez.", verify: "Vérifier", changeEmail: "Changer d'adresse e-mail", cityNames: CITY_COPY.fr.cityNames,
   };
   PASSKEY_COPY.fr = {
-    label: "ACCÈS SÉCURISÉ", title: "Protégez votre compte TOWN.", body: "TOWN utilise une clé d'accès sécurisée sur votre appareil.",
-    bodySecond: "L'accès sécurisé utilise les méthodes de votre appareil.", methodsTitle: "Méthodes disponibles sur l'appareil", methods: ["Face ID", "Touch ID", "Empreinte digitale", "Code PIN de l'appareil"],
-    benefitsTitle: "Pourquoi une clé d'accès", benefits: ["Aucun secret supplémentaire à mémoriser", "Meilleure résistance au hameçonnage", "Aucun mot de passe partagé avec TOWN", "Vous pourrez ajouter d'autres appareils plus tard"],
-    prototype: "TOWN créera une clé d'accès sur votre appareil.", create: "Créer l'accès sécurisé", back: "Retour", successLabel: "ACCÈS CONFIGURÉ",
+    label: "ACCÈS SÉCURISÉ", title: "Protégez votre compte TOWN.", body: "Votre mot de passe est créé. Enregistrez maintenant une clé d’accès rapide et résistante au hameçonnage.",
+    bodySecond: "Vous pourrez vous connecter avec la clé d’accès ou avec votre e-mail et votre mot de passe.", methodsTitle: "Méthodes disponibles sur l'appareil", methods: ["Face ID", "Touch ID", "Empreinte digitale", "Code PIN de l'appareil"],
+    benefitsTitle: "Pourquoi une clé d'accès", benefits: ["Connexion rapide sans saisir le mot de passe", "Meilleure résistance au hameçonnage", "Le secret de la clé d’accès n’est pas partagé avec TOWN", "Vous pourrez ajouter d'autres appareils plus tard"],
+    prototype: "TOWN créera une clé d’accès sur votre appareil ; le mot de passe restera disponible comme alternative.", create: "Créer l'accès sécurisé", back: "Retour", successLabel: "ACCÈS CONFIGURÉ",
     successTitle: "Accès sécurisé configuré.", successBody: "Votre adresse e-mail est vérifiée et la clé d'accès a été créée sur votre appareil.",
     successEmail: "E-mail vérifié", successAccess: "Accès sécurisé configuré", successNote: "La clé d'accès est prête. L'étape suivante consiste à activer l'adhésion TOWN.",
     continue: "Continuer", grantExpired: "La fenêtre de configuration a expiré. Recommencez par la saisie de l'e-mail.", cancelled: "Création annulée. Vous pouvez réessayer.",
@@ -11648,6 +11908,8 @@
   LOGIN_COPY.hu = Object.assign({}, LOGIN_COPY.en, {
     signIn: "Tagi bejelentkezés", working: "Ellenőrzés…", success: "Bejelentkezve. A munkamenet aktív.",
     cancelled: "A bejelentkezést megszakította.", failed: "A bejelentkezés sikertelen. Próbálja újra.",
+    passwordLabel: "Jelszó", passwordRequired: "Adja meg jelszavát.",
+    passwordSignIn: "Bejelentkezés e-mail-címmel és jelszóval", passkeySignIn: "Bejelentkezés hozzáférési kulccsal",
   });
   MEMBERSHIP_COPY.hu = Object.assign({}, MEMBERSHIP_COPY.en, {
     inviteTitle: "Fontos Önnek, mi történik a közösségében.",
@@ -11676,7 +11938,8 @@
     invalid: "A kód hibás.", rateLimited: "Túl sok próbálkozás.", failed: "Nem sikerült folytatni.", verify: "Ellenőrzés", changeEmail: "E-mail-cím módosítása", cityNames: CITY_COPY.hu.cityNames,
   });
   PASSKEY_COPY.hu = Object.assign({}, PASSKEY_COPY.en || PASSKEY_COPY.it, {
-    label: "BIZTONSÁGOS HOZZÁFÉRÉS", title: "Védje TOWN-fiókját.", body: "A TOWN biztonságos hozzáférési kulcsot használ az eszközén.",
+    label: "BIZTONSÁGOS HOZZÁFÉRÉS", title: "Védje TOWN-fiókját.", body: "A jelszó elkészült. Most regisztráljon gyors, adathalászatnak ellenálló hozzáférési kulcsot.",
+    bodySecond: "Ezután hozzáférési kulccsal vagy e-mail-címmel és jelszóval is bejelentkezhet.",
     methodsTitle: "Az eszközön elérhető módszerek", benefitsTitle: "Miért hozzáférési kulcs", create: "Biztonságos hozzáférés létrehozása", back: "Vissza",
     successLabel: "HOZZÁFÉRÉS BEÁLLÍTVA", successTitle: "A biztonságos hozzáférés elkészült.", continue: "Tovább", cancelled: "A létrehozást megszakította.", failed: "A hozzáférési kulcs létrehozása sikertelen.", cityNames: CITY_COPY.hu.cityNames,
   });
@@ -12624,6 +12887,61 @@
     }
   }
 
+  function passwordCodePointLength(value) {
+    return Array.from(String(value || "").normalize("NFC")).length;
+  }
+
+  function passwordMeetsPolicy(value) {
+    const length = passwordCodePointLength(value);
+    return length >= 15 && length <= 128;
+  }
+
+  function applyPasswordCopy() {
+    const copy = PASSWORD_COPY[membershipLang()];
+    passwordLabel.textContent = copy.label;
+    passwordTitle.textContent = copy.title;
+    passwordBody.textContent = copy.body;
+    passwordBodySecond.textContent = copy.bodySecond;
+    passwordFieldLabel.textContent = copy.fieldLabel;
+    passwordConfirmLabel.textContent = copy.confirmLabel;
+    passwordNote.textContent = copy.note;
+    passwordContinue.textContent = copy.continue;
+    passwordBack.textContent = copy.back;
+    // Email verification has already been consumed; do not offer a dead-end
+    // return to the one-time-code screen.
+    passwordBack.hidden = true;
+    syncPasswordContinue();
+    document.documentElement.lang = membershipLang();
+  }
+
+  function syncPasswordContinue() {
+    const copy = PASSWORD_COPY[membershipLang()];
+    const value = passwordInput.value || "";
+    const confirmation = passwordConfirm.value || "";
+    const valid = passwordMeetsPolicy(value);
+    const matches = value === confirmation;
+    passwordContinue.disabled = !valid || !matches || passwordSubmitting;
+    if (!value && !confirmation) {
+      passwordError.hidden = true;
+      passwordError.textContent = "";
+      return;
+    }
+    if (value && !valid) {
+      passwordError.hidden = false;
+      passwordError.textContent = copy.invalid;
+      return;
+    }
+    if (confirmation && !matches) {
+      passwordError.hidden = false;
+      passwordError.textContent = copy.mismatch;
+      return;
+    }
+    if (!passwordSubmitting) {
+      passwordError.hidden = true;
+      passwordError.textContent = "";
+    }
+  }
+
   function fillList(node, items) {
     node.innerHTML = "";
     items.forEach((item) => {
@@ -12667,6 +12985,9 @@
     passkeyCreate.textContent = copy.create;
     passkeyCreate.disabled = passkeySubmitting;
     passkeyBack.textContent = copy.back;
+    // Initial password setup consumes its grant and issues the passkey grant.
+    // Returning to password setup would reuse the wrong grant purpose.
+    passkeyBack.hidden = passwordSet;
     passkeySuccessLabel.textContent = copy.successLabel;
     passkeySuccessTitle.textContent = copy.successTitle;
     passkeySuccessBody.textContent = copy.successBody;
@@ -12816,13 +13137,25 @@
   }
 
   function syncAuthModeUi() {
+    const copy = LOGIN_COPY[entryLang()] || LOGIN_COPY.en;
     if (authMode === "create") {
       authWindowTitle.textContent = "Create account";
       authModeToggle.textContent = "Sign in";
+      authPasswordWrap.hidden = true;
+      authPasskey.hidden = true;
+      authContinue.textContent = "Continue";
     } else {
       authWindowTitle.textContent = "Sign in";
       authModeToggle.textContent = "First time here? Create account";
+      authPasswordWrap.hidden = false;
+      authPasskey.hidden = false;
+      authPasswordLabel.textContent = copy.passwordLabel || "Password";
+      authContinue.textContent = copy.passwordSignIn || "Sign in with password";
+      authPasskey.textContent = copy.passkeySignIn || "Sign in with passkey";
     }
+    authPassword.value = "";
+    authPassword.setCustomValidity("");
+    clearAuthWindowStatus();
   }
 
   function syncAuthChannelUi() {
@@ -12987,6 +13320,13 @@
     codeError.hidden = true;
     codeError.textContent = "";
     codeVerify.disabled = true;
+    passwordInput.value = "";
+    passwordConfirm.value = "";
+    passwordError.hidden = true;
+    passwordError.textContent = "";
+    passwordContinue.disabled = true;
+    authPassword.value = "";
+    authPassword.setCustomValidity("");
     clearPasskeyError();
     showPasskeyIntro();
     clearPaymentError();
@@ -13020,6 +13360,7 @@
     viewAccount.hidden = name !== "account";
     viewEmail.hidden = name !== "email";
     viewCode.hidden = name !== "code";
+    viewPassword.hidden = name !== "password";
     viewPasskey.hidden = name !== "passkey";
     viewReady.hidden = name !== "ready";
     viewCommitment.hidden = name !== "commitment";
@@ -13035,6 +13376,7 @@
     document.body.classList.toggle("page-account", name === "account");
     document.body.classList.toggle("page-email", name === "email");
     document.body.classList.toggle("page-code", name === "code");
+    document.body.classList.toggle("page-password", name === "password");
     document.body.classList.toggle("page-passkey", name === "passkey");
     document.body.classList.toggle("page-ready", name === "ready");
     document.body.classList.toggle("page-commitment", name === "commitment");
@@ -13078,6 +13420,9 @@
     }
     if (name === "code") {
       applyCodeCopy();
+    }
+    if (name === "password") {
+      applyPasswordCopy();
     }
     if (name === "passkey") {
       applyPasskeyCopy();
@@ -13144,6 +13489,7 @@
       const authAccountReady = sessionAuthenticated === true;
       if (
         (route === "code" ||
+          route === "password" ||
           route === "passkey" ||
           route === "ready" ||
           route === "commitment" ||
@@ -13155,7 +13501,8 @@
         route = "email";
       }
       if (
-        (route === "passkey" ||
+        (route === "password" ||
+          route === "passkey" ||
           route === "ready" ||
           route === "commitment" ||
           route === "payment" ||
@@ -13164,6 +13511,17 @@
         !authAccountReady
       ) {
         route = "code";
+      }
+      if (
+        (route === "passkey" ||
+          route === "ready" ||
+          route === "commitment" ||
+          route === "payment" ||
+          route === "active") &&
+        !passwordSet &&
+        !authAccountReady
+      ) {
+        route = "password";
       }
       if (
         (route === "ready" ||
@@ -13202,6 +13560,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -13217,6 +13576,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -13227,6 +13587,7 @@
     }
     if (
       (route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -13236,13 +13597,23 @@
       route = "email";
     }
     if (
-      (route === "passkey" ||
+      (route === "password" ||
+        route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
         route === "active") &&
       !emailVerified
     ) {
       route = "code";
+    }
+    if (
+      (route === "passkey" ||
+        route === "ready" ||
+        route === "payment" ||
+        route === "active") &&
+      !passwordSet
+    ) {
+      route = "password";
     }
     if (
       (route === "ready" || route === "payment" || route === "active") &&
@@ -13956,6 +14327,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -13977,6 +14349,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -13993,6 +14366,7 @@
         route === "account" ||
         route === "email" ||
         route === "code" ||
+        route === "password" ||
         route === "passkey" ||
         route === "ready" ||
         route === "payment" ||
@@ -14563,7 +14937,7 @@
 
   // Mode-aware Continue:
   // - Create account + Email → request email verification (unchanged).
-  // - Sign-in → canonical passkey authentication (not a silent no-op).
+  // - Sign-in + Email → canonical password authentication.
   // - Phone remains unavailable (no phone auth system).
   authContinue.addEventListener("click", (event) => {
     event.preventDefault();
@@ -14579,7 +14953,7 @@
     }
 
     if (authMode === "signin") {
-      startPublicAuthWindowPasskeySignIn();
+      startPublicAuthWindowPasswordSignIn();
       return;
     }
 
@@ -14635,42 +15009,7 @@
   });
 
   entrySignIn.addEventListener("click", () => {
-    if (loginSubmitting) return;
-    const copy = LOGIN_COPY[entryLang()];
-    clearEntryLoginStatus();
-
-    loginSubmitting = true;
-    entrySignIn.disabled = true;
-    showEntryLoginStatus(copy.working, "success");
-
-    runPasskeyAuthenticationCeremony()
-      .then(function () {
-        sessionAuthenticated = true;
-        showEntryLoginStatus(copy.success, "success");
-        return Promise.all([
-          fetchAccountMembership()
-            .then(function (snapshot) {
-              applyMembershipSnapshot(snapshot);
-            })
-            .catch(function () {
-              // Keep prior authoritative snapshot on transient failure so a
-              // paying member is never routed as a non-member.
-            }),
-          bootstrapCommunityCommitment(),
-        ]);
-      })
-      .catch(function (err) {
-        sessionAuthenticated = false;
-        if (isPasskeyCeremonyCancelled(err)) {
-          showEntryLoginStatus(copy.cancelled, "error");
-          return;
-        }
-        showEntryLoginStatus(copy.failed, "error");
-      })
-      .finally(function () {
-        loginSubmitting = false;
-        entrySignIn.disabled = false;
-      });
+    openAuthWindow(entrySignIn, null);
   });
 
   countryBack.addEventListener("click", () => {
@@ -14999,8 +15338,11 @@
         setupGrant = result.setupGrant;
         setupGrantExpiresAt = result.setupGrantExpiresAt;
         emailVerified = true;
+        passwordSet = false;
         passkeyRegistered = false;
-        go("passkey");
+        passwordInput.value = "";
+        passwordConfirm.value = "";
+        go("password");
       })
       .catch(function (err) {
         const copy = CODE_COPY[membershipLang()];
@@ -15021,12 +15363,65 @@
 
   codeChangeEmail.addEventListener("click", () => {
     emailVerified = false;
+    passwordSet = false;
     passkeyRegistered = false;
     emailVerificationId = null;
     setupGrant = null;
     setupGrantExpiresAt = null;
     codeSubmitting = false;
     go("email");
+  });
+
+  passwordInput.addEventListener("input", syncPasswordContinue);
+  passwordConfirm.addEventListener("input", syncPasswordContinue);
+
+  passwordContinue.addEventListener("click", () => {
+    const copy = PASSWORD_COPY[membershipLang()];
+    const value = passwordInput.value || "";
+    if (
+      passwordSubmitting ||
+      !passwordMeetsPolicy(value) ||
+      value !== (passwordConfirm.value || "")
+    ) {
+      syncPasswordContinue();
+      return;
+    }
+    if (!isSetupGrantUsable()) {
+      passwordError.hidden = false;
+      passwordError.textContent = copy.grantExpired;
+      return;
+    }
+
+    passwordSubmitting = true;
+    passwordContinue.disabled = true;
+    passwordError.hidden = true;
+    passwordError.textContent = "";
+    completeInitialPasswordSetup(value)
+      .then(function (result) {
+        setupGrant = result.setupGrant;
+        setupGrantExpiresAt = result.setupGrantExpiresAt;
+        passwordSet = true;
+        passwordInput.value = "";
+        passwordConfirm.value = "";
+        go("passkey");
+      })
+      .catch(function (err) {
+        passwordError.hidden = false;
+        passwordError.textContent =
+          err && err.kind === "grantExpired" ? copy.grantExpired : copy.failed;
+      })
+      .finally(function () {
+        passwordSubmitting = false;
+        syncPasswordContinue();
+      });
+  });
+
+  passwordBack.addEventListener("click", () => {
+    passwordInput.value = "";
+    passwordConfirm.value = "";
+    passwordError.hidden = true;
+    passwordError.textContent = "";
+    go("code");
   });
 
   passkeyCreate.addEventListener("click", () => {
@@ -15097,7 +15492,7 @@
 
   passkeyBack.addEventListener("click", () => {
     clearPasskeyError();
-    go("code");
+    go("password");
   });
 
   passkeyContinue.addEventListener("click", () => {
