@@ -227,9 +227,43 @@ assertOk(commitment.isCityValidForCountry("Hungary", "Budapest"));
 assertEqual(commitment.isCityValidForCountry("France", "Budapest"), false);
 assertEqual(commitment.isCityValidForCountry("Hungary", "Lyon"), false);
 
+// Spain is a genuinely new country with five selectable cities.
+assertEqual(commitment.slugForCityId("Madrid"), "madrid-es");
+assertEqual(commitment.slugForCityId("Barcelona"), "barcelona-es");
+assertEqual(commitment.slugForCityId("Valencia"), "valencia-es");
+assertEqual(commitment.slugForCityId("Sevilla"), "sevilla-es");
+assertEqual(commitment.slugForCityId("Malaga"), "malaga-es");
+const spainCities = commitment.citiesForCountry("Spain").map((c) => c.id);
+assertEqual(
+  spainCities.sort().join(","),
+  ["Madrid", "Barcelona", "Valencia", "Sevilla", "Malaga"].sort().join(","),
+  "Spain offers all five cities"
+);
+for (const cityId of ["Madrid", "Barcelona", "Valencia", "Sevilla", "Malaga"]) {
+  assertOk(
+    commitment.isCityValidForCountry("Spain", cityId),
+    cityId + " valid for Spain"
+  );
+  assertEqual(
+    commitment.countryForCityId(cityId),
+    "Spain",
+    cityId + " maps back to Spain"
+  );
+}
+assertEqual(
+  commitment.isCityValidForCountry("France", "Madrid"),
+  false,
+  "Madrid is not valid for France"
+);
+assertEqual(
+  commitment.isCityValidForCountry("Spain", "Marseille"),
+  false,
+  "Marseille is not valid for Spain"
+);
+
 // One explicit identity contract for every production community.
-assertEqual(commitment.countries().length, 6, "six selectable countries");
-assertEqual(commitment.cityIds().length, 17, "seventeen selectable cities");
+assertEqual(commitment.countries().length, 7, "seven selectable countries");
+assertEqual(commitment.cityIds().length, 22, "twenty-two selectable cities");
 for (const cityId of commitment.cityIds()) {
   const city = commitment.cityForId(cityId);
   assertOk(city, cityId + " resolves from the canonical catalog");
