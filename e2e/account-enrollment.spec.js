@@ -10,6 +10,52 @@ const {
 
 test.use({ trace: "off", screenshot: "off", video: "off" });
 
+const ENROLLMENT_API_PATHS = new Set([
+  "/v1/account/passkeys/registration/options",
+  "/v1/account/passkeys/registration/verify",
+  "/v1/authentication/passkeys/options",
+  "/v1/authentication/passkeys/verify",
+  "/v1/authentication/session",
+  "/v1/account/community-commitment",
+]);
+
+function observeEnrollmentApi(page) {
+  const results = [];
+  page.on("response", (response) => {
+    const pathname = new URL(response.url()).pathname;
+    if (!ENROLLMENT_API_PATHS.has(pathname)) return;
+    results.push(
+      `${response.request().method()} ${pathname} -> ${response.status()}`
+    );
+  });
+  return results;
+}
+
+async function expectViewOrExplain({
+  success,
+  visibleError,
+  operation,
+  apiResults,
+}) {
+  try {
+    await expect(success).toBeVisible({ timeout: 15_000 });
+  } catch (assertionError) {
+    const errorIsVisible = await visibleError.isVisible().catch(() => false);
+    const errorText = errorIsVisible
+      ? (await visibleError.textContent()) || ""
+      : "";
+    const apiSummary = apiResults.length
+      ? apiResults.join(", ")
+      : "no matching API response captured";
+    const uiSummary = errorText.trim()
+      ? ` UI error: ${errorText.trim()}.`
+      : " No visible UI error was shown.";
+    throw new Error(`${operation} did not reach its success state.${uiSummary} API: ${apiSummary}`, {
+      cause: assertionError,
+    });
+  }
+}
+
 test.describe("staging account enrollment", () => {
   test("completes email, password, passkey, and authenticated session", async ({
     page,
@@ -40,6 +86,7 @@ test.describe("staging account enrollment", () => {
     ].join("-");
     const email = buildUniqueEmail(emailTemplate, runTag);
     const password = `Town-E2E-${runTag}-secure!`;
+    const enrollmentApiResults = observeEnrollmentApi(page);
 
     await page.goto(`${PUBLIC_ORIGIN}/#/feed`);
     await expect(page.locator("#view-feed")).toBeVisible();
@@ -81,17 +128,37 @@ test.describe("staging account enrollment", () => {
 
     await expect(page.locator("#view-passkey")).toBeVisible();
     await page.locator("#passkey-create").click();
-    await expect(page.locator("#passkey-success")).toBeVisible();
-    await page.locator("#passkey-continue").click();
-
-    await expect(page.locator("#view-ready")).toBeVisible();
-    const authenticatedRequest = page.waitForResponse(
-      (response) =>
-        response.url().includes("/v1/account/community-commitment") &&
-        response.status() === 200
+    await expectViewOrExplain({
+      success: page.locator("#view-ready"),
+      visibleError: page.locator("#passkey-error"),
+      operation: "Passkey registration",
+      apiResults: enrollmentApiResults,
+    });
+    expect(enrollmentApiResults).toContain(
+      "POST /v1/account/passkeys/registration/options -> 200"
     );
+    expect(enrollmentApiResults).toContain(
+      "POST /v1/account/passkeys/registration/verify -> 200"
+    );
+
     await page.locator("#ready-continue").click();
-    await authenticatedRequest;
-    await expect(page.locator("#view-commitment")).toBeVisible();
+    await expectViewOrExplain({
+      success: page.locator("#view-commitment"),
+      visibleError: page.locator("#ready-error"),
+      operation: "Post-registration passkey authentication",
+      apiResults: enrollmentApiResults,
+    });
+    expect(enrollmentApiResults).toContain(
+      "POST /v1/authentication/passkeys/options -> 200"
+    );
+    expect(enrollmentApiResults).toContain(
+      "POST /v1/authentication/passkeys/verify -> 200"
+    );
+    expect(enrollmentApiResults).toContain(
+      "GET /v1/authentication/session -> 200"
+    );
+    expect(enrollmentApiResults).toContain(
+      "GET /v1/account/community-commitment -> 200"
+    );
   });
 });

@@ -57,6 +57,15 @@ assert.equal(
   spec.includes('page.goto(`${PUBLIC_ORIGIN}/#/membership`)'),
   false
 );
+assert.equal(spec.includes('success: page.locator("#view-ready")'), true);
+assert.equal(spec.includes('page.locator("#passkey-success")'), false);
+assert.equal(spec.includes('page.locator("#passkey-continue")'), false);
+assert.equal(spec.includes('visibleError: page.locator("#passkey-error")'), true);
+assert.equal(spec.includes('visibleError: page.locator("#ready-error")'), true);
+assert.equal(spec.includes("no matching API response captured"), true);
+assert.match(spec, /\/v1\/account\/passkeys\/registration\/verify/);
+assert.match(spec, /\/v1\/authentication\/passkeys\/verify/);
+assert.match(spec, /\/v1\/authentication\/session/);
 assert.match(spec, /\/v1\/account\/community-commitment/);
 
-console.log("PASSED: 20 staging account enrollment E2E assertions");
+console.log("PASSED: 29 staging account enrollment E2E assertions");
