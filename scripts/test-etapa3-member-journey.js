@@ -583,8 +583,8 @@ assert(
 
 // City/country identity has one authority shared by feed, discovery and
 // membership commitment. The UI no longer carries parallel city maps.
-assert(catalog.cityIds().length === 17, "canonical catalog contains 17 cities");
-assert(catalog.countries().length === 6, "canonical catalog contains 6 countries");
+assert(catalog.cityIds().length === 22, "canonical catalog contains 22 cities");
+assert(catalog.countries().length === 7, "canonical catalog contains 7 countries");
 for (const cityId of catalog.cityIds()) {
   const city = catalog.cityForId(cityId);
   assert(!!city.slug && !!city.countryCode, cityId + " has explicit civic identity");
@@ -612,9 +612,11 @@ assert(
 assert(
   html.includes('id="country-france"') &&
     html.includes('id="country-hungary"') &&
+    html.includes('id="country-spain"') &&
     html.includes('id="commitment-country-france"') &&
-    html.includes('id="commitment-country-hungary"'),
-  "France and Hungary are selectable in discovery and commitment"
+    html.includes('id="commitment-country-hungary"') &&
+    html.includes('id="commitment-country-spain"'),
+  "France, Hungary and Spain are selectable in discovery and commitment"
 );
 
 if (failed > 0) {

@@ -638,6 +638,9 @@
   const commitmentCountryHungaryLabel = document.getElementById(
     "commitment-country-hungary-label"
   );
+  const commitmentCountrySpainLabel = document.getElementById(
+    "commitment-country-spain-label"
+  );
   const commitmentCityFieldset = document.getElementById(
     "commitment-city-fieldset"
   );
@@ -1144,6 +1147,7 @@
     !commitmentCountryAustriaLabel ||
     !commitmentCountryFranceLabel ||
     !commitmentCountryHungaryLabel ||
+    !commitmentCountrySpainLabel ||
     !commitmentCityFieldset ||
     !commitmentCityLegend ||
     !commitmentCityOptions ||
@@ -3450,6 +3454,7 @@
         Germany: "Germania",
         Romania: "Romania",
         Austria: "Austria",
+        Spain: "Spagna",
       },
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Rivedi la comunità selezionata",
@@ -3488,6 +3493,7 @@
         Germany: "Deutschland",
         Romania: "Rumänien",
         Austria: "Österreich",
+        Spain: "Spanien",
       },
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Ausgewählte Gemeinschaft prüfen",
@@ -3529,6 +3535,7 @@
         Germany: "Germania",
         Romania: "România",
         Austria: "Austria",
+        Spain: "Spania",
       },
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
       reviewLabel: "Revizuiește comunitatea selectată",
@@ -3944,7 +3951,7 @@
     body: "Choose the country and city yourself. TOWN does not verify your residence or physical location.",
     countryLegend: "Choose country",
     cityLegend: "Choose city",
-    countryNames: { Italy: "Italy", Germany: "Germany", Romania: "Romania", Austria: "Austria", France: "France", Hungary: "Hungary" },
+    countryNames: { Italy: "Italy", Germany: "Germany", Romania: "Romania", Austria: "Austria", France: "France", Hungary: "Hungary", Spain: "Spain" },
     cityNames: ONBOARDING_CITY_NAMES,
     reviewLabel: "Review the selected community",
     reviewCountry: "Country: {country}",
@@ -3972,7 +3979,7 @@
     body: "Elige personalmente el país y la ciudad. TOWN no verifica tu residencia ni tu ubicación física.",
     countryLegend: "Elige el país",
     cityLegend: "Elige la ciudad",
-    countryNames: { Italy: "Italia", Germany: "Alemania", Romania: "Rumanía", Austria: "Austria", France: "Francia", Hungary: "Hungría" },
+    countryNames: { Italy: "Italia", Germany: "Alemania", Romania: "Rumanía", Austria: "Austria", France: "Francia", Hungary: "Hungría", Spain: "España" },
     cityNames: ONBOARDING_CITY_NAMES_ES,
     reviewLabel: "Revisa la comunidad seleccionada",
     reviewCountry: "País: {country}",
@@ -11768,7 +11775,7 @@
   };
   COMMITMENT_COPY.fr = {
     label: "CHOIX DE LA COMMUNAUTÉ", title: "Choisissez votre communauté TOWN.", body: "Sélectionnez personnellement le pays et la ville. TOWN ne vérifie pas techniquement votre position physique ni votre résidence.",
-    countryLegend: "Choisissez le pays", cityLegend: "Choisissez la ville", countryNames: { Italy: "Italie", Germany: "Allemagne", Romania: "Roumanie", Austria: "Autriche" }, cityNames: CITY_COPY.fr.cityNames,
+    countryLegend: "Choisissez le pays", cityLegend: "Choisissez la ville", countryNames: { Italy: "Italie", Germany: "Allemagne", Romania: "Roumanie", Austria: "Autriche", Spain: "Espagne" }, cityNames: CITY_COPY.fr.cityNames,
     reviewLabel: "Vérifiez la communauté choisie", reviewCountry: "Pays : {country}", reviewCity: "Ville : {city}", reviewNote: "L'adhésion et la participation civique seront associées à cette communauté.",
     acceptText: "Je confirme avoir personnellement choisi le bon pays et la bonne ville et j'assume la responsabilité de l'exactitude de cette déclaration.",
     acceptRequired: "L'acceptation explicite de cette responsabilité est obligatoire.", confirm: "Enregistrer la déclaration", saving: "Enregistrement…", saved: "Déclaration enregistrée pour {city}, {country}.",
@@ -11971,7 +11978,7 @@
   COMMITMENT_COPY.hu = Object.assign({}, COMMITMENT_COPY.en || COMMITMENT_COPY.it, {
     label: "KÖZÖSSÉGVÁLLALÁS", title: "Válassza ki TOWN-közösségét.",
     body: "Személyesen válassza ki az országot és a várost. A TOWN nem követi és nem ellenőrzi technikailag a fizikai tartózkodási helyét.",
-    countryLegend: "Ország", cityLegend: "Város", countryNames: {}, cityNames: CITY_COPY.hu.cityNames,
+    countryLegend: "Ország", cityLegend: "Város", countryNames: { Spain: "Spanyolország" }, cityNames: CITY_COPY.hu.cityNames,
     reviewLabel: "Ellenőrizze a kiválasztott közösséget", reviewCountry: "Ország: {country}", reviewCity: "Város: {city}",
     reviewNote: "A tagság és a civil részvétel ehhez a közösséghez kapcsolódik.",
     acceptText: "Megerősítem, hogy személyesen a helyes országot és várost választottam, és felelősséget vállalok e nyilatkozat pontosságáért.",
@@ -12703,6 +12710,7 @@
     commitmentCountryAustriaLabel.textContent = copy.countryNames.Austria;
     commitmentCountryFranceLabel.textContent = copy.countryNames.France;
     commitmentCountryHungaryLabel.textContent = copy.countryNames.Hungary;
+    commitmentCountrySpainLabel.textContent = copy.countryNames.Spain;
     commitmentReviewLabel.textContent = copy.reviewLabel;
     commitmentAcceptText.textContent = copy.acceptText;
     commitmentAcceptRequired.textContent = copy.acceptRequired;

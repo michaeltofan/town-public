@@ -18,6 +18,7 @@
     Austria: { countryCode: "AT", flag: "assets/flags/austria.svg" },
     France: { countryCode: "FR", flag: "assets/flags/france.svg" },
     Hungary: { countryCode: "HU", flag: "assets/flags/hungary.svg" },
+    Spain: { countryCode: "ES", flag: "assets/flags/spain.svg" },
   };
 
   // Canonical public community catalog. Feed identity, both country pickers,
@@ -51,6 +52,13 @@
     Hungary: [
       { id: "Budapest", slug: "budapest-hu", language: "hu", image: "assets/cities/budapest.svg" },
       { id: "Szeged", slug: "szeged-hu", language: "hu", image: "assets/cities/szeged.svg" },
+    ],
+    Spain: [
+      { id: "Madrid", slug: "madrid-es", language: "es", image: "assets/cities/madrid.svg" },
+      { id: "Barcelona", slug: "barcelona-es", language: "es", image: "assets/cities/barcelona.svg" },
+      { id: "Valencia", slug: "valencia-es", language: "es", image: "assets/cities/valencia.svg" },
+      { id: "Sevilla", slug: "sevilla-es", language: "es", image: "assets/cities/sevilla.svg" },
+      { id: "Malaga", slug: "malaga-es", language: "es", image: "assets/cities/malaga.svg" },
     ],
   };
 
