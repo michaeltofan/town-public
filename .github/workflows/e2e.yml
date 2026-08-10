@@ -106,3 +106,50 @@ jobs:
           TOWN_E2E_EMAIL_BASE: ${{ secrets.TOWN_E2E_EMAIL_BASE }}
           TOWN_RESEND_API_KEY: ${{ secrets.TOWN_RESEND_API_KEY }}
         run: npx playwright test account-enrollment.spec.js
+
+  deploy-staging:
+    name: Deploy to staging (Railway)
+    needs: smoke-and-e2e
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    concurrency:
+      group: deploy-town-public-staging
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy town-public-staging
+        # Attached mode (no --ci): blocks until the deployment reaches a
+        # terminal status and exits non-zero on failure, so this job is an
+        # honest CI gate rather than a fire-and-forget trigger.
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service town-public-staging
+
+  deploy-production:
+    name: Deploy to production (Railway)
+    needs: deploy-staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    concurrency:
+      group: deploy-town-public-production
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy town-public (production)
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up --service town-public
