@@ -62,6 +62,10 @@ test.describe("account enrollment recovery", () => {
     await installCandidateAtProductionOrigin(page);
   });
 
+  test.afterEach(async ({ page }) => {
+    await page.unrouteAll({ behavior: "ignoreErrors" });
+  });
+
   test("reload restarts safely from email without persisting a setup grant", async ({
     page,
   }) => {
