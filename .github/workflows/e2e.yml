@@ -58,7 +58,7 @@ jobs:
         working-directory: e2e
         env:
           TOWN_PUBLIC_BASE_URL: http://127.0.0.1:8080
-        run: npx playwright test feed-live.spec.js member-nav.spec.js
+        run: npx playwright test feed-live.spec.js member-nav.spec.js account-enrollment-recovery.spec.js
       - name: Platform login E2E
         working-directory: e2e
         env:
