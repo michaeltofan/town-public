@@ -33,6 +33,11 @@ assert.equal(path.basename(candidatePath("https://towncivic.org/?candidate=1")),
 const root = path.join(__dirname, "..");
 const workflow = fs.readFileSync(path.join(root, ".github/workflows/e2e.yml"), "utf8");
 const spec = fs.readFileSync(path.join(root, "e2e/account-enrollment.spec.js"), "utf8");
+const recoverySpec = fs.readFileSync(
+  path.join(root, "e2e/account-enrollment-recovery.spec.js"),
+  "utf8"
+);
+const productScript = fs.readFileSync(path.join(root, "script.js"), "utf8");
 
 assert.match(workflow, /github\.event_name == 'workflow_dispatch'/);
 assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
@@ -67,5 +72,19 @@ assert.match(spec, /\/v1\/account\/passkeys\/registration\/verify/);
 assert.match(spec, /\/v1\/authentication\/passkeys\/verify/);
 assert.match(spec, /\/v1\/authentication\/session/);
 assert.match(spec, /\/v1\/account\/community-commitment/);
+assert.match(workflow, /account-enrollment-recovery\.spec\.js/);
+assert.match(recoverySpec, /page\.reload\(\)/);
+assert.match(recoverySpec, /INVALID_OR_EXPIRED_CHALLENGE/);
+assert.match(productScript, /function recoverInterruptedEnrollmentAfterReload\(\)/);
+assert.match(productScript, /restartAfterRefresh/);
+assert.equal(
+  productScript
+    .slice(
+      productScript.indexOf("function recoverInterruptedEnrollmentAfterReload"),
+      productScript.indexOf("function isCityDiscoveryJourneyActive")
+    )
+    .includes("Storage"),
+  false
+);
 
-console.log("PASSED: 29 staging account enrollment E2E assertions");
+console.log("PASSED: 35 staging account enrollment E2E assertions");
