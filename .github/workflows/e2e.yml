@@ -25,6 +25,7 @@ jobs:
           node scripts/test-api-base.js
           node scripts/test-auth-input-module.js
           node scripts/test-account-enrollment-e2e.js
+          node scripts/test-build-identity.js
           node scripts/test-security-headers-config.js
           node scripts/test-member-local-feed.js
           node scripts/test-platform-console.js
@@ -121,6 +122,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Write public build identity
+        env:
+          TOWN_BUILD_ENVIRONMENT: staging
+          TOWN_BUILD_SHA: ${{ github.sha }}
+          TOWN_BUILD_REPOSITORY: ${{ github.repository }}
+          TOWN_BUILD_RUN_ID: ${{ github.run_id }}
+        run: |
+          # build-identity-writer-begin
+          node <<'NODE'
+          const fs = require("fs");
+          const commit = process.env.TOWN_BUILD_SHA || "";
+          const environment = process.env.TOWN_BUILD_ENVIRONMENT || "";
+          const repository = process.env.TOWN_BUILD_REPOSITORY || "";
+          const workflowRunId = process.env.TOWN_BUILD_RUN_ID || "";
+          if (!/^[0-9a-f]{40}$/.test(commit)) throw new Error("invalid build SHA");
+          if (!new Set(["staging", "production"]).has(environment)) throw new Error("invalid environment");
+          if (repository !== "michaeltofan/town-public") throw new Error("invalid repository");
+          if (!/^\d+$/.test(workflowRunId)) throw new Error("invalid workflow run id");
+          fs.writeFileSync("build-identity.json", JSON.stringify({
+            service: "town-public",
+            environment,
+            repository,
+            commit,
+            workflowRunId,
+            builtAt: new Date().toISOString()
+          }, null, 2) + "\n", { encoding: "utf8", mode: 0o644 });
+          NODE
+          # build-identity-writer-end
+
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
@@ -145,6 +175,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Write public build identity
+        env:
+          TOWN_BUILD_ENVIRONMENT: production
+          TOWN_BUILD_SHA: ${{ github.sha }}
+          TOWN_BUILD_REPOSITORY: ${{ github.repository }}
+          TOWN_BUILD_RUN_ID: ${{ github.run_id }}
+        run: |
+          # build-identity-writer-begin
+          node <<'NODE'
+          const fs = require("fs");
+          const commit = process.env.TOWN_BUILD_SHA || "";
+          const environment = process.env.TOWN_BUILD_ENVIRONMENT || "";
+          const repository = process.env.TOWN_BUILD_REPOSITORY || "";
+          const workflowRunId = process.env.TOWN_BUILD_RUN_ID || "";
+          if (!/^[0-9a-f]{40}$/.test(commit)) throw new Error("invalid build SHA");
+          if (!new Set(["staging", "production"]).has(environment)) throw new Error("invalid environment");
+          if (repository !== "michaeltofan/town-public") throw new Error("invalid repository");
+          if (!/^\d+$/.test(workflowRunId)) throw new Error("invalid workflow run id");
+          fs.writeFileSync("build-identity.json", JSON.stringify({
+            service: "town-public",
+            environment,
+            repository,
+            commit,
+            workflowRunId,
+            builtAt: new Date().toISOString()
+          }, null, 2) + "\n", { encoding: "utf8", mode: 0o644 });
+          NODE
+          # build-identity-writer-end
 
       - name: Install Railway CLI
         run: npm install -g @railway/cli

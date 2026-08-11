@@ -23,6 +23,9 @@
 	@www host www.towncivic.org
 	redir @www https://towncivic.org{uri} permanent
 
+	@buildIdentity path /build-identity.json
+	header @buildIdentity Cache-Control "no-store"
+
 	header {
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "strict-origin-when-cross-origin"
