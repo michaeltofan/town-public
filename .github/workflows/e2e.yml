@@ -33,6 +33,10 @@ jobs:
           node scripts/test-etapa3-member-journey.js
           node scripts/test-password-passkey-contract.js
           node scripts/test-public-auth-signin.js
+          bash scripts/check-membership-recovery.sh
+          node scripts/test-profile-session-billing.js
+          node scripts/test-see-too-active-all-roles.js
+          node scripts/test-see-too-signin-continuity.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
