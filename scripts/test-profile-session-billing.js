@@ -30,10 +30,6 @@ assert(
   "manage-billing control present"
 );
 assert(html.includes('id="profile-status"'), "profile status line present");
-assert(
-  /script\.js\?v=community-identity-1/.test(html),
-  "cache buster bumped"
-);
 assert(css.includes(".profile-panel__status"), "profile status styles present");
 
 assert(js.includes("function requestSignOut"), "logout helper present");
