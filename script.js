@@ -2870,6 +2870,8 @@
       invalid: "Inserisci un indirizzo email valido.",
       rateLimited: "Troppi tentativi. Riprova tra poco.",
       failed: "Non è stato possibile continuare. Riprova.",
+      restartAfterRefresh:
+        "La configurazione sicura è stata interrotta. Inserisci di nuovo l'email per ricevere un nuovo codice e continuare.",
       continue: "Continua",
       back: "Indietro",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2889,6 +2891,8 @@
       rateLimited:
         "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
+      restartAfterRefresh:
+        "Die sichere Einrichtung wurde unterbrochen. Gib deine E-Mail erneut ein, um einen neuen Code zu erhalten und fortzufahren.",
       continue: "Weiter",
       back: "Zurück",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2907,6 +2911,8 @@
       invalid: "Introdu o adresă de email validă.",
       rateLimited: "Prea multe încercări. Încearcă din nou în curând.",
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
+      restartAfterRefresh:
+        "Configurarea securizată a fost întreruptă. Introdu din nou emailul pentru a primi un cod nou și a continua.",
       continue: "Continuă",
       back: "Înapoi",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
@@ -2920,11 +2926,11 @@
       body: "Abbiamo inviato un codice di 6 cifre a:",
       fieldLabel: "Codice di verifica",
       prototype: "Inserisci il codice a 6 cifre che ti abbiamo inviato via email.",
-      invalid: "Il codice non è corretto.",
+      invalid: "Il codice non è corretto. Potrebbe essere scaduto; richiedi un nuovo codice per continuare.",
       rateLimited: "Troppi tentativi. Riprova tra poco.",
       failed: "Non è stato possibile continuare. Riprova.",
       verify: "Verifica",
-      changeEmail: "Cambia email",
+      changeEmail: "Cambia email / richiedi un nuovo codice",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     de: {
@@ -2933,12 +2939,12 @@
       body: "Wir haben einen sechsstelligen Code gesendet an:",
       fieldLabel: "Bestätigungscode",
       prototype: "Gib den 6-stelligen Code ein, den wir dir per E-Mail gesendet haben.",
-      invalid: "Der Code ist nicht korrekt.",
+      invalid: "Der Code ist nicht korrekt. Er könnte abgelaufen sein; fordere einen neuen Code an, um fortzufahren.",
       rateLimited:
         "Zu viele Versuche. Bitte warte kurz und versuche es erneut.",
       failed: "Fortsetzen nicht möglich. Bitte erneut versuchen.",
       verify: "Bestätigen",
-      changeEmail: "E-Mail-Adresse ändern",
+      changeEmail: "E-Mail-Adresse ändern / neuen Code anfordern",
       cityNames: { Milano: "Milano", Munich: "München" , Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
     ro: {
@@ -2947,11 +2953,11 @@
       body: "Am trimis un cod din 6 cifre la:",
       fieldLabel: "Cod de verificare",
       prototype: "Introdu codul din 6 cifre pe care ți l-am trimis pe email.",
-      invalid: "Codul nu este corect.",
+      invalid: "Codul este incorect sau a expirat. Solicită un cod nou pentru a continua.",
       rateLimited: "Prea multe încercări. Încearcă din nou în curând.",
       failed: "Nu a fost posibil să continui. Încearcă din nou.",
       verify: "Verifică",
-      changeEmail: "Schimbă emailul",
+      changeEmail: "Solicită un cod nou",
       cityNames: { Milano: "Milano", Munich: "München", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Köln", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Frankfurt", Salzburg: "Salzburg" },
     },
   };
@@ -3694,6 +3700,8 @@
     invalid: "Enter a valid email address.",
     rateLimited: "Too many attempts. Try again shortly.",
     failed: "Could not continue. Try again.",
+    restartAfterRefresh:
+      "Secure setup was interrupted. Enter your email again to receive a new code and continue.",
     continue: "Continue",
     back: "Back",
     cityNames: ONBOARDING_CITY_NAMES,
@@ -3712,6 +3720,8 @@
     invalid: "Introduce una dirección de email válida.",
     rateLimited: "Demasiados intentos. Vuelve a intentarlo en breve.",
     failed: "No se pudo continuar. Inténtalo de nuevo.",
+    restartAfterRefresh:
+      "La configuración segura se interrumpió. Introduce de nuevo tu email para recibir otro código y continuar.",
     continue: "Continuar",
     back: "Atrás",
     cityNames: ONBOARDING_CITY_NAMES_ES,
@@ -3723,11 +3733,11 @@
     body: "We sent a six-digit code to:",
     fieldLabel: "Verification code",
     prototype: "Enter the six-digit code we sent by email.",
-    invalid: "The code is not correct.",
+    invalid: "The code is incorrect or has expired. Request a new code to continue.",
     rateLimited: "Too many attempts. Try again shortly.",
     failed: "Could not continue. Try again.",
     verify: "Verify",
-    changeEmail: "Change email",
+    changeEmail: "Request a new code",
     cityNames: ONBOARDING_CITY_NAMES,
   };
 
@@ -3737,11 +3747,11 @@
     body: "Hemos enviado un código de seis dígitos a:",
     fieldLabel: "Código de verificación",
     prototype: "Introduce el código de seis dígitos que enviamos por email.",
-    invalid: "El código no es correcto.",
+    invalid: "El código es incorrecto o ha caducado. Solicita otro código para continuar.",
     rateLimited: "Demasiados intentos. Vuelve a intentarlo en breve.",
     failed: "No se pudo continuar. Inténtalo de nuevo.",
     verify: "Verificar",
-    changeEmail: "Cambiar email",
+    changeEmail: "Solicitar otro código",
     cityNames: ONBOARDING_CITY_NAMES_ES,
   };
 
@@ -4455,6 +4465,32 @@
 
   function isInviteMembershipJourneyActive() {
     return inviteMembershipJourneyActive === true;
+  }
+
+  function recoverInterruptedEnrollmentAfterReload() {
+    const navigation =
+      window.performance &&
+      typeof window.performance.getEntriesByType === "function"
+        ? window.performance.getEntriesByType("navigation")[0]
+        : null;
+    if (!navigation || navigation.type !== "reload") return false;
+
+    const rawRoute = (window.location.hash || "").replace(/^#\/?/, "");
+    if (!/^(email|code|password|passkey)(?:$|[/?])/.test(rawRoute)) {
+      return false;
+    }
+
+    // A reload destroys the in-memory verification id/setup grant. Never
+    // persist those credentials in browser storage: restart safely from email
+    // so the API can issue a fresh code and recover the existing account.
+    inviteMembershipJourneyActive = true;
+    enrollmentRestartRequired = rawRoute.indexOf("email") !== 0;
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search + "#/email"
+    );
+    return true;
   }
 
   function isCityDiscoveryJourneyActive() {
@@ -8406,6 +8442,7 @@
   let readyAuthSubmitting = false;
   let anonymousClientKey = null;
   let inviteMembershipJourneyActive = false;
+  let enrollmentRestartRequired = false;
   let cityDiscoveryJourneyActive = false;
   let cityDiscoveryReturnFeedIndex = 0;
   // Authoritative membership from GET /v1/account/membership only.
@@ -11730,12 +11767,13 @@
     label: "CRÉEZ VOTRE COMPTE", title: "Saisissez votre adresse e-mail.", body: "Nous vous enverrons un code de vérification à 6 chiffres.", bodySecond: "Votre compte sera ensuite sécurisé.",
     prototype: "Nous vous enverrons un code de vérification à 6 chiffres par e-mail.", fieldLabel: "Adresse e-mail", placeholder: "nom@exemple.fr",
     privacy: "Nous utiliserons cette adresse pour vérifier votre compte, envoyer les communications essentielles et vous aider à récupérer l'accès.",
-    invalid: "Saisissez une adresse e-mail valide.", rateLimited: "Trop de tentatives. Réessayez dans un instant.", failed: "Impossible de continuer. Réessayez.", continue: "Continuer", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
+    invalid: "Saisissez une adresse e-mail valide.", rateLimited: "Trop de tentatives. Réessayez dans un instant.", failed: "Impossible de continuer. Réessayez.",
+    restartAfterRefresh: "La configuration sécurisée a été interrompue. Saisissez de nouveau votre e-mail pour recevoir un nouveau code et continuer.", continue: "Continuer", back: "Retour", cityNames: CITY_COPY.fr.cityNames,
   };
   CODE_COPY.fr = {
     label: "VÉRIFICATION DE L'E-MAIL", title: "Consultez votre messagerie.", body: "Nous avons envoyé un code à 6 chiffres à :", fieldLabel: "Code de vérification",
-    prototype: "Saisissez le code à 6 chiffres envoyé par e-mail.", invalid: "Le code est incorrect.", rateLimited: "Trop de tentatives. Réessayez dans un instant.",
-    failed: "Impossible de continuer. Réessayez.", verify: "Vérifier", changeEmail: "Changer d'adresse e-mail", cityNames: CITY_COPY.fr.cityNames,
+    prototype: "Saisissez le code à 6 chiffres envoyé par e-mail.", invalid: "Le code est incorrect ou a expiré. Demandez un nouveau code pour continuer.", rateLimited: "Trop de tentatives. Réessayez dans un instant.",
+    failed: "Impossible de continuer. Réessayez.", verify: "Vérifier", changeEmail: "Demander un nouveau code", cityNames: CITY_COPY.fr.cityNames,
   };
   PASSKEY_COPY.fr = {
     label: "ACCÈS SÉCURISÉ", title: "Protégez votre compte TOWN.", body: "Votre mot de passe est créé. Enregistrez maintenant une clé d’accès rapide et résistante au hameçonnage.",
@@ -11948,11 +11986,12 @@
   EMAIL_COPY.hu = Object.assign({}, EMAIL_COPY.en || EMAIL_COPY.it, {
     label: "FIÓK LÉTREHOZÁSA", title: "Adja meg e-mail-címét.", body: "Hatjegyű ellenőrző kódot küldünk.",
     fieldLabel: "E-mail-cím", placeholder: "nev@pelda.hu", invalid: "Adjon meg érvényes e-mail-címet.",
-    rateLimited: "Túl sok próbálkozás. Próbálja újra később.", failed: "Nem sikerült folytatni.", continue: "Tovább", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
+    rateLimited: "Túl sok próbálkozás. Próbálja újra később.", failed: "Nem sikerült folytatni.",
+    restartAfterRefresh: "A biztonságos beállítás megszakadt. Adja meg újra az e-mail-címét, hogy új kódot kapjon és folytathassa.", continue: "Tovább", back: "Vissza", cityNames: CITY_COPY.hu.cityNames,
   });
   CODE_COPY.hu = Object.assign({}, CODE_COPY.en || CODE_COPY.it, {
     label: "E-MAIL ELLENŐRZÉSE", title: "Nézze meg a leveleit.", body: "Hatjegyű kódot küldtünk ide:", fieldLabel: "Ellenőrző kód",
-    invalid: "A kód hibás.", rateLimited: "Túl sok próbálkozás.", failed: "Nem sikerült folytatni.", verify: "Ellenőrzés", changeEmail: "E-mail-cím módosítása", cityNames: CITY_COPY.hu.cityNames,
+    invalid: "A kód hibás vagy lejárt. A folytatáshoz kérjen új kódot.", rateLimited: "Túl sok próbálkozás.", failed: "Nem sikerült folytatni.", verify: "Ellenőrzés", changeEmail: "Új kód kérése", cityNames: CITY_COPY.hu.cityNames,
   });
   PASSKEY_COPY.hu = Object.assign({}, PASSKEY_COPY.en || PASSKEY_COPY.it, {
     label: "BIZTONSÁGOS HOZZÁFÉRÉS", title: "Védje TOWN-fiókját.", body: "A jelszó elkészült. Most regisztráljon gyors, adathalászatnak ellenálló hozzáférési kulcsot.",
@@ -12860,8 +12899,10 @@
     const valid = isValidEmail(value);
     emailContinue.disabled = !valid || emailSubmitting;
     if (!value) {
-      emailError.hidden = true;
-      emailError.textContent = "";
+      emailError.hidden = !enrollmentRestartRequired;
+      emailError.textContent = enrollmentRestartRequired
+        ? copy.restartAfterRefresh
+        : "";
       return;
     }
     if (!valid) {
@@ -15276,6 +15317,7 @@
 
     requestEmailVerification(value)
       .then(function (verificationId) {
+        enrollmentRestartRequired = false;
         emailVerificationId = verificationId;
         codeInput.value = "";
         codeError.hidden = true;
@@ -15298,6 +15340,7 @@
   });
 
   emailBack.addEventListener("click", () => {
+    enrollmentRestartRequired = false;
     enteredEmail = (emailInput.value || "").trim();
     noteAccountEmail(enteredEmail);
     go("account");
@@ -15740,6 +15783,7 @@
   window.addEventListener("hashchange", render);
   window.addEventListener("popstate", render);
   syncCountryContinue();
+  recoverInterruptedEnrollmentAfterReload();
   try {
     const params = new URLSearchParams(window.location.search || "");
     const story = params.get("townStory");
