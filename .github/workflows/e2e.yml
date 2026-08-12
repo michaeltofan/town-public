@@ -79,6 +79,8 @@ jobs:
     needs: smoke-and-e2e
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -125,14 +127,30 @@ jobs:
       # password -> passkey registration -> passkey auth -> session ->
       # community-commitment. Runs only on manual dispatch, so this never
       # adds overhead to push/PR CI.
-      - name: Upload enrollment journey video
+      #
+      # Pushed to a dedicated branch instead of uploaded as a workflow
+      # artifact: Actions artifacts are only downloadable via a signed
+      # Azure Blob Storage redirect, which some network/AV policies flag or
+      # block outright. A plain git-hosted file has no such friction.
+      - name: Publish enrollment journey video to a review branch
         if: steps.enrollment-secrets.outputs.available == 'true' && always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: staging-account-enrollment-video
-          path: e2e/test-results/**/*.webm
-          retention-days: 14
-          if-no-files-found: warn
+        run: |
+          VIDEO=$(find e2e/test-results -name '*.webm' | head -n1)
+          if [[ -z "$VIDEO" ]]; then
+            echo "::warning::No enrollment video was produced; nothing to publish."
+            exit 0
+          fi
+          STAMP=$(date -u +%Y%m%dT%H%M%SZ)
+          DEST="staging-account-enrollment-${STAMP}.webm"
+          cp "$VIDEO" "/tmp/${DEST}"
+          git config user.name "town-ci"
+          git config user.email "town-ci@users.noreply.github.com"
+          git checkout --orphan review/staging-account-enrollment-video
+          git rm -rf . > /dev/null 2>&1 || true
+          cp "/tmp/${DEST}" "${DEST}"
+          git add "${DEST}"
+          git commit -m "Staging account enrollment journey video (${STAMP})"
+          git push origin "HEAD:refs/heads/review/staging-account-enrollment-video" --force
 
   deploy-staging:
     name: Deploy to staging (Railway)
