@@ -168,8 +168,13 @@ jobs:
 
   deploy-production:
     name: Deploy to production (Railway)
-    needs: deploy-staging
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Deliberately NOT triggered by push: production must never start
+    # automatically as a side effect of merging to main. A human triggers
+    # this job explicitly ("Run workflow" in the Actions tab). smoke-and-e2e
+    # reruns fresh in that same manual run since workflow_dispatch isn't
+    # filtered out of its trigger, so a production deploy never skips tests.
+    needs: smoke-and-e2e
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
