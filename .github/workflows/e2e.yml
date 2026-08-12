@@ -119,6 +119,21 @@ jobs:
           TOWN_RESEND_API_KEY: ${{ secrets.TOWN_RESEND_API_KEY }}
         run: npx playwright test account-enrollment.spec.js
 
+      # Video is on for this spec only (see account-enrollment.spec.js) so
+      # Mihail gets one real recording of the full member journey against
+      # live Staging: invite -> membership -> account -> email -> code ->
+      # password -> passkey registration -> passkey auth -> session ->
+      # community-commitment. Runs only on manual dispatch, so this never
+      # adds overhead to push/PR CI.
+      - name: Upload enrollment journey video
+        if: steps.enrollment-secrets.outputs.available == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-account-enrollment-video
+          path: e2e/test-results/**/*.webm
+          retention-days: 14
+          if-no-files-found: warn
+
   deploy-staging:
     name: Deploy to staging (Railway)
     needs: smoke-and-e2e
