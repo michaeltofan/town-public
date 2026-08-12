@@ -8,7 +8,7 @@ const {
   waitForVerificationCode,
 } = require("./helpers/resend-verification");
 
-test.use({ trace: "off", screenshot: "off", video: "off" });
+test.use({ trace: "off", screenshot: "off", video: "on" });
 
 const ENROLLMENT_API_PATHS = new Set([
   "/v1/account/passkeys/registration/options",

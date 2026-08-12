@@ -43,7 +43,11 @@ assert.match(workflow, /github\.event_name == 'workflow_dispatch'/);
 assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
 assert.match(workflow, /secrets\.TOWN_E2E_EMAIL_BASE/);
 assert.match(workflow, /secrets\.TOWN_RESEND_API_KEY/);
-assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "off" \}\)/);
+// trace/screenshot stay off (they can leak real credential/session detail into
+// artifacts). video is a deliberate exception: this spec is the source for
+// the single human-reviewed enrollment-journey recording, on-demand only via
+// the staging-account-enrollment job — never part of push/PR CI.
+assert.match(spec, /test\.use\(\{ trace: "off", screenshot: "off", video: "on" \}\)/);
 assert.match(spec, /WebAuthn\.addVirtualAuthenticator/);
 assert.match(spec, /installCandidateAtProductionOrigin/);
 assert.equal(
