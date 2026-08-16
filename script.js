@@ -4756,16 +4756,19 @@
     }
   }
 
-  function formatConfirmCountLabel(copy, count) {
-    const n = typeof count === "number" && count > 0 ? count : 0;
-    if (n === 1) {
-      return copy.confirmCountOne || "1 confirmation";
-    }
-    return (copy.confirmCount || "{count} confirmations").replace(
-      "{count}",
-      String(n)
-    );
+  const civicProcessLabels = window.TownCivicProcessLabels;
+  if (!civicProcessLabels) {
+    throw new Error("TownCivicProcessLabels must load before script.js");
   }
+  const {
+    formatConfirmCountLabel,
+    formatVoteCountLabel,
+    formatTotalVotesLabel,
+    civicProposalErrorCopy,
+    DELIBERATION_INTENT_COPY_KEYS,
+    deliberationIntentLabel,
+  } = civicProcessLabels;
+  const DELIBERATION_INTENTS = Object.keys(DELIBERATION_INTENT_COPY_KEYS);
 
   function applyConfirmCountLabel(el, copy, count) {
     if (!el) return;
@@ -6218,20 +6221,6 @@
     detailProcessProposalsNote.textContent = "";
   }
 
-  function civicProposalErrorCopy(copy, code) {
-    return code === "CIVIC_PROPOSAL_ALREADY_SUBMITTED"
-      ? copy.proposalsErrorDuplicate
-      : code === "CIVIC_PROPOSAL_STAGE_CLOSED"
-        ? copy.proposalsErrorClosed
-        : code === "CIVIC_PROPOSAL_NOT_AUTHOR"
-          ? copy.proposalsErrorNotAuthor
-          : code === "CIVIC_PROPOSAL_ALREADY_REVISED"
-            ? copy.proposalsErrorAlreadyRevised
-            : code === "CIVIC_PROPOSAL_ALREADY_WITHDRAWN"
-              ? copy.proposalsErrorAlreadyWithdrawn
-              : copy.proposalsErrorGeneric;
-  }
-
   async function submitCivicProposal() {
     if (civicProposalSubmitting) return;
     const copy = civicProcessCopy();
@@ -6376,25 +6365,6 @@
     const copy = civicProcessCopy();
     detailProcessDeliberationState.textContent = copy.deliberationUnavailable;
     detailProcessDeliberationList.textContent = "";
-  }
-
-  const DELIBERATION_INTENT_COPY_KEYS = {
-    observation: "intentObservation",
-    proposal: "intentProposal",
-    next_step: "intentNextStep",
-    argument_for: "intentArgumentFor",
-    risk_or_objection: "intentRiskOrObjection",
-    question: "intentQuestion",
-    author_response: "intentAuthorResponse",
-    evidence: "intentEvidence",
-    amendment_suggestion: "intentAmendmentSuggestion",
-    minority_position: "intentMinorityPosition",
-  };
-  const DELIBERATION_INTENTS = Object.keys(DELIBERATION_INTENT_COPY_KEYS);
-
-  function deliberationIntentLabel(copy, intent) {
-    const key = DELIBERATION_INTENT_COPY_KEYS[intent];
-    return key ? copy[key] || "" : "";
   }
 
   function groupDeliberationContributionsByParent(contributions) {
@@ -6813,13 +6783,6 @@
     detailProcessVotingSubmit.hidden = true;
   }
 
-  function formatVoteCountLabel(copy, count) {
-    return (copy.voteCountLabel || "{count} votes").replace(
-      "{count}",
-      String(count)
-    );
-  }
-
   function appendVoteOptionContent(container, copy, option) {
     const meta = document.createElement("p");
     meta.className = "signal-detail__process-voting-meta";
@@ -7012,13 +6975,6 @@
     detailProcessMandateTally.textContent = "";
     detailProcessMandateMinorityList.hidden = true;
     detailProcessMandateContest.hidden = true;
-  }
-
-  function formatTotalVotesLabel(copy, count) {
-    return (copy.mandateTotalVotesLabel || "{count} total votes").replace(
-      "{count}",
-      String(count)
-    );
   }
 
   function renderCivicMandateMinorityPositions(copy, minorityPositions) {
