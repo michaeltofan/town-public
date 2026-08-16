@@ -596,7 +596,12 @@ assert(
 );
 assert(
   js.includes("const CITY_BY_COUNTRY = communityCatalogApi.CITY_BY_COUNTRY") &&
-    js.includes("const PRODUCT_ONLY_CITY_ORDER = communityCatalogApi.cityIds()"),
+    // Pilot Madrid (M2) narrows PRODUCT_ONLY_CITY_ORDER to a single city on
+    // pilot hosts, but every branch still derives from the canonical catalog
+    // rather than a parallel hardcoded list.
+    /const PRODUCT_ONLY_CITY_ORDER = [\s\S]{0,160}?communityCatalogApi\.cityIds\(\)/.test(
+      js
+    ),
   "feed and city picker derive from the canonical catalog"
 );
 assert(
