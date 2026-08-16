@@ -4767,6 +4767,7 @@
     civicProposalErrorCopy,
     DELIBERATION_INTENT_COPY_KEYS,
     deliberationIntentLabel,
+    civicInboxStageLabel,
     groupDeliberationContributionsByParent,
     civicActionBlockedReasonLabel,
     formatVerificationTallyLabel,
@@ -8639,22 +8640,6 @@
     return ["en"];
   }
 
-  function formatObservedDate(observedOn, localeTag) {
-    if (!observedOn) return "";
-    try {
-      const date = new Date(observedOn + "T12:00:00Z");
-      if (Number.isNaN(date.getTime())) return "";
-      return new Intl.DateTimeFormat(localeTag, {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        timeZone: "UTC",
-      }).format(date);
-    } catch (_err) {
-      return "";
-    }
-  }
-
   function resolveSceneImage(imageKey, cityId) {
     if (imageKey && KNOWN_FEED_IMAGES[imageKey]) return imageKey;
     if (CITY_PLACEHOLDER_IMAGES[cityId]) return CITY_PLACEHOLDER_IMAGES[cityId];
@@ -8849,6 +8834,12 @@
     checkoutErrorKind,
     geolocationErrorMessage,
     isSignalApiId,
+    formatObservedDate,
+    profileDisplayName,
+    formatActivityWhen,
+    activityItemDetail,
+    isPasskeyCeremonyCancelled,
+    sessionStatusNoteText,
   } = appUtils;
 
   function apiErrorKind(status, payload) {
@@ -9453,19 +9444,6 @@
     if (typeof value !== "string") return;
     const trimmed = value.trim();
     if (EMAIL_PATTERN.test(trimmed)) accountEmail = trimmed;
-  }
-
-  function profileDisplayName(email) {
-    if (!email) return "";
-    const local = email.split("@")[0] || "";
-    const cleaned = local.replace(/[._-]+/g, " ").trim();
-    if (!cleaned) return "";
-    return cleaned
-      .split(/\s+/)
-      .map(function (part) {
-        return part.charAt(0).toUpperCase() + part.slice(1);
-      })
-      .join(" ");
   }
 
   function profileLang() {
@@ -12019,42 +11997,6 @@
     return ACTIVITY_COPY[lang] || ACTIVITY_COPY.en;
   }
 
-  function formatActivityWhen(iso) {
-    if (!iso || typeof iso !== "string") return "";
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return "";
-    try {
-      return date.toLocaleString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-    } catch (_err) {
-      return iso.slice(0, 10);
-    }
-  }
-
-  function activityItemDetail(item, copy) {
-    if (!item || !item.kind) return "";
-    if (item.kind === "contribution" && item.contribution) {
-      const intentKey = item.contribution.intent;
-      const intentLabel =
-        (copy.intents && copy.intents[intentKey]) || intentKey || "";
-      const text = String(item.contribution.text || "").trim();
-      const clipped = text.length > 140 ? text.slice(0, 137) + "…" : text;
-      return intentLabel ? intentLabel + " · " + clipped : clipped;
-    }
-    if (item.kind === "signal_evolution" && item.evolution) {
-      const latest = String(item.evolution.latestUpdate || "").trim();
-      const status = String(item.evolution.statusLabel || "").trim();
-      if (latest) return latest;
-      return status;
-    }
-    const community =
-      item.signal && item.signal.community && item.signal.community.displayName;
-    return community || "";
-  }
-
   function renderActivityItems(items) {
     const copy = activityCopy();
     activityList.innerHTML = "";
@@ -12123,31 +12065,6 @@
         ? result.payload.data.processes
         : [];
     return { items: items, processes: processes };
-  }
-
-  function civicInboxStageLabel(stage, processCopy) {
-    switch (stage) {
-      case "confirmation":
-        return processCopy.stage;
-      case "proposals":
-        return processCopy.proposals;
-      case "deliberation":
-        return processCopy.deliberation;
-      case "ballot_preparation":
-        return processCopy.ballotPreparation;
-      case "voting":
-        return processCopy.voting;
-      case "mandate":
-        return processCopy.mandate;
-      case "action":
-        return processCopy.action;
-      case "verification":
-        return processCopy.verification;
-      case "archived":
-        return processCopy.archived;
-      default:
-        return stage || "";
-    }
   }
 
   // Civic Inbox: only processes the member actually participated in, from
@@ -12283,21 +12200,6 @@
       scrollFeedToIndex(index, { behavior: "auto" });
       openSignalDetail();
     }
-  }
-
-  function isPasskeyCeremonyCancelled(err) {
-    const causeName = err && err.cause && err.cause.name;
-    return (
-      (err &&
-        (err.name === "NotAllowedError" ||
-          err.name === "AbortError" ||
-          err.code === "ERROR_CEREMONY_ABORTED")) ||
-      causeName === "NotAllowedError" ||
-      causeName === "AbortError" ||
-      (err &&
-        err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY" &&
-        causeName === "NotAllowedError")
-    );
   }
 
   function runPasskeyAuthenticationCeremony() {
@@ -13703,23 +13605,6 @@
     const fallback = FEED_COPY[lang] || FEED_COPY.en || FEED_COPY.it;
     // Merge so session strings in FEED_COPY fill gaps from public-i18n chrome.
     return Object.assign({}, fallback, locale.copy || {});
-  }
-
-  function sessionStatusNoteText(copy, cached) {
-    if (!cached) return "";
-    if (cached.note === "unavailable") {
-      return copy.sessionUnavailable || "";
-    }
-    if (cached.note === "local") {
-      return copy.sessionLocalOnly || "";
-    }
-    if (cached.note === "gated") {
-      return copy.sessionGated || "";
-    }
-    if (cached.note === "publish_failed") {
-      return copy.sessionPublishFailed || "";
-    }
-    return "";
   }
 
   function applySignalSessionCopy(copy) {

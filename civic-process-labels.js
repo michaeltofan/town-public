@@ -107,6 +107,31 @@
     return payload;
   }
 
+  function civicInboxStageLabel(stage, processCopy) {
+    switch (stage) {
+      case "confirmation":
+        return processCopy.stage;
+      case "proposals":
+        return processCopy.proposals;
+      case "deliberation":
+        return processCopy.deliberation;
+      case "ballot_preparation":
+        return processCopy.ballotPreparation;
+      case "voting":
+        return processCopy.voting;
+      case "mandate":
+        return processCopy.mandate;
+      case "action":
+        return processCopy.action;
+      case "verification":
+        return processCopy.verification;
+      case "archived":
+        return processCopy.archived;
+      default:
+        return stage || "";
+    }
+  }
+
   global.TownCivicProcessLabels = Object.freeze({
     formatConfirmCountLabel,
     formatVoteCountLabel,
@@ -118,5 +143,6 @@
     civicActionBlockedReasonLabel,
     formatVerificationTallyLabel,
     civicProposalPayload,
+    civicInboxStageLabel,
   });
 })(typeof window !== "undefined" ? window : globalThis);

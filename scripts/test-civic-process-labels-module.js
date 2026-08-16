@@ -86,6 +86,23 @@ const minimalPayload = labels.civicProposalPayload(minimalFields);
 assert.deepEqual(minimalPayload, minimalFields);
 assert.equal("targetInstitution" in minimalPayload, false, "omits blank optional fields");
 
+const inboxCopy = {
+  stage: "Confirmation",
+  proposals: "Proposals",
+  deliberation: "Deliberation",
+  ballotPreparation: "Ballot preparation",
+  voting: "Voting",
+  mandate: "Mandate",
+  action: "Action",
+  verification: "Verification",
+  archived: "Archived",
+};
+assert.equal(labels.civicInboxStageLabel("confirmation", inboxCopy), inboxCopy.stage);
+assert.equal(labels.civicInboxStageLabel("ballot_preparation", inboxCopy), inboxCopy.ballotPreparation);
+assert.equal(labels.civicInboxStageLabel("archived", inboxCopy), inboxCopy.archived);
+assert.equal(labels.civicInboxStageLabel("unknown_stage", inboxCopy), "unknown_stage");
+assert.equal(labels.civicInboxStageLabel("", inboxCopy), "");
+
 assert.equal(Object.isFrozen(labels), true);
 
-console.log("PASSED: 21 civic process labels module assertions");
+console.log("PASSED: 26 civic process labels module assertions");
