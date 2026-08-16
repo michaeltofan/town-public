@@ -42,7 +42,13 @@
 
   function isProductionPageHost(hostname) {
     var host = normalizeHost(hostname);
-    return host === "towncivic.org" || host === "www.towncivic.org";
+    // Pilot Madrid (M9): madrid.towncivic.org is a production pilot host,
+    // not yet live -- inert until that domain exists.
+    return (
+      host === "towncivic.org" ||
+      host === "www.towncivic.org" ||
+      host === "madrid.towncivic.org"
+    );
   }
 
   function isStagingPageHost(hostname) {
@@ -53,6 +59,11 @@
     if (host.indexOf(".up.railway.app") !== -1 && host.indexOf("staging") !== -1) {
       return true;
     }
+    // Pilot Madrid (M2/M8): madrid-staging.towncivic.org must resolve to the
+    // staging API, same as any other staging page host -- without this, it
+    // fell through to the production default and every fetch was rejected
+    // by production's single-origin CORS lock (found via manual QA, M8).
+    if (host === "madrid-staging.towncivic.org") return true;
     return false;
   }
 

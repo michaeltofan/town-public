@@ -102,6 +102,36 @@ assert(
   "railway staging host → staging API"
 );
 
+// Pilot Madrid (M2/M8): madrid-staging.towncivic.org must resolve to
+// staging, not fall through to the production default -- this exact gap
+// caused a real fetch failure caught by manual QA ("Couldn't reach TOWN").
+assert(
+  TownApiBase.resolveApiBase("madrid-staging.towncivic.org") === staging,
+  "madrid-staging.towncivic.org → staging API"
+);
+assert(
+  TownApiBase.isStagingPageHost("madrid-staging.towncivic.org"),
+  "madrid-staging.towncivic.org recognized as a staging page host"
+);
+assert(
+  TownApiBase.allowApiBaseForHost("madrid-staging.towncivic.org", staging),
+  "staging API allowed on the Madrid pilot staging host"
+);
+assert(
+  !TownApiBase.allowApiBaseForHost("madrid-staging.towncivic.org", production),
+  "production API refused on the Madrid pilot staging host"
+);
+// madrid.towncivic.org (M9, not live yet) resolves to production, inert
+// until that domain exists.
+assert(
+  TownApiBase.resolveApiBase("madrid.towncivic.org") === production,
+  "madrid.towncivic.org → production API"
+);
+assert(
+  TownApiBase.isProductionPageHost("madrid.towncivic.org"),
+  "madrid.towncivic.org recognized as a production page host"
+);
+
 const safe = TownApiBase.resolveApiBaseSafe("towncivic.org");
 assert(safe.ok === true, "safe resolve ok");
 assert(safe.apiBase === production, "safe resolve returns production API");
