@@ -55,6 +55,7 @@ node scripts/test-platform-console.js
 node scripts/test-owner-participate-preview.js
 node scripts/test-see-too-active-all-roles.js
 node scripts/test-etapa3-member-journey.js
+node scripts/test-civic-process-labels-module.js
 bash scripts/check-product-only-feed.sh
 bash scripts/check-screen-12.sh
 bash scripts/check-screen-13.sh
