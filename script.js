@@ -8423,6 +8423,109 @@
     "image/webp": "image",
     "video/mp4": "video",
   };
+
+  // Etapa 5: compress images in-browser before upload. Server-side
+  // validation (real type, size, magic bytes — see town-api's
+  // member-signal-policy.ts / discussion-media-policy.ts) stays the
+  // authority; this only reduces bytes sent over the wire and the chance
+  // of a same-day retry after a server-side size rejection. Video is left
+  // untouched — the spec calls out image compression specifically, and
+  // discussion video already has its own server-side cap (32MB).
+  const IMAGE_COMPRESS_MAX_DIMENSION_PX = 1600;
+  const IMAGE_COMPRESS_TARGET_BYTES = 1.5 * 1024 * 1024;
+  const IMAGE_COMPRESS_MIN_QUALITY = 0.5;
+  const IMAGE_COMPRESS_SKIP_ABOVE_BYTES = 100 * 1024 * 1024;
+
+  function loadImageForCompression(file) {
+    if (typeof window.createImageBitmap === "function") {
+      return window.createImageBitmap(file).catch(() => null);
+    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve(img);
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(null);
+      };
+      img.src = url;
+    });
+  }
+
+  function canvasToBlobAsync(canvas, type, quality) {
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => resolve(blob), type, quality);
+    });
+  }
+
+  function withExtension(fileName, ext) {
+    const base = (fileName || "photo").replace(/\.[^./\\]+$/, "");
+    return base + "." + ext;
+  }
+
+  // Resolves to the original File if compression isn't applicable, fails,
+  // or doesn't actually shrink the file — callers always get something
+  // uploadable back, never a rejection for a merely-uncompressible image.
+  async function compressImageFileIfNeeded(file) {
+    if (
+      !file ||
+      typeof file.type !== "string" ||
+      file.type.indexOf("image/") !== 0
+    ) {
+      return file;
+    }
+    if (file.size > IMAGE_COMPRESS_SKIP_ABOVE_BYTES) {
+      return file;
+    }
+    if (file.size <= IMAGE_COMPRESS_TARGET_BYTES) {
+      return file;
+    }
+    const source = await loadImageForCompression(file);
+    if (!source || !source.width || !source.height) {
+      return file;
+    }
+    try {
+      const scale = Math.min(
+        1,
+        IMAGE_COMPRESS_MAX_DIMENSION_PX / Math.max(source.width, source.height)
+      );
+      const width = Math.max(1, Math.round(source.width * scale));
+      const height = Math.max(1, Math.round(source.height * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return file;
+      ctx.drawImage(source, 0, 0, width, height);
+
+      const outputType = file.type === "image/png" ? "image/png" : "image/jpeg";
+      let quality = 0.85;
+      let blob = await canvasToBlobAsync(canvas, outputType, quality);
+      while (
+        blob &&
+        blob.size > IMAGE_COMPRESS_TARGET_BYTES &&
+        quality > IMAGE_COMPRESS_MIN_QUALITY
+      ) {
+        quality -= 0.1;
+        blob = await canvasToBlobAsync(canvas, outputType, quality);
+      }
+      if (!blob || blob.size >= file.size) {
+        return file;
+      }
+      const ext = outputType === "image/png" ? "png" : "jpg";
+      return new File([blob], withExtension(file.name, ext), {
+        type: outputType,
+      });
+    } finally {
+      if (source && typeof source.close === "function") {
+        source.close();
+      }
+    }
+  }
+
   // Cache of discussion-session GET/POST responses keyed by scene/API id.
   const signalSessionCache = Object.create(null);
   let sessionPublishSubmitting = false;
@@ -10739,13 +10842,19 @@
     signalCreateSubmit.disabled = true;
     signalCreateError.hidden = true;
     try {
+      let uploadFile = file;
+      try {
+        uploadFile = await compressImageFileIfNeeded(file);
+      } catch (_compressErr) {
+        uploadFile = file;
+      }
       const upload = await postBinaryWithCredentials(
         API_BASE +
           "/v1/communities/" +
           encodeURIComponent(slug) +
           "/signals/media",
-        file,
-        file.type
+        uploadFile,
+        uploadFile.type
       );
       if (
         !(
@@ -14167,10 +14276,23 @@
         demoTestimony.file &&
         demoTestimonyFeedIndex === feedIndex
       ) {
+        let uploadMediaFile = demoTestimony.file;
+        let uploadMediaContentType = demoTestimony.contentType;
+        if (demoTestimony.kind === "image") {
+          try {
+            uploadMediaFile = await compressImageFileIfNeeded(
+              demoTestimony.file
+            );
+            uploadMediaContentType = uploadMediaFile.type;
+          } catch (_compressErr) {
+            uploadMediaFile = demoTestimony.file;
+            uploadMediaContentType = demoTestimony.contentType;
+          }
+        }
         const uploadResult = await uploadSignalDiscussionMedia(
           apiId,
-          demoTestimony.file,
-          demoTestimony.contentType
+          uploadMediaFile,
+          uploadMediaContentType
         );
         if (
           !(
