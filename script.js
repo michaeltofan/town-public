@@ -4767,6 +4767,9 @@
     civicProposalErrorCopy,
     DELIBERATION_INTENT_COPY_KEYS,
     deliberationIntentLabel,
+    groupDeliberationContributionsByParent,
+    civicActionBlockedReasonLabel,
+    formatVerificationTallyLabel,
   } = civicProcessLabels;
   const DELIBERATION_INTENTS = Object.keys(DELIBERATION_INTENT_COPY_KEYS);
 
@@ -6367,21 +6370,6 @@
     detailProcessDeliberationList.textContent = "";
   }
 
-  function groupDeliberationContributionsByParent(contributions) {
-    const byParent = new Map();
-    for (let i = 0; i < contributions.length; i++) {
-      const contribution = contributions[i];
-      const key = contribution.replyToContributionId || null;
-      const bucket = byParent.get(key);
-      if (bucket) {
-        bucket.push(contribution);
-      } else {
-        byParent.set(key, [contribution]);
-      }
-    }
-    return byParent;
-  }
-
   function buildDeliberationContributionItem(
     copy,
     byParent,
@@ -7268,16 +7256,6 @@
             : "";
   }
 
-  function civicActionBlockedReasonLabel(copy, key) {
-    return key === "awaiting_institution_response"
-      ? copy.actionBlockedReasonInstitution
-      : key === "awaiting_resources"
-        ? copy.actionBlockedReasonResources
-        : key === "awaiting_volunteers"
-          ? copy.actionBlockedReasonVolunteers
-          : copy.actionBlockedReasonOther;
-  }
-
   function buildActionUpdateItem(copy, update) {
     const li = document.createElement("li");
     li.className = "signal-detail__process-action-item";
@@ -7653,15 +7631,6 @@
     detailProcessVerificationEvidenceList.textContent = "";
     detailProcessVerificationEvidenceContribute.hidden = true;
     closeCivicVerificationEvidenceCompose();
-  }
-
-  function formatVerificationTallyLabel(copy, delivered, notDelivered) {
-    return (
-      copy.verificationTallyLabel ||
-      "{delivered} confirmed delivered · {notDelivered} confirmed not delivered"
-    )
-      .replace("{delivered}", String(delivered))
-      .replace("{notDelivered}", String(notDelivered));
   }
 
   function buildVerificationEvidenceItem(copy, item) {

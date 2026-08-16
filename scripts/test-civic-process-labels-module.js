@@ -41,6 +41,32 @@ assert.equal(labels.DELIBERATION_INTENT_COPY_KEYS.proposal, "intentProposal");
 assert.equal(labels.deliberationIntentLabel(copy, "proposal"), copy.intentProposal);
 assert.equal(labels.deliberationIntentLabel(copy, "not_a_real_intent"), "");
 
+const grouped = labels.groupDeliberationContributionsByParent([
+  { id: "a", replyToContributionId: null },
+  { id: "b", replyToContributionId: "a" },
+  { id: "c", replyToContributionId: "a" },
+]);
+assert.equal(grouped.get(null).length, 1);
+assert.equal(grouped.get("a").length, 2);
+
+const actionCopy = {
+  actionBlockedReasonResources: "Awaiting resources",
+  actionBlockedReasonOther: "Other",
+  verificationTallyLabel: "{delivered} delivered · {notDelivered} not delivered",
+};
+assert.equal(
+  labels.civicActionBlockedReasonLabel(actionCopy, "awaiting_resources"),
+  actionCopy.actionBlockedReasonResources
+);
+assert.equal(
+  labels.civicActionBlockedReasonLabel(actionCopy, "unknown_key"),
+  actionCopy.actionBlockedReasonOther
+);
+assert.equal(
+  labels.formatVerificationTallyLabel(actionCopy, 3, 1),
+  "3 delivered · 1 not delivered"
+);
+
 assert.equal(Object.isFrozen(labels), true);
 
-console.log("PASSED: 13 civic process labels module assertions");
+console.log("PASSED: 18 civic process labels module assertions");

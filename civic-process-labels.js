@@ -61,6 +61,39 @@
     return key ? copy[key] || "" : "";
   }
 
+  function groupDeliberationContributionsByParent(contributions) {
+    const byParent = new Map();
+    for (let i = 0; i < contributions.length; i++) {
+      const contribution = contributions[i];
+      const key = contribution.replyToContributionId || null;
+      const bucket = byParent.get(key);
+      if (bucket) {
+        bucket.push(contribution);
+      } else {
+        byParent.set(key, [contribution]);
+      }
+    }
+    return byParent;
+  }
+
+  function civicActionBlockedReasonLabel(copy, key) {
+    return key === "awaiting_institution_response"
+      ? copy.actionBlockedReasonInstitution
+      : key === "awaiting_resources"
+        ? copy.actionBlockedReasonResources
+        : key === "awaiting_volunteers"
+          ? copy.actionBlockedReasonVolunteers
+          : copy.actionBlockedReasonOther;
+  }
+
+  function formatVerificationTallyLabel(copy, delivered, notDelivered) {
+    return (
+      copy.verificationTallyLabel ||
+      "{delivered} confirmed delivered · {notDelivered} confirmed not delivered"
+    )
+      .replace("{delivered}", String(delivered))
+      .replace("{notDelivered}", String(notDelivered));
+  }
 
   global.TownCivicProcessLabels = Object.freeze({
     formatConfirmCountLabel,
@@ -69,5 +102,8 @@
     civicProposalErrorCopy,
     DELIBERATION_INTENT_COPY_KEYS,
     deliberationIntentLabel,
+    groupDeliberationContributionsByParent,
+    civicActionBlockedReasonLabel,
+    formatVerificationTallyLabel,
   });
 })(typeof window !== "undefined" ? window : globalThis);
