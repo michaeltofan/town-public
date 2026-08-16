@@ -4253,7 +4253,16 @@
   // path may open the existing approved membership/account-entry journey.
   const PRODUCT_ONLY_PUBLIC_MODE = true;
   const PRODUCT_ONLY_FEED_ROUTE = "feed";
-  const PRODUCT_ONLY_CITY_ORDER = communityCatalogApi.cityIds();
+  // Madrid pilot hosts (madrid[-staging].towncivic.org) lock the product-only
+  // feed to Madrid alone, reusing the same per-city plumbing as every other
+  // city below — no separate pilot feed path.
+  const madridPilotHostApi = window.TownMadridPilotHost || null;
+  const madridPilotCityId = madridPilotHostApi
+    ? madridPilotHostApi.resolvePilotCityId(window.location.hostname)
+    : null;
+  const PRODUCT_ONLY_CITY_ORDER = madridPilotCityId
+    ? [madridPilotCityId]
+    : communityCatalogApi.cityIds();
   const PRODUCT_ONLY_COUNTRY_BY_CITY = {};
   for (let cityIndex = 0; cityIndex < PRODUCT_ONLY_CITY_ORDER.length; cityIndex++) {
     const catalogCity = communityCatalogApi.cityForId(PRODUCT_ONLY_CITY_ORDER[cityIndex]);
@@ -4456,11 +4465,36 @@
 
   function ensureProductOnlyFeedHash() {
     const target = "#/" + PRODUCT_ONLY_FEED_ROUTE;
-    if (window.location.hash !== target) {
-      window.location.hash = "/" + PRODUCT_ONLY_FEED_ROUTE;
-      return true;
+    const current = window.location.hash || "";
+    // Preserve a valid #/feed/<signalSlug> deep link as-is; only the plain
+    // #/feed hash is otherwise enforced.
+    if (
+      current === target ||
+      /^#\/feed\/[a-z0-9-]{1,128}$/.test(current)
+    ) {
+      return false;
     }
-    return false;
+    window.location.hash = "/" + PRODUCT_ONLY_FEED_ROUTE;
+    return true;
+  }
+
+  /**
+   * Consume a pending #/feed/<signalSlug> deep link once scenes are
+   * available. A no-op while scenes are still loading (tried again once
+   * loadProductOnlyLiveFeed finishes); a slug that never matches is
+   * silently dropped, never surfaced as an error.
+   */
+  function resolvePendingFeedDeepLink() {
+    if (!pendingFeedDeepLinkSlug) return;
+    const scenes = currentScenes();
+    if (!scenes.length) return;
+    const idx = scenes.findIndex(function (scene) {
+      return scene && scene.id === pendingFeedDeepLinkSlug;
+    });
+    if (idx >= 0) {
+      feedIndex = idx;
+    }
+    pendingFeedDeepLinkSlug = null;
   }
 
   function isInviteMembershipJourneyActive() {
@@ -8389,6 +8423,10 @@
   let locationOutsideBoundary = false;
   let feedIndex = 0;
   let originatingFeedIndex = 0;
+  // Deep-link target parsed from #/feed/<signalSlug> (e.g. shared WhatsApp
+  // links). Consumed once by render(); a slug that matches nothing is a
+  // silent no-op, never an error shown to the visitor.
+  let pendingFeedDeepLinkSlug = null;
   // Explicit pending context for the public "I SEE THIS TOO" → Sign-in return.
   // signalId is the stable scene identity; feedIndex is only a rendering aid.
   let pendingSeeTooContext = null;
@@ -8576,11 +8614,16 @@
 
   function parseRoute() {
     const raw = (window.location.hash || "").replace(/^#\/?/, "");
+    pendingFeedDeepLinkSlug = null;
     let route = "entry";
     if (raw.startsWith("country")) route = "country";
     else if (raw.startsWith("city")) route = "city";
     else if (raw.startsWith("location")) route = "location";
-    else if (raw.startsWith("feed")) route = "feed";
+    else if (raw.startsWith("feed")) {
+      route = "feed";
+      const deepLinkMatch = /^feed\/([a-z0-9-]{1,128})$/.exec(raw);
+      pendingFeedDeepLinkSlug = deepLinkMatch ? deepLinkMatch[1] : null;
+    }
     else if (raw.startsWith("membership")) route = "membership";
     else if (raw.startsWith("ended")) route = "ended";
     else if (raw.startsWith("account")) route = "account";
@@ -8699,7 +8742,10 @@
     if (isProductOnlyPublicMode()) {
       const base = productOnlyScenes();
       const discovery = window.TownCityDiscovery;
-      if (!discovery || base.length < 1) return base;
+      // Madrid pilot hosts are locked to one city: no "explore other cities"
+      // entry point, so the country/city picker (gated on that journey in
+      // go()) stays unreachable — no separate route guard needed.
+      if (!discovery || base.length < 1 || madridPilotCityId) return base;
       const preferred = resolveEditorialPreferredLanguages();
       const lang = discovery.resolveEditorialLanguage(preferred);
       const homeCityId = memberHomeCityId();
@@ -9271,6 +9317,7 @@
     rebuildFeedPanels();
     applyFeedCopyChrome();
     syncFeedAvailabilityStatus();
+    resolvePendingFeedDeepLink();
     if (currentScenes().length) {
       scrollFeedToIndex(feedIndex, { behavior: "auto" });
     }
@@ -14481,6 +14528,7 @@
       if (ensureProductOnlyFeedHash()) {
         return;
       }
+      resolvePendingFeedDeepLink();
       showView(PRODUCT_ONLY_FEED_ROUTE);
       return;
     }
