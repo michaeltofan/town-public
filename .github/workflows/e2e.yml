@@ -45,6 +45,7 @@ jobs:
           node scripts/test-community-commitment.js
           node scripts/test-member-signal-create.js
           node scripts/test-madrid-pilot-host.js
+          node scripts/test-feed-deep-link.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
