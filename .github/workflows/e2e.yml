@@ -44,6 +44,7 @@ jobs:
           node scripts/test-see-too-signin-continuity.js
           node scripts/test-community-commitment.js
           node scripts/test-member-signal-create.js
+          node scripts/test-madrid-pilot-host.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci

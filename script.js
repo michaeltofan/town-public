@@ -4253,7 +4253,16 @@
   // path may open the existing approved membership/account-entry journey.
   const PRODUCT_ONLY_PUBLIC_MODE = true;
   const PRODUCT_ONLY_FEED_ROUTE = "feed";
-  const PRODUCT_ONLY_CITY_ORDER = communityCatalogApi.cityIds();
+  // Madrid pilot hosts (madrid[-staging].towncivic.org) lock the product-only
+  // feed to Madrid alone, reusing the same per-city plumbing as every other
+  // city below — no separate pilot feed path.
+  const madridPilotHostApi = window.TownMadridPilotHost || null;
+  const madridPilotCityId = madridPilotHostApi
+    ? madridPilotHostApi.resolvePilotCityId(window.location.hostname)
+    : null;
+  const PRODUCT_ONLY_CITY_ORDER = madridPilotCityId
+    ? [madridPilotCityId]
+    : communityCatalogApi.cityIds();
   const PRODUCT_ONLY_COUNTRY_BY_CITY = {};
   for (let cityIndex = 0; cityIndex < PRODUCT_ONLY_CITY_ORDER.length; cityIndex++) {
     const catalogCity = communityCatalogApi.cityForId(PRODUCT_ONLY_CITY_ORDER[cityIndex]);
