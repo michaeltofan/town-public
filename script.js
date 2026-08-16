@@ -8708,7 +8708,10 @@
     if (isProductOnlyPublicMode()) {
       const base = productOnlyScenes();
       const discovery = window.TownCityDiscovery;
-      if (!discovery || base.length < 1) return base;
+      // Madrid pilot hosts are locked to one city: no "explore other cities"
+      // entry point, so the country/city picker (gated on that journey in
+      // go()) stays unreachable — no separate route guard needed.
+      if (!discovery || base.length < 1 || madridPilotCityId) return base;
       const preferred = resolveEditorialPreferredLanguages();
       const lang = discovery.resolveEditorialLanguage(preferred);
       const homeCityId = memberHomeCityId();
