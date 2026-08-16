@@ -4,6 +4,16 @@
     throw new Error("TownAuthInput must load before script.js");
   }
   const { digitsOnly, passwordCodePointLength, passwordMeetsPolicy } = authInput;
+  const civicProcessLabels = window.TownCivicProcessLabels;
+  if (!civicProcessLabels) {
+    throw new Error("TownCivicProcessLabels must load before script.js");
+  }
+  const {
+    formatConfirmCountLabel,
+    formatVoteCountLabel,
+    formatTotalVotesLabel,
+    formatVerificationTallyLabel,
+  } = civicProcessLabels;
   const viewEntry = document.getElementById("view-entry");
   const viewCountry = document.getElementById("view-country");
   const viewCity = document.getElementById("view-city");
@@ -4756,17 +4766,6 @@
     }
   }
 
-  function formatConfirmCountLabel(copy, count) {
-    const n = typeof count === "number" && count > 0 ? count : 0;
-    if (n === 1) {
-      return copy.confirmCountOne || "1 confirmation";
-    }
-    return (copy.confirmCount || "{count} confirmations").replace(
-      "{count}",
-      String(n)
-    );
-  }
-
   function applyConfirmCountLabel(el, copy, count) {
     if (!el) return;
     const n = typeof count === "number" && count > 0 ? count : 0;
@@ -6813,13 +6812,6 @@
     detailProcessVotingSubmit.hidden = true;
   }
 
-  function formatVoteCountLabel(copy, count) {
-    return (copy.voteCountLabel || "{count} votes").replace(
-      "{count}",
-      String(count)
-    );
-  }
-
   function appendVoteOptionContent(container, copy, option) {
     const meta = document.createElement("p");
     meta.className = "signal-detail__process-voting-meta";
@@ -7012,13 +7004,6 @@
     detailProcessMandateTally.textContent = "";
     detailProcessMandateMinorityList.hidden = true;
     detailProcessMandateContest.hidden = true;
-  }
-
-  function formatTotalVotesLabel(copy, count) {
-    return (copy.mandateTotalVotesLabel || "{count} total votes").replace(
-      "{count}",
-      String(count)
-    );
   }
 
   function renderCivicMandateMinorityPositions(copy, minorityPositions) {
@@ -7697,15 +7682,6 @@
     detailProcessVerificationEvidenceList.textContent = "";
     detailProcessVerificationEvidenceContribute.hidden = true;
     closeCivicVerificationEvidenceCompose();
-  }
-
-  function formatVerificationTallyLabel(copy, delivered, notDelivered) {
-    return (
-      copy.verificationTallyLabel ||
-      "{delivered} confirmed delivered · {notDelivered} confirmed not delivered"
-    )
-      .replace("{delivered}", String(delivered))
-      .replace("{notDelivered}", String(notDelivered));
   }
 
   function buildVerificationEvidenceItem(copy, item) {
