@@ -142,9 +142,9 @@ assert(
   "closing auth always restores Profile interaction before post-auth routing"
 );
 assert(
-  html.includes('auth-input.js?v=auth-input-1') &&
-    html.includes('script.js?v=auth-input-1'),
-  "auth input extraction has a fresh browser cache key"
+  html.includes('civic-process-labels.js?v=civic-process-labels-1') &&
+    html.includes('script.js?v=civic-process-labels-1'),
+  "civic process labels extraction has a fresh browser cache key"
 );
 
 assert(

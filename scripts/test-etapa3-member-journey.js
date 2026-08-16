@@ -115,9 +115,9 @@ assert(
   "client does not invent thresholds or progress percentages"
 );
 assert(
-  html.includes("auth-input.js?v=auth-input-1") &&
-    html.includes("script.js?v=auth-input-1"),
-  "auth input module and app bundle share the fresh extraction cache key"
+  html.includes("civic-process-labels.js?v=civic-process-labels-1") &&
+    html.includes("script.js?v=civic-process-labels-1"),
+  "civic process labels module and app bundle share the fresh extraction cache key"
 );
 
 assert(html.includes('id="detail-process-proposals"'), "civic proposals panel markup present");
