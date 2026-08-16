@@ -67,6 +67,25 @@ assert.equal(
   "3 delivered · 1 not delivered"
 );
 
+const minimalFields = { title: "Repave the square", body: "It floods every winter.", expectedOutcome: "Dry square" };
+const fullPayload = labels.civicProposalPayload({
+  ...minimalFields,
+  targetInstitution: "City Hall",
+  estimatedResources: "€5,000",
+  indicativeDeadline: "2027-01-01",
+});
+assert.deepEqual(fullPayload, {
+  title: minimalFields.title,
+  body: minimalFields.body,
+  expectedOutcome: minimalFields.expectedOutcome,
+  targetInstitution: "City Hall",
+  estimatedResources: "€5,000",
+  indicativeDeadline: "2027-01-01",
+});
+const minimalPayload = labels.civicProposalPayload(minimalFields);
+assert.deepEqual(minimalPayload, minimalFields);
+assert.equal("targetInstitution" in minimalPayload, false, "omits blank optional fields");
+
 assert.equal(Object.isFrozen(labels), true);
 
-console.log("PASSED: 18 civic process labels module assertions");
+console.log("PASSED: 21 civic process labels module assertions");

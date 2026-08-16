@@ -95,6 +95,18 @@
       .replace("{notDelivered}", String(notDelivered));
   }
 
+  function civicProposalPayload(fields) {
+    const payload = {
+      title: fields.title,
+      body: fields.body,
+      expectedOutcome: fields.expectedOutcome,
+    };
+    if (fields.targetInstitution) payload.targetInstitution = fields.targetInstitution;
+    if (fields.estimatedResources) payload.estimatedResources = fields.estimatedResources;
+    if (fields.indicativeDeadline) payload.indicativeDeadline = fields.indicativeDeadline;
+    return payload;
+  }
+
   global.TownCivicProcessLabels = Object.freeze({
     formatConfirmCountLabel,
     formatVoteCountLabel,
@@ -105,5 +117,6 @@
     groupDeliberationContributionsByParent,
     civicActionBlockedReasonLabel,
     formatVerificationTallyLabel,
+    civicProposalPayload,
   });
 })(typeof window !== "undefined" ? window : globalThis);

@@ -4770,6 +4770,7 @@
     groupDeliberationContributionsByParent,
     civicActionBlockedReasonLabel,
     formatVerificationTallyLabel,
+    civicProposalPayload,
   } = civicProcessLabels;
   const DELIBERATION_INTENTS = Object.keys(DELIBERATION_INTENT_COPY_KEYS);
 
@@ -5957,18 +5958,6 @@
         encodeURIComponent(signalId) +
         "/civic-process/proposals"
     );
-  }
-
-  function civicProposalPayload(fields) {
-    const payload = {
-      title: fields.title,
-      body: fields.body,
-      expectedOutcome: fields.expectedOutcome,
-    };
-    if (fields.targetInstitution) payload.targetInstitution = fields.targetInstitution;
-    if (fields.estimatedResources) payload.estimatedResources = fields.estimatedResources;
-    if (fields.indicativeDeadline) payload.indicativeDeadline = fields.indicativeDeadline;
-    return payload;
   }
 
   async function submitSignalCivicProposal(signalId, fields) {
