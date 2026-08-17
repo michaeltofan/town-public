@@ -116,8 +116,9 @@ assert(
 );
 assert(
   html.includes("auth-input.js?v=auth-input-1") &&
-    html.includes("script.js?v=auth-input-1"),
-  "auth input module and app bundle share the fresh extraction cache key"
+    html.includes("script.js?v=madrid-pilot-1") &&
+    html.includes("api-base.js?v=madrid-pilot-1"),
+  "app bundle and API base carry the Pilot Madrid cache key"
 );
 
 assert(html.includes('id="detail-process-proposals"'), "civic proposals panel markup present");
