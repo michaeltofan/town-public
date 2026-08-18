@@ -20,7 +20,7 @@ Member journey (Etapa 3) on the public surface:
 - HOME → member community first; other cities only in a separate explore zone
 - MEMBERSHIP → auth when needed, then commitment / recovery / profile by membership truth
 - PROFILE / ACTIVITY → session-authenticated destinations
-- CHAT → honest “not available yet” (no fake auth destination)
+- CHAT → membership welcome (intro + Madrid open-data link) when civic participation is active; otherwise honest “not available yet”
 - I SEE THIS TOO → confirm in-community; explore-only notice outside; invite only without membership
 - Stripe return → bounded membership recovery; paid-without-participate stays fail-closed
 - A community-mismatch 403 is never treated as “not a member”
@@ -55,6 +55,7 @@ node scripts/test-platform-console.js
 node scripts/test-owner-participate-preview.js
 node scripts/test-see-too-active-all-roles.js
 node scripts/test-etapa3-member-journey.js
+node scripts/test-member-chat-welcome.js
 bash scripts/check-product-only-feed.sh
 bash scripts/check-screen-12.sh
 bash scripts/check-screen-13.sh

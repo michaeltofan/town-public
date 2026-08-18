@@ -188,6 +188,11 @@ for (let j = 0; j < langs.length; j++) {
   assert(!!chrome.visitor, "visitor chrome present for " + lang);
   assert(!!chrome.openSignal, "openSignal chrome present for " + lang);
   assert(!!chrome.seeThisToo, "seeThisToo chrome present for " + lang);
+  assert(!!chrome.chatWelcomeTitle, "chatWelcomeTitle present for " + lang);
+  assert(
+    String(chrome.chatWelcomeLinkLabel || "").indexOf("datos.madrid.es") !== -1,
+    "chat welcome link mentions Madrid open data for " + lang
+  );
   assert(
     String(chrome.visitor).indexOf("undefined") === -1,
     "no undefined visitor for " + lang

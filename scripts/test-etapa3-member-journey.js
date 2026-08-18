@@ -116,7 +116,8 @@ assert(
 );
 assert(
   html.includes("auth-input.js?v=auth-input-1") &&
-    html.includes("script.js?v=madrid-es-2") &&
+    html.includes("script.js?v=chat-welcome-1") &&
+    html.includes("public-i18n.js?v=chat-welcome-1") &&
     html.includes("api-base.js?v=madrid-pilot-1"),
   "app bundle and API base carry the Pilot Madrid cache key"
 );
@@ -492,10 +493,21 @@ assert(
 
 const chatNav = fnBody("handleChatNav");
 assert(
-  chatNav.includes("chatUnavailable") &&
+  chatNav.includes("canAccessMemberChatWelcome") &&
+    chatNav.includes("openChatWelcomePanel") &&
+    chatNav.includes("chatUnavailable") &&
     !chatNav.includes("openAuthWindow") &&
     chatNav.includes("showTransientFeedNotice"),
-  "CHAT nav shows unavailable notice instead of auth window"
+  "CHAT nav opens welcome for members, unavailable notice for visitors"
+);
+assert(
+  js.includes("function canAccessMemberChatWelcome") &&
+    js.includes("function openChatWelcomePanel") &&
+    js.includes("function shouldShowMadridChatResource") &&
+    js.includes("https://datos.madrid.es/dataset/") &&
+    html.includes('id="chat-panel"') &&
+    html.includes('id="chat-madrid-link"'),
+  "member CHAT welcome panel and Madrid open-data link exist"
 );
 
 const continueAuth = fnBody("continueAfterPublicPasskeySignIn");
