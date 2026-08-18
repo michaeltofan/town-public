@@ -19,7 +19,7 @@ ok(html.includes('id="madrid-pilot-intro"'), "intro markup exists");
 ok(html.includes('id="madrid-pilot-intro-continue"'), "intro continue button exists");
 ok(html.includes("script.js?v=madrid-es-3"), "cache key bumped for intro ship");
 ok(css.includes("invite--madrid-intro"), "intro styles exist");
-ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v2"'), "dismissal key is versioned");
+ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v3"'), "dismissal key is versioned");
 ok(js.includes("function maybeShowMadridPilotIntro"), "show helper exists");
 ok(js.includes("function dismissMadridPilotIntro"), "dismiss helper exists");
 ok(js.includes("dismissMadridPilotIntro();"), "openSignalDetail dismisses intro");
@@ -41,12 +41,12 @@ ok(
   "common-good commitment present"
 );
 ok(
-  !js.includes("TOWN no responde por desviaciones"),
-  "cold liability disclaimer removed"
+  js.includes("Usar el piloto de Madrid es tu responsabilidad"),
+  "individual responsibility paragraph present"
 );
 ok(
-  !js.includes("como ya asumes tu conducta"),
-  "internet-liability wording removed"
+  js.includes("TOWN no responde por desviaciones de conducta"),
+  "platform non-liability paragraph present after civic framing"
 );
 ok(
   js.includes("openMadridPilotIntroFirstSignal"),

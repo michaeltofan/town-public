@@ -13465,7 +13465,7 @@
     syncFeedScrollLockFromOverlays();
   }
 
-  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v2";
+  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v3";
   const MADRID_PILOT_INTRO_COPY = {
     es: {
       title: "Esto es TOWN: tu comunidad, con nombre propio.",
@@ -13474,6 +13474,8 @@
         "TOWN no es TikTok ni Facebook. Es un espacio cívico local: personas reales de la misma comunidad, que miran el mismo lugar y eligen cooperar con respeto para pasar de lo visto a una solución.",
         "El civismo se demuestra asumiendo quién eres — con identidad clara — y tratando a los demás como vecinos, no como audiencia. Hablar con tu nombre es un acto de cuidado hacia la comunidad.",
         "Este piloto funciona con confianza cívica. Entrar es comprometerte a aportar con honestidad, a escuchar y a cuidar el bien común que construimos juntos.",
+        "Usar el piloto de Madrid es tu responsabilidad. Cada señal, cada palabra y cada imagen que publiques las asumes tú, individualmente.",
+        "Quien usa internet ya actúa bajo su propia responsabilidad online. TOWN no responde por desviaciones de conducta de los usuarios; lo que publicas lo asumes tú.",
       ],
       continue: "Entrar en la primera señal",
     },
@@ -13484,6 +13486,8 @@
         "TOWN is not TikTok or Facebook. It is a local civic space: real people from the same community, looking at the same place, choosing to cooperate with respect so that what is seen can move toward a solution.",
         "Civics means assuming who you are — with a clear identity — and treating others as neighbours, not as an audience. Speaking in your own name is an act of care for the community.",
         "This pilot runs on civic trust. Entering means committing to contribute honestly, to listen, and to care for the common good we build together.",
+        "Using the Madrid pilot is your responsibility. Every signal, every word and every image you publish, you assume individually.",
+        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
       ],
       continue: "Enter the first signal",
     },
