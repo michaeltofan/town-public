@@ -40,6 +40,11 @@
     Toulouse: "fr",
     Budapest: "hu",
     Szeged: "hu",
+    Madrid: "es",
+    Barcelona: "es",
+    Valencia: "es",
+    Sevilla: "es",
+    Malaga: "es",
   };
 
   const SOURCE_LANGUAGE_LABELS = {
@@ -307,6 +312,7 @@
         Austria: "Austria",
         France: "France",
         Hungary: "Hungary",
+        Spain: "Spain",
       },
     },
     es: {
@@ -322,6 +328,7 @@
         Austria: "Austria",
         France: "Francia",
         Hungary: "Hungría",
+        Spain: "España",
       },
     },
     fr: {
@@ -337,6 +344,7 @@
         Austria: "Autriche",
         France: "France",
         Hungary: "Hongrie",
+        Spain: "Espagne",
       },
     },
     it: {
@@ -352,6 +360,7 @@
         Austria: "Austria",
         France: "Francia",
         Hungary: "Ungheria",
+        Spain: "Spagna",
       },
     },
     de: {
@@ -367,6 +376,7 @@
         Austria: "Österreich",
         France: "Frankreich",
         Hungary: "Ungarn",
+        Spain: "Spanien",
       },
     },
     ro: {
@@ -382,6 +392,7 @@
         Austria: "Austria",
         France: "Franța",
         Hungary: "Ungaria",
+        Spain: "Spania",
       },
     },
     hu: {
@@ -397,6 +408,7 @@
         Austria: "Ausztria",
         France: "Franciaország",
         Hungary: "Magyarország",
+        Spain: "Spanyolország",
       },
     },
   };
@@ -407,9 +419,36 @@
     Toulouse: "Toulouse",
     Budapest: "Budapest",
     Szeged: "Szeged",
+    Madrid: "Madrid",
+    Barcelona: "Barcelona",
+    Valencia: "Valencia",
+    Sevilla: "Sevilla",
+    Malaga: "Malaga",
+  };
+  const EXPANDED_CITY_NAMES_BY_LANG = {
+    es: {
+      Madrid: "Madrid",
+      Barcelona: "Barcelona",
+      Valencia: "Valencia",
+      Sevilla: "Sevilla",
+      Malaga: "Málaga",
+      Marseille: "Marsella",
+    },
+    fr: {
+      Barcelona: "Barcelone",
+      Valencia: "Valence",
+      Sevilla: "Séville",
+    },
+    it: {
+      Barcelona: "Barcellona",
+      Sevilla: "Siviglia",
+    },
   };
   Object.keys(FEED_UI_COPY).forEach(function (lang) {
     Object.assign(FEED_UI_COPY[lang].cityNames, EXPANDED_CITY_NAMES);
+    if (EXPANDED_CITY_NAMES_BY_LANG[lang]) {
+      Object.assign(FEED_UI_COPY[lang].cityNames, EXPANDED_CITY_NAMES_BY_LANG[lang]);
+    }
   });
 
   const PUBLIC_INVITE_COPY = {

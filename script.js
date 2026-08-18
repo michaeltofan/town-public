@@ -2170,6 +2170,10 @@
         Italy: "Country: Italy",
         Germany: "Country: Germany",
         Romania: "Country: Romania",
+        Austria: "Country: Austria",
+        France: "Country: France",
+        Hungary: "Country: Hungary",
+        Spain: "Country: Spain",
       },
     },
     es: {
@@ -2183,6 +2187,10 @@
         Italy: "País: Italia",
         Germany: "País: Alemania",
         Romania: "País: Rumanía",
+        Austria: "País: Austria",
+        France: "País: Francia",
+        Hungary: "País: Hungría",
+        Spain: "País: España",
       },
     },
     it: {
@@ -2196,6 +2204,10 @@
         Italy: "Paese: Italia",
         Germany: "Paese: Germania",
         Romania: "Paese: România",
+        Austria: "Paese: Austria",
+        France: "Paese: Francia",
+        Hungary: "Paese: Ungheria",
+        Spain: "Paese: Spagna",
       },
     },
     de: {
@@ -2209,6 +2221,10 @@
         Italy: "Land: Italien",
         Germany: "Land: Deutschland",
         Romania: "Land: Rumänien",
+        Austria: "Land: Österreich",
+        France: "Land: Frankreich",
+        Hungary: "Land: Ungarn",
+        Spain: "Land: Spanien",
       },
     },
     ro: {
@@ -2222,6 +2238,10 @@
         Italy: "Țară: Italia",
         Germany: "Țară: Germania",
         Romania: "Țară: România",
+        Austria: "Țară: Austria",
+        France: "Țară: Franța",
+        Hungary: "Țară: Ungaria",
+        Spain: "Țară: Spania",
       },
     },
   };
@@ -4244,6 +4264,48 @@
         "Gestionarea membership-ului nu este încă disponibilă pentru acest cont.",
     },
   };
+
+  PROFILE_COPY.es = {
+    label: "Tu perfil",
+    close: "Cerrar",
+    defaultName: "Vecino TOWN",
+    handleFallback: "Cuenta registrada",
+    bioRegistered:
+      "Registrado en TOWN. La participación cívica local se abre con una membresía activa.",
+    bioMember:
+      "Miembro local activo. Puedes confirmar señales en tu comunidad.",
+    bioOwner:
+      "Acceso de propietario de la plataforma. La participación cívica está abierta sin membresía de pago.",
+    bioPaidPending:
+      "Membresía registrada. La participación local aún no está disponible.",
+    communityNone: "Comunidad: aún no elegida",
+    communityLine: "Comunidad: {community}",
+    membershipNone: "Membresía: no activa",
+    membershipPaid: "Membresía: activa",
+    membershipOwner: "Membresía: no activa — acceso de propietario",
+    membershipPending: "Membresía: pagada — participación pendiente",
+    membershipOther: "Membresía: {status}",
+    activityTitle: "Actividad cívica",
+    activityEmpty:
+      "Aún no hay confirmaciones. Abre una señal local y pulsa YO TAMBIÉN LO VEO cuando estés listo.",
+    activityError:
+      "No se pudo cargar tu actividad cívica — inténtalo de nuevo en un momento.",
+    activityConfirmed: "Tú también lo ves",
+    feedCta: "Volver al feed",
+    publishInCommunity: "Publicar en {community}",
+    platformConsoleCta: "Abrir la consola de la plataforma",
+    membershipCta: "Continuar la membresía",
+    manageBillingCta: "Gestionar la membresía",
+    signOutCta: "Cerrar sesión",
+    signingOut: "Cerrando sesión…",
+    openingPortal: "Abriendo el portal de membresía…",
+    errorSignOut: "No se pudo cerrar la sesión. Inténtalo de nuevo.",
+    errorPortal:
+      "No se pudo abrir la gestión de la membresía. Inténtalo de nuevo en un momento.",
+    errorPortalUnavailable:
+      "La gestión de la membresía aún no está disponible para esta cuenta.",
+  };
+;
 
   const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -8212,7 +8274,7 @@
   }
 
   function showPaymentConfirming(mode) {
-    const copy = PAYMENT_COPY[membershipLang()];
+    const copy = membershipCatalog(PAYMENT_COPY);
     paymentIntro.hidden = true;
     paymentSuccess.hidden = true;
     paymentConfirming.hidden = false;
@@ -8233,7 +8295,7 @@
   }
 
   function showPaymentPaidNoParticipate() {
-    const copy = PAYMENT_COPY[membershipLang()];
+    const copy = membershipCatalog(PAYMENT_COPY);
     paymentIntro.hidden = true;
     paymentSuccess.hidden = true;
     paymentConfirming.hidden = false;
@@ -9386,7 +9448,7 @@
     // Country/city selection is interface chrome. It must follow the visitor's
     // reading language before a city exists and after a city is selected.
     const lang = resolvePublicReadingLanguage();
-    const copy = CITY_COPY[lang];
+    const copy = CITY_COPY[lang] || CITY_COPY.en || CITY_COPY.it;
     cityTitle.textContent = copy.title;
     cityLead.textContent = copy.lead;
     cityLegend.textContent = copy.cityLegend;
@@ -9772,10 +9834,10 @@
       } else if (
         hasAuthoritativePaidMembership() &&
         !civicOk &&
-        PAYMENT_COPY[membershipLang()]
+        membershipCatalog(PAYMENT_COPY)
       ) {
         visitorEl.textContent =
-          PAYMENT_COPY[membershipLang()].paidNoParticipateStatus;
+          membershipCatalog(PAYMENT_COPY).paidNoParticipateStatus;
       } else {
         visitorEl.textContent = memberPresented
           ? copy.member.replace("{city}", cityName)
@@ -9842,10 +9904,10 @@
     } else if (
       hasAuthoritativePaidMembership() &&
       !civicOk &&
-      PAYMENT_COPY[membershipLang()]
+      membershipCatalog(PAYMENT_COPY)
     ) {
       detailUserStatus.textContent =
-        PAYMENT_COPY[membershipLang()].paidNoParticipateStatus;
+        membershipCatalog(PAYMENT_COPY).paidNoParticipateStatus;
     } else if (memberPresented) {
       detailUserStatus.textContent = copy.member.replace("{city}", cityName);
     } else {
@@ -10354,6 +10416,12 @@
     return resolvePublicReadingLanguage();
   }
 
+  // Missing locale must degrade to English (then Italian), never TypeError.
+  function membershipCatalog(catalog) {
+    const lang = membershipLang();
+    return catalog[lang] || catalog.en || catalog.it;
+  }
+
   function entryLang() {
     // Keep the same browser-selected interface language across every route.
     return membershipLang();
@@ -10747,6 +10815,27 @@
     },
   };
 
+  SIGNAL_CREATE_COPY.es = {
+    profileCta: "Publicar una señal cívica",
+    title: "Publicar una señal cívica",
+    lead:
+      "Publica con tu nombre real en tu comunidad. Ya aceptaste la responsabilidad personal como miembro TOWN — confírmala de nuevo para esta publicación.",
+    titleLabel: "Título",
+    descriptionLabel: "Descripción",
+    categoryLabel: "Categoría",
+    realNameLabel: "Nombre real",
+    photoLabel: "Fotografía",
+    acceptText:
+      "Publico con mi nombre real y asumo la responsabilidad personal de esta señal, conforme a las reglas de membresía TOWN que ya acepté.",
+    submit: "Publicar señal",
+    cancel: "Cancelar",
+    close: "Cerrar",
+    errorGeneric: "No se pudo publicar. Inténtalo de nuevo.",
+    errorPhoto: "Elige una foto JPEG, PNG o WebP.",
+    errorAccept: "Confirma la responsabilidad personal para publicar.",
+    errorName: "Usa tu nombre y apellidos reales, no un nombre de usuario.",
+  };
+
   let signalCreatePhotoFile = null;
   let signalCreatePhotoObjectUrl = null;
   let signalCreateSubmitting = false;
@@ -11117,7 +11206,7 @@
 
   function ownerModerationCopy() {
     return (
-      OWNER_MODERATION_COPY[membershipLang()] || OWNER_MODERATION_COPY.en
+      membershipCatalog(OWNER_MODERATION_COPY)
     );
   }
 
@@ -11832,6 +11921,37 @@
     },
   };
 
+  ACTIVITY_COPY.es = {
+    label: "Actividad",
+    title: "Tu actividad cívica",
+    lead:
+      "Confirmaciones, contribuciones publicadas y actualizaciones de las señales en las que participas — desde TOWN, no ejemplos.",
+    empty:
+      "Aún no hay actividad cívica. Confirma una señal o publica una contribución en tu comunidad.",
+    loading: "Cargando tu actividad…",
+    error: "No se pudo cargar la actividad. Inténtalo de nuevo.",
+    close: "Cerrar",
+    feedCta: "Volver al feed",
+    whenUnknown: "",
+    inboxLabel: "Tus procesos cívicos",
+    inboxEmpty:
+      "Aún no hay procesos cívicos. Participa en una señal para verla aquí.",
+    inboxNew: "Nuevo",
+    inboxContinue: "Continuar la participación",
+    recentLabel: "Actividad reciente",
+    kinds: {
+      confirmation: "Confirmaste esta señal",
+      contribution: "Publicaste una contribución",
+      signal_published: "Publicaste una señal cívica",
+      signal_evolution: "Actualización de la señal",
+    },
+    intents: {
+      observation: "Observación",
+      proposal: "Propuesta",
+      next_step: "Siguiente paso",
+    },
+  };
+
   // French is selected exclusively from the browser language, like the other
   // public reading languages. These catalogs do not infer or grant a country,
   // community, eligibility, or membership.
@@ -11842,7 +11962,7 @@
     back: "Retour",
     continue: "Continuer",
     cityNames: { Milano: "Milan", Munich: "Munich", Arad: "Arad", ClujNapoca: "Cluj-Napoca", Sibiu: "Sibiu", Iasi: "Iași", Timisoara: "Timișoara", Koln: "Cologne", Dortmund: "Dortmund", Stuttgart: "Stuttgart", Frankfurt: "Francfort", Salzburg: "Salzbourg" },
-    context: { Italy: "Pays : Italie", Germany: "Pays : Allemagne", Romania: "Pays : Roumanie", Austria: "Pays : Autriche" },
+    context: { Italy: "Pays : Italie", Germany: "Pays : Allemagne", Romania: "Pays : Roumanie", Austria: "Pays : Autriche", France: "Pays : France", Hungary: "Pays : Hongrie", Spain: "Pays : Espagne" },
   };
   LOCATION_COPY.fr = {
     back: "Retour",
@@ -12079,7 +12199,15 @@
     back: "Vissza",
     continue: "Tovább",
     cityNames: {},
-    context: {},
+    context: {
+      Italy: "Ország: Olaszország",
+      Germany: "Ország: Németország",
+      Romania: "Ország: Románia",
+      Austria: "Ország: Ausztria",
+      France: "Ország: Franciaország",
+      Hungary: "Ország: Magyarország",
+      Spain: "Ország: Spanyolország",
+    },
   };
   LOCATION_COPY.hu = Object.assign({}, LOCATION_COPY.en, {
     back: "Vissza",
@@ -12220,13 +12348,13 @@
   });
 
   const EXPANDED_CITY_NAMES_BY_LANG = {
-    en: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
-    es: { Marseille: "Marsella", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
-    fr: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
-    it: { Marseille: "Marsiglia", Lyon: "Lione", Toulouse: "Tolosa", Budapest: "Budapest", Szeged: "Seghedino" },
-    de: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
-    ro: { Marseille: "Marsilia", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapesta", Szeged: "Szeged" },
-    hu: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged" },
+    en: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelona", Valencia: "Valencia", Sevilla: "Sevilla", Malaga: "Malaga" },
+    es: { Marseille: "Marsella", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelona", Valencia: "Valencia", Sevilla: "Sevilla", Malaga: "Málaga" },
+    fr: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelone", Valencia: "Valence", Sevilla: "Séville", Malaga: "Malaga" },
+    it: { Marseille: "Marsiglia", Lyon: "Lione", Toulouse: "Tolosa", Budapest: "Budapest", Szeged: "Seghedino", Madrid: "Madrid", Barcelona: "Barcellona", Valencia: "Valencia", Sevilla: "Siviglia", Malaga: "Malaga" },
+    de: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelona", Valencia: "Valencia", Sevilla: "Sevilla", Malaga: "Malaga" },
+    ro: { Marseille: "Marsilia", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapesta", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelona", Valencia: "Valencia", Sevilla: "Sevilla", Malaga: "Malaga" },
+    hu: { Marseille: "Marseille", Lyon: "Lyon", Toulouse: "Toulouse", Budapest: "Budapest", Szeged: "Szeged", Madrid: "Madrid", Barcelona: "Barcelona", Valencia: "Valencia", Sevilla: "Sevilla", Malaga: "Malaga" },
   };
   const COUNTRY_NAMES_BY_LANG = {
     en: { France: "France", Hungary: "Hungary" }, es: { France: "Francia", Hungary: "Hungría" },
@@ -12621,7 +12749,7 @@
   }
 
   function commitmentErrorMessage(kind) {
-    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    const copy = membershipCatalog(COMMITMENT_COPY);
     if (kind === "unauthenticated") return copy.errorUnauthenticated;
     if (kind === "validation") return copy.errorValidation;
     if (kind === "unsupported") return copy.errorUnsupported;
@@ -12746,7 +12874,7 @@
         onCommitmentCityChange(city.id);
       });
       const span = document.createElement("span");
-      const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+      const copy = membershipCatalog(COMMITMENT_COPY);
       span.textContent = copy.cityNames[city.id] || city.id;
       label.appendChild(input);
       label.appendChild(span);
@@ -12806,7 +12934,7 @@
   }
 
   function syncCommitmentUi() {
-    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    const copy = membershipCatalog(COMMITMENT_COPY);
     const recorded = hasRecordedCommunityCommitment();
 
     Array.prototype.forEach.call(
@@ -12893,7 +13021,7 @@
   }
 
   function applyCommitmentCopy() {
-    const copy = COMMITMENT_COPY[membershipLang()] || COMMITMENT_COPY.it;
+    const copy = membershipCatalog(COMMITMENT_COPY);
     commitmentLabel.textContent = copy.label;
     commitmentTitle.textContent = copy.title;
     commitmentBody.textContent = copy.body;
@@ -12944,7 +13072,7 @@
   }
 
   function paymentErrorMessage(kind) {
-    const copy = PAYMENT_COPY[membershipLang()];
+    const copy = membershipCatalog(PAYMENT_COPY);
     if (kind === "unauthenticated") return copy.errorUnauthenticated;
     if (kind === "alreadyMember") return copy.errorAlreadyMember;
     if (kind === "rateLimited") return copy.errorRateLimited;
@@ -12958,8 +13086,7 @@
     const lang = resolvePublicReadingLanguage();
     const copy =
       (i18n && i18n.publicInviteCopy(lang)) ||
-      MEMBERSHIP_COPY[membershipLang()] ||
-      MEMBERSHIP_COPY.it;
+      membershipCatalog(MEMBERSHIP_COPY);
     inviteTitle.textContent = copy.inviteTitle;
     inviteBody.textContent = copy.inviteBody;
     inviteBodySecond.textContent = copy.inviteBodySecond;
@@ -12968,7 +13095,7 @@
   }
 
   function applyMembershipCopy() {
-    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const copy = membershipCatalog(MEMBERSHIP_COPY);
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     membershipLabel.textContent = copy.label;
     membershipTitle.textContent =
@@ -12996,7 +13123,7 @@
   }
 
   function applyEndedCopy() {
-    const copy = MEMBERSHIP_COPY[membershipLang()];
+    const copy = membershipCatalog(MEMBERSHIP_COPY);
     endedTitle.textContent = copy.endedTitle;
     endedBody.textContent = copy.endedBody;
     endedReturn.textContent = copy.endedReturn;
@@ -13004,7 +13131,7 @@
   }
 
   function applyAccountCopy() {
-    const copy = ACCOUNT_COPY[membershipLang()];
+    const copy = membershipCatalog(ACCOUNT_COPY);
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     accountLabel.textContent = copy.label;
     accountTitle.textContent = copy.title;
@@ -13027,7 +13154,7 @@
   }
 
   function applyEmailCopy() {
-    const copy = EMAIL_COPY[membershipLang()];
+    const copy = membershipCatalog(EMAIL_COPY);
     emailLabel.textContent = copy.label;
     emailTitle.textContent = copy.title;
     emailBody.textContent = copy.body;
@@ -13050,7 +13177,7 @@
   }
 
   function syncEmailContinue() {
-    const copy = EMAIL_COPY[membershipLang()];
+    const copy = membershipCatalog(EMAIL_COPY);
     const value = (emailInput.value || "").trim();
     const valid = isValidEmail(value);
     emailContinue.disabled = !valid || emailSubmitting;
@@ -13072,7 +13199,7 @@
   }
 
   function applyCodeCopy() {
-    const copy = CODE_COPY[membershipLang()];
+    const copy = membershipCatalog(CODE_COPY);
     codeLabel.textContent = copy.label;
     codeTitle.textContent = copy.title;
     codeBody.textContent = copy.body;
@@ -13099,7 +13226,7 @@
   }
 
   function applyPasswordCopy() {
-    const copy = PASSWORD_COPY[membershipLang()];
+    const copy = membershipCatalog(PASSWORD_COPY);
     passwordLabel.textContent = copy.label;
     passwordTitle.textContent = copy.title;
     passwordBody.textContent = copy.body;
@@ -13117,7 +13244,7 @@
   }
 
   function syncPasswordContinue() {
-    const copy = PASSWORD_COPY[membershipLang()];
+    const copy = membershipCatalog(PASSWORD_COPY);
     const value = passwordInput.value || "";
     const confirmation = passwordConfirm.value || "";
     const valid = passwordMeetsPolicy(value);
@@ -13174,7 +13301,7 @@
   }
 
   function applyPasskeyCopy() {
-    const copy = PASSKEY_COPY[membershipLang()];
+    const copy = membershipCatalog(PASSKEY_COPY);
     passkeyLabel.textContent = copy.label;
     passkeyTitle.textContent = copy.title;
     passkeyBody.textContent = copy.body;
@@ -13206,7 +13333,7 @@
   }
 
   function applyReadyCopy() {
-    const copy = READY_COPY[membershipLang()];
+    const copy = membershipCatalog(READY_COPY);
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     readyLabel.textContent = copy.label;
     readyTitle.textContent = copy.title;
@@ -13242,7 +13369,7 @@
   }
 
   function applyPaymentCopy() {
-    const copy = PAYMENT_COPY[membershipLang()];
+    const copy = membershipCatalog(PAYMENT_COPY);
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     paymentLabel.textContent = copy.label;
     paymentTitle.textContent = copy.title;
@@ -13289,7 +13416,7 @@
   }
 
   function applyActiveCopy() {
-    const copy = ACTIVE_COPY[membershipLang()];
+    const copy = membershipCatalog(ACTIVE_COPY);
     const cityName = copy.cityNames[selectedCity] || selectedCity || "";
     activeLabel.textContent = copy.label;
     activeTitle.textContent = copy.title;
@@ -15160,7 +15287,7 @@
       const value = (authIdentityInput.value || "").trim();
       if (!isValidEmail(value) || emailSubmitting) {
         if (value && !isValidEmail(value)) {
-          const copy = EMAIL_COPY[membershipLang()];
+          const copy = membershipCatalog(EMAIL_COPY);
           authIdentityInput.setCustomValidity(copy.invalid);
           authIdentityInput.reportValidity();
         }
@@ -15183,7 +15310,7 @@
           go("code");
         })
         .catch(function (err) {
-          const copy = EMAIL_COPY[membershipLang()];
+          const copy = membershipCatalog(EMAIL_COPY);
           if (err && err.kind === "rateLimited") {
             authIdentityInput.setCustomValidity(copy.rateLimited);
           } else {
@@ -15495,7 +15622,7 @@
         go("code");
       })
       .catch(function (err) {
-        const copy = EMAIL_COPY[membershipLang()];
+        const copy = membershipCatalog(EMAIL_COPY);
         emailError.hidden = false;
         if (err && err.kind === "rateLimited") {
           emailError.textContent = copy.rateLimited;
@@ -15527,7 +15654,7 @@
       return;
     }
     if (!emailVerificationId) {
-      const copy = CODE_COPY[membershipLang()];
+      const copy = membershipCatalog(CODE_COPY);
       codeError.hidden = false;
       codeError.textContent = copy.failed;
       return;
@@ -15549,7 +15676,7 @@
         go("password");
       })
       .catch(function (err) {
-        const copy = CODE_COPY[membershipLang()];
+        const copy = membershipCatalog(CODE_COPY);
         codeError.hidden = false;
         if (err && err.kind === "invalid") {
           codeError.textContent = copy.invalid;
@@ -15585,7 +15712,7 @@
   passwordConfirm.addEventListener("input", handlePasswordInput);
 
   passwordContinue.addEventListener("click", () => {
-    const copy = PASSWORD_COPY[membershipLang()];
+    const copy = membershipCatalog(PASSWORD_COPY);
     const value = passwordInput.value || "";
     if (
       passwordSubmitting ||
@@ -15639,7 +15766,7 @@
 
   passkeyCreate.addEventListener("click", () => {
     if (passkeySubmitting) return;
-    const copy = PASSKEY_COPY[membershipLang()];
+    const copy = membershipCatalog(PASSKEY_COPY);
     clearPasskeyError();
 
     if (!isSetupGrantUsable()) {
@@ -15714,7 +15841,7 @@
 
   readyContinue.addEventListener("click", () => {
     if (readyAuthSubmitting) return;
-    const copy = LOGIN_COPY[membershipLang()];
+    const copy = membershipCatalog(LOGIN_COPY);
     clearReadyError();
 
     readyAuthSubmitting = true;
