@@ -13465,27 +13465,27 @@
     syncFeedScrollLockFromOverlays();
   }
 
-  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v1";
+  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v2";
   const MADRID_PILOT_INTRO_COPY = {
     es: {
-      title: "TOWN no es TikTok ni Facebook.",
+      title: "Esto es TOWN: tu comunidad, con nombre propio.",
       paragraphs: [
-        "TOWN es un espacio cívico local sobre tu comunidad y tu vida en la ciudad — no un feed de entretenimiento, seguidores o popularidad.",
-        "El civismo se demuestra aquí asumiendo tu identidad y cooperando de forma civilizada con otras personas reales de la misma comunidad.",
-        "Usar el piloto de Madrid es tu responsabilidad. Cada publicación y cada acción son asumidas individualmente por quien las realiza.",
-        "Quien usa internet ya actúa bajo su propia responsabilidad online. TOWN no responde por desviaciones de conducta de los usuarios; lo que publicas lo asumes tú.",
+        "Aquí no vienes a entretenerte ni a competir por atención. Vienes porque te importa lo que ocurre en tu calle, en tu barrio y en la vida compartida de Madrid.",
+        "TOWN no es TikTok ni Facebook. Es un espacio cívico local: personas reales de la misma comunidad, que miran el mismo lugar y eligen cooperar con respeto para pasar de lo visto a una solución.",
+        "El civismo se demuestra asumiendo quién eres — con identidad clara — y tratando a los demás como vecinos, no como audiencia. Hablar con tu nombre es un acto de cuidado hacia la comunidad.",
+        "Este piloto funciona con confianza cívica. Entrar es comprometerte a aportar con honestidad, a escuchar y a cuidar el bien común que construimos juntos.",
       ],
-      continue: "Abrir la primera señal",
+      continue: "Entrar en la primera señal",
     },
     en: {
-      title: "TOWN is not TikTok or Facebook.",
+      title: "This is TOWN: your community, in your own name.",
       paragraphs: [
-        "TOWN is a local civic space about your community and city life — not an entertainment feed, followers, or popularity.",
-        "Civics here means assuming your identity and cooperating calmly with other real people in the same community.",
-        "Using the Madrid pilot is your responsibility. Every post and every action is assumed individually by the person who makes it.",
-        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
+        "You are not here to be entertained or to compete for attention. You are here because you care about your street, your neighbourhood, and the shared life of Madrid.",
+        "TOWN is not TikTok or Facebook. It is a local civic space: real people from the same community, looking at the same place, choosing to cooperate with respect so that what is seen can move toward a solution.",
+        "Civics means assuming who you are — with a clear identity — and treating others as neighbours, not as an audience. Speaking in your own name is an act of care for the community.",
+        "This pilot runs on civic trust. Entering means committing to contribute honestly, to listen, and to care for the common good we build together.",
       ],
-      continue: "Open the first signal",
+      continue: "Enter the first signal",
     },
   };
 

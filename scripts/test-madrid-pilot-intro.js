@@ -19,18 +19,34 @@ ok(html.includes('id="madrid-pilot-intro"'), "intro markup exists");
 ok(html.includes('id="madrid-pilot-intro-continue"'), "intro continue button exists");
 ok(html.includes("script.js?v=madrid-es-3"), "cache key bumped for intro ship");
 ok(css.includes("invite--madrid-intro"), "intro styles exist");
-ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v1"'), "dismissal key is versioned");
+ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v2"'), "dismissal key is versioned");
 ok(js.includes("function maybeShowMadridPilotIntro"), "show helper exists");
 ok(js.includes("function dismissMadridPilotIntro"), "dismiss helper exists");
 ok(js.includes("dismissMadridPilotIntro();"), "openSignalDetail dismisses intro");
 ok(js.includes("maybeShowMadridPilotIntro();"), "feed view may show intro");
 ok(
-  js.includes("TOWN no es TikTok ni Facebook."),
-  "Spanish framing copy present"
+  js.includes("Esto es TOWN: tu comunidad, con nombre propio."),
+  "civic Spanish title present"
 );
 ok(
-  js.includes("TOWN no responde por desviaciones de conducta"),
-  "individual responsibility disclaimer present"
+  js.includes("El civismo se demuestra asumiendo quién eres"),
+  "identity-as-civics copy present"
+);
+ok(
+  js.includes("Este piloto funciona con confianza cívica"),
+  "civic trust framing present"
+);
+ok(
+  js.includes("cuidar el bien común que construimos juntos"),
+  "common-good commitment present"
+);
+ok(
+  !js.includes("TOWN no responde por desviaciones"),
+  "cold liability disclaimer removed"
+);
+ok(
+  !js.includes("como ya asumes tu conducta"),
+  "internet-liability wording removed"
 );
 ok(
   js.includes("openMadridPilotIntroFirstSignal"),
