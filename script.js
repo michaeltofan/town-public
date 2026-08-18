@@ -737,6 +737,16 @@
   const inviteBodySecond = document.getElementById("invite-body-second");
   const inviteContinue = document.getElementById("invite-continue");
   const inviteNotNow = document.getElementById("invite-not-now");
+  const madridPilotIntro = document.getElementById("madrid-pilot-intro");
+  const madridPilotIntroTitle = document.getElementById(
+    "madrid-pilot-intro-title"
+  );
+  const madridPilotIntroBody = document.getElementById(
+    "madrid-pilot-intro-body"
+  );
+  const madridPilotIntroContinue = document.getElementById(
+    "madrid-pilot-intro-continue"
+  );
   const viewMembership = document.getElementById("view-membership");
   const membershipLabel = document.getElementById("membership-label");
   const membershipTitle = document.getElementById("membership-title");
@@ -9731,6 +9741,7 @@
 
   function feedOverlaysBlockNavigation() {
     return (
+      (madridPilotIntro && !madridPilotIntro.hidden) ||
       !membershipInvite.hidden ||
       !signalDetail.hidden ||
       !authWindow.hidden ||
@@ -13454,11 +13465,104 @@
     syncFeedScrollLockFromOverlays();
   }
 
+  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v1";
+  const MADRID_PILOT_INTRO_COPY = {
+    es: {
+      title: "TOWN no es TikTok ni Facebook.",
+      paragraphs: [
+        "TOWN es un espacio cívico local sobre tu comunidad y tu vida en la ciudad — no un feed de entretenimiento, seguidores o popularidad.",
+        "El civismo se demuestra aquí asumiendo tu identidad y cooperando de forma civilizada con otras personas reales de la misma comunidad.",
+        "Usar el piloto de Madrid es tu responsabilidad. Cada publicación y cada acción son asumidas individualmente por quien las realiza.",
+        "Quien usa internet ya actúa bajo su propia responsabilidad online. TOWN no responde por desviaciones de conducta de los usuarios; lo que publicas lo asumes tú.",
+      ],
+      continue: "Abrir la primera señal",
+    },
+    en: {
+      title: "TOWN is not TikTok or Facebook.",
+      paragraphs: [
+        "TOWN is a local civic space about your community and city life — not an entertainment feed, followers, or popularity.",
+        "Civics here means assuming your identity and cooperating calmly with other real people in the same community.",
+        "Using the Madrid pilot is your responsibility. Every post and every action is assumed individually by the person who makes it.",
+        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
+      ],
+      continue: "Open the first signal",
+    },
+  };
+
+  function madridPilotIntroDismissed() {
+    try {
+      return window.localStorage.getItem(MADRID_PILOT_INTRO_STORAGE_KEY) === "1";
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  function markMadridPilotIntroDismissed() {
+    try {
+      window.localStorage.setItem(MADRID_PILOT_INTRO_STORAGE_KEY, "1");
+    } catch (_err) {
+      /* private mode / blocked storage — still hide for this session */
+    }
+  }
+
+  function madridPilotIntroCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return MADRID_PILOT_INTRO_COPY[lang] || MADRID_PILOT_INTRO_COPY.es;
+  }
+
+  function applyMadridPilotIntroCopy() {
+    if (!madridPilotIntro || !madridPilotIntroTitle || !madridPilotIntroBody) {
+      return;
+    }
+    const copy = madridPilotIntroCopy();
+    madridPilotIntroTitle.textContent = copy.title;
+    madridPilotIntroBody.innerHTML = "";
+    for (let i = 0; i < copy.paragraphs.length; i++) {
+      const p = document.createElement("p");
+      p.className = "invite__body";
+      p.textContent = copy.paragraphs[i];
+      madridPilotIntroBody.appendChild(p);
+    }
+    if (madridPilotIntroContinue) {
+      madridPilotIntroContinue.textContent = copy.continue;
+    }
+  }
+
+  function hideMadridPilotIntroUi() {
+    if (!madridPilotIntro || madridPilotIntro.hidden) return;
+    madridPilotIntro.hidden = true;
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+  }
+
+  function dismissMadridPilotIntro() {
+    if (!madridPilotIntro) return;
+    markMadridPilotIntroDismissed();
+    hideMadridPilotIntroUi();
+  }
+
+  function maybeShowMadridPilotIntro() {
+    if (!madridPilotIntro || !madridPilotCityId) return;
+    if (madridPilotIntroDismissed()) return;
+    if (!signalDetail.hidden) return;
+    applyMadridPilotIntroCopy();
+    madridPilotIntro.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    if (madridPilotIntroContinue) madridPilotIntroContinue.focus();
+  }
+
+  function openMadridPilotIntroFirstSignal() {
+    dismissMadridPilotIntro();
+    openSignalDetail();
+  }
+
   function setAuthFeedInert(isInert) {
     const feedMain = viewFeed.querySelector("main.feed");
     if (feedMain) feedMain.inert = isInert;
     if (signalDetail) signalDetail.inert = isInert;
     if (membershipInvite) membershipInvite.inert = isInert;
+    if (madridPilotIntro) madridPilotIntro.inert = isInert;
     if (profilePanel) {
       const authWindowOpen = authWindow && !authWindow.hidden;
       profilePanel.inert = isInert && authWindowOpen;
@@ -13714,6 +13818,7 @@
 
     if (name !== "feed") {
       closeInvite();
+      hideMadridPilotIntroUi();
       closeSignalDetail();
       closeAuthWindow();
       closeProfilePanel();
@@ -13734,6 +13839,7 @@
       applyPublicNavCopy();
       applyFeedCopyChrome();
       renderFeedScene();
+      maybeShowMadridPilotIntro();
     }
     if (name === "membership") {
       applyMembershipCopy();
@@ -14607,6 +14713,7 @@
     if (discovery && discovery.isCityDiscoveryStory(scenes[feedIndex])) {
       return;
     }
+    dismissMadridPilotIntro();
     applyFeedCopyChrome();
     populateSignalDetail();
     renderDemoTestimony();
@@ -15567,6 +15674,12 @@
     }
     go("membership");
   });
+
+  if (madridPilotIntroContinue) {
+    madridPilotIntroContinue.addEventListener("click", () => {
+      openMadridPilotIntroFirstSignal();
+    });
+  }
 
   inviteNotNow.addEventListener("click", () => {
     clearPendingSeeTooContext();
