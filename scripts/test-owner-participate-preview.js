@@ -33,7 +33,21 @@ assert(
   !js.includes("applyOwnerParticipatePreviewFromUrl"),
   "preview URL boot helper removed"
 );
-assert(!js.includes("localStorage"), "no localStorage product unlock remains");
+
+const localStorageHits = js
+  .split("\n")
+  .map((line, index) => ({ line: line.trim(), index: index + 1 }))
+  .filter(({ line }) => line.includes("localStorage"));
+assert(
+  localStorageHits.every(({ line }) =>
+    line.includes("MADRID_PILOT_INTRO_STORAGE_KEY")
+  ),
+  "localStorage only for Madrid pilot intro dismissal (not product unlock)"
+);
+assert(
+  localStorageHits.length >= 2,
+  "Madrid intro localStorage get/set present"
+);
 
 const civicMatch = js.match(
   /function canTakeCivicAction\(\)\s*\{([\s\S]*?)\n  \}/
@@ -47,6 +61,10 @@ assert(
 assert(
   !civic.includes("ownerParticipatePreview"),
   "civic action has no client preview bypass"
+);
+assert(
+  !civic.includes("localStorage"),
+  "civic action has no localStorage unlock"
 );
 
 console.log("PASSED: " + passed + " owner participate preview removal assertions");

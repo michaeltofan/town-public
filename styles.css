@@ -4079,6 +4079,49 @@ body.page-feed {
   padding: 1.5rem;
 }
 
+.invite--madrid-intro {
+  z-index: 6;
+  padding: 1.1rem;
+}
+
+.invite__brand {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.72);
+}
+
+.invite__panel--madrid-intro {
+  width: min(32rem, 100%);
+  max-height: min(88vh, 40rem);
+  display: flex;
+  flex-direction: column;
+  padding: 1.45rem 1.35rem 1.25rem;
+}
+
+.invite__panel--madrid-intro .invite__title {
+  margin-bottom: 0.75rem;
+}
+
+.invite__scroll {
+  overflow: auto;
+  flex: 1 1 auto;
+  margin: 0 0 1rem;
+  padding-right: 0.15rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.invite__scroll .invite__body {
+  margin: 0 0 0.75rem;
+}
+
+.invite__scroll .invite__body:last-child {
+  margin-bottom: 0;
+}
+
 .invite__dim {
   position: absolute;
   inset: 0;

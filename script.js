@@ -737,6 +737,16 @@
   const inviteBodySecond = document.getElementById("invite-body-second");
   const inviteContinue = document.getElementById("invite-continue");
   const inviteNotNow = document.getElementById("invite-not-now");
+  const madridPilotIntro = document.getElementById("madrid-pilot-intro");
+  const madridPilotIntroTitle = document.getElementById(
+    "madrid-pilot-intro-title"
+  );
+  const madridPilotIntroBody = document.getElementById(
+    "madrid-pilot-intro-body"
+  );
+  const madridPilotIntroContinue = document.getElementById(
+    "madrid-pilot-intro-continue"
+  );
   const viewMembership = document.getElementById("view-membership");
   const membershipLabel = document.getElementById("membership-label");
   const membershipTitle = document.getElementById("membership-title");
@@ -9731,6 +9741,7 @@
 
   function feedOverlaysBlockNavigation() {
     return (
+      (madridPilotIntro && !madridPilotIntro.hidden) ||
       !membershipInvite.hidden ||
       !signalDetail.hidden ||
       !authWindow.hidden ||
@@ -13454,11 +13465,108 @@
     syncFeedScrollLockFromOverlays();
   }
 
+  const MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v3";
+  const MADRID_PILOT_INTRO_COPY = {
+    es: {
+      title: "Esto es TOWN: tu comunidad, con nombre propio.",
+      paragraphs: [
+        "Aquí no vienes a entretenerte ni a competir por atención. Vienes porque te importa lo que ocurre en tu calle, en tu barrio y en la vida compartida de Madrid.",
+        "TOWN no es TikTok ni Facebook. Es un espacio cívico local: personas reales de la misma comunidad, que miran el mismo lugar y eligen cooperar con respeto para pasar de lo visto a una solución.",
+        "El civismo se demuestra asumiendo quién eres — con identidad clara — y tratando a los demás como vecinos, no como audiencia. Hablar con tu nombre es un acto de cuidado hacia la comunidad.",
+        "Este piloto funciona con confianza cívica. Entrar es comprometerte a aportar con honestidad, a escuchar y a cuidar el bien común que construimos juntos.",
+        "Usar el piloto de Madrid es tu responsabilidad. Cada señal, cada palabra y cada imagen que publiques las asumes tú, individualmente.",
+        "Quien usa internet ya actúa bajo su propia responsabilidad online. TOWN no responde por desviaciones de conducta de los usuarios; lo que publicas lo asumes tú.",
+      ],
+      continue: "Entrar en la primera señal",
+    },
+    en: {
+      title: "This is TOWN: your community, in your own name.",
+      paragraphs: [
+        "You are not here to be entertained or to compete for attention. You are here because you care about your street, your neighbourhood, and the shared life of Madrid.",
+        "TOWN is not TikTok or Facebook. It is a local civic space: real people from the same community, looking at the same place, choosing to cooperate with respect so that what is seen can move toward a solution.",
+        "Civics means assuming who you are — with a clear identity — and treating others as neighbours, not as an audience. Speaking in your own name is an act of care for the community.",
+        "This pilot runs on civic trust. Entering means committing to contribute honestly, to listen, and to care for the common good we build together.",
+        "Using the Madrid pilot is your responsibility. Every signal, every word and every image you publish, you assume individually.",
+        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
+      ],
+      continue: "Enter the first signal",
+    },
+  };
+
+  function madridPilotIntroDismissed() {
+    try {
+      return window.localStorage.getItem(MADRID_PILOT_INTRO_STORAGE_KEY) === "1";
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  function markMadridPilotIntroDismissed() {
+    try {
+      window.localStorage.setItem(MADRID_PILOT_INTRO_STORAGE_KEY, "1");
+    } catch (_err) {
+      /* private mode / blocked storage — still hide for this session */
+    }
+  }
+
+  function madridPilotIntroCopy() {
+    const lang = resolvePublicReadingLanguage();
+    return MADRID_PILOT_INTRO_COPY[lang] || MADRID_PILOT_INTRO_COPY.es;
+  }
+
+  function applyMadridPilotIntroCopy() {
+    if (!madridPilotIntro || !madridPilotIntroTitle || !madridPilotIntroBody) {
+      return;
+    }
+    const copy = madridPilotIntroCopy();
+    madridPilotIntroTitle.textContent = copy.title;
+    madridPilotIntroBody.innerHTML = "";
+    for (let i = 0; i < copy.paragraphs.length; i++) {
+      const p = document.createElement("p");
+      p.className = "invite__body";
+      p.textContent = copy.paragraphs[i];
+      madridPilotIntroBody.appendChild(p);
+    }
+    if (madridPilotIntroContinue) {
+      madridPilotIntroContinue.textContent = copy.continue;
+    }
+  }
+
+  function hideMadridPilotIntroUi() {
+    if (!madridPilotIntro || madridPilotIntro.hidden) return;
+    madridPilotIntro.hidden = true;
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+  }
+
+  function dismissMadridPilotIntro() {
+    if (!madridPilotIntro) return;
+    markMadridPilotIntroDismissed();
+    hideMadridPilotIntroUi();
+  }
+
+  function maybeShowMadridPilotIntro() {
+    if (!madridPilotIntro || !madridPilotCityId) return;
+    if (madridPilotIntroDismissed()) return;
+    if (!signalDetail.hidden) return;
+    applyMadridPilotIntroCopy();
+    madridPilotIntro.hidden = false;
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    if (madridPilotIntroContinue) madridPilotIntroContinue.focus();
+  }
+
+  function openMadridPilotIntroFirstSignal() {
+    dismissMadridPilotIntro();
+    openSignalDetail();
+  }
+
   function setAuthFeedInert(isInert) {
     const feedMain = viewFeed.querySelector("main.feed");
     if (feedMain) feedMain.inert = isInert;
     if (signalDetail) signalDetail.inert = isInert;
     if (membershipInvite) membershipInvite.inert = isInert;
+    if (madridPilotIntro) madridPilotIntro.inert = isInert;
     if (profilePanel) {
       const authWindowOpen = authWindow && !authWindow.hidden;
       profilePanel.inert = isInert && authWindowOpen;
@@ -13714,6 +13822,7 @@
 
     if (name !== "feed") {
       closeInvite();
+      hideMadridPilotIntroUi();
       closeSignalDetail();
       closeAuthWindow();
       closeProfilePanel();
@@ -13734,6 +13843,7 @@
       applyPublicNavCopy();
       applyFeedCopyChrome();
       renderFeedScene();
+      maybeShowMadridPilotIntro();
     }
     if (name === "membership") {
       applyMembershipCopy();
@@ -14607,6 +14717,7 @@
     if (discovery && discovery.isCityDiscoveryStory(scenes[feedIndex])) {
       return;
     }
+    dismissMadridPilotIntro();
     applyFeedCopyChrome();
     populateSignalDetail();
     renderDemoTestimony();
@@ -15567,6 +15678,12 @@
     }
     go("membership");
   });
+
+  if (madridPilotIntroContinue) {
+    madridPilotIntroContinue.addEventListener("click", () => {
+      openMadridPilotIntroFirstSignal();
+    });
+  }
 
   inviteNotNow.addEventListener("click", () => {
     clearPendingSeeTooContext();
