@@ -1517,6 +1517,34 @@
         </div>
       </div>
 
+      <!-- Pilot Madrid: one-time civic framing before the first signal -->
+      <div
+        class="invite invite--madrid-intro"
+        id="madrid-pilot-intro"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="madrid-pilot-intro-title"
+      >
+        <div class="invite__dim" aria-hidden="true"></div>
+        <div class="invite__panel invite__panel--madrid-intro" role="document">
+          <p class="invite__brand" id="madrid-pilot-intro-brand" aria-label="TOWN">
+            TOWN
+          </p>
+          <h2 class="invite__title" id="madrid-pilot-intro-title"></h2>
+          <div class="invite__scroll" id="madrid-pilot-intro-body"></div>
+          <div class="invite__actions">
+            <button
+              type="button"
+              class="feed__primary"
+              id="madrid-pilot-intro-continue"
+            >
+              Abrir la primera señal
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Screen 06 stage 1: contextual invitation over originating signal -->
       <div
         class="invite"
@@ -2423,6 +2451,6 @@
     <script src="madrid-pilot-host.js?v=1" defer></script>
     <script src="api-base.js?v=madrid-pilot-1"></script>
     <script src="auth-input.js?v=auth-input-1" defer></script>
-    <script src="script.js?v=chat-welcome-1" defer></script>
+    <script src="script.js?v=madrid-es-4" defer></script>
   </body>
 </html>
