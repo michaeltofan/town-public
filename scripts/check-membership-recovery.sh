@@ -55,11 +55,13 @@ require_contains "script.js" "shouldStartCheckoutRecoveryPolling"
 
 echo "== Guardrails =="
 # Product path must not use localStorage for membership/participation unlocks.
-if grep -n 'localStorage' index.html script.js membership-recovery.js; then
-  echo "FAIL: localStorage usage present"
+# Allowed: Madrid pilot first-visit intro dismissal (UI only; never grants civic access).
+if grep -n 'localStorage' index.html script.js membership-recovery.js \
+  | grep -Ev 'MADRID_PILOT_INTRO_STORAGE_KEY|madridPilotIntro'; then
+  echo "FAIL: localStorage usage present outside allowed intro dismissal"
   fail=1
 else
-  echo "OK: no localStorage in product membership path"
+  echo "OK: localStorage limited to Madrid pilot intro dismissal (no membership unlock)"
 fi
 
 # sessionStorage is allowed only for the advisory checkout-pending marker.

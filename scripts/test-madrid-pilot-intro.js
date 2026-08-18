@@ -49,6 +49,10 @@ ok(
   "platform non-liability paragraph present after civic framing"
 );
 ok(
+  /localStorage\.(getItem|setItem)\(\s*MADRID_PILOT_INTRO_STORAGE_KEY/.test(js),
+  "intro dismissal uses versioned localStorage key only"
+);
+ok(
   js.includes("openMadridPilotIntroFirstSignal"),
   "CTA opens first signal after dismiss"
 );
