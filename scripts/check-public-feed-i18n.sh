@@ -120,6 +120,9 @@ PY
 echo "== Unit tests =="
 node scripts/test-public-feed-i18n.js
 node scripts/test-onboarding-language-continuity.js
+node scripts/test-spanish-localization.js
+node scripts/test-french-localization.js
+node scripts/test-hungarian-localization.js
 
 if [[ "$fail" -ne 0 ]]; then
   echo "CHECKS FAILED"

@@ -46,6 +46,11 @@ jobs:
           node scripts/test-member-signal-create.js
           node scripts/test-madrid-pilot-host.js
           node scripts/test-feed-deep-link.js
+          node scripts/test-spanish-localization.js
+          node scripts/test-french-localization.js
+          node scripts/test-hungarian-localization.js
+          node scripts/test-onboarding-language-continuity.js
+          node scripts/test-public-feed-i18n.js
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
