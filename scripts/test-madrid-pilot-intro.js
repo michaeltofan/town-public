@@ -17,7 +17,7 @@ function ok(condition, message) {
 
 ok(html.includes('id="madrid-pilot-intro"'), "intro markup exists");
 ok(html.includes('id="madrid-pilot-intro-continue"'), "intro continue button exists");
-ok(html.includes("script.js?v=madrid-es-3"), "cache key bumped for intro ship");
+ok(html.includes("script.js?v=madrid-es-4"), "cache key bumped for intro ship");
 ok(css.includes("invite--madrid-intro"), "intro styles exist");
 ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v3"'), "dismissal key is versioned");
 ok(js.includes("function maybeShowMadridPilotIntro"), "show helper exists");

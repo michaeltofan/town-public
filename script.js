@@ -186,6 +186,19 @@
   const signalCreateError = document.getElementById("signal-create-error");
   const signalCreateSubmit = document.getElementById("signal-create-submit");
   const signalCreateCancel = document.getElementById("signal-create-cancel");
+  const signalCreateGuide = document.getElementById("signal-create-guide");
+  const signalCreateGuideLabel = document.getElementById(
+    "signal-create-guide-label"
+  );
+  const signalCreateGuideBody = document.getElementById(
+    "signal-create-guide-body"
+  );
+  const signalCreateGuideList = document.getElementById(
+    "signal-create-guide-list"
+  );
+  const signalCreateGuideContinue = document.getElementById(
+    "signal-create-guide-continue"
+  );
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -930,6 +943,11 @@
     !signalCreateError ||
     !signalCreateSubmit ||
     !signalCreateCancel ||
+    !signalCreateGuide ||
+    !signalCreateGuideLabel ||
+    !signalCreateGuideBody ||
+    !signalCreateGuideList ||
+    !signalCreateGuideContinue ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -10741,6 +10759,14 @@
     Stuttgart: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
     Frankfurt: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
     Salzburg: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    // Pilot Madrid — align with live madrid-es seed categories.
+    Madrid: [
+      "ESPACIO PÚBLICO",
+      "ALUMBRADO PÚBLICO",
+      "MEDIO AMBIENTE",
+      "MOVILIDAD",
+      "LIMPIEZA",
+    ],
   };
 
   const SIGNAL_CREATE_COPY = {
@@ -10763,6 +10789,14 @@
       errorPhoto: "Scegli una foto JPEG, PNG o WebP.",
       errorAccept: "Conferma la responsabilità personale per pubblicare.",
       errorName: "Usa il tuo nome e cognome reali, non un username.",
+      guideLabel: "Stessa discussione",
+      guideBody:
+        "TOWN tiene un filo calmo per luogo. Se questo è già in discussione, unisciti a quel segnale invece di aprirne uno duplicato.",
+      guideJoin: "Apri questa discussione",
+      guideJoinHint: "Conferma ciò che vedi e contribuisci verso una soluzione qui.",
+      guideContinue: "Pubblica comunque un nuovo segnale",
+      guideBlocked:
+        "Esiste già una discussione corrispondente. Aprila sotto, oppure conferma che ti serve ancora un nuovo segnale.",
     },
     de: {
       profileCta: "Ziviles Signal veröffentlichen",
@@ -10783,6 +10817,14 @@
       errorPhoto: "Wähle ein JPEG-, PNG- oder WebP-Foto.",
       errorAccept: "Bestätige die persönliche Verantwortung zum Veröffentlichen.",
       errorName: "Verwende deinen echten Vor- und Nachnamen, keinen Benutzernamen.",
+      guideLabel: "Dieselbe Diskussion",
+      guideBody:
+        "TOWN hält einen ruhigen Faden pro Ort. Wenn das schon besprochen wird, tritt jenem Signal bei statt ein Duplikat zu öffnen.",
+      guideJoin: "Diese Diskussion öffnen",
+      guideJoinHint: "Bestätige, was du siehst, und trage hier zu einer Lösung bei.",
+      guideContinue: "Trotzdem neues Signal veröffentlichen",
+      guideBlocked:
+        "Eine passende Diskussion existiert bereits. Öffne sie unten, oder bestätige, dass du noch ein neues Signal brauchst.",
     },
     ro: {
       profileCta: "Publică un semnal civic",
@@ -10803,6 +10845,14 @@
       errorPhoto: "Alege o fotografie JPEG, PNG sau WebP.",
       errorAccept: "Confirmă responsabilitatea personală pentru a publica.",
       errorName: "Folosește numele și prenumele reale, nu un username.",
+      guideLabel: "Aceeași discuție",
+      guideBody:
+        "TOWN păstrează un fir calm pe loc. Dacă asta se discută deja, intră în semnalul acela în loc să deschizi un duplicat.",
+      guideJoin: "Deschide această discuție",
+      guideJoinHint: "Confirmă ce vezi și contribuie aici spre o soluție.",
+      guideContinue: "Publică oricum un semnal nou",
+      guideBlocked:
+        "Există deja o discuție potrivită. Deschide-o mai jos, sau confirmă că tot ai nevoie de un semnal nou.",
     },
     en: {
       profileCta: "Publish a civic signal",
@@ -10823,6 +10873,14 @@
       errorPhoto: "Choose a JPEG, PNG, or WebP photo.",
       errorAccept: "Confirm personal responsibility to publish.",
       errorName: "Use your real given and family name, not a username.",
+      guideLabel: "Same discussion",
+      guideBody:
+        "TOWN keeps one calm thread per place. If this is already being discussed, join that signal instead of opening a duplicate.",
+      guideJoin: "Open this discussion",
+      guideJoinHint: "Confirm what you see and contribute toward a solution here.",
+      guideContinue: "Publish a new signal anyway",
+      guideBlocked:
+        "A matching discussion already exists. Open it below, or confirm you still need a new signal.",
     },
   };
 
@@ -10845,11 +10903,22 @@
     errorPhoto: "Elige una foto JPEG, PNG o WebP.",
     errorAccept: "Confirma la responsabilidad personal para publicar.",
     errorName: "Usa tu nombre y apellidos reales, no un nombre de usuario.",
+    guideLabel: "Misma discusión",
+    guideBody:
+      "TOWN mantiene un hilo calmado por lugar. Si esto ya se está tratando, únete a esa señal en lugar de abrir un duplicado.",
+    guideJoin: "Abrir esta discusión",
+    guideJoinHint: "Confirma lo que ves y aporta hacia una solución aquí.",
+    guideContinue: "Publicar una señal nueva de todos modos",
+    guideBlocked:
+      "Ya existe una discusión coincidente. Ábrela abajo, o confirma que aún necesitas una señal nueva.",
   };
 
   let signalCreatePhotoFile = null;
   let signalCreatePhotoObjectUrl = null;
   let signalCreateSubmitting = false;
+  let signalCreateGuideTimer = null;
+  let signalCreateGuideMatches = [];
+  let signalCreateGuideOverride = false;
 
   function signalCreateCopy() {
     const lang = resolvePublicReadingLanguage();
@@ -10897,6 +10966,150 @@
     signalCreatePhoto.value = "";
   }
 
+  function madridDiscussionGuideApi() {
+    return window.TownMadridDiscussionGuide || null;
+  }
+
+  function isMadridDiscussionGuideActive() {
+    return !!(madridPilotCityId && madridDiscussionGuideApi());
+  }
+
+  function clearMadridDiscussionGuide() {
+    if (signalCreateGuideTimer) {
+      window.clearTimeout(signalCreateGuideTimer);
+      signalCreateGuideTimer = null;
+    }
+    signalCreateGuideMatches = [];
+    signalCreateGuideOverride = false;
+    signalCreateGuideList.innerHTML = "";
+    signalCreateGuide.hidden = true;
+    signalCreateGuideContinue.hidden = true;
+    signalCreateGuideContinue.textContent = "";
+  }
+
+  function madridGuideCorpusScenes() {
+    const homeId = memberHomeCityId() || madridPilotCityId || "Madrid";
+    const live = liveScenes[homeId];
+    return live && live.length ? live.slice() : [];
+  }
+
+  function readSignalCreateDraft() {
+    return {
+      title: (signalCreateTitleInput.value || "").trim(),
+      description: (signalCreateDescription.value || "").trim(),
+      category: signalCreateCategory.value || "",
+    };
+  }
+
+  function openMadridGuidedDiscussion(sceneId) {
+    const scenes = currentScenes();
+    const idx = scenes.findIndex(function (scene) {
+      return scene && (scene.id === sceneId || scene.signalId === sceneId);
+    });
+    if (idx < 0) return false;
+    closeSignalCreate();
+    scrollFeedToIndex(idx, { behavior: "auto" });
+    openSignalDetail();
+    return true;
+  }
+
+  function renderMadridDiscussionGuide(matches) {
+    const copy = signalCreateCopy();
+    const en = SIGNAL_CREATE_COPY.en;
+    signalCreateGuideMatches = Array.isArray(matches) ? matches : [];
+    signalCreateGuideList.innerHTML = "";
+
+    if (!signalCreateGuideMatches.length) {
+      signalCreateGuide.hidden = true;
+      signalCreateGuideContinue.hidden = true;
+      return;
+    }
+
+    signalCreateGuideLabel.textContent = copy.guideLabel || en.guideLabel;
+    signalCreateGuideBody.textContent = copy.guideBody || en.guideBody;
+
+    for (let i = 0; i < signalCreateGuideMatches.length; i++) {
+      const hit = signalCreateGuideMatches[i];
+      const scene = hit && hit.scene;
+      if (!scene) continue;
+      const li = document.createElement("li");
+      li.className = "signal-create__guide-item";
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "signal-create__guide-join";
+      button.setAttribute("data-guide-scene-id", scene.id || "");
+      const area = document.createElement("span");
+      area.className = "signal-create__guide-join-area";
+      area.textContent = scene.area || scene.category || "Madrid";
+      const title = document.createElement("span");
+      title.className = "signal-create__guide-join-title";
+      title.textContent = scene.headline || scene.id || "";
+      const hint = document.createElement("span");
+      hint.className = "signal-create__guide-join-hint";
+      hint.textContent = copy.guideJoinHint || en.guideJoinHint;
+      button.appendChild(area);
+      button.appendChild(title);
+      button.appendChild(hint);
+      button.setAttribute(
+        "aria-label",
+        (copy.guideJoin || en.guideJoin) + ": " + (scene.headline || "")
+      );
+      li.appendChild(button);
+      signalCreateGuideList.appendChild(li);
+    }
+
+    const api = madridDiscussionGuideApi();
+    const strong =
+      api &&
+      signalCreateGuideMatches.some(function (hit) {
+        return api.isStrongMatch(hit);
+      });
+    signalCreateGuideContinue.hidden = !strong || signalCreateGuideOverride;
+    signalCreateGuideContinue.textContent =
+      copy.guideContinue || en.guideContinue;
+    signalCreateGuide.hidden = false;
+  }
+
+  function refreshMadridDiscussionGuide() {
+    if (!isMadridDiscussionGuideActive()) {
+      clearMadridDiscussionGuide();
+      return;
+    }
+    if (signalCreateGuideOverride) {
+      // Member explicitly chose to publish a new signal after guidance.
+      signalCreateGuideContinue.hidden = true;
+      return;
+    }
+    const api = madridDiscussionGuideApi();
+    const matches = api.suggestMatches(
+      readSignalCreateDraft(),
+      madridGuideCorpusScenes()
+    );
+    renderMadridDiscussionGuide(matches);
+  }
+
+  function scheduleMadridDiscussionGuideRefresh() {
+    if (!isMadridDiscussionGuideActive()) return;
+    if (signalCreateGuideTimer) {
+      window.clearTimeout(signalCreateGuideTimer);
+    }
+    signalCreateGuideTimer = window.setTimeout(function () {
+      signalCreateGuideTimer = null;
+      refreshMadridDiscussionGuide();
+    }, 280);
+  }
+
+  function madridGuideBlocksPublish() {
+    if (!isMadridDiscussionGuideActive()) return false;
+    if (signalCreateGuideOverride) return false;
+    const api = madridDiscussionGuideApi();
+    if (!api) return false;
+    refreshMadridDiscussionGuide();
+    return signalCreateGuideMatches.some(function (hit) {
+      return api.isStrongMatch(hit);
+    });
+  }
+
   function applySignalCreateCopy() {
     const copy = signalCreateCopy();
     signalCreateTitle.textContent = copy.title;
@@ -10934,6 +11147,7 @@
     closeSignalDetail();
     applySignalCreateCopy();
     fillSignalCreateCategories();
+    clearMadridDiscussionGuide();
     signalCreateError.hidden = true;
     signalCreateError.textContent = "";
     signalCreateAccept.checked = false;
@@ -10947,6 +11161,7 @@
     if (signalCreate.hidden) return;
     signalCreate.hidden = true;
     clearSignalCreatePhotoPreview();
+    clearMadridDiscussionGuide();
     signalCreateForm.reset();
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
@@ -10982,6 +11197,16 @@
     ) {
       signalCreateError.textContent = copy.errorPhoto;
       signalCreateError.hidden = false;
+      return;
+    }
+
+    if (madridGuideBlocksPublish()) {
+      signalCreateError.textContent =
+        copy.guideBlocked || SIGNAL_CREATE_COPY.en.guideBlocked;
+      signalCreateError.hidden = false;
+      signalCreateGuideContinue.hidden = false;
+      signalCreateGuideContinue.textContent =
+        copy.guideContinue || SIGNAL_CREATE_COPY.en.guideContinue;
       return;
     }
 
@@ -15307,6 +15532,32 @@
   });
   signalCreateForm.addEventListener("submit", (event) => {
     publishMemberSignal(event);
+  });
+  signalCreateTitleInput.addEventListener("input", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateDescription.addEventListener("input", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateCategory.addEventListener("change", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateGuideList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.closest) return;
+    const button = target.closest("[data-guide-scene-id]");
+    if (!button) return;
+    const sceneId = button.getAttribute("data-guide-scene-id");
+    if (sceneId) openMadridGuidedDiscussion(sceneId);
+  });
+  signalCreateGuideContinue.addEventListener("click", () => {
+    signalCreateGuideOverride = true;
+    signalCreateGuideContinue.hidden = true;
+    signalCreateError.hidden = true;
+    signalCreateError.textContent = "";
   });
   signalCreatePhoto.addEventListener("change", () => {
     const file =
