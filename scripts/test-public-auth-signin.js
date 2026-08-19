@@ -143,7 +143,8 @@ assert(
 );
 assert(
   html.includes('auth-input.js?v=auth-input-1') &&
-    html.includes('script.js?v=madrid-es-5') &&
+    html.includes('script.js?v=madrid-es-6') &&
+    html.includes('public-i18n.js?v=chat-welcome-1') &&
     html.includes('api-base.js?v=madrid-pilot-1'),
   "app bundle and API base carry the Pilot Madrid cache key"
 );

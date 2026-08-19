@@ -49,6 +49,7 @@ jobs:
           node scripts/test-madrid-pilot-host.js
           node scripts/test-madrid-pilot-intro.js
           node scripts/test-madrid-discussion-guide.js
+          node scripts/test-member-chat-welcome.js
           node scripts/test-feed-deep-link.js
           node scripts/test-spanish-localization.js
           node scripts/test-french-localization.js

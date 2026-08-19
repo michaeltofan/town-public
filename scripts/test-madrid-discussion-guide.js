@@ -176,7 +176,7 @@ ok(
 );
 ok(
   html.includes("madrid-discussion-guide.js?v=") &&
-    html.includes("script.js?v=madrid-es-5"),
+    html.includes("script.js?v=madrid-es-6"),
   "cache keys bumped for guide ship"
 );
 

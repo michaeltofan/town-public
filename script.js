@@ -84,6 +84,18 @@
   const activityEmpty = document.getElementById("activity-empty");
   const activityList = document.getElementById("activity-list");
   const activityFeed = document.getElementById("activity-feed");
+  const chatPanel = document.getElementById("chat-panel");
+  const chatDim = document.getElementById("chat-dim");
+  const chatClose = document.getElementById("chat-close");
+  const chatLabel = document.getElementById("chat-label");
+  const chatTitle = document.getElementById("chat-title");
+  const chatBody = document.getElementById("chat-body");
+  const chatMessage = document.getElementById("chat-message");
+  const chatMessageMeta = document.getElementById("chat-message-meta");
+  const chatMessageText = document.getElementById("chat-message-text");
+  const chatLinkHint = document.getElementById("chat-link-hint");
+  const chatMadridLink = document.getElementById("chat-madrid-link");
+  const chatFeed = document.getElementById("chat-feed");
   const navProfile = document.getElementById("nav-profile");
   const authWindow = document.getElementById("auth-window");
   const authWindowDim = document.getElementById("auth-window-dim");
@@ -863,6 +875,18 @@
     !activityEmpty ||
     !activityList ||
     !activityFeed ||
+    !chatPanel ||
+    !chatDim ||
+    !chatClose ||
+    !chatLabel ||
+    !chatTitle ||
+    !chatBody ||
+    !chatMessage ||
+    !chatMessageMeta ||
+    !chatMessageText ||
+    !chatLinkHint ||
+    !chatMadridLink ||
+    !chatFeed ||
     !navProfile ||
     !authWindow ||
     !authWindowDim ||
@@ -4804,6 +4828,24 @@
     );
   }
 
+  // CHAT welcome unlock: only after membership enables civic participation.
+  function canAccessMemberChatWelcome() {
+    return canTakeCivicAction();
+  }
+
+  // Madrid open-data intro is for Madrid pilot hosts or Madrid home community.
+  function shouldShowMadridChatResource() {
+    const pilot = window.TownMadridPilotHost;
+    if (
+      pilot &&
+      typeof pilot.isMadridPilotHost === "function" &&
+      pilot.isMadridPilotHost(window.location.hostname)
+    ) {
+      return true;
+    }
+    return memberHomeCityId() === "Madrid";
+  }
+
   // Paid / pending member who cannot take the civic action yet — recovery or
   // community setup, never the visitor membership invite.
   function redirectMemberWithoutCivicAccess() {
@@ -8267,6 +8309,7 @@
   function applyMembershipSnapshot(snapshot) {
     membershipSnapshot = snapshot;
     syncFeedMemberState();
+    applyPublicNavCopy();
     if (canTakeCivicAction()) {
       refreshViewerSignalConfirmations();
     }
@@ -9451,13 +9494,26 @@
     if (!i18n) return;
     const lang = resolvePublicReadingLanguage();
     const copy = i18n.feedChromeCopy(lang);
-    // Keep CHAT clickable so visitors get an honest unavailable notice.
-    navChat.classList.add("is-unavailable");
-    navChat.removeAttribute("aria-disabled");
-    if (copy.chatUnavailable) {
-      navChat.setAttribute("title", copy.chatUnavailable);
-      navChat.setAttribute("aria-label", copy.navChat + " — " + copy.chatUnavailable);
+    // Members with civic access unlock the welcome panel; visitors stay honest.
+    if (canAccessMemberChatWelcome()) {
+      navChat.classList.remove("is-unavailable");
+      navChat.removeAttribute("title");
+      navChat.setAttribute(
+        "aria-label",
+        copy.navChat +
+          (copy.chatWelcomeAvailable ? " — " + copy.chatWelcomeAvailable : "")
+      );
+    } else {
+      navChat.classList.add("is-unavailable");
+      if (copy.chatUnavailable) {
+        navChat.setAttribute("title", copy.chatUnavailable);
+        navChat.setAttribute(
+          "aria-label",
+          copy.navChat + " — " + copy.chatUnavailable
+        );
+      }
     }
+    navChat.removeAttribute("aria-disabled");
     const map = [
       [navHome, copy.navHome],
       [navMembership, copy.navMembership],
@@ -9767,6 +9823,7 @@
       !authWindow.hidden ||
       !profilePanel.hidden ||
       !activityPanel.hidden ||
+      !chatPanel.hidden ||
       !signalCreate.hidden ||
       !ownerModeration.hidden ||
       (termsSheet && !termsSheet.hidden) ||
@@ -10517,6 +10574,7 @@
     closeInvite();
     closeSignalDetail();
     closeActivityPanel();
+    closeChatWelcomePanel();
     setNavActive(navMembership);
     if (canTakeCivicAction()) {
       openProfilePanel();
@@ -11804,6 +11862,7 @@
           clearAuthenticatedClientState();
           closeProfilePanel();
           closeActivityPanel();
+          closeChatWelcomePanel();
           closeOwnerModeration();
           return;
         }
@@ -11834,6 +11893,7 @@
         clearAuthenticatedClientState();
         closeProfilePanel();
         closeActivityPanel();
+        closeChatWelcomePanel();
         closeOwnerModeration();
         closeSignalCreate();
         setNavActive(navHome);
@@ -11987,6 +12047,7 @@
     closeSignalDetail();
     closeOwnerModeration();
     closeActivityPanel();
+    closeChatWelcomePanel();
     populateProfilePanel();
     profilePanel.hidden = false;
     setAuthFeedInert(true);
@@ -12814,6 +12875,7 @@
     closeSignalDetail();
     closeOwnerModeration();
     closeProfilePanel();
+    closeChatWelcomePanel();
     applyActivityCopy();
     activityPanel.hidden = false;
     setAuthFeedInert(true);
@@ -12830,7 +12892,62 @@
     setAuthFeedInert(false);
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
-    if (profilePanel.hidden) {
+    if (profilePanel.hidden && chatPanel.hidden) {
+      setNavActive(navHome);
+    }
+  }
+
+  const MADRID_OPEN_DATA_CATALOG_URL = "https://datos.madrid.es/dataset/";
+
+  function applyChatWelcomeCopy() {
+    const i18n = window.TownPublicI18n;
+    const lang = resolvePublicReadingLanguage();
+    const copy = (i18n && i18n.feedChromeCopy(lang)) || {};
+    chatLabel.textContent = copy.chatWelcomeLabel || copy.navChat || "CHAT";
+    chatTitle.textContent = copy.chatWelcomeTitle || "Welcome to TOWN";
+    chatBody.textContent =
+      copy.chatWelcomeBody ||
+      "This is not a member-to-member chat. When your membership is active, TOWN leaves an introduction here.";
+    chatMessageMeta.textContent = copy.chatWelcomeMessageMeta || "From TOWN";
+    chatMessageText.textContent =
+      copy.chatWelcomeMessageText ||
+      "Your membership is active. Start with public data that helps you understand Madrid.";
+    chatLinkHint.textContent =
+      copy.chatWelcomeLinkHint || "Madrid open data catalog:";
+    chatMadridLink.textContent =
+      copy.chatWelcomeLinkLabel || MADRID_OPEN_DATA_CATALOG_URL;
+    chatMadridLink.setAttribute("href", MADRID_OPEN_DATA_CATALOG_URL);
+    chatClose.textContent = copy.chatWelcomeClose || "Close";
+    chatClose.setAttribute("aria-label", copy.chatWelcomeClose || "Close");
+    chatFeed.textContent = copy.chatWelcomeFeedCta || "Back to feed";
+    const showMadrid = shouldShowMadridChatResource();
+    chatMessage.hidden = !showMadrid;
+  }
+
+  function openChatWelcomePanel() {
+    if (!canAccessMemberChatWelcome()) return;
+    closeAuthWindow();
+    closeInvite();
+    closeSignalDetail();
+    closeOwnerModeration();
+    closeProfilePanel();
+    closeActivityPanel();
+    applyChatWelcomeCopy();
+    chatPanel.hidden = false;
+    setAuthFeedInert(true);
+    document.body.style.overflow = "hidden";
+    syncFeedScrollLockFromOverlays();
+    setNavActive(navChat);
+    chatClose.focus();
+  }
+
+  function closeChatWelcomePanel() {
+    if (!chatPanel || chatPanel.hidden) return;
+    chatPanel.hidden = true;
+    setAuthFeedInert(false);
+    document.body.style.overflow = "";
+    syncFeedScrollLockFromOverlays();
+    if (profilePanel.hidden && activityPanel.hidden) {
       setNavActive(navHome);
     }
   }
@@ -13805,6 +13922,8 @@
     closeInvite();
     closeSignalDetail();
     closeProfilePanel();
+    closeActivityPanel();
+    closeChatWelcomePanel();
 
     authOpenedByTarget = navTarget || null;
     lastAuthFocus = openerEl || document.activeElement;
@@ -13848,6 +13967,7 @@
     closeSignalDetail();
     closeProfilePanel();
     closeActivityPanel();
+    closeChatWelcomePanel();
     setNavActive(navHome);
     if (isFeedSurfaceActive()) {
       scrollFeedToIndex(0, { behavior: "auto" });
@@ -13863,6 +13983,10 @@
   }
 
   function handleChatNav() {
+    if (canAccessMemberChatWelcome()) {
+      openChatWelcomePanel();
+      return;
+    }
     const i18n = window.TownPublicI18n;
     const lang = resolvePublicReadingLanguage();
     const copy = (i18n && i18n.feedChromeCopy(lang)) || {};
@@ -14010,6 +14134,8 @@
       closeSignalDetail();
       closeAuthWindow();
       closeProfilePanel();
+      closeActivityPanel();
+      closeChatWelcomePanel();
     }
     if (name !== "payment") {
       }
@@ -15307,6 +15433,11 @@
         closeActivityPanel();
         return;
       }
+      if (!chatPanel.hidden) {
+        event.preventDefault();
+        closeChatWelcomePanel();
+        return;
+      }
       if (!profilePanel.hidden) {
         event.preventDefault();
         closeProfilePanel();
@@ -15384,6 +15515,18 @@
   });
   activityFeed.addEventListener("click", () => {
     closeActivityPanel();
+    if (isFeedSurfaceActive()) {
+      scrollFeedToIndex(feedIndex, { behavior: "auto" });
+    }
+  });
+  chatClose.addEventListener("click", () => {
+    closeChatWelcomePanel();
+  });
+  chatDim.addEventListener("click", () => {
+    closeChatWelcomePanel();
+  });
+  chatFeed.addEventListener("click", () => {
+    closeChatWelcomePanel();
     if (isFeedSurfaceActive()) {
       scrollFeedToIndex(feedIndex, { behavior: "auto" });
     }

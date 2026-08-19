@@ -127,6 +127,18 @@
       navActivity: "ACTIVITY",
       navProfile: "PROFILE",
       chatUnavailable: "Chat is not available yet on TOWN.",
+      chatWelcomeAvailable: "Membership welcome",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Welcome to TOWN",
+      chatWelcomeBody:
+        "This is not a member-to-member chat. When your membership is active, TOWN leaves an introduction here — a starting point for local civic work.",
+      chatWelcomeMessageMeta: "From TOWN",
+      chatWelcomeMessageText:
+        "Your membership is active. Start with public data that helps you understand Madrid.",
+      chatWelcomeLinkHint: "Madrid open data catalog:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Close",
+      chatWelcomeFeedCta: "Back to feed",
     },
     es: {
       back: "Atrás",
@@ -155,6 +167,18 @@
       navActivity: "ACTIVIDAD",
       navProfile: "PERFIL",
       chatUnavailable: "El chat aún no está disponible en TOWN.",
+      chatWelcomeAvailable: "Bienvenida de membresía",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Bienvenido a TOWN",
+      chatWelcomeBody:
+        "Esto no es un chat entre miembros. Cuando tu membresía está activa, TOWN deja aquí una introducción — un punto de partida para el trabajo cívico local.",
+      chatWelcomeMessageMeta: "De TOWN",
+      chatWelcomeMessageText:
+        "Tu membresía está activa. Empieza con datos públicos que ayudan a entender Madrid.",
+      chatWelcomeLinkHint: "Catálogo de datos abiertos de Madrid:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Cerrar",
+      chatWelcomeFeedCta: "Volver al feed",
     },
     fr: {
       back: "Retour",
@@ -183,6 +207,18 @@
       navActivity: "ACTIVITÉ",
       navProfile: "PROFIL",
       chatUnavailable: "Le chat n'est pas encore disponible sur TOWN.",
+      chatWelcomeAvailable: "Bienvenue d'adhésion",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Bienvenue sur TOWN",
+      chatWelcomeBody:
+        "Ceci n'est pas un chat entre membres. Lorsque votre adhésion est active, TOWN laisse ici une introduction — un point de départ pour le travail civique local.",
+      chatWelcomeMessageMeta: "De TOWN",
+      chatWelcomeMessageText:
+        "Votre adhésion est active. Commencez par des données publiques qui aident à comprendre Madrid.",
+      chatWelcomeLinkHint: "Catalogue de données ouvertes de Madrid :",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Fermer",
+      chatWelcomeFeedCta: "Retour au fil",
     },
     hu: {
       back: "Vissza",
@@ -211,6 +247,18 @@
       navActivity: "AKTIVITÁS",
       navProfile: "PROFIL",
       chatUnavailable: "A chat még nem érhető el a TOWN-on.",
+      chatWelcomeAvailable: "Tagsági üdvözlés",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Üdvözöl a TOWN",
+      chatWelcomeBody:
+        "Ez nem tagok közötti chat. Amikor a tagságod aktív, a TOWN ide helyez egy bevezetőt — kiindulópontot a helyi közösségi munkához.",
+      chatWelcomeMessageMeta: "A TOWN-tól",
+      chatWelcomeMessageText:
+        "A tagságod aktív. Kezdd nyilvános adatokkal, amelyek segítenek megérteni Madridot.",
+      chatWelcomeLinkHint: "Madrid nyílt adatkatalógusa:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Bezárás",
+      chatWelcomeFeedCta: "Vissza a feedhez",
     },
     it: {
       back: "Indietro",
@@ -239,6 +287,18 @@
       navActivity: "ATTIVITÀ",
       navProfile: "PROFILO",
       chatUnavailable: "La chat non è ancora disponibile su TOWN.",
+      chatWelcomeAvailable: "Benvenuto membership",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Benvenuto su TOWN",
+      chatWelcomeBody:
+        "Questa non è una chat tra membri. Quando la membership è attiva, TOWN lascia qui un’introduzione — un punto di partenza per il lavoro civico locale.",
+      chatWelcomeMessageMeta: "Da TOWN",
+      chatWelcomeMessageText:
+        "La tua membership è attiva. Inizia dai dati pubblici che aiutano a capire Madrid.",
+      chatWelcomeLinkHint: "Catalogo open data di Madrid:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Chiudi",
+      chatWelcomeFeedCta: "Torna al feed",
     },
     de: {
       back: "Zurück",
@@ -267,6 +327,18 @@
       navActivity: "AKTIVITÄT",
       navProfile: "PROFIL",
       chatUnavailable: "Chat ist auf TOWN noch nicht verfügbar.",
+      chatWelcomeAvailable: "Mitgliedschafts-Willkommen",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Willkommen bei TOWN",
+      chatWelcomeBody:
+        "Das ist kein Chat zwischen Mitgliedern. Wenn deine Mitgliedschaft aktiv ist, hinterlässt TOWN hier eine Einführung — einen Ausgangspunkt für lokale zivile Arbeit.",
+      chatWelcomeMessageMeta: "Von TOWN",
+      chatWelcomeMessageText:
+        "Deine Mitgliedschaft ist aktiv. Beginne mit öffentlichen Daten, die helfen, Madrid zu verstehen.",
+      chatWelcomeLinkHint: "Offener Datenkatalog von Madrid:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Schließen",
+      chatWelcomeFeedCta: "Zurück zum Feed",
     },
     ro: {
       back: "Înapoi",
@@ -295,6 +367,18 @@
       navActivity: "ACTIVITATE",
       navProfile: "PROFIL",
       chatUnavailable: "Chat-ul nu este încă disponibil pe TOWN.",
+      chatWelcomeAvailable: "Bun venit ca membru",
+      chatWelcomeLabel: "CHAT",
+      chatWelcomeTitle: "Bun venit pe TOWN",
+      chatWelcomeBody:
+        "Aceasta nu este o conversație între membri. Când membership-ul este activ, TOWN lasă aici o introducere — un punct de plecare pentru munca civică locală.",
+      chatWelcomeMessageMeta: "De la TOWN",
+      chatWelcomeMessageText:
+        "Membership-ul tău este activ. Începe cu date publice care te ajută să înțelegi Madridul.",
+      chatWelcomeLinkHint: "Catalogul de date deschise al Madridului:",
+      chatWelcomeLinkLabel: "https://datos.madrid.es/dataset/",
+      chatWelcomeClose: "Închide",
+      chatWelcomeFeedCta: "Înapoi la feed",
     },
   };
 
