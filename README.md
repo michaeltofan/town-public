@@ -47,14 +47,12 @@ is proven on `api.towncivic.org`.
 
 ## Madrid pilot supervision
 
-Operational supervisor (built ≠ ready): hosts `madrid.towncivic.org` /
-`madrid-staging.towncivic.org`, community `madrid-es`, civic-process on seed signals.
+Operator utility digest for Pilot Madrid (civic progress + actions), not uptime theatre.
 
 Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
 ```bash
 node scripts/supervise-madrid-pilot.js
-node scripts/supervise-madrid-pilot.js --offline   # routing + unit suite only
 ```
 
 ## Checks

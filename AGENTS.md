@@ -1,8 +1,6 @@
 # Agent guidance — town-public
 
-Public surface for **TOWN**. Platform console: `https://towncivic.org/platform/`.
-
-## Super agent activ: supraveghere Pilot Madrid
+## Super agent Madrid (utilitate)
 
 Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
@@ -10,18 +8,10 @@ Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.m
 node scripts/supervise-madrid-pilot.js
 ```
 
-Verifică **stare operațională** (health/ready, activity 401≠500, feed `madrid-es`,
-civic-process pe semnale, routing host→API). Nu presupune din badge-uri Railway.
-Nu muta platforma în faza 1.
-
-## Distincții
-
-- **Agent intern Madrid** = ghidul de discuții din produs (`madrid-discussion-guide.js`)
-- **Super agent** = operator AI read-only peste pilot + API (acest playbook)
-- **Construit ≠ operațional**
+Livrează **ce ai de făcut acum** pe pilotul Madrid (civic progress, semnale noi, health ca poartă). Nu e un smoke de uptime.
 
 ## Honesty
 
 - Feed doar din API live
 - Fără membership simulat în client
-- Backup/restore în Monitor = atestări operator, nu job-uri rulate de consolă
+- Mutările pe platformă rămân umane până la o fază explicită
