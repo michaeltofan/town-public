@@ -149,8 +149,25 @@ ok(js.includes("function refreshMadridDiscussionGuide"), "refresh helper wired")
 ok(js.includes("function openMadridGuidedDiscussion"), "join-discussion helper wired");
 ok(js.includes("madridPilotCityId"), "guide remains Madrid-pilot scoped");
 ok(
-  js.includes('SIGNAL_CREATE_CATEGORIES') &&
-    /Madrid:\s*\[[^\]]*"ESPACIO PÚBLICO"/.test(js),
+  js.includes('if (madridPilotCityId) return "es";'),
+  "Madrid pilot reading language is locked to Spanish"
+);
+ok(
+  js.includes("MADRID_DISCUSSION_GUIDE_COPY"),
+  "guide copy is Spanish-only Madrid constant"
+);
+ok(
+  !/SIGNAL_CREATE_COPY\.(en|fr|it|de|ro)\s*=\s*\{[\s\S]*?guideLabel/.test(js) &&
+    !/guideLabel:\s*"Same discussion"/.test(js) &&
+    !/guideLabel:\s*"Même discussion"/.test(js),
+  "guide strings are not invented into non-Spanish SIGNAL_CREATE catalogs"
+);
+ok(
+  js.includes('guideLabel: "Misma discusión"'),
+  "guide label is Spanish"
+);
+ok(
+  /Madrid:\s*\[[^\]]*"ESPACIO PÚBLICO"/.test(js),
   "Madrid signal-create categories include ESPACIO PÚBLICO"
 );
 ok(
@@ -159,7 +176,7 @@ ok(
 );
 ok(
   html.includes("madrid-discussion-guide.js?v=") &&
-    html.includes("script.js?v=madrid-es-4"),
+    html.includes("script.js?v=madrid-es-5"),
   "cache keys bumped for guide ship"
 );
 

@@ -8759,6 +8759,8 @@
   }
 
   function resolvePublicReadingLanguage() {
+    // Pilot Madrid is Spain: public UI language is Spanish only.
+    if (madridPilotCityId) return "es";
     const i18n = window.TownPublicI18n;
     const preferred = resolveEditorialPreferredLanguages();
     if (i18n && typeof i18n.resolveReadingLanguage === "function") {
@@ -10789,14 +10791,6 @@
       errorPhoto: "Scegli una foto JPEG, PNG o WebP.",
       errorAccept: "Conferma la responsabilità personale per pubblicare.",
       errorName: "Usa il tuo nome e cognome reali, non un username.",
-      guideLabel: "Stessa discussione",
-      guideBody:
-        "TOWN tiene un filo calmo per luogo. Se questo è già in discussione, unisciti a quel segnale invece di aprirne uno duplicato.",
-      guideJoin: "Apri questa discussione",
-      guideJoinHint: "Conferma ciò che vedi e contribuisci verso una soluzione qui.",
-      guideContinue: "Pubblica comunque un nuovo segnale",
-      guideBlocked:
-        "Esiste già una discussione corrispondente. Aprila sotto, oppure conferma che ti serve ancora un nuovo segnale.",
     },
     de: {
       profileCta: "Ziviles Signal veröffentlichen",
@@ -10817,14 +10811,6 @@
       errorPhoto: "Wähle ein JPEG-, PNG- oder WebP-Foto.",
       errorAccept: "Bestätige die persönliche Verantwortung zum Veröffentlichen.",
       errorName: "Verwende deinen echten Vor- und Nachnamen, keinen Benutzernamen.",
-      guideLabel: "Dieselbe Diskussion",
-      guideBody:
-        "TOWN hält einen ruhigen Faden pro Ort. Wenn das schon besprochen wird, tritt jenem Signal bei statt ein Duplikat zu öffnen.",
-      guideJoin: "Diese Diskussion öffnen",
-      guideJoinHint: "Bestätige, was du siehst, und trage hier zu einer Lösung bei.",
-      guideContinue: "Trotzdem neues Signal veröffentlichen",
-      guideBlocked:
-        "Eine passende Diskussion existiert bereits. Öffne sie unten, oder bestätige, dass du noch ein neues Signal brauchst.",
     },
     ro: {
       profileCta: "Publică un semnal civic",
@@ -10845,14 +10831,6 @@
       errorPhoto: "Alege o fotografie JPEG, PNG sau WebP.",
       errorAccept: "Confirmă responsabilitatea personală pentru a publica.",
       errorName: "Folosește numele și prenumele reale, nu un username.",
-      guideLabel: "Aceeași discuție",
-      guideBody:
-        "TOWN păstrează un fir calm pe loc. Dacă asta se discută deja, intră în semnalul acela în loc să deschizi un duplicat.",
-      guideJoin: "Deschide această discuție",
-      guideJoinHint: "Confirmă ce vezi și contribuie aici spre o soluție.",
-      guideContinue: "Publică oricum un semnal nou",
-      guideBlocked:
-        "Există deja o discuție potrivită. Deschide-o mai jos, sau confirmă că tot ai nevoie de un semnal nou.",
     },
     en: {
       profileCta: "Publish a civic signal",
@@ -10873,14 +10851,6 @@
       errorPhoto: "Choose a JPEG, PNG, or WebP photo.",
       errorAccept: "Confirm personal responsibility to publish.",
       errorName: "Use your real given and family name, not a username.",
-      guideLabel: "Same discussion",
-      guideBody:
-        "TOWN keeps one calm thread per place. If this is already being discussed, join that signal instead of opening a duplicate.",
-      guideJoin: "Open this discussion",
-      guideJoinHint: "Confirm what you see and contribute toward a solution here.",
-      guideContinue: "Publish a new signal anyway",
-      guideBlocked:
-        "A matching discussion already exists. Open it below, or confirm you still need a new signal.",
     },
   };
 
@@ -10903,6 +10873,10 @@
     errorPhoto: "Elige una foto JPEG, PNG o WebP.",
     errorAccept: "Confirma la responsabilidad personal para publicar.",
     errorName: "Usa tu nombre y apellidos reales, no un nombre de usuario.",
+  };
+
+  // Pilot Madrid only — Spanish. Not part of the multilingual SIGNAL_CREATE catalog.
+  const MADRID_DISCUSSION_GUIDE_COPY = {
     guideLabel: "Misma discusión",
     guideBody:
       "TOWN mantiene un hilo calmado por lugar. Si esto ya se está tratando, únete a esa señal en lugar de abrir un duplicado.",
@@ -11014,8 +10988,7 @@
   }
 
   function renderMadridDiscussionGuide(matches) {
-    const copy = signalCreateCopy();
-    const en = SIGNAL_CREATE_COPY.en;
+    const copy = MADRID_DISCUSSION_GUIDE_COPY;
     signalCreateGuideMatches = Array.isArray(matches) ? matches : [];
     signalCreateGuideList.innerHTML = "";
 
@@ -11025,8 +10998,8 @@
       return;
     }
 
-    signalCreateGuideLabel.textContent = copy.guideLabel || en.guideLabel;
-    signalCreateGuideBody.textContent = copy.guideBody || en.guideBody;
+    signalCreateGuideLabel.textContent = copy.guideLabel;
+    signalCreateGuideBody.textContent = copy.guideBody;
 
     for (let i = 0; i < signalCreateGuideMatches.length; i++) {
       const hit = signalCreateGuideMatches[i];
@@ -11046,13 +11019,13 @@
       title.textContent = scene.headline || scene.id || "";
       const hint = document.createElement("span");
       hint.className = "signal-create__guide-join-hint";
-      hint.textContent = copy.guideJoinHint || en.guideJoinHint;
+      hint.textContent = copy.guideJoinHint;
       button.appendChild(area);
       button.appendChild(title);
       button.appendChild(hint);
       button.setAttribute(
         "aria-label",
-        (copy.guideJoin || en.guideJoin) + ": " + (scene.headline || "")
+        copy.guideJoin + ": " + (scene.headline || "")
       );
       li.appendChild(button);
       signalCreateGuideList.appendChild(li);
@@ -11065,8 +11038,7 @@
         return api.isStrongMatch(hit);
       });
     signalCreateGuideContinue.hidden = !strong || signalCreateGuideOverride;
-    signalCreateGuideContinue.textContent =
-      copy.guideContinue || en.guideContinue;
+    signalCreateGuideContinue.textContent = copy.guideContinue;
     signalCreateGuide.hidden = false;
   }
 
@@ -11201,12 +11173,11 @@
     }
 
     if (madridGuideBlocksPublish()) {
-      signalCreateError.textContent =
-        copy.guideBlocked || SIGNAL_CREATE_COPY.en.guideBlocked;
+      signalCreateError.textContent = MADRID_DISCUSSION_GUIDE_COPY.guideBlocked;
       signalCreateError.hidden = false;
       signalCreateGuideContinue.hidden = false;
       signalCreateGuideContinue.textContent =
-        copy.guideContinue || SIGNAL_CREATE_COPY.en.guideContinue;
+        MADRID_DISCUSSION_GUIDE_COPY.guideContinue;
       return;
     }
 
@@ -12356,14 +12327,6 @@
     submit: "Publier le signalement", cancel: "Annuler", close: "Fermer", errorGeneric: "Impossible de publier. Réessayez.",
     errorPhoto: "Choisissez une photo JPEG, PNG ou WebP.", errorAccept: "Confirmez votre responsabilité personnelle pour publier.",
     errorName: "Utilisez vos vrais prénom et nom, pas un nom d'utilisateur.",
-    guideLabel: "Même discussion",
-    guideBody:
-      "TOWN garde un fil calme par lieu. Si cela est déjà traité, rejoignez ce signalement au lieu d'en ouvrir un doublon.",
-    guideJoin: "Ouvrir cette discussion",
-    guideJoinHint: "Confirmez ce que vous voyez et contribuez ici vers une solution.",
-    guideContinue: "Publier quand même un nouveau signalement",
-    guideBlocked:
-      "Une discussion correspondante existe déjà. Ouvrez-la ci-dessous, ou confirmez qu'il vous faut encore un nouveau signalement.",
   };
   ACTIVITY_COPY.fr = {
     label: "Activité", title: "Votre activité civique",
@@ -13712,18 +13675,6 @@
       ],
       continue: "Entrar en la primera señal",
     },
-    en: {
-      title: "This is TOWN: your community, in your own name.",
-      paragraphs: [
-        "You are not here to be entertained or to compete for attention. You are here because you care about your street, your neighbourhood, and the shared life of Madrid.",
-        "TOWN is not TikTok or Facebook. It is a local civic space: real people from the same community, looking at the same place, choosing to cooperate with respect so that what is seen can move toward a solution.",
-        "Civics means assuming who you are — with a clear identity — and treating others as neighbours, not as an audience. Speaking in your own name is an act of care for the community.",
-        "This pilot runs on civic trust. Entering means committing to contribute honestly, to listen, and to care for the common good we build together.",
-        "Using the Madrid pilot is your responsibility. Every signal, every word and every image you publish, you assume individually.",
-        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
-      ],
-      continue: "Enter the first signal",
-    },
   };
 
   function madridPilotIntroDismissed() {
@@ -13743,8 +13694,8 @@
   }
 
   function madridPilotIntroCopy() {
-    const lang = resolvePublicReadingLanguage();
-    return MADRID_PILOT_INTRO_COPY[lang] || MADRID_PILOT_INTRO_COPY.es;
+    // Pilot Madrid UI is Spanish only — never follow browser language here.
+    return MADRID_PILOT_INTRO_COPY.es;
   }
 
   function applyMadridPilotIntroCopy() {
