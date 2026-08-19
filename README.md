@@ -45,9 +45,20 @@ is proven on `api.towncivic.org`.
 - No local fake see-too confirmation when the API signal id is missing
 - Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
+## Madrid pilot supervision
+
+Spanish operator digest for Pilot Madrid (acciones cívicas + delta), not uptime theatre.
+
+Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
+
+```bash
+node scripts/supervise-madrid-pilot.js
+```
+
 ## Checks
 
 ```bash
+node scripts/supervise-madrid-pilot.js --offline --skip-units
 node scripts/test-api-base.js
 node scripts/test-security-headers-config.js
 node scripts/test-member-local-feed.js

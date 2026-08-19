@@ -56,6 +56,7 @@ jobs:
           node scripts/test-hungarian-localization.js
           node scripts/test-onboarding-language-continuity.js
           node scripts/test-public-feed-i18n.js
+          node scripts/supervise-madrid-pilot.js --offline
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
