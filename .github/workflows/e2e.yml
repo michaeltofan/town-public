@@ -17,9 +17,8 @@ permissions:
 jobs:
   smoke-and-e2e:
     runs-on: ubuntu-latest
-    # Chromium --with-deps regularly exceeds 20m on cold runners; keep headroom
-    # so a hung browser install does not cancel after static smoke already passed.
-    timeout-minutes: 40
+    # Fail fast: hung apt during Playwright deps must not burn 40m after smoke.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -60,9 +59,19 @@ jobs:
       - name: Install E2E deps
         working-directory: e2e
         run: npm ci
+      - name: Cache Playwright Chromium
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('e2e/package-lock.json') }}
       - name: Install Chromium
+        timeout-minutes: 8
         working-directory: e2e
-        run: npx playwright install --with-deps chromium
+        run: |
+          # Browser binary only — avoid `install --with-deps` apt font downloads
+          # that hung E2E #180 for ~40m on azure.archive.ubuntu.com.
+          npx playwright install chromium
       - name: Start candidate site
         run: |
           python3 -m http.server 8080 > /tmp/town-public-http.log 2>&1 &
@@ -123,8 +132,9 @@ jobs:
         run: npm ci
       - name: Install Chromium
         if: steps.enrollment-secrets.outputs.available == 'true'
+        timeout-minutes: 8
         working-directory: e2e
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
       - name: Full staging enrollment E2E
         if: steps.enrollment-secrets.outputs.available == 'true'
         working-directory: e2e
