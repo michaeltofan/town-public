@@ -1,48 +1,27 @@
 # Agent guidance — town-public
 
-Public web surface for **TOWN** (`https://towncivic.org`).
+Public surface for **TOWN**. Platform console: `https://towncivic.org/platform/`.
 
-## Active automation focus
+## Super agent activ: supraveghere Pilot Madrid
 
-**Pilot Madrid supervision (phase 1)** is the current always-on scope.
-
-- Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
-- Instrument: `node scripts/supervise-madrid-pilot.js`
-- Hosts: `madrid.towncivic.org` (prod) · `madrid-staging.towncivic.org` (staging)
-- Community slug: `madrid-es`
-
-If you are running as the Madrid Pilot Supervisor automation, follow that playbook
-and do not expand beyond Madrid observe/fix contracts unless a human explicitly
-widens scope.
-
-## Honesty rules (all agents)
-
-- Feed uses live `/v1/communities/:slug/signals` only — no fictional civic feed
-- No client-side “simulate membership” authority
-- No client-side participate-preview unlock
-- Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
-- Staging hosts must never hit production member/payment APIs (`api-base.js`)
-
-## Madrid pilot invariants
-
-- Madrid pilot hosts lock the product to city id `Madrid` and UI language `es`
-- `madrid-staging.towncivic.org` → `api-staging.towncivic.org`
-- `madrid.towncivic.org` → `api.towncivic.org`
-- `towncivic.org` itself is **not** a Madrid pilot host
-- Discussion guide + first-visit intro are Madrid-host features
-- CHAT welcome may show the Madrid open-data catalog for eligible members
-
-## Default checks
-
-Prefer the README “Checks” section. For Madrid-only supervision, start with:
+Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
 ```bash
 node scripts/supervise-madrid-pilot.js
 ```
 
-## PR discipline
+Verifică **stare operațională** (health/ready, activity 401≠500, feed `madrid-es`,
+civic-process pe semnale, routing host→API). Nu presupune din badge-uri Railway.
+Nu muta platforma în faza 1.
 
-- One logical change per commit/PR when possible
-- Draft PRs for automation-opened fixes
-- Do not merge, force-push, or amend shared history
-- Do not commit secrets
+## Distincții
+
+- **Agent intern Madrid** = ghidul de discuții din produs (`madrid-discussion-guide.js`)
+- **Super agent** = operator AI read-only peste pilot + API (acest playbook)
+- **Construit ≠ operațional**
+
+## Honesty
+
+- Feed doar din API live
+- Fără membership simulat în client
+- Backup/restore în Monitor = atestări operator, nu job-uri rulate de consolă

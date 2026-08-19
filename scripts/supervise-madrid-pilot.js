@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
- * TOWN Madrid pilot supervisor — read-only health + contract checks.
+ * TOWN Madrid pilot supervisor — operational readiness (built ≠ ready).
  *
- * Phase 1 scope: observe Pilot Madrid surfaces and local contracts.
- * Does not mutate platform state, open payments, or grant memberships.
+ * Read-only. Inspects live API + Madrid hosts. Does not mutate platform state.
  *
  * Usage:
  *   node scripts/supervise-madrid-pilot.js
@@ -23,15 +22,31 @@ const vm = require("vm");
 const ROOT = path.join(__dirname, "..");
 const MADRID_SLUG = "madrid-es";
 const EXPECTED_SIGNAL_COUNT = 3;
+const EXPECTED_STAGE = "confirmation";
+const EXPECTED_THRESHOLD = 5;
 
-const HOSTS = {
-  production: "https://madrid.towncivic.org/",
-  staging: "https://madrid-staging.towncivic.org/",
+const MADRID_SIGNAL_IDS = [
+  "00000000-0000-4000-8000-000000001901",
+  "00000000-0000-4000-8000-000000001902",
+  "00000000-0000-4000-8000-000000001903",
+];
+
+const ENDPOINTS = {
+  prodHost: "https://madrid.towncivic.org/",
+  stagingHost: "https://madrid-staging.towncivic.org/",
   platform: "https://towncivic.org/platform/",
-  prodApiSignals: `https://api.towncivic.org/v1/communities/${MADRID_SLUG}/signals`,
-  stagingApiSignals: `https://api-staging.towncivic.org/v1/communities/${MADRID_SLUG}/signals`,
+  prodReady: "https://api.towncivic.org/health/ready",
+  stagingReady: "https://api-staging.towncivic.org/health/ready",
+  prodActivity: "https://api.towncivic.org/v1/account/activity",
+  stagingActivity: "https://api-staging.towncivic.org/v1/account/activity",
+  prodSignals: `https://api.towncivic.org/v1/communities/${MADRID_SLUG}/signals`,
+  stagingSignals: `https://api-staging.towncivic.org/v1/communities/${MADRID_SLUG}/signals`,
   prodCommunities: "https://api.towncivic.org/v1/communities",
   stagingCommunities: "https://api-staging.towncivic.org/v1/communities",
+  prodCivic: (id) =>
+    "https://api.towncivic.org/v1/signals/" + id + "/civic-process",
+  stagingCivic: (id) =>
+    "https://api-staging.towncivic.org/v1/signals/" + id + "/civic-process",
 };
 
 const LOCAL_MADRID_TESTS = [
@@ -51,36 +66,37 @@ const SKIP_UNITS = args.has("--skip-units");
 const findings = [];
 
 function record(level, id, message, detail) {
-  const row = { level, id, message };
+  const row = { level: level, id: id, message: message };
   if (detail !== undefined) row.detail = detail;
   findings.push(row);
 }
 
 function fetchText(url, timeoutMs) {
   const timeout = timeoutMs || 15000;
-  return new Promise((resolve, reject) => {
-    const lib = url.startsWith("https:") ? https : http;
+  return new Promise(function (resolve, reject) {
+    const lib = url.indexOf("https:") === 0 ? https : http;
     const req = lib.get(
       url,
       {
         headers: {
-          "User-Agent": "town-madrid-pilot-supervisor/1.0",
-          Accept: "text/html,application/json,*/*",
+          "User-Agent": "town-madrid-pilot-supervisor/2.0",
+          Accept: "application/json,text/html,*/*",
         },
       },
-      (res) => {
+      function (res) {
         const chunks = [];
-        res.on("data", (c) => chunks.push(c));
-        res.on("end", () => {
+        res.on("data", function (c) {
+          chunks.push(c);
+        });
+        res.on("end", function () {
           resolve({
             status: res.statusCode || 0,
             body: Buffer.concat(chunks).toString("utf8"),
-            headers: res.headers,
           });
         });
       }
     );
-    req.setTimeout(timeout, () => {
+    req.setTimeout(timeout, function () {
       req.destroy(new Error("timeout"));
     });
     req.on("error", reject);
@@ -100,7 +116,6 @@ function signalList(payload) {
   const data = payload.data;
   if (Array.isArray(data)) return data;
   if (data && Array.isArray(data.signals)) return data.signals;
-  if (Array.isArray(payload.signals)) return payload.signals;
   return [];
 }
 
@@ -112,77 +127,55 @@ function loadTownApiBase() {
   return sandbox.window.TownApiBase || sandbox.TownApiBase || null;
 }
 
-function checkLocalContracts() {
-  const indexHtml = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
-  const mustInclude = [
-    "madrid-pilot-host.js",
-    "madrid-discussion-guide.js",
-    "api-base.js?v=madrid-pilot-1",
-    "script.js?v=madrid-es-6",
-    'id="madrid-pilot-intro"',
-    'id="chat-madrid-link"',
-  ];
-  for (const needle of mustInclude) {
-    if (indexHtml.includes(needle)) {
-      record("pass", "local.index." + needle, "index.html includes " + needle);
-    } else {
-      record("fail", "local.index." + needle, "index.html missing " + needle);
-    }
-  }
-
+function checkLocalRouting() {
   const pilotHost = require(path.join(ROOT, "madrid-pilot-host.js"));
   if (pilotHost.isMadridPilotHost("madrid.towncivic.org")) {
-    record("pass", "local.host.prod", "madrid.towncivic.org is a pilot host");
+    record("pass", "routing.host.prod", "madrid.towncivic.org is Madrid pilot host");
   } else {
-    record("fail", "local.host.prod", "madrid.towncivic.org should be a pilot host");
+    record("fail", "routing.host.prod", "madrid.towncivic.org should be Madrid pilot host");
   }
   if (pilotHost.isMadridPilotHost("madrid-staging.towncivic.org")) {
-    record("pass", "local.host.staging", "madrid-staging.towncivic.org is a pilot host");
+    record(
+      "pass",
+      "routing.host.staging",
+      "madrid-staging.towncivic.org is Madrid pilot host"
+    );
   } else {
     record(
       "fail",
-      "local.host.staging",
-      "madrid-staging.towncivic.org should be a pilot host"
+      "routing.host.staging",
+      "madrid-staging.towncivic.org should be Madrid pilot host"
     );
   }
   if (!pilotHost.isMadridPilotHost("towncivic.org")) {
-    record("pass", "local.host.apex", "towncivic.org is not locked to Madrid");
+    record("pass", "routing.host.apex", "towncivic.org is not Madrid-locked");
   } else {
-    record("fail", "local.host.apex", "towncivic.org must not be a Madrid pilot host");
+    record("fail", "routing.host.apex", "towncivic.org must not be Madrid-locked");
   }
 
   const TownApiBase = loadTownApiBase();
   const staging = "https://api-staging.towncivic.org";
   const production = "https://api.towncivic.org";
   if (!TownApiBase || typeof TownApiBase.resolveApiBase !== "function") {
-    record("fail", "local.api.module", "TownApiBase failed to load from api-base.js");
-  } else {
-    if (TownApiBase.resolveApiBase("madrid-staging.towncivic.org") === staging) {
-      record("pass", "local.api.staging", "madrid-staging → staging API");
-    } else {
-      record("fail", "local.api.staging", "madrid-staging must resolve to staging API");
-    }
-    if (TownApiBase.resolveApiBase("madrid.towncivic.org") === production) {
-      record("pass", "local.api.prod", "madrid.towncivic.org → production API");
-    } else {
-      record("fail", "local.api.prod", "madrid.towncivic.org must resolve to production API");
-    }
+    record("fail", "routing.api.module", "TownApiBase failed to load");
+    return;
   }
-
-  const guide = require(path.join(ROOT, "madrid-discussion-guide.js"));
-  if (typeof guide.suggestMatches === "function" && typeof guide.isStrongMatch === "function") {
-    record("pass", "local.guide.api", "discussion guide exports suggestMatches + isStrongMatch");
+  if (TownApiBase.resolveApiBase("madrid-staging.towncivic.org") === staging) {
+    record("pass", "routing.api.staging", "madrid-staging → staging API");
   } else {
-    record("fail", "local.guide.api", "discussion guide missing suggestMatches/isStrongMatch", {
-      keys: Object.keys(guide || {}),
-    });
+    record("fail", "routing.api.staging", "madrid-staging must hit staging API");
+  }
+  if (TownApiBase.resolveApiBase("madrid.towncivic.org") === production) {
+    record("pass", "routing.api.prod", "madrid.towncivic.org → production API");
+  } else {
+    record("fail", "routing.api.prod", "madrid.towncivic.org must hit production API");
   }
 }
 
 function runUnitSuite() {
-  for (const rel of LOCAL_MADRID_TESTS) {
-    const full = path.join(ROOT, rel);
-    const result = spawnSync(process.execPath, [full], {
+  for (let i = 0; i < LOCAL_MADRID_TESTS.length; i++) {
+    const rel = LOCAL_MADRID_TESTS[i];
+    const result = spawnSync(process.execPath, [path.join(ROOT, rel)], {
       cwd: ROOT,
       encoding: "utf8",
       timeout: 60000,
@@ -192,74 +185,94 @@ function runUnitSuite() {
     } else {
       record("fail", "unit." + path.basename(rel), rel + " failed", {
         status: result.status,
-        stderr: (result.stderr || "").slice(0, 500),
-        stdout: (result.stdout || "").slice(-500),
+        stderr: String(result.stderr || "").slice(0, 400),
       });
     }
   }
 }
 
-async function checkLiveHost(label, url) {
+async function checkReady(label, url) {
   try {
     const res = await fetchText(url);
-    if (res.status !== 200) {
-      record("fail", "live.host." + label, url + " returned HTTP " + res.status);
-      return null;
+    const payload = parseJsonSafe(res.body);
+    if (res.status === 200 && payload && payload.status === "ready") {
+      record("pass", "ops.ready." + label, url + " is ready");
+      return;
     }
-    record("pass", "live.host." + label, url + " is HTTP 200");
-    return res.body;
+    record("fail", "ops.ready." + label, url + " not ready", {
+      status: res.status,
+      body: res.body.slice(0, 200),
+    });
   } catch (err) {
-    record("fail", "live.host." + label, "fetch failed for " + url, String(err.message || err));
+    record("fail", "ops.ready." + label, "ready probe failed", String(err.message || err));
+  }
+}
+
+async function checkActivityGate(label, url) {
+  try {
+    const res = await fetchText(url);
+    if (res.status === 401) {
+      record(
+        "pass",
+        "ops.activity." + label,
+        "anonymous activity correctly returns 401 (not 500)"
+      );
+      return;
+    }
+    if (res.status >= 500) {
+      record("fail", "ops.activity." + label, "activity returned server error", {
+        status: res.status,
+        body: res.body.slice(0, 200),
+      });
+      return;
+    }
+    record("warn", "ops.activity." + label, "unexpected activity status " + res.status, {
+      body: res.body.slice(0, 200),
+    });
+  } catch (err) {
+    record(
+      "fail",
+      "ops.activity." + label,
+      "activity probe failed",
+      String(err.message || err)
+    );
+  }
+}
+
+async function checkHost(label, url) {
+  try {
+    const res = await fetchText(url);
+    if (res.status === 200) {
+      record("pass", "ops.host." + label, url + " HTTP 200");
+      return res.body;
+    }
+    record("fail", "ops.host." + label, url + " HTTP " + res.status);
+    return null;
+  } catch (err) {
+    record("fail", "ops.host." + label, "host fetch failed", String(err.message || err));
     return null;
   }
 }
 
-function assertLiveHtmlContracts(label, html) {
-  if (!html) return;
-  const needles = [
-    "madrid-pilot-host.js",
-    "madrid-discussion-guide.js",
-    "api-base.js?v=madrid-pilot-1",
-    "script.js?v=madrid-es-6",
-    'id="madrid-pilot-intro"',
-    'id="chat-madrid-link"',
-    "https://datos.madrid.es/dataset/",
-  ];
-  for (const needle of needles) {
-    const id = "live.html." + label + "." + needle.replace(/[^a-z0-9]+/gi, "_");
-    if (html.includes(needle)) {
-      record("pass", id, label + " HTML includes " + needle);
-    } else {
-      record("fail", id, label + " HTML missing " + needle);
-    }
-  }
-}
-
-async function checkCommunitiesCatalog(label, url) {
+async function checkCatalog(label, url) {
   try {
     const res = await fetchText(url);
-    if (res.status !== 200) {
-      record("fail", "live.catalog." + label, url + " HTTP " + res.status);
-      return;
-    }
     const payload = parseJsonSafe(res.body);
     const rows = payload && Array.isArray(payload.data) ? payload.data : [];
-    const madrid = rows.find((row) => row && row.slug === MADRID_SLUG);
+    const madrid = rows.find(function (row) {
+      return row && row.slug === MADRID_SLUG;
+    });
     if (!madrid) {
-      record("fail", "live.catalog." + label, "madrid-es missing from communities catalog");
+      record("fail", "ops.catalog." + label, "madrid-es missing from catalog");
       return;
     }
-    if (madrid.cityName !== "Madrid" || madrid.countryCode !== "ES") {
-      record("fail", "live.catalog." + label, "madrid-es identity mismatch", madrid);
+    if (madrid.countryCode !== "ES" || madrid.cityName !== "Madrid") {
+      record("fail", "ops.catalog." + label, "madrid-es identity mismatch", madrid);
       return;
     }
-    if (madrid.defaultLocale && madrid.defaultLocale !== "es-ES") {
-      record("warn", "live.catalog." + label, "unexpected defaultLocale", madrid.defaultLocale);
-    } else {
-      record("pass", "live.catalog." + label, "madrid-es present with ES identity");
-    }
+    record("pass", "ops.catalog." + label, "madrid-es present (ES)");
   } catch (err) {
-    record("fail", "live.catalog." + label, "catalog fetch failed", String(err.message || err));
+    record("fail", "ops.catalog." + label, "catalog failed", String(err.message || err));
   }
 }
 
@@ -267,71 +280,147 @@ async function checkSignals(label, url) {
   try {
     const res = await fetchText(url);
     if (res.status !== 200) {
-      record("fail", "live.signals." + label, url + " HTTP " + res.status, res.body.slice(0, 200));
-      return;
+      record("fail", "ops.signals." + label, url + " HTTP " + res.status);
+      return [];
     }
-    const payload = parseJsonSafe(res.body);
-    const signals = signalList(payload);
+    const signals = signalList(parseJsonSafe(res.body));
     if (signals.length !== EXPECTED_SIGNAL_COUNT) {
       record(
         "warn",
-        "live.signals." + label + ".count",
-        "expected " + EXPECTED_SIGNAL_COUNT + " Madrid seed signals, found " + signals.length
+        "ops.signals." + label + ".count",
+        "expected " + EXPECTED_SIGNAL_COUNT + " seed signals, found " + signals.length
       );
     } else {
       record(
         "pass",
-        "live.signals." + label + ".count",
+        "ops.signals." + label + ".count",
         "Madrid feed has " + signals.length + " signals"
       );
     }
-    const nonEs = signals.filter((s) => s.locale && s.locale !== "es-ES");
-    if (nonEs.length) {
-      record("fail", "live.signals." + label + ".locale", "non-Spanish signal locales present", {
-        locales: nonEs.map((s) => s.locale),
-      });
+    const badLocale = signals.filter(function (s) {
+      return s.locale && s.locale !== "es-ES";
+    });
+    if (badLocale.length) {
+      record("fail", "ops.signals." + label + ".locale", "non es-ES locales in Madrid feed");
     } else if (signals.length) {
-      record("pass", "live.signals." + label + ".locale", "signal locales are es-ES");
+      record("pass", "ops.signals." + label + ".locale", "signal locales are es-ES");
     }
-    const emptyHeadline = signals.filter((s) => !String(s.headline || "").trim());
-    if (emptyHeadline.length) {
-      record("fail", "live.signals." + label + ".headline", "signals missing headlines");
-    } else if (signals.length) {
-      record("pass", "live.signals." + label + ".headline", "all signals have headlines");
-    }
+    return signals;
   } catch (err) {
-    record("fail", "live.signals." + label, "signals fetch failed", String(err.message || err));
+    record("fail", "ops.signals." + label, "signals failed", String(err.message || err));
+    return [];
   }
 }
 
-async function checkPlatformSurface() {
-  try {
-    const res = await fetchText(HOSTS.platform);
-    if (res.status !== 200) {
-      record("fail", "live.platform", "platform console HTTP " + res.status);
-      return;
+async function checkCivicProcess(label, urlForId) {
+  let ok = 0;
+  for (let i = 0; i < MADRID_SIGNAL_IDS.length; i++) {
+    const id = MADRID_SIGNAL_IDS[i];
+    const short = id.slice(-4);
+    try {
+      const res = await fetchText(urlForId(id));
+      const payload = parseJsonSafe(res.body);
+      const data = payload && payload.data;
+      if (res.status !== 200 || !data) {
+        record("fail", "ops.civic." + label + "." + short, "civic-process HTTP " + res.status, {
+          body: res.body.slice(0, 180),
+        });
+        continue;
+      }
+      if (data.communitySlug !== MADRID_SLUG) {
+        record("fail", "ops.civic." + label + "." + short, "unexpected communitySlug", data.communitySlug);
+        continue;
+      }
+      if (data.currentStage !== EXPECTED_STAGE) {
+        record("warn", "ops.civic." + label + "." + short + ".stage", "stage is " + data.currentStage, {
+          confirmationCount: data.confirmationCount,
+          transitionRule: data.transitionRule,
+        });
+      } else {
+        record(
+          "pass",
+          "ops.civic." + label + "." + short + ".stage",
+          "stage=confirmation count=" +
+            data.confirmationCount +
+            "/" +
+            ((data.transitionRule && data.transitionRule.requiredConfirmations) ||
+              EXPECTED_THRESHOLD)
+        );
+        ok += 1;
+      }
+      const required =
+        data.transitionRule && data.transitionRule.requiredConfirmations;
+      if (required && required !== EXPECTED_THRESHOLD) {
+        record(
+          "warn",
+          "ops.civic." + label + "." + short + ".threshold",
+          "requiredConfirmations=" + required + " (expected " + EXPECTED_THRESHOLD + ")"
+        );
+      }
+    } catch (err) {
+      record(
+        "fail",
+        "ops.civic." + label + "." + short,
+        "civic-process probe failed",
+        String(err.message || err)
+      );
     }
-    if (res.body.includes("Monitor") && res.body.includes("Platform")) {
-      record("pass", "live.platform", "platform console shell is reachable");
+  }
+  if (ok === MADRID_SIGNAL_IDS.length) {
+    record(
+      "pass",
+      "ops.civic." + label + ".summary",
+      "all " + ok + " Madrid seed signals at confirmation"
+    );
+  }
+}
+
+async function checkPlatformShell() {
+  try {
+    const res = await fetchText(ENDPOINTS.platform);
+    if (res.status === 200 && res.body.indexOf("Monitor") !== -1) {
+      record("pass", "ops.platform.shell", "platform console shell reachable");
+    } else if (res.status === 200) {
+      record("warn", "ops.platform.shell", "platform HTML 200 but Monitor marker missing");
     } else {
-      record("warn", "live.platform", "platform HTML missing expected Monitor markers");
+      record("fail", "ops.platform.shell", "platform HTTP " + res.status);
     }
   } catch (err) {
-    record("fail", "live.platform", "platform fetch failed", String(err.message || err));
+    record("fail", "ops.platform.shell", "platform fetch failed", String(err.message || err));
+  }
+
+  const email = process.env.TOWN_PLATFORM_EMAIL;
+  const password = process.env.TOWN_PLATFORM_PASSWORD;
+  if (!email || !password) {
+    record(
+      "pass",
+      "ops.platform.auth",
+      "platform authenticated Monitor skipped (no TOWN_PLATFORM_EMAIL/PASSWORD)"
+    );
+  } else {
+    record(
+      "warn",
+      "ops.platform.auth",
+      "platform credentials present but authenticated Monitor not implemented in phase 1"
+    );
   }
 }
 
 function summarize() {
   const counts = { pass: 0, warn: 0, fail: 0 };
-  for (const row of findings) {
-    counts[row.level] = (counts[row.level] || 0) + 1;
+  for (let i = 0; i < findings.length; i++) {
+    const level = findings[i].level;
+    counts[level] = (counts[level] || 0) + 1;
   }
-  const status = counts.fail > 0 ? "FAIL" : counts.warn > 0 ? "WARN" : "PASS";
-  return { status, counts, findings };
+  let status = "OPERATIONAL";
+  if (counts.fail > 0) status = "DOWN";
+  else if (counts.warn > 0) status = "DEGRADED";
+  return { status: status, counts: counts, findings: findings };
 }
 
 async function main() {
-  checkLocalContracts();
+  checkLocalRouting();
+
   if (!SKIP_UNITS) {
     runUnitSuite();
   } else {
@@ -339,28 +428,32 @@ async function main() {
   }
 
   if (!OFFLINE) {
-    const prodHtml = await checkLiveHost("production", HOSTS.production);
-    assertLiveHtmlContracts("production", prodHtml);
-    const stagingHtml = await checkLiveHost("staging", HOSTS.staging);
-    assertLiveHtmlContracts("staging", stagingHtml);
-    await checkCommunitiesCatalog("production", HOSTS.prodCommunities);
-    await checkCommunitiesCatalog("staging", HOSTS.stagingCommunities);
-    await checkSignals("production", HOSTS.prodApiSignals);
-    await checkSignals("staging", HOSTS.stagingApiSignals);
-    await checkPlatformSurface();
+    await checkReady("production", ENDPOINTS.prodReady);
+    await checkReady("staging", ENDPOINTS.stagingReady);
+    await checkActivityGate("production", ENDPOINTS.prodActivity);
+    await checkActivityGate("staging", ENDPOINTS.stagingActivity);
+    await checkHost("production", ENDPOINTS.prodHost);
+    await checkHost("staging", ENDPOINTS.stagingHost);
+    await checkCatalog("production", ENDPOINTS.prodCommunities);
+    await checkCatalog("staging", ENDPOINTS.stagingCommunities);
+    await checkSignals("production", ENDPOINTS.prodSignals);
+    await checkSignals("staging", ENDPOINTS.stagingSignals);
+    await checkCivicProcess("production", ENDPOINTS.prodCivic);
+    await checkCivicProcess("staging", ENDPOINTS.stagingCivic);
+    await checkPlatformShell();
   } else {
-    record("pass", "mode.offline", "skipped live probes (--offline)");
+    record("pass", "mode.offline", "skipped live operational probes (--offline)");
   }
 
   const report = summarize();
   report.generatedAt = new Date().toISOString();
-  report.scope = "madrid-pilot-supervision-phase-1";
+  report.scope = "madrid-pilot-operational-supervision";
   report.mode = OFFLINE ? "offline" : "live";
 
   if (AS_JSON) {
     process.stdout.write(JSON.stringify(report, null, 2) + "\n");
   } else {
-    console.log("TOWN Madrid pilot supervisor — " + report.status);
+    console.log("Madrid pilot — " + report.status);
     console.log(
       "pass=" +
         report.counts.pass +
@@ -372,7 +465,8 @@ async function main() {
         report.mode
     );
     console.log("");
-    for (const row of report.findings) {
+    for (let i = 0; i < report.findings.length; i++) {
+      const row = report.findings[i];
       const tag = row.level.toUpperCase().padEnd(4);
       console.log(tag + " " + row.id + " — " + row.message);
       if (row.detail !== undefined) {
@@ -383,10 +477,10 @@ async function main() {
     }
   }
 
-  if (report.status === "FAIL") process.exitCode = 1;
+  if (report.status === "DOWN") process.exitCode = 1;
 }
 
-main().catch((err) => {
+main().catch(function (err) {
   console.error(err);
   process.exitCode = 1;
 });

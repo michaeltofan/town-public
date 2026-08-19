@@ -47,20 +47,20 @@ is proven on `api.towncivic.org`.
 
 ## Madrid pilot supervision
 
-Pilot Madrid hosts: `madrid.towncivic.org` (prod) · `madrid-staging.towncivic.org` (staging).
+Operational supervisor (built ≠ ready): hosts `madrid.towncivic.org` /
+`madrid-staging.towncivic.org`, community `madrid-es`, civic-process on seed signals.
 
-Cloud Agent playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
-(also summarized in [`AGENTS.md`](AGENTS.md)). Phase 1 is observe-first.
+Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
 ```bash
 node scripts/supervise-madrid-pilot.js
-node scripts/supervise-madrid-pilot.js --offline   # local contracts + unit suite only
+node scripts/supervise-madrid-pilot.js --offline   # routing + unit suite only
 ```
 
 ## Checks
 
 ```bash
-node scripts/supervise-madrid-pilot.js --offline
+node scripts/supervise-madrid-pilot.js --offline --skip-units
 node scripts/test-api-base.js
 node scripts/test-security-headers-config.js
 node scripts/test-member-local-feed.js
