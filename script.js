@@ -12356,6 +12356,14 @@
     submit: "Publier le signalement", cancel: "Annuler", close: "Fermer", errorGeneric: "Impossible de publier. Réessayez.",
     errorPhoto: "Choisissez une photo JPEG, PNG ou WebP.", errorAccept: "Confirmez votre responsabilité personnelle pour publier.",
     errorName: "Utilisez vos vrais prénom et nom, pas un nom d'utilisateur.",
+    guideLabel: "Même discussion",
+    guideBody:
+      "TOWN garde un fil calme par lieu. Si cela est déjà traité, rejoignez ce signalement au lieu d'en ouvrir un doublon.",
+    guideJoin: "Ouvrir cette discussion",
+    guideJoinHint: "Confirmez ce que vous voyez et contribuez ici vers une solution.",
+    guideContinue: "Publier quand même un nouveau signalement",
+    guideBlocked:
+      "Une discussion correspondante existe déjà. Ouvrez-la ci-dessous, ou confirmez qu'il vous faut encore un nouveau signalement.",
   };
   ACTIVITY_COPY.fr = {
     label: "Activité", title: "Votre activité civique",
