@@ -45,9 +45,22 @@ is proven on `api.towncivic.org`.
 - No local fake see-too confirmation when the API signal id is missing
 - Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
+## Madrid pilot supervision
+
+Pilot Madrid hosts: `madrid.towncivic.org` (prod) · `madrid-staging.towncivic.org` (staging).
+
+Cloud Agent playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
+(also summarized in [`AGENTS.md`](AGENTS.md)). Phase 1 is observe-first.
+
+```bash
+node scripts/supervise-madrid-pilot.js
+node scripts/supervise-madrid-pilot.js --offline   # local contracts + unit suite only
+```
+
 ## Checks
 
 ```bash
+node scripts/supervise-madrid-pilot.js --offline
 node scripts/test-api-base.js
 node scripts/test-security-headers-config.js
 node scripts/test-member-local-feed.js
