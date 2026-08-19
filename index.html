@@ -1933,6 +1933,23 @@
           Publish under your real name in your community. You already accepted personal
           responsibility as a TOWN member — confirm it again for this publication.
         </p>
+        <!-- Pilot Madrid: internal agent routes similar drafts to the same discussion -->
+        <aside
+          class="signal-create__guide"
+          id="signal-create-guide"
+          hidden
+          aria-live="polite"
+        >
+          <p class="signal-create__guide-label" id="signal-create-guide-label"></p>
+          <p class="signal-create__guide-body" id="signal-create-guide-body"></p>
+          <ul class="signal-create__guide-list" id="signal-create-guide-list"></ul>
+          <button
+            type="button"
+            class="btn btn--secondary signal-create__guide-continue"
+            id="signal-create-guide-continue"
+            hidden
+          ></button>
+        </aside>
         <form class="signal-create__form" id="signal-create-form">
           <label class="signal-create__label" for="signal-create-title-input" id="signal-create-title-label">Title</label>
           <input
@@ -2449,8 +2466,9 @@
     <script src="membership-recovery.js" defer></script>
     <script src="community-commitment.js?v=fr-hu-1" defer></script>
     <script src="madrid-pilot-host.js?v=1" defer></script>
+    <script src="madrid-discussion-guide.js?v=1" defer></script>
     <script src="api-base.js?v=madrid-pilot-1"></script>
     <script src="auth-input.js?v=auth-input-1" defer></script>
-    <script src="script.js?v=madrid-es-4" defer></script>
+    <script src="script.js?v=madrid-es-6" defer></script>
   </body>
 </html>

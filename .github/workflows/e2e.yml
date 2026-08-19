@@ -17,7 +17,9 @@ permissions:
 jobs:
   smoke-and-e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Chromium --with-deps regularly exceeds 20m on cold runners; keep headroom
+    # so a hung browser install does not cancel after static smoke already passed.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -46,6 +48,8 @@ jobs:
           node scripts/test-member-signal-create.js
           node scripts/test-madrid-pilot-host.js
           node scripts/test-madrid-pilot-intro.js
+          node scripts/test-madrid-discussion-guide.js
+          node scripts/test-member-chat-welcome.js
           node scripts/test-feed-deep-link.js
           node scripts/test-spanish-localization.js
           node scripts/test-french-localization.js

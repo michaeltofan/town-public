@@ -198,6 +198,19 @@
   const signalCreateError = document.getElementById("signal-create-error");
   const signalCreateSubmit = document.getElementById("signal-create-submit");
   const signalCreateCancel = document.getElementById("signal-create-cancel");
+  const signalCreateGuide = document.getElementById("signal-create-guide");
+  const signalCreateGuideLabel = document.getElementById(
+    "signal-create-guide-label"
+  );
+  const signalCreateGuideBody = document.getElementById(
+    "signal-create-guide-body"
+  );
+  const signalCreateGuideList = document.getElementById(
+    "signal-create-guide-list"
+  );
+  const signalCreateGuideContinue = document.getElementById(
+    "signal-create-guide-continue"
+  );
   const signalDetail = document.getElementById("signal-detail");
   const detailImage = document.getElementById("detail-image");
   const detailClose = document.getElementById("detail-close");
@@ -954,6 +967,11 @@
     !signalCreateError ||
     !signalCreateSubmit ||
     !signalCreateCancel ||
+    !signalCreateGuide ||
+    !signalCreateGuideLabel ||
+    !signalCreateGuideBody ||
+    !signalCreateGuideList ||
+    !signalCreateGuideContinue ||
     !signalDetail ||
     !detailImage ||
     !detailClose ||
@@ -8784,6 +8802,8 @@
   }
 
   function resolvePublicReadingLanguage() {
+    // Pilot Madrid is Spain: public UI language is Spanish only.
+    if (madridPilotCityId) return "es";
     const i18n = window.TownPublicI18n;
     const preferred = resolveEditorialPreferredLanguages();
     if (i18n && typeof i18n.resolveReadingLanguage === "function") {
@@ -10799,6 +10819,14 @@
     Stuttgart: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
     Frankfurt: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
     Salzburg: ["ÖFFENTLICHER RAUM", "STRASSENBELEUCHTUNG", "ÖFFENTLICHE BAUARBEITEN"],
+    // Pilot Madrid — align with live madrid-es seed categories.
+    Madrid: [
+      "ESPACIO PÚBLICO",
+      "ALUMBRADO PÚBLICO",
+      "MEDIO AMBIENTE",
+      "MOVILIDAD",
+      "LIMPIEZA",
+    ],
   };
 
   const SIGNAL_CREATE_COPY = {
@@ -10905,9 +10933,24 @@
     errorName: "Usa tu nombre y apellidos reales, no un nombre de usuario.",
   };
 
+  // Pilot Madrid only — Spanish. Not part of the multilingual SIGNAL_CREATE catalog.
+  const MADRID_DISCUSSION_GUIDE_COPY = {
+    guideLabel: "Misma discusión",
+    guideBody:
+      "TOWN mantiene un hilo calmado por lugar. Si esto ya se está tratando, únete a esa señal en lugar de abrir un duplicado.",
+    guideJoin: "Abrir esta discusión",
+    guideJoinHint: "Confirma lo que ves y aporta hacia una solución aquí.",
+    guideContinue: "Publicar una señal nueva de todos modos",
+    guideBlocked:
+      "Ya existe una discusión coincidente. Ábrela abajo, o confirma que aún necesitas una señal nueva.",
+  };
+
   let signalCreatePhotoFile = null;
   let signalCreatePhotoObjectUrl = null;
   let signalCreateSubmitting = false;
+  let signalCreateGuideTimer = null;
+  let signalCreateGuideMatches = [];
+  let signalCreateGuideOverride = false;
 
   function signalCreateCopy() {
     const lang = resolvePublicReadingLanguage();
@@ -10955,6 +10998,148 @@
     signalCreatePhoto.value = "";
   }
 
+  function madridDiscussionGuideApi() {
+    return window.TownMadridDiscussionGuide || null;
+  }
+
+  function isMadridDiscussionGuideActive() {
+    return !!(madridPilotCityId && madridDiscussionGuideApi());
+  }
+
+  function clearMadridDiscussionGuide() {
+    if (signalCreateGuideTimer) {
+      window.clearTimeout(signalCreateGuideTimer);
+      signalCreateGuideTimer = null;
+    }
+    signalCreateGuideMatches = [];
+    signalCreateGuideOverride = false;
+    signalCreateGuideList.innerHTML = "";
+    signalCreateGuide.hidden = true;
+    signalCreateGuideContinue.hidden = true;
+    signalCreateGuideContinue.textContent = "";
+  }
+
+  function madridGuideCorpusScenes() {
+    const homeId = memberHomeCityId() || madridPilotCityId || "Madrid";
+    const live = liveScenes[homeId];
+    return live && live.length ? live.slice() : [];
+  }
+
+  function readSignalCreateDraft() {
+    return {
+      title: (signalCreateTitleInput.value || "").trim(),
+      description: (signalCreateDescription.value || "").trim(),
+      category: signalCreateCategory.value || "",
+    };
+  }
+
+  function openMadridGuidedDiscussion(sceneId) {
+    const scenes = currentScenes();
+    const idx = scenes.findIndex(function (scene) {
+      return scene && (scene.id === sceneId || scene.signalId === sceneId);
+    });
+    if (idx < 0) return false;
+    closeSignalCreate();
+    scrollFeedToIndex(idx, { behavior: "auto" });
+    openSignalDetail();
+    return true;
+  }
+
+  function renderMadridDiscussionGuide(matches) {
+    const copy = MADRID_DISCUSSION_GUIDE_COPY;
+    signalCreateGuideMatches = Array.isArray(matches) ? matches : [];
+    signalCreateGuideList.innerHTML = "";
+
+    if (!signalCreateGuideMatches.length) {
+      signalCreateGuide.hidden = true;
+      signalCreateGuideContinue.hidden = true;
+      return;
+    }
+
+    signalCreateGuideLabel.textContent = copy.guideLabel;
+    signalCreateGuideBody.textContent = copy.guideBody;
+
+    for (let i = 0; i < signalCreateGuideMatches.length; i++) {
+      const hit = signalCreateGuideMatches[i];
+      const scene = hit && hit.scene;
+      if (!scene) continue;
+      const li = document.createElement("li");
+      li.className = "signal-create__guide-item";
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "signal-create__guide-join";
+      button.setAttribute("data-guide-scene-id", scene.id || "");
+      const area = document.createElement("span");
+      area.className = "signal-create__guide-join-area";
+      area.textContent = scene.area || scene.category || "Madrid";
+      const title = document.createElement("span");
+      title.className = "signal-create__guide-join-title";
+      title.textContent = scene.headline || scene.id || "";
+      const hint = document.createElement("span");
+      hint.className = "signal-create__guide-join-hint";
+      hint.textContent = copy.guideJoinHint;
+      button.appendChild(area);
+      button.appendChild(title);
+      button.appendChild(hint);
+      button.setAttribute(
+        "aria-label",
+        copy.guideJoin + ": " + (scene.headline || "")
+      );
+      li.appendChild(button);
+      signalCreateGuideList.appendChild(li);
+    }
+
+    const api = madridDiscussionGuideApi();
+    const strong =
+      api &&
+      signalCreateGuideMatches.some(function (hit) {
+        return api.isStrongMatch(hit);
+      });
+    signalCreateGuideContinue.hidden = !strong || signalCreateGuideOverride;
+    signalCreateGuideContinue.textContent = copy.guideContinue;
+    signalCreateGuide.hidden = false;
+  }
+
+  function refreshMadridDiscussionGuide() {
+    if (!isMadridDiscussionGuideActive()) {
+      clearMadridDiscussionGuide();
+      return;
+    }
+    if (signalCreateGuideOverride) {
+      // Member explicitly chose to publish a new signal after guidance.
+      signalCreateGuideContinue.hidden = true;
+      return;
+    }
+    const api = madridDiscussionGuideApi();
+    const matches = api.suggestMatches(
+      readSignalCreateDraft(),
+      madridGuideCorpusScenes()
+    );
+    renderMadridDiscussionGuide(matches);
+  }
+
+  function scheduleMadridDiscussionGuideRefresh() {
+    if (!isMadridDiscussionGuideActive()) return;
+    if (signalCreateGuideTimer) {
+      window.clearTimeout(signalCreateGuideTimer);
+    }
+    signalCreateGuideTimer = window.setTimeout(function () {
+      signalCreateGuideTimer = null;
+      refreshMadridDiscussionGuide();
+    }, 280);
+  }
+
+  function madridGuideBlocksPublish() {
+    if (!isMadridDiscussionGuideActive()) return false;
+    if (signalCreateGuideOverride) return false;
+    const api = madridDiscussionGuideApi();
+    if (!api) return false;
+    refreshMadridDiscussionGuide();
+    return signalCreateGuideMatches.some(function (hit) {
+      return api.isStrongMatch(hit);
+    });
+  }
+
   function applySignalCreateCopy() {
     const copy = signalCreateCopy();
     signalCreateTitle.textContent = copy.title;
@@ -10992,6 +11177,7 @@
     closeSignalDetail();
     applySignalCreateCopy();
     fillSignalCreateCategories();
+    clearMadridDiscussionGuide();
     signalCreateError.hidden = true;
     signalCreateError.textContent = "";
     signalCreateAccept.checked = false;
@@ -11005,6 +11191,7 @@
     if (signalCreate.hidden) return;
     signalCreate.hidden = true;
     clearSignalCreatePhotoPreview();
+    clearMadridDiscussionGuide();
     signalCreateForm.reset();
     document.body.style.overflow = "";
     syncFeedScrollLockFromOverlays();
@@ -11040,6 +11227,15 @@
     ) {
       signalCreateError.textContent = copy.errorPhoto;
       signalCreateError.hidden = false;
+      return;
+    }
+
+    if (madridGuideBlocksPublish()) {
+      signalCreateError.textContent = MADRID_DISCUSSION_GUIDE_COPY.guideBlocked;
+      signalCreateError.hidden = false;
+      signalCreateGuideContinue.hidden = false;
+      signalCreateGuideContinue.textContent =
+        MADRID_DISCUSSION_GUIDE_COPY.guideContinue;
       return;
     }
 
@@ -13596,18 +13792,6 @@
       ],
       continue: "Entrar en la primera señal",
     },
-    en: {
-      title: "This is TOWN: your community, in your own name.",
-      paragraphs: [
-        "You are not here to be entertained or to compete for attention. You are here because you care about your street, your neighbourhood, and the shared life of Madrid.",
-        "TOWN is not TikTok or Facebook. It is a local civic space: real people from the same community, looking at the same place, choosing to cooperate with respect so that what is seen can move toward a solution.",
-        "Civics means assuming who you are — with a clear identity — and treating others as neighbours, not as an audience. Speaking in your own name is an act of care for the community.",
-        "This pilot runs on civic trust. Entering means committing to contribute honestly, to listen, and to care for the common good we build together.",
-        "Using the Madrid pilot is your responsibility. Every signal, every word and every image you publish, you assume individually.",
-        "Anyone who uses the internet already acts under their own online responsibility. TOWN is not responsible for users' misconduct; what you publish, you own.",
-      ],
-      continue: "Enter the first signal",
-    },
   };
 
   function madridPilotIntroDismissed() {
@@ -13627,8 +13811,8 @@
   }
 
   function madridPilotIntroCopy() {
-    const lang = resolvePublicReadingLanguage();
-    return MADRID_PILOT_INTRO_COPY[lang] || MADRID_PILOT_INTRO_COPY.es;
+    // Pilot Madrid UI is Spanish only — never follow browser language here.
+    return MADRID_PILOT_INTRO_COPY.es;
   }
 
   function applyMadridPilotIntroCopy() {
@@ -15450,6 +15634,32 @@
   });
   signalCreateForm.addEventListener("submit", (event) => {
     publishMemberSignal(event);
+  });
+  signalCreateTitleInput.addEventListener("input", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateDescription.addEventListener("input", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateCategory.addEventListener("change", () => {
+    signalCreateGuideOverride = false;
+    scheduleMadridDiscussionGuideRefresh();
+  });
+  signalCreateGuideList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || !target.closest) return;
+    const button = target.closest("[data-guide-scene-id]");
+    if (!button) return;
+    const sceneId = button.getAttribute("data-guide-scene-id");
+    if (sceneId) openMadridGuidedDiscussion(sceneId);
+  });
+  signalCreateGuideContinue.addEventListener("click", () => {
+    signalCreateGuideOverride = true;
+    signalCreateGuideContinue.hidden = true;
+    signalCreateError.hidden = true;
+    signalCreateError.textContent = "";
   });
   signalCreatePhoto.addEventListener("change", () => {
     const file =
