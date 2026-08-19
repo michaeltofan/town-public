@@ -17,7 +17,7 @@ function ok(condition, message) {
 
 ok(html.includes('id="madrid-pilot-intro"'), "intro markup exists");
 ok(html.includes('id="madrid-pilot-intro-continue"'), "intro continue button exists");
-ok(html.includes("script.js?v=madrid-es-3"), "cache key bumped for intro ship");
+ok(html.includes("script.js?v=madrid-es-5"), "cache key bumped for intro ship");
 ok(css.includes("invite--madrid-intro"), "intro styles exist");
 ok(js.includes('MADRID_PILOT_INTRO_STORAGE_KEY = "town.madridPilotIntro.dismissed.v3"'), "dismissal key is versioned");
 ok(js.includes("function maybeShowMadridPilotIntro"), "show helper exists");
@@ -53,8 +53,12 @@ ok(
   "intro dismissal uses versioned localStorage key only"
 );
 ok(
-  js.includes("openMadridPilotIntroFirstSignal"),
-  "CTA opens first signal after dismiss"
+  js.includes("return MADRID_PILOT_INTRO_COPY.es"),
+  "Madrid intro copy is Spanish only"
+);
+ok(
+  !js.includes("This is TOWN: your community, in your own name."),
+  "Madrid intro has no English alternate"
 );
 ok(
   /madridPilotIntro\s*&&\s*!madridPilotIntro\.hidden/.test(js) ||
