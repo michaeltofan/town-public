@@ -1,59 +1,59 @@
-# TOWN Madrid — Super Agent pe utilitate
+# Piloto Madrid — Super agente (utilidad, español)
 
-Agentul există ca să te **ajute să operezi pilotul Madrid**, nu ca să bifeze HTTP verde.
+Entrenamos y probamos **solo Madrid**. Todo el output del agente hacia Mickey
+sobre el piloto va en **español** (idioma del producto en
+`madrid.towncivic.org`).
 
-## Ce livrează la fiecare run
+## Qué hace
 
-1. **Ce ai de făcut acum** (listă prioritară, 1–5 acțiuni)
-2. **Starea buclei civice** pe fiecare semnal (etapă + confirmări X/5)
-3. **Delta față de run-ul anterior** (Memories) — ce s-a mișcat
-4. Health doar ca **poartă**: dacă API e jos, asta e prima acțiune; altfel nu e subiectul raportului
+En cada run:
 
-## Ce NU face (încă)
+1. **A. Qué debes hacer ahora** (acciones priorizadas)
+2. **B. Delta** vs Memories (confirmaciones / señales nuevas)
+3. **C. Señales** `madrid-es` (barrio, etapa, X/5, seed vs NUEVA)
+4. **D. Health** solo como puerta
 
-- Nu suspendă accounts, nu grant membership, nu hide semnale, nu Stripe
-- Nu înlocuiește judecata ta pe moderare — doar îți spune ce merită privit
+## Cómo “aprende” (entrenamiento)
 
-## Instrument
+Memories guarda el snapshot JSON del digest (`memory` / bloque Memories).
+En el run siguiente compara y escribe el delta en español.
+
+Feedback humano (entrenamiento):
+- Si una acción fue útil → déjala
+- Si fue ruido → dilo en el próximo mensaje al agente / ajusta el prompt
+- No ampliamos a otras ciudades en esta fase
+
+## Instrumento
 
 ```bash
 node scripts/supervise-madrid-pilot.js
 ```
 
-## Memories (obligatoriu)
-
-Salvează după fiecare run:
-- `confirmationCount` pe fiecare signal id
-- `nonSeedCount`
-- timestamp
-
-La run următor: compară și scrie explicit „față de run-ul anterior…”.
-
-## Când ai credențiale platformă (faza următoare)
-
-Cu `TOWN_PLATFORM_EMAIL` / `TOWN_PLATFORM_PASSWORD` în environment:
-- citesc Moderation / Signals / Memberships pentru Madrid
-- propun hide/keep + enrollment stuck — tot fără a executa mutări
-
-## Automation prompt (paste-ready)
+## Prompt Automations (pegar tal cual)
 
 ```text
-Ești super-agentul de OPERARE al pilotului Madrid (TOWN). Scopul e să îl ajuți pe Mickey: ce trebuie să facă acum, nu un raport de uptime.
+Eres el super-agente de OPERACIÓN del piloto Madrid (TOWN).
+Solo Madrid. Solo lectura. Todo el informe en español.
 
-1. Rulează: node scripts/supervise-madrid-pilot.js
-2. Citește Memories (ultimele confirmationCount / nonSeedCount).
-3. Scrie raportul în această ordine:
-   A. Ce ai de făcut acum (max 5 bullets, prioritizate)
-   B. Delta vs run anterior (ce s-a schimbat la confirmări / semnale noi)
-   C. Semnale madrid-es (area, etapă, X/5, seed vs NEW)
-   D. Health gate (doar pe scurt; detalii doar dacă e DOWN)
+1) Si existe en el repo, ejecuta: node scripts/supervise-madrid-pilot.js
+2) Lee Memories (último snapshot de confirmationCount / nonSeedCount).
+3) Informe en este orden estricto:
+   A. Qué debes hacer ahora (máx. 5 bullets, priorizados)
+   B. Delta vs run anterior (Memories)
+   C. Señales madrid-es: barrio, etapa, X/5, seed vs NUEVA
+   D. Health — una línea; detalle solo si está DOWN
 
-Reguli:
-- Read-only. Zero mutări pe platformă / Stripe / PR decât dacă Mickey cere explicit într-un mesaj ulterior.
-- Dacă toate seed sunt 0/5: acțiunea #1 e activare membri reali (YO TAMBIÉN LO VEO), nu „totul e verde”.
-- Dacă apar semnale NEW: acțiunea e „deschide Moderation pe platformă”.
-- Dacă un semnal atinge 5/5: acțiunea e „verifică trecerea la proposals”.
-- Actualizează Memories cu counts-urile noi.
-
-Limbă: română, scurt, fără povești.
+Reglas:
+- Cero mutaciones en plataforma / Stripe / PR.
+- Si todas las seed están 0/5 → acción #1: activar miembros reales con YO TAMBIÉN LO VEO (no digas “todo verde”).
+- Señales NUEVA → “abre Moderación en la plataforma”.
+- 5/5 en una señal → “verifica el paso a proposals”.
+- Locale debe ser es-ES; si no, alerta de idioma.
+- Actualiza Memories con el JSON de snapshot (counts + ids).
+- Español breve. Sin relleno.
 ```
+
+## Siguiente nivel (cuando haya credenciales operator)
+
+Con `TOWN_PLATFORM_EMAIL` / `TOWN_PLATFORM_PASSWORD` en el environment:
+leer Moderación / Memberships de Madrid y proponer casos (sin ejecutar).

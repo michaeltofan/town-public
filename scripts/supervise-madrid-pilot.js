@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * TOWN Madrid pilot — operator utility digest (read-only).
+ * TOWN Madrid pilot — digest operativo (solo lectura, español).
  *
- * Answers: what should Mickey do about Madrid right now?
- * Health checks are a gate, not the product.
+ * Entrena y prueba el piloto Madrid. Responde: ¿qué debe hacer Mickey ahora?
+ * Health es una puerta, no el producto.
  *
  * Usage:
  *   node scripts/supervise-madrid-pilot.js
@@ -12,8 +12,6 @@
  */
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
 const https = require("https");
 const http = require("http");
 
@@ -35,7 +33,7 @@ function fetchText(url) {
       url,
       {
         headers: {
-          "User-Agent": "town-madrid-operator-digest/3.0",
+          "User-Agent": "town-madrid-operator-digest/4.0-es",
           Accept: "application/json,text/html,*/*",
         },
       },
@@ -83,7 +81,7 @@ function actionsFromDigest(digest) {
       priority: 1,
       kind: "infra",
       text:
-        "API/host Madrid nu e healthy — verifică Railway/api ready înainte de orice civic work.",
+        "API/host de Madrid no está sano — revisa Railway / health/ready antes de cualquier trabajo cívico.",
     });
     return actions;
   }
@@ -99,11 +97,11 @@ function actionsFromDigest(digest) {
   if (stuck.length === digest.signals.length && digest.signals.length) {
     actions.push({
       priority: 2,
-      kind: "growth",
+      kind: "crecimiento",
       text:
-        "Nicio confirmare pe semnalele seed (toate 0/" +
+        "Cero confirmaciones en las señales seed (todas 0/" +
         (stuck[0].requiredConfirmations || 5) +
-        "). Pilotul e live dar bucla civică n-a pornit — prioritate: 1–2 membri reali pe madrid.towncivic.org care fac YO TAMBIÉN LO VEO.",
+        "). El piloto está en vivo pero el bucle cívico no ha arrancado — prioridad: 1–2 miembros reales en madrid.towncivic.org que pulsen YO TAMBIÉN LO VEO.",
     });
   }
 
@@ -116,37 +114,37 @@ function actionsFromDigest(digest) {
       const left = s.requiredConfirmations - s.confirmationCount;
       actions.push({
         priority: 2,
-        kind: "civic",
+        kind: "civico",
         text:
           s.area +
           ": " +
           s.confirmationCount +
           "/" +
           s.requiredConfirmations +
-          " confirmări — mai trebuie " +
+          " confirmaciones — faltan " +
           left +
-          " ca să treacă la proposals. Headline: " +
+          " para pasar a proposals. Titular: " +
           s.headline,
       });
     }
     if (s.stage === "confirmation" && s.reached) {
       actions.push({
         priority: 1,
-        kind: "civic",
+        kind: "civico",
         text:
           s.area +
-          " a atins pragul de confirmare — verifică pe platformă/UI că etapa proposals e vizibilă.",
+          " alcanzó el umbral de confirmación — verifica en la UI/plataforma que la etapa proposals sea visible.",
       });
     }
     if (s.stage && s.stage !== "confirmation") {
       actions.push({
         priority: 1,
-        kind: "civic",
+        kind: "civico",
         text:
           s.area +
-          " e în etapa " +
+          " está en etapa " +
           s.stage +
-          " — supraveghează proposals/deliberation/vote după caz.",
+          " — supervisa proposals/deliberación/voto según corresponda.",
       });
     }
   });
@@ -154,10 +152,22 @@ function actionsFromDigest(digest) {
   if (digest.nonSeedCount > 0) {
     actions.push({
       priority: 2,
-      kind: "moderation",
+      kind: "moderacion",
       text:
         digest.nonSeedCount +
-        " semnal(e) noi peste seed — deschide platformă → Moderation/Signals și decide hide/keep.",
+        " señal(es) nueva(s) además del seed — abre Plataforma → Moderation/Signals y decide hide/keep.",
+    });
+  }
+
+  const badLocale = digest.signals.filter(function (s) {
+    return s.locale && s.locale !== "es-ES";
+  });
+  if (badLocale.length) {
+    actions.push({
+      priority: 1,
+      kind: "idioma",
+      text:
+        "Hay señales con locale ≠ es-ES en madrid-es — el piloto Madrid es solo español; investiga.",
     });
   }
 
@@ -165,7 +175,7 @@ function actionsFromDigest(digest) {
     actions.push({
       priority: 3,
       kind: "ok",
-      text: "Nimic urgent. Revină la următorul run; urmărește delta confirmărilor.",
+      text: "Nada urgente. Vuelve en el próximo run; vigila el delta de confirmaciones.",
     });
   }
 
@@ -175,26 +185,43 @@ function actionsFromDigest(digest) {
   return actions;
 }
 
+function memorySnapshot(digest) {
+  return {
+    at: digest.generatedAt,
+    health: digest.health.status,
+    nonSeedCount: digest.nonSeedCount,
+    signals: digest.signals.map(function (s) {
+      return {
+        id: s.id,
+        area: s.area,
+        stage: s.stage,
+        confirmationCount: s.confirmationCount,
+        requiredConfirmations: s.requiredConfirmations,
+        isSeed: s.isSeed,
+      };
+    }),
+  };
+}
+
 async function buildDigest() {
   const digest = {
     generatedAt: new Date().toISOString(),
-    scope: "madrid-operator-utility",
+    scope: "madrid-operator-es",
+    locale: "es",
     health: { status: "UNKNOWN", checks: [] },
     signals: [],
     seedCount: 0,
     nonSeedCount: 0,
     actions: [],
+    memory: null,
   };
 
   if (OFFLINE) {
     digest.health.status = "OFFLINE";
     digest.actions = [
-      {
-        priority: 3,
-        kind: "ok",
-        text: "Mod offline — fără probe live.",
-      },
+      { priority: 3, kind: "ok", text: "Modo offline — sin sondas en vivo." },
     ];
+    digest.memory = memorySnapshot(digest);
     return digest;
   }
 
@@ -238,13 +265,15 @@ async function buildDigest() {
   });
 
   digest.health.checks = checks;
-  const failed = checks.filter(function (c) {
+  digest.health.status = checks.some(function (c) {
     return !c.ok;
-  });
-  digest.health.status = failed.length ? "DOWN" : "OPERATIONAL";
+  })
+    ? "DOWN"
+    : "OPERATIONAL";
 
   if (!readyOk) {
     digest.actions = actionsFromDigest(digest);
+    digest.memory = memorySnapshot(digest);
     return digest;
   }
 
@@ -279,7 +308,6 @@ async function buildDigest() {
       d && d.transitionRule && d.transitionRule.requiredConfirmations
         ? d.transitionRule.requiredConfirmations
         : null;
-    const reached = !!(d && d.transitionRule && d.transitionRule.reached);
     digest.signals.push({
       id: s.id,
       slug: s.slug,
@@ -290,42 +318,42 @@ async function buildDigest() {
       stage: d ? d.currentStage : null,
       confirmationCount: d ? d.confirmationCount : null,
       requiredConfirmations: required,
-      reached: reached,
+      reached: !!(d && d.transitionRule && d.transitionRule.reached),
       canConfirm: d ? d.canConfirm : null,
       civicHttp: civicRes.status,
     });
   }
 
   digest.actions = actionsFromDigest(digest);
+  digest.memory = memorySnapshot(digest);
   return digest;
 }
 
 function printDigest(digest) {
-  console.log("Madrid operator digest — " + digest.health.status);
-  console.log("Time: " + digest.generatedAt);
+  console.log("Digest operativo Madrid — " + digest.health.status);
+  console.log("Hora: " + digest.generatedAt);
+  console.log("Idioma: es (piloto Madrid)");
   console.log("");
-  console.log("## Ce ai de făcut");
+  console.log("## A. Qué debes hacer ahora");
   digest.actions.forEach(function (a, idx) {
     console.log(idx + 1 + ". [" + a.kind + "] " + a.text);
   });
   console.log("");
-  console.log("## Semnale madrid-es");
-  if (!digest.signals.length) {
-    console.log("(none)");
-  }
+  console.log("## C. Señales madrid-es");
+  if (!digest.signals.length) console.log("(ninguna)");
   digest.signals.forEach(function (s) {
     const prog =
       s.confirmationCount == null
-        ? "civic n/a HTTP " + s.civicHttp
+        ? "civic n/d HTTP " + s.civicHttp
         : s.stage +
           " " +
           s.confirmationCount +
           "/" +
           (s.requiredConfirmations || "?") +
-          (s.reached ? " REACHED" : "");
+          (s.reached ? " UMBRAL" : "");
     console.log(
       "- " +
-        (s.isSeed ? "seed" : "NEW") +
+        (s.isSeed ? "seed" : "NUEVA") +
         " · " +
         s.area +
         " · " +
@@ -338,15 +366,20 @@ function printDigest(digest) {
   console.log(
     "## Feed: seed=" +
       digest.seedCount +
-      " new=" +
+      " nuevas=" +
       digest.nonSeedCount +
       " total=" +
       digest.signals.length
   );
-  console.log("## Health gate");
+  console.log("## D. Health (puerta)");
   digest.health.checks.forEach(function (c) {
-    console.log("- " + (c.ok ? "OK" : "FAIL") + " " + c.name + " — " + c.detail);
+    console.log(
+      "- " + (c.ok ? "OK" : "FAIL") + " " + c.name + " — " + c.detail
+    );
   });
+  console.log("");
+  console.log("## Memories (guardar esto)");
+  console.log(JSON.stringify(digest.memory));
 }
 
 async function main() {

@@ -1,6 +1,6 @@
 # Agent guidance — town-public
 
-## Super agent Madrid (utilitate)
+## Super agente Madrid (utilidad, español)
 
 Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
@@ -8,10 +8,13 @@ Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.m
 node scripts/supervise-madrid-pilot.js
 ```
 
-Livrează **ce ai de făcut acum** pe pilotul Madrid (civic progress, semnale noi, health ca poartă). Nu e un smoke de uptime.
+- Alcance: **solo piloto Madrid**
+- Idioma del informe del agente: **español**
+- Entrega: qué hacer ahora (bucle cívico), no teatro de uptime
+- Aprendizaje: Memories + feedback humano
 
 ## Honesty
 
-- Feed doar din API live
-- Fără membership simulat în client
-- Mutările pe platformă rămân umane până la o fază explicită
+- Feed solo desde API live
+- Sin membership simulado en cliente
+- Mutaciones de plataforma: humanas, hasta fase explícita

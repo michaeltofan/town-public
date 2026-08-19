@@ -47,7 +47,7 @@ is proven on `api.towncivic.org`.
 
 ## Madrid pilot supervision
 
-Operator utility digest for Pilot Madrid (civic progress + actions), not uptime theatre.
+Spanish operator digest for Pilot Madrid (acciones cívicas + delta), not uptime theatre.
 
 Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
