@@ -1,0 +1,820 @@
+{
+  "generatedAt": "2026-08-20T05:13:23.528748Z",
+  "health_prod": {
+    "http": 200,
+    "json": {
+      "status": "ready"
+    }
+  },
+  "health_staging": {
+    "http": 200,
+    "json": {
+      "status": "ready"
+    }
+  },
+  "activity_unauth": {
+    "http": 401,
+    "json": {
+      "error": {
+        "code": "SESSION_NOT_AUTHORIZED",
+        "message": "Session is not authorized.",
+        "requestId": "req_974fbf15-5aee-4661-af25-f2ed38ca94d4"
+      }
+    }
+  },
+  "session_unauth": {
+    "http": 404,
+    "json": {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Not Found.",
+        "requestId": "req_414e6a60-bcf4-4c13-9fba-da9ec44dc755"
+      }
+    }
+  },
+  "platform_session_unauth": {
+    "http": 404,
+    "json": {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Not Found.",
+        "requestId": "req_397abe14-eb82-47b1-b308-6453721f2ba2"
+      }
+    }
+  },
+  "platform_memberships_unauth": {
+    "http": 404,
+    "json": {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Not Found.",
+        "requestId": "req_7b084267-8696-40ab-b0ba-09f91e14bf93"
+      }
+    }
+  },
+  "platform_signals_unauth": {
+    "http": 404,
+    "json": {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Not Found.",
+        "requestId": "req_0eb49c6c-3870-4e9a-b77c-25eee68a8d42"
+      }
+    }
+  },
+  "community_by_slug": {
+    "http": 404,
+    "json": {
+      "error": {
+        "code": "NOT_FOUND",
+        "message": "Not Found.",
+        "requestId": "req_8b87d9c8-93c4-4053-9de8-69c9bd6131fb"
+      }
+    }
+  },
+  "communities": {
+    "http": 200,
+    "json": {
+      "data": [
+        {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "slug": "milano-it",
+          "position": 1,
+          "countryCode": "IT",
+          "cityName": "Milano",
+          "displayName": "Milano",
+          "defaultLocale": "it-IT",
+          "timezone": "Europe/Rome"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "slug": "munich-de",
+          "position": 2,
+          "countryCode": "DE",
+          "cityName": "Munich",
+          "displayName": "München",
+          "defaultLocale": "de-DE",
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "slug": "arad-ro",
+          "position": 3,
+          "countryCode": "RO",
+          "cityName": "Arad",
+          "displayName": "Arad",
+          "defaultLocale": "ro-RO",
+          "timezone": "Europe/Bucharest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "slug": "cluj-napoca-ro",
+          "position": 4,
+          "countryCode": "RO",
+          "cityName": "Cluj-Napoca",
+          "displayName": "Cluj-Napoca",
+          "defaultLocale": "ro-RO",
+          "timezone": "Europe/Bucharest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "slug": "sibiu-ro",
+          "position": 5,
+          "countryCode": "RO",
+          "cityName": "Sibiu",
+          "displayName": "Sibiu",
+          "defaultLocale": "ro-RO",
+          "timezone": "Europe/Bucharest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "slug": "iasi-ro",
+          "position": 6,
+          "countryCode": "RO",
+          "cityName": "Iași",
+          "displayName": "Iași",
+          "defaultLocale": "ro-RO",
+          "timezone": "Europe/Bucharest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000007",
+          "slug": "timisoara-ro",
+          "position": 7,
+          "countryCode": "RO",
+          "cityName": "Timișoara",
+          "displayName": "Timișoara",
+          "defaultLocale": "ro-RO",
+          "timezone": "Europe/Bucharest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000008",
+          "slug": "koln-de",
+          "position": 8,
+          "countryCode": "DE",
+          "cityName": "Koln",
+          "displayName": "Köln",
+          "defaultLocale": "de-DE",
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000009",
+          "slug": "dortmund-de",
+          "position": 9,
+          "countryCode": "DE",
+          "cityName": "Dortmund",
+          "displayName": "Dortmund",
+          "defaultLocale": "de-DE",
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000010",
+          "slug": "stuttgart-de",
+          "position": 10,
+          "countryCode": "DE",
+          "cityName": "Stuttgart",
+          "displayName": "Stuttgart",
+          "defaultLocale": "de-DE",
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000011",
+          "slug": "frankfurt-de",
+          "position": 11,
+          "countryCode": "DE",
+          "cityName": "Frankfurt",
+          "displayName": "Frankfurt",
+          "defaultLocale": "de-DE",
+          "timezone": "Europe/Berlin"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000012",
+          "slug": "salzburg-at",
+          "position": 12,
+          "countryCode": "AT",
+          "cityName": "Salzburg",
+          "displayName": "Salzburg",
+          "defaultLocale": "de-AT",
+          "timezone": "Europe/Vienna"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000013",
+          "slug": "marseille-fr",
+          "position": 13,
+          "countryCode": "FR",
+          "cityName": "Marseille",
+          "displayName": "Marseille",
+          "defaultLocale": "fr-FR",
+          "timezone": "Europe/Paris"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000014",
+          "slug": "lyon-fr",
+          "position": 14,
+          "countryCode": "FR",
+          "cityName": "Lyon",
+          "displayName": "Lyon",
+          "defaultLocale": "fr-FR",
+          "timezone": "Europe/Paris"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000015",
+          "slug": "toulouse-fr",
+          "position": 15,
+          "countryCode": "FR",
+          "cityName": "Toulouse",
+          "displayName": "Toulouse",
+          "defaultLocale": "fr-FR",
+          "timezone": "Europe/Paris"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000016",
+          "slug": "budapest-hu",
+          "position": 16,
+          "countryCode": "HU",
+          "cityName": "Budapest",
+          "displayName": "Budapest",
+          "defaultLocale": "hu-HU",
+          "timezone": "Europe/Budapest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000017",
+          "slug": "szeged-hu",
+          "position": 17,
+          "countryCode": "HU",
+          "cityName": "Szeged",
+          "displayName": "Szeged",
+          "defaultLocale": "hu-HU",
+          "timezone": "Europe/Budapest"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "slug": "madrid-es",
+          "position": 18,
+          "countryCode": "ES",
+          "cityName": "Madrid",
+          "displayName": "Madrid",
+          "defaultLocale": "es-ES",
+          "timezone": "Europe/Madrid"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000019",
+          "slug": "barcelona-es",
+          "position": 19,
+          "countryCode": "ES",
+          "cityName": "Barcelona",
+          "displayName": "Barcelona",
+          "defaultLocale": "es-ES",
+          "timezone": "Europe/Madrid"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000020",
+          "slug": "valencia-es",
+          "position": 20,
+          "countryCode": "ES",
+          "cityName": "Valencia",
+          "displayName": "Valencia",
+          "defaultLocale": "es-ES",
+          "timezone": "Europe/Madrid"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000021",
+          "slug": "sevilla-es",
+          "position": 21,
+          "countryCode": "ES",
+          "cityName": "Sevilla",
+          "displayName": "Sevilla",
+          "defaultLocale": "es-ES",
+          "timezone": "Europe/Madrid"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000022",
+          "slug": "malaga-es",
+          "position": 22,
+          "countryCode": "ES",
+          "cityName": "Málaga",
+          "displayName": "Málaga",
+          "defaultLocale": "es-ES",
+          "timezone": "Europe/Madrid"
+        }
+      ]
+    }
+  },
+  "signals_prod": {
+    "http": 200,
+    "json": {
+      "data": {
+        "community": {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "slug": "madrid-es",
+          "displayName": "Madrid",
+          "defaultLocale": "es-ES"
+        },
+        "signals": [
+          {
+            "id": "00000000-0000-4000-8000-000000001901",
+            "slug": "madrid-signal-1",
+            "position": 1,
+            "locale": "es-ES",
+            "category": "ESPACIO PÚBLICO",
+            "area": "Lavapiés",
+            "headline": "La acera de la calle Argumosa sigue agrietada frente al mercado",
+            "summary": "Varias baldosas rotas obligan a los peatones a esquivar la zona pegados a la calzada.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_1.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000001902",
+            "slug": "madrid-signal-2",
+            "position": 2,
+            "locale": "es-ES",
+            "category": "ALUMBRADO PÚBLICO",
+            "area": "Legazpi",
+            "headline": "Varias farolas llevan semanas apagadas junto al parque Tierno Galván",
+            "summary": "El tramo entre la estación y las viviendas queda a oscuras después del anochecer.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_2.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000001903",
+            "slug": "madrid-signal-3",
+            "position": 3,
+            "locale": "es-ES",
+            "category": "MEDIO AMBIENTE",
+            "area": "Retiro",
+            "headline": "Los contenedores junto a la puerta de Alcalá del parque del Retiro se desbordan los fines de semana",
+            "summary": "Bolsas y envases quedan alrededor de los contenedores llenos tras la alta afluencia del fin de semana.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_3.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          }
+        ]
+      }
+    }
+  },
+  "signals_staging": {
+    "http": 200,
+    "json": {
+      "data": {
+        "community": {
+          "id": "00000000-0000-4000-8000-000000000018",
+          "slug": "madrid-es",
+          "displayName": "Madrid",
+          "defaultLocale": "es-ES"
+        },
+        "signals": [
+          {
+            "id": "00000000-0000-4000-8000-000000001901",
+            "slug": "madrid-signal-1",
+            "position": 1,
+            "locale": "es-ES",
+            "category": "ESPACIO PÚBLICO",
+            "area": "Lavapiés",
+            "headline": "La acera de la calle Argumosa sigue agrietada frente al mercado",
+            "summary": "Varias baldosas rotas obligan a los peatones a esquivar la zona pegados a la calzada.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_1.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000001902",
+            "slug": "madrid-signal-2",
+            "position": 2,
+            "locale": "es-ES",
+            "category": "ALUMBRADO PÚBLICO",
+            "area": "Vallecas",
+            "headline": "Varias farolas llevan semanas apagadas junto al parque Tierno Galván",
+            "summary": "El tramo entre la estación y las viviendas queda a oscuras después del anochecer.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_2.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          },
+          {
+            "id": "00000000-0000-4000-8000-000000001903",
+            "slug": "madrid-signal-3",
+            "position": 3,
+            "locale": "es-ES",
+            "category": "MEDIO AMBIENTE",
+            "area": "Retiro",
+            "headline": "Los contenedores junto a la puerta de Alcalá del parque del Retiro se desbordan los fines de semana",
+            "summary": "Bolsas y envases quedan alrededor de los contenedores llenos tras la alta afluencia del fin de semana.",
+            "observedLabel": "Observado esta semana",
+            "imageKey": "assets/feed/madrid_signal_3.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "confirmationCount": 0
+          }
+        ]
+      }
+    }
+  },
+  "dossiers": [
+    {
+      "id": "00000000-0000-4000-8000-000000001901",
+      "list": {
+        "id": "00000000-0000-4000-8000-000000001901",
+        "slug": "madrid-signal-1",
+        "position": 1,
+        "locale": "es-ES",
+        "category": "ESPACIO PÚBLICO",
+        "area": "Lavapiés",
+        "headline": "La acera de la calle Argumosa sigue agrietada frente al mercado",
+        "summary": "Varias baldosas rotas obligan a los peatones a esquivar la zona pegados a la calzada.",
+        "observedLabel": "Observado esta semana",
+        "imageKey": "assets/feed/madrid_signal_1.jpg",
+        "imageFocus": {
+          "x": 50,
+          "y": 45
+        },
+        "imageMedia": null,
+        "confirmationCount": 0
+      },
+      "detail": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "00000000-0000-4000-8000-000000001901",
+            "slug": "madrid-signal-1",
+            "community": {
+              "id": "00000000-0000-4000-8000-000000000018",
+              "slug": "madrid-es",
+              "displayName": "Madrid"
+            },
+            "locale": "es-ES",
+            "category": "ESPACIO PÚBLICO",
+            "area": "Lavapiés",
+            "headline": "La acera de la calle Argumosa sigue agrietada frente al mercado",
+            "summary": "Varias baldosas rotas obligan a los peatones a esquivar la zona pegados a la calzada.",
+            "description": "Frente al mercado de Antón Martín, un tramo de la calle Argumosa mantiene baldosas rotas y desniveles desde hace semanas, sin que se haya anunciado una reparación. Ubicación de referencia: https://www.google.com/maps?q=40.4079926,-3.6980726",
+            "whyItMatters": "Es una zona de paso constante entre el mercado, los comercios y las viviendas cercanas, y el estado de la acera aumenta el riesgo de caídas.",
+            "whoIsAffected": "Los vecinos de Lavapiés, las personas mayores, los comerciantes y los clientes del mercado.",
+            "latestUpdate": "El aviso sigue siendo local y abierto. Todavía no se ha confirmado ninguna intervención.",
+            "statusLabel": "Estado cívico: observado — a la espera de atención local",
+            "statusNote": "«Observado» significa que la comunidad local ha reconocido la situación. Esto no confirma ningún procedimiento oficial ni una intervención ya en marcha.",
+            "observedLabel": "Observado esta semana",
+            "observedOn": "2026-08-09",
+            "observedPrecision": "day",
+            "authorDisplayName": "Redacción TOWN Madrid",
+            "imageKey": "assets/feed/madrid_signal_1.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "publishedAt": "2026-08-09T08:00:00.000Z",
+            "confirmationCount": 0
+          }
+        }
+      },
+      "civic": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "742ba60c-c1ac-429f-aedd-ce32c799b915",
+            "signalId": "00000000-0000-4000-8000-000000001901",
+            "communitySlug": "madrid-es",
+            "currentStage": "confirmation",
+            "stageLabelKey": "civic_process.stage.confirmation",
+            "confirmationCount": 0,
+            "proposalCount": 0,
+            "deliberationParticipantCount": 0,
+            "voteCount": 0,
+            "hasConfirmed": false,
+            "canConfirm": false,
+            "nextStage": "proposals",
+            "closingAt": null,
+            "transitionRule": {
+              "type": "confirmation_count",
+              "requiredConfirmations": 5,
+              "reached": false
+            },
+            "ballotPreview": null,
+            "timeline": [
+              {
+                "type": "process_created",
+                "occurredAt": "2026-08-09T08:00:00.000Z"
+              }
+            ],
+            "createdAt": "2026-08-09T08:00:00.000Z",
+            "updatedAt": "2026-08-09T08:00:00.000Z"
+          }
+        }
+      },
+      "confirm_post_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_56842a85-bac5-492c-b4eb-930f128e6ee7"
+          }
+        }
+      },
+      "confirm_alt_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_180496fc-9e02-4bb9-8beb-329ac1cf9b22"
+          }
+        }
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000001902",
+      "list": {
+        "id": "00000000-0000-4000-8000-000000001902",
+        "slug": "madrid-signal-2",
+        "position": 2,
+        "locale": "es-ES",
+        "category": "ALUMBRADO PÚBLICO",
+        "area": "Legazpi",
+        "headline": "Varias farolas llevan semanas apagadas junto al parque Tierno Galván",
+        "summary": "El tramo entre la estación y las viviendas queda a oscuras después del anochecer.",
+        "observedLabel": "Observado esta semana",
+        "imageKey": "assets/feed/madrid_signal_2.jpg",
+        "imageFocus": {
+          "x": 50,
+          "y": 45
+        },
+        "imageMedia": null,
+        "confirmationCount": 0
+      },
+      "detail": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "00000000-0000-4000-8000-000000001902",
+            "slug": "madrid-signal-2",
+            "community": {
+              "id": "00000000-0000-4000-8000-000000000018",
+              "slug": "madrid-es",
+              "displayName": "Madrid"
+            },
+            "locale": "es-ES",
+            "category": "ALUMBRADO PÚBLICO",
+            "area": "Legazpi",
+            "headline": "Varias farolas llevan semanas apagadas junto al parque Tierno Galván",
+            "summary": "El tramo entre la estación y las viviendas queda a oscuras después del anochecer.",
+            "description": "En el perímetro del parque Enrique Tierno Galván, varios puntos de luz no funcionan, dejando un tramo del paseo sin iluminación por la noche. Ubicación de referencia: https://www.google.com/maps?q=40.3900397,-3.6838406",
+            "whyItMatters": "Un paseo bien iluminado es una condición básica de seguridad para quienes cruzan el parque de camino a casa o al transporte público.",
+            "whoIsAffected": "Los vecinos de Legazpi, los usuarios del parque y quienes regresan del trabajo por la noche.",
+            "latestUpdate": "El aviso sigue siendo local y abierto. Todavía no se ha confirmado ninguna intervención.",
+            "statusLabel": "Estado cívico: observado — a la espera de atención local",
+            "statusNote": "«Observado» significa que la comunidad local ha reconocido la situación. Esto no confirma ningún procedimiento oficial ni una intervención ya en marcha.",
+            "observedLabel": "Observado esta semana",
+            "observedOn": "2026-08-09",
+            "observedPrecision": "day",
+            "authorDisplayName": "Redacción TOWN Madrid",
+            "imageKey": "assets/feed/madrid_signal_2.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "publishedAt": "2026-08-09T08:00:00.000Z",
+            "confirmationCount": 0
+          }
+        }
+      },
+      "civic": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "0e9ce3bc-e307-4389-9b3a-914ea6ad23cc",
+            "signalId": "00000000-0000-4000-8000-000000001902",
+            "communitySlug": "madrid-es",
+            "currentStage": "confirmation",
+            "stageLabelKey": "civic_process.stage.confirmation",
+            "confirmationCount": 0,
+            "proposalCount": 0,
+            "deliberationParticipantCount": 0,
+            "voteCount": 0,
+            "hasConfirmed": false,
+            "canConfirm": false,
+            "nextStage": "proposals",
+            "closingAt": null,
+            "transitionRule": {
+              "type": "confirmation_count",
+              "requiredConfirmations": 5,
+              "reached": false
+            },
+            "ballotPreview": null,
+            "timeline": [
+              {
+                "type": "process_created",
+                "occurredAt": "2026-08-09T08:00:00.000Z"
+              }
+            ],
+            "createdAt": "2026-08-09T08:00:00.000Z",
+            "updatedAt": "2026-08-09T08:00:00.000Z"
+          }
+        }
+      },
+      "confirm_post_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_7f61a6fe-8943-4f8f-bee2-4c532ef00afd"
+          }
+        }
+      },
+      "confirm_alt_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_75405a49-3d10-4b05-b725-e2037c3b4048"
+          }
+        }
+      }
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000001903",
+      "list": {
+        "id": "00000000-0000-4000-8000-000000001903",
+        "slug": "madrid-signal-3",
+        "position": 3,
+        "locale": "es-ES",
+        "category": "MEDIO AMBIENTE",
+        "area": "Retiro",
+        "headline": "Los contenedores junto a la puerta de Alcalá del parque del Retiro se desbordan los fines de semana",
+        "summary": "Bolsas y envases quedan alrededor de los contenedores llenos tras la alta afluencia del fin de semana.",
+        "observedLabel": "Observado esta semana",
+        "imageKey": "assets/feed/madrid_signal_3.jpg",
+        "imageFocus": {
+          "x": 50,
+          "y": 45
+        },
+        "imageMedia": null,
+        "confirmationCount": 0
+      },
+      "detail": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "00000000-0000-4000-8000-000000001903",
+            "slug": "madrid-signal-3",
+            "community": {
+              "id": "00000000-0000-4000-8000-000000000018",
+              "slug": "madrid-es",
+              "displayName": "Madrid"
+            },
+            "locale": "es-ES",
+            "category": "MEDIO AMBIENTE",
+            "area": "Retiro",
+            "headline": "Los contenedores junto a la puerta de Alcalá del parque del Retiro se desbordan los fines de semana",
+            "summary": "Bolsas y envases quedan alrededor de los contenedores llenos tras la alta afluencia del fin de semana.",
+            "description": "Cerca de la puerta de Alcalá, los contenedores de recogida no dan abasto los fines de semana y los residuos se acumulan en el suelo colindante. Ubicación de referencia: https://www.google.com/maps?q=40.4203717,-3.6936146",
+            "whyItMatters": "El Retiro es un espacio verde muy visitado y su limpieza afecta tanto a la experiencia de los visitantes como al entorno natural del parque.",
+            "whoIsAffected": "Los visitantes del parque, los vecinos cercanos y las familias que lo usan los fines de semana.",
+            "latestUpdate": "El aviso sigue siendo local y abierto. Todavía no se ha confirmado ninguna intervención.",
+            "statusLabel": "Estado cívico: observado — a la espera de atención local",
+            "statusNote": "«Observado» significa que la comunidad local ha reconocido la situación. Esto no confirma ningún procedimiento oficial ni una intervención ya en marcha.",
+            "observedLabel": "Observado esta semana",
+            "observedOn": "2026-08-09",
+            "observedPrecision": "day",
+            "authorDisplayName": "Redacción TOWN Madrid",
+            "imageKey": "assets/feed/madrid_signal_3.jpg",
+            "imageFocus": {
+              "x": 50,
+              "y": 45
+            },
+            "imageMedia": null,
+            "publishedAt": "2026-08-09T08:00:00.000Z",
+            "confirmationCount": 0
+          }
+        }
+      },
+      "civic": {
+        "http": 200,
+        "json": {
+          "data": {
+            "id": "0e02af4d-c08b-4c50-9447-fff0d9349d1e",
+            "signalId": "00000000-0000-4000-8000-000000001903",
+            "communitySlug": "madrid-es",
+            "currentStage": "confirmation",
+            "stageLabelKey": "civic_process.stage.confirmation",
+            "confirmationCount": 0,
+            "proposalCount": 0,
+            "deliberationParticipantCount": 0,
+            "voteCount": 0,
+            "hasConfirmed": false,
+            "canConfirm": false,
+            "nextStage": "proposals",
+            "closingAt": null,
+            "transitionRule": {
+              "type": "confirmation_count",
+              "requiredConfirmations": 5,
+              "reached": false
+            },
+            "ballotPreview": null,
+            "timeline": [
+              {
+                "type": "process_created",
+                "occurredAt": "2026-08-09T08:00:00.000Z"
+              }
+            ],
+            "createdAt": "2026-08-09T08:00:00.000Z",
+            "updatedAt": "2026-08-09T08:00:00.000Z"
+          }
+        }
+      },
+      "confirm_post_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_bad9ec4c-a176-479c-9bfb-fd2c7a4f4c9b"
+          }
+        }
+      },
+      "confirm_alt_unauth": {
+        "http": 404,
+        "json": {
+          "error": {
+            "code": "NOT_FOUND",
+            "message": "Not Found.",
+            "requestId": "req_fa190bcb-51e1-4b3a-ad70-5391e8f728c2"
+          }
+        }
+      }
+    }
+  ],
+  "madrid_catalog": [
+    {
+      "id": "00000000-0000-4000-8000-000000000018",
+      "slug": "madrid-es",
+      "position": 18,
+      "countryCode": "ES",
+      "cityName": "Madrid",
+      "displayName": "Madrid",
+      "defaultLocale": "es-ES",
+      "timezone": "Europe/Madrid"
+    }
+  ],
+  "communities_total": 22,
+  "host_prod": {
+    "http": 200,
+    "len": 96774,
+    "lang": "en",
+    "title": "TOWN — Local feed",
+    "cache": "madrid-es-6",
+    "has_intro_markup": true,
+    "hsts": "max-age=31536000",
+    "csp": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com"
+  },
+  "host_staging": {
+    "http": 200,
+    "len": 96774,
+    "lang": "en",
+    "title": "TOWN — Local feed",
+    "cache": "madrid-es-6",
+    "has_intro_markup": true,
+    "hsts": "max-age=31536000",
+    "csp": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com"
+  },
+  "prod_staging_diffs": [
+    {
+      "slug": "madrid-signal-2",
+      "area": {
+        "prod": "Legazpi",
+        "staging": "Vallecas"
+      }
+    }
+  ]
+}

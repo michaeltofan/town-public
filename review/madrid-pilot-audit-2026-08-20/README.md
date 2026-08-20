@@ -1,12 +1,7 @@
-# Audit pilot Madrid — 2026-08-20
+# Audit analist — Pilot Madrid (2026-08-20)
 
-Pachet partajabil pentru specialist.
+**Citește acest fișier:** [`AUD-MAD-ANALYST-2026-08-20.md`](./AUD-MAD-ANALYST-2026-08-20.md)
 
-| Fișier | Rol |
-| --- | --- |
-| `AUD-MAD-2026-08-20-pilot-madrid.md` | Raportul complet (începe aici) |
-| `digest.json` | Snapshot digest live |
-| `facts.json` | Probe API detaliate |
-| `unit-tests.txt` | Probe automate din repo |
+Copiere pentru specialist: pe GitHub deschide `.md` → **Raw** → Select All → Copy.
 
-**Partajare rapidă:** pe GitHub deschide raportul `.md` → **Raw** → copiază, sau trimite linkul la fișier / la PR.
+Anexe: `digest.json`, `evidence.json`, `unit-tests.txt`.
