@@ -1,0 +1,119 @@
+{
+  "generatedAt": "2026-08-20T05:06:48.283Z",
+  "scope": "madrid-operator-es",
+  "locale": "es",
+  "health": {
+    "status": "OPERATIONAL",
+    "checks": [
+      {
+        "name": "prod.ready",
+        "ok": true,
+        "detail": "HTTP 200"
+      },
+      {
+        "name": "staging.ready",
+        "ok": true,
+        "detail": "HTTP 200"
+      },
+      {
+        "name": "prod.activity",
+        "ok": true,
+        "detail": "HTTP 401"
+      },
+      {
+        "name": "host.prod",
+        "ok": true,
+        "detail": "HTTP 200"
+      },
+      {
+        "name": "host.staging",
+        "ok": true,
+        "detail": "HTTP 200"
+      }
+    ]
+  },
+  "signals": [
+    {
+      "id": "00000000-0000-4000-8000-000000001901",
+      "slug": "madrid-signal-1",
+      "area": "Lavapiés",
+      "headline": "La acera de la calle Argumosa sigue agrietada frente al mercado",
+      "locale": "es-ES",
+      "isSeed": true,
+      "stage": "confirmation",
+      "confirmationCount": 0,
+      "requiredConfirmations": 5,
+      "reached": false,
+      "canConfirm": false,
+      "civicHttp": 200
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000001902",
+      "slug": "madrid-signal-2",
+      "area": "Legazpi",
+      "headline": "Varias farolas llevan semanas apagadas junto al parque Tierno Galván",
+      "locale": "es-ES",
+      "isSeed": true,
+      "stage": "confirmation",
+      "confirmationCount": 0,
+      "requiredConfirmations": 5,
+      "reached": false,
+      "canConfirm": false,
+      "civicHttp": 200
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000001903",
+      "slug": "madrid-signal-3",
+      "area": "Retiro",
+      "headline": "Los contenedores junto a la puerta de Alcalá del parque del Retiro se desbordan los fines de semana",
+      "locale": "es-ES",
+      "isSeed": true,
+      "stage": "confirmation",
+      "confirmationCount": 0,
+      "requiredConfirmations": 5,
+      "reached": false,
+      "canConfirm": false,
+      "civicHttp": 200
+    }
+  ],
+  "seedCount": 3,
+  "nonSeedCount": 0,
+  "actions": [
+    {
+      "priority": 2,
+      "kind": "crecimiento",
+      "text": "Cero confirmaciones en las señales seed (todas 0/5). El piloto está en vivo pero el bucle cívico no ha arrancado — prioridad: 1–2 miembros reales en madrid.towncivic.org que pulsen YO TAMBIÉN LO VEO."
+    }
+  ],
+  "memory": {
+    "at": "2026-08-20T05:06:48.283Z",
+    "health": "OPERATIONAL",
+    "nonSeedCount": 0,
+    "signals": [
+      {
+        "id": "00000000-0000-4000-8000-000000001901",
+        "area": "Lavapiés",
+        "stage": "confirmation",
+        "confirmationCount": 0,
+        "requiredConfirmations": 5,
+        "isSeed": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000001902",
+        "area": "Legazpi",
+        "stage": "confirmation",
+        "confirmationCount": 0,
+        "requiredConfirmations": 5,
+        "isSeed": true
+      },
+      {
+        "id": "00000000-0000-4000-8000-000000001903",
+        "area": "Retiro",
+        "stage": "confirmation",
+        "confirmationCount": 0,
+        "requiredConfirmations": 5,
+        "isSeed": true
+      }
+    ]
+  }
+}

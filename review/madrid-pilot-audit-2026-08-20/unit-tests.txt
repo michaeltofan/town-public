@@ -1,0 +1,12 @@
+test-madrid-pilot-host:
+PASSED: madrid-pilot-host.js assertions
+test-madrid-pilot-intro:
+PASSED: madrid pilot intro assertions
+test-madrid-discussion-guide:
+PASSED: madrid discussion guide assertions
+test-api-base:
+PASSED: 33 api-base assertions
+test-spanish-localization:
+SPANISH LOCALIZATION TESTS PASSED
+test-member-chat-welcome:
+PASSED: 65 member chat welcome assertions
