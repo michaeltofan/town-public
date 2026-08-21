@@ -1,8 +1,8 @@
 {
   "version": 1,
   "identity": "town-super-agent",
-  "updatedAt": "2026-08-21T06:34:23.954Z",
-  "runCount": 2,
+  "updatedAt": "2026-08-21T06:39:14.643Z",
+  "runCount": 6,
   "domains": {
     "madrid": {
       "health": "OPERATIONAL",
@@ -33,7 +33,7 @@
           "isSeed": true
         }
       ],
-      "at": "2026-08-21T06:34:22.623Z"
+      "at": "2026-08-21T06:39:13.616Z"
     },
     "platform": {
       "probes": [
@@ -87,6 +87,13 @@
       "confidence": 1,
       "source": "policy",
       "updatedAt": "2026-08-21T00:00:00.000Z"
+    },
+    {
+      "id": "belief_les_mt2kwte8_pm2jj",
+      "text": "regulă: zero mutații automate pe Platform Console (accounts, memberships, moderation, alerts, PITR attestation, restore drill) — agentul doar propune, Mickey execută",
+      "confidence": 0.9,
+      "source": "feedback",
+      "updatedAt": "2026-08-21T06:39:13.616Z"
     }
   ]
 }

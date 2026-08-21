@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-21T06:34:00.000Z",
+  "updatedAt": "2026-08-21T06:39:13.616Z",
   "items": [
     {
       "id": "les_policy_no_platform_mutate",
@@ -26,7 +26,7 @@
       "note": "Prioritizează activarea membrilor reali (YO TAMBIÉN LO VEO) când seed-urile sunt 0/5.",
       "source": "policy",
       "createdAt": "2026-08-21T06:34:00.000Z",
-      "hits": 2
+      "hits": 6
     },
     {
       "id": "les_prefer_civico",
@@ -52,6 +52,45 @@
       "note": "Nu trata „nimic urgent / ok” ca victorie de produs.",
       "source": "policy",
       "createdAt": "2026-08-21T06:34:00.000Z",
+      "hits": 0
+    },
+    {
+      "id": "les_mt2kwkmc_7s1hu",
+      "kind": "prefer",
+      "match": {
+        "actionKind": "crecimiento"
+      },
+      "effect": "prefer_kind",
+      "weight": 1,
+      "note": "crecimiento — prioritatea #1 când toate seed-urile Madrid sunt 0/5 este activarea de membri reali cu YO TAMBIÉN LO VEO, nu Status/uptime",
+      "source": "feedback",
+      "createdAt": "2026-08-21T06:39:02.244Z",
+      "hits": 3
+    },
+    {
+      "id": "les_mt2kwoa5_9622d",
+      "kind": "avoid",
+      "match": {
+        "actionKind": "ok"
+      },
+      "effect": "suppress",
+      "weight": 2,
+      "note": "ok — Status READY / OK ratio / uptime samples nu sunt victoria produsului; nu le trata ca acțiune finală",
+      "source": "feedback",
+      "createdAt": "2026-08-21T06:39:06.989Z",
+      "hits": 0
+    },
+    {
+      "id": "les_mt2kwte8_pm2jj",
+      "kind": "rule",
+      "match": {
+        "actionKind": "platform"
+      },
+      "effect": "suppress",
+      "weight": 2,
+      "note": "regulă: zero mutații automate pe Platform Console (accounts, memberships, moderation, alerts, PITR attestation, restore drill) — agentul doar propune, Mickey execută",
+      "source": "feedback",
+      "createdAt": "2026-08-21T06:39:13.616Z",
       "hits": 0
     }
   ]
