@@ -84,11 +84,19 @@ Fără feedback, agentul tot învață din **delta observațiilor** (ce s-a schi
 
 ---
 
+## Decizie produs (ancoră)
+
+**Pilot Madrid:** confirmarea civică (`YO TAMBIÉN LO VEO`) trebuie să meargă **fără plată**.
+Nu se „rezolvă” în client cu membership fals. Cere schimbare pe **API**
+(`canConfirm` / `canParticipate` fără Stripe pe `madrid-es`). Până atunci,
+nu trimite audiență FRAVM în paywall.
+
 ## Faze
 
 | Fază | Capacitate |
 | --- | --- |
 | **Acum** | Citire + model al lumii + lecții + propuneri |
+| **Blocat pe API** | Confirmare gratuită în pilot Madrid (decizie produs confirmată) |
 | **Următor** | Simț Platform (Moderare / Memberships) cu credențiale — tot propune, nu execută |
 | **Explicit** | Mutări înguste, auditabile, cu confirmare umană |
 

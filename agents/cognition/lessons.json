@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-21T06:39:13.616Z",
+  "updatedAt": "2026-08-21T06:55:33.141Z",
   "items": [
     {
       "id": "les_policy_no_platform_mutate",
@@ -26,7 +26,7 @@
       "note": "Prioritizează activarea membrilor reali (YO TAMBIÉN LO VEO) când seed-urile sunt 0/5.",
       "source": "policy",
       "createdAt": "2026-08-21T06:34:00.000Z",
-      "hits": 6
+      "hits": 7
     },
     {
       "id": "les_prefer_civico",
@@ -65,7 +65,7 @@
       "note": "crecimiento — prioritatea #1 când toate seed-urile Madrid sunt 0/5 este activarea de membri reali cu YO TAMBIÉN LO VEO, nu Status/uptime",
       "source": "feedback",
       "createdAt": "2026-08-21T06:39:02.244Z",
-      "hits": 3
+      "hits": 4
     },
     {
       "id": "les_mt2kwoa5_9622d",
@@ -91,6 +91,17 @@
       "note": "regulă: zero mutații automate pe Platform Console (accounts, memberships, moderation, alerts, PITR attestation, restore drill) — agentul doar propune, Mickey execută",
       "source": "feedback",
       "createdAt": "2026-08-21T06:39:13.616Z",
+      "hits": 0
+    },
+    {
+      "id": "les_mt2lht7a_u6gvc",
+      "kind": "rule",
+      "match": {},
+      "effect": "boost",
+      "weight": 0,
+      "note": "regulă: pilot Madrid — YO TAMBIÉN LO VEO fără plată; deblocarea e pe API (canConfirm/canParticipate), nu bypass client; până atunci nu recruta pe FRAVM",
+      "source": "feedback",
+      "createdAt": "2026-08-21T06:55:33.142Z",
       "hits": 0
     }
   ]

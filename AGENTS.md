@@ -26,3 +26,12 @@ Simț Madrid (digest brut): `node scripts/supervise-madrid-pilot.js` — folosit
 - Feed solo desde API live
 - Sin membership simulado en cliente
 - Mutaciones de plataforma: humanas, hasta fase explícita
+
+## Decizie produs — pilot Madrid (confirmată)
+
+**Confirmarea unui semnal (`YO TAMBIÉN LO VEO`) trebuie să fie posibilă fără plată în pilotul Madrid.**
+
+- Scop: testa ideea civică, nu toleranța la paywall de 12 €
+- **Nu** se implementează prin bypass în client (interzis: membership simulat / participate-preview)
+- Deblocarea reală cere ca **API-ul** să acorde `canParticipate` / `canConfirm` pe Madrid fără Stripe (cont identificat + comunitate), până la o fază de membership plătit
+- Până atunci: **nu** recruta pe FRAVM — funnel-ul încă arde audiența pe plată

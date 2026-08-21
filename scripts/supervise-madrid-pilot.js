@@ -109,7 +109,7 @@ function actionsFromDigest(digest) {
       text:
         "Cero confirmaciones en las señales seed (todas 0/" +
         (stuck[0].requiredConfirmations || 5) +
-        "). El piloto está en vivo pero el bucle cívico no ha arrancado — prioridad: 1–2 miembros reales en madrid.towncivic.org que pulsen YO TAMBIÉN LO VEO.",
+        "). El piloto está en vivo pero el bucle cívico no ha arrancado — prioridad: 1–2 vecinos reales identificados en madrid.towncivic.org que pulsen YO TAMBIÉN LO VEO (confirmación sin pago en piloto; requiere API canConfirm sin Stripe). No reclutar en FRAVM mientras el paywall bloquee la confirmación.",
     });
   }
 
