@@ -22,9 +22,17 @@ const SEED_IDS = [
   "00000000-0000-4000-8000-000000001903",
 ];
 
-const args = new Set(process.argv.slice(2));
-const AS_JSON = args.has("--json");
-const OFFLINE = args.has("--offline");
+function cliFlags(argv) {
+  const args = new Set(argv || process.argv.slice(2));
+  return {
+    asJson: args.has("--json"),
+    offline: args.has("--offline"),
+  };
+}
+
+const startupFlags = cliFlags();
+const AS_JSON = startupFlags.asJson;
+const OFFLINE = startupFlags.offline;
 
 function fetchText(url) {
   return new Promise(function (resolve, reject) {
@@ -203,7 +211,10 @@ function memorySnapshot(digest) {
   };
 }
 
-async function buildDigest() {
+async function buildDigest(options) {
+  const opts = options || {};
+  const offline =
+    typeof opts.offline === "boolean" ? opts.offline : cliFlags().offline;
   const digest = {
     generatedAt: new Date().toISOString(),
     scope: "madrid-operator-es",
@@ -216,7 +227,7 @@ async function buildDigest() {
     memory: null,
   };
 
-  if (OFFLINE) {
+  if (offline) {
     digest.health.status = "OFFLINE";
     digest.actions = [
       { priority: 3, kind: "ok", text: "Modo offline — sin sondas en vivo." },
@@ -392,7 +403,15 @@ async function main() {
   if (digest.health.status === "DOWN") process.exitCode = 1;
 }
 
-main().catch(function (err) {
-  console.error(err);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  main().catch(function (err) {
+    console.error(err);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = {
+  buildDigest: buildDigest,
+  memorySnapshot: memorySnapshot,
+  actionsFromDigest: actionsFromDigest,
+};

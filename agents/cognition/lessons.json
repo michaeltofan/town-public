@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "updatedAt": "2026-08-21T06:34:00.000Z",
+  "items": [
+    {
+      "id": "les_policy_no_platform_mutate",
+      "kind": "rule",
+      "match": {
+        "actionKind": "platform"
+      },
+      "effect": "suppress",
+      "weight": 2,
+      "note": "Mutările pe platformă/production rămân umane până la o fază explicită.",
+      "source": "policy",
+      "createdAt": "2026-08-21T06:34:00.000Z",
+      "hits": 0
+    },
+    {
+      "id": "les_prefer_crecimiento",
+      "kind": "prefer",
+      "match": {
+        "actionKind": "crecimiento"
+      },
+      "effect": "prefer_kind",
+      "weight": 1,
+      "note": "Prioritizează activarea membrilor reali (YO TAMBIÉN LO VEO) când seed-urile sunt 0/5.",
+      "source": "policy",
+      "createdAt": "2026-08-21T06:34:00.000Z",
+      "hits": 2
+    },
+    {
+      "id": "les_prefer_civico",
+      "kind": "prefer",
+      "match": {
+        "actionKind": "civico"
+      },
+      "effect": "prefer_kind",
+      "weight": 1,
+      "note": "Bucla civică > teatru de uptime.",
+      "source": "policy",
+      "createdAt": "2026-08-21T06:34:00.000Z",
+      "hits": 0
+    },
+    {
+      "id": "les_noise_ok_uptime",
+      "kind": "avoid",
+      "match": {
+        "actionKind": "ok"
+      },
+      "effect": "suppress",
+      "weight": 1,
+      "note": "Nu trata „nimic urgent / ok” ca victorie de produs.",
+      "source": "policy",
+      "createdAt": "2026-08-21T06:34:00.000Z",
+      "hits": 0
+    }
+  ]
+}

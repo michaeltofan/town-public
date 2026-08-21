@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "identity": "town-super-agent",
+  "updatedAt": "2026-08-21T06:34:23.954Z",
+  "runCount": 2,
+  "domains": {
+    "madrid": {
+      "health": "OPERATIONAL",
+      "nonSeedCount": 0,
+      "signals": [
+        {
+          "id": "00000000-0000-4000-8000-000000001901",
+          "area": "Lavapiés",
+          "stage": "confirmation",
+          "confirmationCount": 0,
+          "requiredConfirmations": 5,
+          "isSeed": true
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000001902",
+          "area": "Legazpi",
+          "stage": "confirmation",
+          "confirmationCount": 0,
+          "requiredConfirmations": 5,
+          "isSeed": true
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000001903",
+          "area": "Retiro",
+          "stage": "confirmation",
+          "confirmationCount": 0,
+          "requiredConfirmations": 5,
+          "isSeed": true
+        }
+      ],
+      "at": "2026-08-21T06:34:22.623Z"
+    },
+    "platform": {
+      "probes": [
+        {
+          "name": "prod.ready",
+          "ok": true,
+          "detail": "HTTP 200"
+        },
+        {
+          "name": "staging.ready",
+          "ok": true,
+          "detail": "HTTP 200"
+        },
+        {
+          "name": "prod.activity",
+          "ok": true,
+          "detail": "HTTP 401"
+        },
+        {
+          "name": "host.prod",
+          "ok": true,
+          "detail": "HTTP 200"
+        },
+        {
+          "name": "host.staging",
+          "ok": true,
+          "detail": "HTTP 200"
+        }
+      ],
+      "notes": "Platform console mutations stay human until an explicit phase."
+    }
+  },
+  "beliefs": [
+    {
+      "id": "belief_mutations_human",
+      "text": "Mutările pe platformă rămân umane până la o fază explicită.",
+      "confidence": 1,
+      "source": "policy",
+      "updatedAt": "2026-08-21T00:00:00.000Z"
+    },
+    {
+      "id": "belief_one_mind",
+      "text": "Un singur super-agent; Madrid/Status/Moderare sunt simțuri, nu agenți separați.",
+      "confidence": 1,
+      "source": "policy",
+      "updatedAt": "2026-08-21T00:00:00.000Z"
+    },
+    {
+      "id": "belief_civic_not_uptime",
+      "text": "Livrarea e bucla civică (ce faci acum), nu teatrul de uptime.",
+      "confidence": 1,
+      "source": "policy",
+      "updatedAt": "2026-08-21T00:00:00.000Z"
+    }
+  ]
+}

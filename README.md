@@ -45,9 +45,20 @@ is proven on `api.towncivic.org`.
 - No local fake see-too confirmation when the API signal id is missing
 - Platform Monitor backup/restore rows are **operator attestations**, not executed jobs
 
-## Madrid pilot supervision
+## TOWN Super-Agent (cognitive model)
 
-Spanish operator digest for Pilot Madrid (acciones cívicas + delta), not uptime theatre.
+One mind that perceives the platform, updates a world model, applies durable
+lessons from human feedback, and improves every run — not a fleet of agents.
+
+Contract: [`agents/cognition/MODEL.md`](agents/cognition/MODEL.md)
+
+```bash
+node scripts/town-super-agent.js
+node scripts/town-super-agent.js --feedback "util: prioritize civic confirmations"
+node scripts/test-town-super-agent.js
+```
+
+Madrid civic digest remains available as a **sense** (not a separate agent):
 
 Playbook: [`agents/madrid-pilot-supervisor.md`](agents/madrid-pilot-supervisor.md)
 
@@ -58,7 +69,9 @@ node scripts/supervise-madrid-pilot.js
 ## Checks
 
 ```bash
-node scripts/supervise-madrid-pilot.js --offline --skip-units
+node scripts/test-town-super-agent.js
+node scripts/town-super-agent.js --offline --dry-run
+node scripts/supervise-madrid-pilot.js --offline
 node scripts/test-api-base.js
 node scripts/test-security-headers-config.js
 node scripts/test-member-local-feed.js
