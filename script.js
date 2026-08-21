@@ -4846,6 +4846,26 @@
     return memberHomeCityId() === "Madrid";
   }
 
+  // madrid.towncivic.org / madrid-staging — free 90-day pilot path (no Stripe CTA).
+  function isMadridPilotHostSurface() {
+    const pilot = window.TownMadridPilotHost;
+    return !!(
+      pilot &&
+      typeof pilot.isMadridPilotHost === "function" &&
+      pilot.isMadridPilotHost(window.location.hostname)
+    );
+  }
+
+  function isMadridPilotFreeAccessSurface() {
+    if (isMadridPilotHostSurface()) return true;
+    return (
+      commitmentCity === "Madrid" ||
+      (commitmentSnapshot &&
+        commitmentSnapshot.community &&
+        commitmentSnapshot.community.slug === "madrid-es")
+    );
+  }
+
   // Paid / pending member who cannot take the civic action yet — recovery or
   // community setup, never the visitor membership invite.
   function redirectMemberWithoutCivicAccess() {
@@ -13318,7 +13338,15 @@
       commitmentCheckout.hidden = false;
       commitmentCheckout.disabled =
         commitmentCheckoutSubmitting || !hasRecordedCommunityCommitment();
-      commitmentCheckout.textContent = copy.checkoutCta;
+      if (isMadridPilotFreeAccessSurface() && canTakeCivicAction()) {
+        commitmentCheckout.textContent =
+          "Entrar al piloto — confirmar señales (90 días gratis)";
+      } else if (isMadridPilotFreeAccessSurface()) {
+        commitmentCheckout.textContent =
+          "Activar acceso piloto Madrid (sin pago)";
+      } else {
+        commitmentCheckout.textContent = copy.checkoutCta;
+      }
       commitmentCheckoutHint.hidden = true;
       // Keep acceptance visible but checked for review of recorded state.
       commitmentAccept.checked = true;
@@ -13412,8 +13440,15 @@
       (i18n && i18n.publicInviteCopy(lang)) ||
       membershipCatalog(MEMBERSHIP_COPY);
     inviteTitle.textContent = copy.inviteTitle;
-    inviteBody.textContent = copy.inviteBody;
-    inviteBodySecond.textContent = copy.inviteBodySecond;
+    if (isMadridPilotHostSurface()) {
+      inviteBody.textContent =
+        "Para confirmar una señal en el piloto de Madrid: crea una cuenta identificada y declara Madrid. El acceso al piloto es gratis durante 90 días — sin pago.";
+      inviteBodySecond.textContent =
+        "No es una membresía de pago todavía. Es una prueba cívica con vecinos reales. Si esto no encaja, puedes seguir explorando.";
+    } else {
+      inviteBody.textContent = copy.inviteBody;
+      inviteBodySecond.textContent = copy.inviteBodySecond;
+    }
     inviteContinue.textContent = copy.continue;
     inviteNotNow.textContent = copy.notNow;
   }
@@ -16354,11 +16389,50 @@
     go("passkey");
   });
 
+  function enterMadridPilotAfterCommitment() {
+    endInviteMembershipJourney();
+    closeInvite();
+    go("feed");
+    syncFeedMemberState();
+    restorePendingSeeTooAfterSignIn();
+  }
+
   function startAuthenticatedCheckoutFromCommitment() {
     if (commitmentCheckoutSubmitting) return;
     if (!hasRecordedCommunityCommitment()) {
       go("commitment");
       syncCommitmentUi();
+      return;
+    }
+    // Madrid pilot: after free self-enroll, never send neighbours to Stripe.
+    if (isMadridPilotFreeAccessSurface()) {
+      if (canTakeCivicAction()) {
+        enterMadridPilotAfterCommitment();
+        return;
+      }
+      clearCommitmentError();
+      commitmentCheckoutSubmitting = true;
+      commitmentCheckout.disabled = true;
+      fetchAccountMembership()
+        .then(function (snapshot) {
+          applyMembershipSnapshot(snapshot);
+          if (canTakeCivicAction()) {
+            enterMadridPilotAfterCommitment();
+            return;
+          }
+          showCommitmentError(
+            "El acceso piloto aún no está activo. Espera un momento e inténtalo de nuevo."
+          );
+        })
+        .catch(function () {
+          showCommitmentError(
+            "No se pudo comprobar el acceso piloto. Inténtalo de nuevo."
+          );
+        })
+        .finally(function () {
+          commitmentCheckoutSubmitting = false;
+          syncCommitmentUi();
+        });
       return;
     }
     clearCommitmentError();
@@ -16483,6 +16557,21 @@
     saveCommunityCommitment(slug)
       .then(function (snapshot) {
         applyCommitmentSnapshot(snapshot);
+        // Madrid pilot API self-enrolls access on commitment — refresh membership
+        // so the CTA can skip Stripe when canParticipate becomes true.
+        if (isMadridPilotFreeAccessSurface()) {
+          return fetchAccountMembership()
+            .then(function (membership) {
+              applyMembershipSnapshot(membership);
+              return snapshot;
+            })
+            .catch(function () {
+              return snapshot;
+            });
+        }
+        return snapshot;
+      })
+      .then(function () {
         commitmentSaving = false;
         syncCommitmentUi();
       })

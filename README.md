@@ -22,6 +22,7 @@ Member journey (Etapa 3) on the public surface:
 - PROFILE / ACTIVITY → session-authenticated destinations
 - CHAT → membership welcome (intro + Madrid open-data link) when civic participation is active; otherwise honest “not available yet”
 - I SEE THIS TOO → confirm in-community; explore-only notice outside; invite only without membership
+- **Madrid pilot hosts** (`madrid.towncivic.org`): invite copy is free 90-day pilot access; after community commitment to Madrid, Stripe Checkout is skipped when API self-enroll grants `canParticipate` (requires `town-api` Madrid pilot self-enroll on `madrid-es` commitment)
 - Stripe return → bounded membership recovery; paid-without-participate stays fail-closed
 - A community-mismatch 403 is never treated as “not a member”
 
