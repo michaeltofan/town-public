@@ -7,6 +7,7 @@ const vm = require("vm");
 
 const root = path.join(__dirname, "..");
 const source = fs.readFileSync(path.join(root, "script.js"), "utf8");
+const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const i18n = require(path.join(root, "public-i18n.js"));
 const commitment = require(path.join(root, "community-commitment.js"));
 
@@ -243,5 +244,35 @@ assert(country.countries.Spain === "España", "public-i18n country Spain is Span
 const chrome = i18n.feedChromeCopy("es");
 assert(chrome.cityNames.Madrid === "Madrid", "feed chrome Spanish cityNames include Madrid");
 assert(chrome.cityNames.Malaga === "Málaga", "feed chrome uses Spanish Malaga accent");
+assert(
+  chrome.confirmCount === "{count} confirmaciones",
+  "feed chrome localizes the Spanish confirmation count"
+);
+assert(
+  chrome.confirmCountOne === "1 confirmación",
+  "feed chrome localizes the single Spanish confirmation"
+);
+
+// The "Add a proposal" button must be localized by JS (it fell back to the
+// hardcoded English label because renderCivicProposals never set its text).
+assert(
+  /detailProcessProposalsContribute\.textContent\s*=\s*copy\.proposalsAdd;/.test(
+    source
+  ),
+  "renderCivicProposals localizes the proposal button via copy.proposalsAdd"
+);
+assert(
+  context.CIVIC_PROCESS_COPY.es.proposalsAdd === "Añadir una propuesta",
+  "Spanish civic-process copy has the proposal button label"
+);
+// The static HTML fallback for the proposal button is Spanish for the Madrid pilot.
+assert(
+  html.includes("Añadir una propuesta"),
+  "index.html proposal button falls back to Spanish copy"
+);
+assert(
+  !/>\s*Add a proposal\s*</.test(html),
+  "index.html no longer hardcodes the English proposal button label"
+);
 
 console.log("SPANISH LOCALIZATION TESTS PASSED");

@@ -6276,6 +6276,7 @@
       detailProcessProposalsList.appendChild(li);
     });
     civicProposalsCanProposeCache = data.canPropose === true;
+    detailProcessProposalsContribute.textContent = copy.proposalsAdd;
     detailProcessProposalsContribute.hidden = !civicProposalsCanProposeCache;
     if (!civicProposalsCanProposeCache) closeCivicProposalsCompose();
   }
