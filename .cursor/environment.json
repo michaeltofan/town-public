@@ -1,0 +1,14 @@
+{
+  "name": "town-public",
+  "install": "bash .cursor/install.sh",
+  "terminals": [
+    {
+      "name": "preview",
+      "command": "python3 -m http.server 4173",
+      "description": "Static preview of the public site and /platform/ console at http://localhost:4173. localhost pages resolve to the staging API (api-staging.towncivic.org)."
+    }
+  ],
+  "ports": [
+    { "name": "preview", "port": 4173 }
+  ]
+}
