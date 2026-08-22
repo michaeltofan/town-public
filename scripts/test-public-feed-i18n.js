@@ -159,8 +159,23 @@ delete signals.SIGNAL_COPY["milano-signal-1-test"];
 
 const chromeEs = i18n.feedChromeCopy("es");
 assertEqual(chromeEs.openSignal, "Abrir señal", "Spanish feed chrome");
+assertEqual(
+  chromeEs.confirmCount,
+  "{count} confirmaciones",
+  "Spanish feed chrome localizes confirmation count"
+);
+assertEqual(
+  chromeEs.confirmCountOne,
+  "1 confirmación",
+  "Spanish feed chrome localizes single confirmation"
+);
 const chromeFr = i18n.feedChromeCopy("fr");
 assertEqual(chromeFr.openSignal, "Ouvrir le signalement", "French feed chrome");
+assertEqual(
+  chromeFr.confirmCount,
+  "{count} confirmations",
+  "French feed chrome localizes confirmation count"
+);
 
 const state = {
   selectedCountry: "Italy",
@@ -188,6 +203,8 @@ for (let j = 0; j < langs.length; j++) {
   assert(!!chrome.visitor, "visitor chrome present for " + lang);
   assert(!!chrome.openSignal, "openSignal chrome present for " + lang);
   assert(!!chrome.seeThisToo, "seeThisToo chrome present for " + lang);
+  assert(!!chrome.confirmCount, "confirmCount chrome present for " + lang);
+  assert(!!chrome.confirmCountOne, "confirmCountOne chrome present for " + lang);
   assert(!!chrome.chatWelcomeTitle, "chatWelcomeTitle present for " + lang);
   assert(
     String(chrome.chatWelcomeLinkLabel || "").indexOf("datos.madrid.es") !== -1,
